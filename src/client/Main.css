@@ -174,40 +174,40 @@
   @apply h-[calc(100vh-8.125rem)] lg:h-[calc(100vh-5.625rem)];
 }
 
-@utility text-gradient-primary {
-  /* Text gradient utilities */
-  background: linear-gradient(
-    to right,
-    hsl(var(--secondary-muted)),
-    hsl(var(--secondary))
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@utility glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@utility text-gradient-primary-diagonal {
-  background: linear-gradient(
-    135deg,
-    hsl(var(--secondary-muted)),
-    hsl(var(--secondary))
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@utility glass-dark {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-@utility border-gradient-primary {
-  /* Border gradient utilities */
-  background: linear-gradient(
-    to right,
-    hsl(var(--secondary-muted)),
-    hsl(var(--secondary))
-  );
-  padding: 1px;
+@utility mesh-gradient {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(328,100%,93%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,100%,96%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,100%,94%,1) 0, transparent 50%);
+}
 
-  & > * {
-    background: hsl(var(--background));
+@utility mesh-gradient-dark {
+  background-color: #000000;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(328,50%,15%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,50%,10%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,50%,15%,1) 0, transparent 50%);
+}
+
+@utility hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  &:hover {
+    transform: translateY(-8px);
   }
 }
 

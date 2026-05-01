@@ -3,38 +3,40 @@ import { Link } from 'react-router';
 
 export default function ProviderLandingPage() {
   return (
-    <div className="bg-background text-foreground min-h-screen">
-      <main className="isolate">
-        <div className="relative pt-24 pb-32 sm:pt-32 sm:pb-40 px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
-          <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mb-8">
-            Grow Your <span className="text-[var(--accent)]">Service</span> Business.
+    <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
+      <main className="pt-20 pb-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-xs font-bold uppercase tracking-wider mb-6">
+            Partner with Worki
+          </div>
+          <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl">
+            Grow Your <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-600">Service Business.</span>
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10">
-            Worki delivers high-intent, qualified leads directly to your inbox. 
-            No bidding wars. No cold calls. Just booked jobs.
+          <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">
+            Get high-intent, qualified leads without the bidding wars. We match you with homeowners in your area who are ready to book.
           </p>
-          <div className="flex gap-4">
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-20">
             <Link
               to="/providers/apply"
-              className="px-8 py-3 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] text-lg hover:opacity-90 transition-opacity"
+              className="px-12 py-6 bg-indigo-600 text-white font-black rounded-3xl text-xl hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] transition-all hover:-translate-y-1"
             >
               Apply to Join
             </Link>
           </div>
 
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-left">
-            <div className="p-8 bg-[var(--surface-raised)] rounded-3xl border border-[var(--border-default)]">
-              <h3 className="text-xl font-bold mb-4">Qualified Leads</h3>
-              <p className="text-[var(--text-secondary)]">Every request is vetted by our team before it reaches you. Save time on non-serious inquiries.</p>
-            </div>
-            <div className="p-8 bg-[var(--surface-raised)] rounded-3xl border border-[var(--border-default)]">
-              <h3 className="text-xl font-bold mb-4">Exclusive Access</h3>
-              <p className="text-[var(--text-secondary)]">Depending on your plan, get exclusive access to high-value areas in the GTA.</p>
-            </div>
-            <div className="p-8 bg-[var(--surface-raised)] rounded-3xl border border-[var(--border-default)]">
-              <h3 className="text-xl font-bold mb-4">Simple Billing</h3>
-              <p className="text-[var(--text-secondary)]">Pay a transparent monthly fee plus a success fee only when jobs are booked or completed.</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+            {[
+              { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: '🎯' },
+              { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: '📍' },
+              { title: 'Transparent Fees', desc: 'Simple monthly subscription plus success fees only when you book or complete jobs.', icon: '💰' }
+            ].map((feature) => (
+              <div key={feature.title} className="p-10 glass dark:glass-dark rounded-[40px] border border-[var(--border-default)] hover-lift text-left">
+                <div className="text-4xl mb-6">{feature.icon}</div>
+                <h3 className="text-2xl font-black mb-4">{feature.title}</h3>
+                <p className="text-[var(--text-secondary)] leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </main>

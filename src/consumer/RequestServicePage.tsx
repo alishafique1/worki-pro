@@ -30,20 +30,20 @@ export default function RequestServicePage() {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto min-h-[80vh] flex flex-col justify-center">
-      <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-4xl font-extrabold tracking-tight">Request Service</h1>
-        <span className="text-[var(--accent)] font-bold">Step {step} of 3</span>
+    <div className="p-8 max-w-3xl mx-auto min-h-[80vh] flex flex-col justify-center mesh-gradient dark:mesh-gradient-dark">
+      <div className="mb-12 flex flex-col items-center text-center">
+        <h1 className="text-5xl font-black tracking-tighter mb-4">Request Service</h1>
+        <p className="text-[var(--text-secondary)]">Get matched with a pro in seconds.</p>
       </div>
       
-      <div className="w-full bg-[var(--surface-overlay)] h-2 rounded-full mb-8 overflow-hidden">
+      <div className="w-full bg-[var(--surface-overlay)] h-1.5 rounded-full mb-12 overflow-hidden max-w-md mx-auto">
         <div 
-          className="h-full bg-[var(--accent)] transition-all duration-500 ease-out" 
+          className="h-full bg-[var(--accent)] transition-all duration-700 ease-out shadow-[0_0_10px_var(--accent)]" 
           style={{ width: `${(step / 3) * 100}%` }}
         />
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-[var(--surface-raised)] p-8 rounded-[24px] border border-[var(--border-default)] shadow-2xl relative overflow-hidden">
+      <form onSubmit={handleSubmit} className="glass dark:glass-dark p-12 rounded-[40px] border border-white/10 shadow-2xl relative overflow-hidden">
         
         <div className={`transition-all duration-500 ${step === 1 ? 'opacity-100 translate-x-0' : 'opacity-0 absolute -translate-x-full pointer-events-none'}`}>
           <h2 className="text-2xl font-bold mb-6">What do you need help with?</h2>
