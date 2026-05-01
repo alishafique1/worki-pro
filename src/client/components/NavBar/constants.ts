@@ -5,14 +5,16 @@ import type { NavigationItem } from "./NavBar";
 const staticNavigationItems: NavigationItem[] = [];
 
 export const marketingNavigationItems: NavigationItem[] = [
-  { name: "Services", to: "/#services" },
-  { name: "For Pros", to: "/#providers" },
+  { name: "HVAC", to: "/hvac" },
+  { name: "Handyman", to: "/handyman" },
+  { name: "Appliance Repair", to: "/appliance-repair" },
+  { name: "How it Works", to: "/how-rewards-work" },
+  { name: "For Pros", to: "/providers" },
 ] as const;
 
 export const demoNavigationitems: NavigationItem[] = [
-  { name: "New Request", to: "/request-service" },
-  { name: "My Dashboard", to: "/dashboard" },
-  { name: "My Requests", to: "/dashboard" },
+  { name: "Request Service", to: "/request-service" },
+  { name: "Dashboard", to: "/dashboard" },
   { name: "Provider Portal", to: "/provider/dashboard" },
-  { name: "Admin Dashboard", to: "/admin/requests" },
+  { name: "Admin", to: "/admin" },
 ] as const;

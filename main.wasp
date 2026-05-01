@@ -101,6 +101,31 @@ page LandingPage {
   component: import LandingPage from "@src/landing-page/LandingPage"
 }
 
+route HvacRoute { path: "/hvac", to: HvacLandingPage }
+page HvacLandingPage { component: import HvacLandingPage from "@src/landing-page/HvacLandingPage" }
+
+route HandymanRoute { path: "/handyman", to: HandymanLandingPage }
+page HandymanLandingPage { component: import HandymanLandingPage from "@src/landing-page/HandymanLandingPage" }
+
+route ApplianceRoute { path: "/appliance-repair", to: ApplianceLandingPage }
+page ApplianceLandingPage { component: import ApplianceLandingPage from "@src/landing-page/ApplianceLandingPage" }
+
+route HowRewardsWorkRoute { path: "/how-rewards-work", to: HowRewardsWorkPage }
+page HowRewardsWorkPage { component: import HowRewardsWorkPage from "@src/landing-page/HowRewardsWorkPage" }
+
+route ProviderLandingRoute { path: "/providers", to: ProviderLandingPage }
+page ProviderLandingPage { component: import ProviderLandingPage from "@src/provider/LandingPage" }
+
+route ProviderApplyRoute { path: "/providers/apply", to: ProviderApplyPage }
+page ProviderApplyPage { component: import ProviderApplyPage from "@src/provider/ApplyPage" }
+
+route TermsRoute { path: "/terms", to: TermsPage }
+page TermsPage { component: import TermsPage from "@src/shared/TermsPage" }
+
+route PrivacyRoute { path: "/privacy", to: PrivacyPage }
+page PrivacyPage { component: import PrivacyPage from "@src/shared/PrivacyPage" }
+
+
 //#region Auth Pages
 route LoginRoute { path: "/login", to: LoginPage }
 page LoginPage {

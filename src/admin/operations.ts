@@ -65,14 +65,14 @@ export const approveRewardTransaction: ApproveRewardTransaction<{ transactionId:
     data: {
       status: 'APPROVED',
       approvedAt: new Date(),
-      approvedByAdminId: context.user.id
+      approvedByAdminId: context.user!.id
     }
   });
 
   await context.entities.RewardAccount.upsert({
-    where: { userId: transaction.consumerId },
+    where: { consumerId: transaction.consumerId },
     create: {
-      userId: transaction.consumerId,
+      consumerId: transaction.consumerId,
       pointsBalance: transaction.points,
       lifetimePoints: transaction.points
     },

@@ -195,7 +195,7 @@ export default function ProviderProfilePage() {
               <div className="flex flex-wrap gap-2">
                 {profile.categories.map((c) => (
                   <span
-                    key={c.id}
+                    key={`${c.providerId}-${c.serviceCategoryId}`}
                     className="px-3 py-1 text-sm rounded-[14px] bg-[var(--surface-overlay)] border border-[var(--border-default)]"
                   >
                     {c.serviceCategory.name}

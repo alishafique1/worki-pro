@@ -1,62 +1,58 @@
-interface NavigationItem {
-  name: string;
-  href: string;
-}
+import { Link } from 'react-router';
 
-export default function Footer({
-  footerNavigation,
-}: {
-  footerNavigation: {
-    app: NavigationItem[];
-    company: NavigationItem[];
-  };
-}) {
+export default function Footer() {
   return (
-    <div className="dark:bg-boxdark-2 mx-auto mt-6 max-w-7xl px-6 lg:px-8">
-      <footer
-        aria-labelledby="footer-heading"
-        className="relative border-t border-gray-900/10 py-24 sm:mt-32 dark:border-gray-200/10"
-      >
-        <h2 id="footer-heading" className="sr-only">
-          Footer
-        </h2>
-        <div className="mt-10 flex items-start justify-end gap-20">
-          <div>
-            <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-              App
-            </h3>
-            <ul role="list" className="mt-6 space-y-4">
-              {footerNavigation.app.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-white"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-              Company
-            </h3>
-            <ul role="list" className="mt-6 space-y-4">
-              {footerNavigation.company.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-white"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <footer className="bg-[var(--surface-base)] border-t border-[var(--border-default)] py-16 px-6 mt-20">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="col-span-1 md:col-span-1">
+          <Link to="/" className="text-2xl font-black text-foreground">Worki</Link>
+          <p className="mt-4 text-[var(--text-secondary)] text-sm">
+            Home services, rewarded. The smartest way to take care of your home in the GTA.
+          </p>
         </div>
-      </footer>
-    </div>
+        
+        <div>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Services</h3>
+          <ul className="space-y-4 text-sm">
+            <li><Link to="/hvac" className="hover:text-[var(--accent)] transition-colors">HVAC Services</Link></li>
+            <li><Link to="/handyman" className="hover:text-[var(--accent)] transition-colors">Handyman</Link></li>
+            <li><Link to="/appliance-repair" className="hover:text-[var(--accent)] transition-colors">Appliance Repair</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Marketplace</h3>
+          <ul className="space-y-4 text-sm">
+            <li><Link to="/how-rewards-work" className="hover:text-[var(--accent)] transition-colors">How Rewards Work</Link></li>
+            <li><Link to="/providers" className="hover:text-[var(--accent)] transition-colors">Join as a Pro</Link></li>
+            <li><Link to="/providers/apply" className="hover:text-[var(--accent)] transition-colors">Provider Application</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Popular Searches</h3>
+          <ul className="space-y-2 text-[10px] text-[var(--text-secondary)]">
+            <li>Furnace repair Milton</li>
+            <li>AC installation Oakville</li>
+            <li>Emergency handyman Burlington</li>
+            <li>Appliance repair near me</li>
+            <li>HVAC contractors GTA</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Legal</h3>
+          <ul className="space-y-4 text-sm">
+            <li><Link to="/terms" className="hover:text-[var(--accent)] transition-colors">Terms of Service</Link></li>
+            <li><Link to="/privacy" className="hover:text-[var(--accent)] transition-colors">Privacy Policy</Link></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[var(--border-default)] flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[var(--text-tertiary)]">
+        <p>© 2026 Worki Home Services. All rights reserved.</p>
+        <p>Built for Milton, Oakville, and Burlington homeowners.</p>
+      </div>
+    </footer>
   );
 }
