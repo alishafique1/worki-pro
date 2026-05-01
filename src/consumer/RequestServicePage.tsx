@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { useAction, submitServiceRequest } from 'wasp/client/operations';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 export default function RequestServicePage() {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const initialPostalCode = queryParams.get('postalCode') || '';
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: '', phone: '', postalCode: '', description: '', urgency: 'STANDARD'
+    name: '', phone: '', postalCode: initialPostalCode, description: '', urgency: 'STANDARD'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitRequest = useAction(submitServiceRequest);
-  const navigate = useNavigate();
 
   const handleNext = () => setStep(s => Math.min(3, s + 1));
   const handlePrev = () => setStep(s => Math.max(1, s - 1));

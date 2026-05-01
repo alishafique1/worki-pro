@@ -1,9 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router';
-import heroImg from '../../modern_home_service_hero_1777676793583.png';
-import rewardsImg from '../../rewards_and_points_visual_1777677025069.png';
+import { Link, useNavigate } from 'react-router';
+import heroImg from '../client/static/modern_home_service_hero_1777676793583.png';
+import rewardsImg from '../client/static/rewards_and_points_visual_1777677025069.png';
 
 export default function LandingPage() {
+  const [zip, setZip] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleQuickStart = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Redirect to request page with pre-filled postal code
+    navigate(`/request-service?postalCode=${zip}`);
+  };
+
   return (
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark selection:bg-[var(--accent)] selection:text-black">
       {/* Hero Section */}
@@ -24,6 +33,23 @@ export default function LandingPage() {
             <p className="text-xl text-[var(--text-secondary)] max-w-xl mb-10 leading-relaxed">
               The smartest way to maintain your home. Connect with top-tier HVAC and handyman pros while earning points for every dollar spent.
             </p>
+            
+            <form onSubmit={handleQuickStart} className="max-w-md glass dark:glass-dark p-2 rounded-[28px] border border-white/10 flex items-center gap-2 mb-10 group focus-within:border-[var(--accent)]/50 transition-all">
+              <input 
+                type="text" 
+                placeholder="Enter Postal Code" 
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+                className="flex-1 bg-transparent border-none focus:ring-0 px-6 py-2 text-lg outline-none"
+              />
+              <button 
+                type="submit"
+                className="px-6 py-3 bg-[var(--accent)] text-black font-black rounded-2xl hover:scale-105 transition-transform whitespace-nowrap"
+              >
+                Start Concierge
+              </button>
+            </form>
+
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/request-service"
