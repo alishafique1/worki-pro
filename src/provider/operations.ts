@@ -66,6 +66,25 @@ export const acceptServiceRequest: AcceptServiceRequest<{ requestId: string }, A
     }
   });
 
+  // Award 500 pts ($5) to consumer when appointment is booked
+  if (req.consumerId) {
+    await context.entities.RewardTransaction.create({
+      data: {
+        consumerId: req.consumerId,
+        serviceRequestId: requestId,
+        type: 'BOOKED_APPOINTMENT',
+        points: 500,
+        status: 'PENDING',
+        reason: 'Appointment booked — $5 reward pending',
+      }
+    });
+    await context.entities.RewardAccount.upsert({
+      where: { consumerId: req.consumerId },
+      create: { consumerId: req.consumerId, pointsBalance: 0, lifetimePoints: 0 },
+      update: {},
+    });
+  }
+
   return appointment;
 };
 
@@ -118,7 +137,24 @@ export const markJobCompleted: MarkJobCompleted<{ appointmentId: string }, Appoi
     data: { status: 'COMPLETED', completedAt: new Date() }
   });
 
-  // Future logic: Create pending ProviderFee for completed job here
-  
+  // Award 5,000 pts ($50) to consumer when job is verified complete
+  if (appt.consumerId) {
+    await context.entities.RewardTransaction.create({
+      data: {
+        consumerId: appt.consumerId,
+        serviceRequestId: appt.serviceRequestId,
+        type: 'COMPLETED_SERVICE',
+        points: 5000,
+        status: 'PENDING',
+        reason: 'Job completed — $50 reward pending admin verification',
+      }
+    });
+    await context.entities.RewardAccount.upsert({
+      where: { consumerId: appt.consumerId },
+      create: { consumerId: appt.consumerId, pointsBalance: 0, lifetimePoints: 0 },
+      update: {},
+    });
+  }
+
   return updatedAppt;
 };

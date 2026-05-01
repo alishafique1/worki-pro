@@ -22,7 +22,7 @@ export default function ReferralPage() {
 
       <div className="bg-[var(--surface-raised)] rounded-[16px] border border-[var(--border-default)] p-6 space-y-4">
         <p className="text-[var(--text-secondary)]">
-          Invite friends to Worki — you both earn <span className="text-[var(--accent)] font-semibold">250 reward points</span> when they complete their first service.
+          Invite friends to Worki — you both earn <span className="text-[var(--accent)] font-semibold">500 reward points ($5)</span> when they complete their first service.
         </p>
         <div className="bg-[var(--surface-base)] rounded-[12px] border border-[var(--border-default)] flex items-center justify-between px-4 py-3">
           <code className="text-[var(--accent)] text-lg font-mono tracking-widest">{referralCode}</code>
@@ -41,7 +41,7 @@ export default function ReferralPage() {
           {[
             'Share your unique referral code with friends.',
             'Your friend signs up and completes their first service.',
-            'You both earn 250 reward points automatically.',
+            'You both earn 500 points ($5) automatically.',
           ].map((step, i) => (
             <li key={i} className="flex items-start gap-3">
               <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[var(--accent)] text-black text-sm font-bold flex items-center justify-center">

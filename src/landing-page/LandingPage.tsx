@@ -121,13 +121,13 @@ export default function LandingPage() {
               <span className="text-[var(--accent)]">Spend on Rewards.</span>
             </h2>
             <p className="text-xl text-[var(--text-secondary)] mb-10 leading-relaxed">
-              Every job you book through Worki earns you points. 100 points = $1. Redeem for Amazon gift cards, Starbucks, or discounts on your next service.
+              Every job you book through Worki earns you real cash-back rewards. 100 points = $1 — redeem for gift cards or service credits.
             </p>
             <div className="space-y-6">
               {[
-                '500 points for first HVAC job',
-                '250 points for handyman referrals',
-                'Manual verification for total security'
+                'Submit a request — earn $5 instantly',
+                'Appointment confirmed — earn another $5',
+                'Job completed — earn $50 cash-back'
               ].map((item) => (
                 <div key={item} className="flex items-center gap-4 text-lg font-bold">
                   <div className="w-8 h-8 rounded-xl bg-[var(--accent)] text-black flex items-center justify-center text-xs">✓</div>

@@ -83,17 +83,28 @@ export const redeemPoints: RedeemPoints<{ points: number; giftCardEmail: string 
   return redemption;
 };
 
+// Points constants — single source of truth
+export const POINTS = {
+  SERVICE_REQUEST: 500,   // $5 — awarded when request is submitted
+  APPOINTMENT_BOOKED: 500, // $5 — awarded when appointment is confirmed
+  JOB_COMPLETED: 5000,    // $50 — awarded when job is marked complete
+  REFERRAL: 500,          // $5 — both referrer and referred
+} as const;
+
 export const submitServiceRequest: SubmitServiceRequest<{ 
-  name: string; 
+  name: string;
+  email: string;
   phone: string; 
   postalCode: string; 
   description: string; 
-  urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED' 
+  urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED';
+  serviceType?: string;
 }, ServiceRequest> = async (args, context) => {
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
       consumerId: context.user?.id || undefined,
       name: args.name,
+      email: args.email,
       phone: args.phone,
       postalCode: args.postalCode,
       description: args.description,
@@ -102,6 +113,25 @@ export const submitServiceRequest: SubmitServiceRequest<{
       status: 'NEW',
     }
   });
+
+  // Award 500 pts ($5) for submitting a service request (logged-in users only)
+  if (context.user?.id) {
+    await context.entities.RewardTransaction.create({
+      data: {
+        consumerId: context.user.id,
+        serviceRequestId: newRequest.id,
+        type: 'SERVICE_REQUEST',
+        points: POINTS.SERVICE_REQUEST,
+        status: 'PENDING',
+        reason: 'Request submitted — $5 reward pending verification',
+      }
+    });
+    await context.entities.RewardAccount.upsert({
+      where: { consumerId: context.user.id },
+      create: { consumerId: context.user.id, pointsBalance: 0, lifetimePoints: 0 },
+      update: {},
+    });
+  }
 
   return newRequest;
 };

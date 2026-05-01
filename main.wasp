@@ -3,31 +3,32 @@ app OpenSaaS {
     version: "^0.21.0"
   },
 
-  title: "My Open SaaS App",
+  title: "Worki — Home Services Concierge | HVAC, Handyman & Smart Home Pros in GTA",
 
   head: [
     "<link rel='icon' href='/favicon.ico' />",
+    "<link rel='preconnect' href='https://fonts.googleapis.com' />",
+    "<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />",
+    "<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' rel='stylesheet' />",
 
-    "<meta name='description' content='Your apps main description and features.' />",
-    "<meta name='author' content='Your (App) Name' />",
-    "<meta name='keywords' content='saas, solution, product, app, service' />",
+    "<meta name='description' content='Worki is Milton, Oakville & Burlington\'s #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.' />",
+    "<meta name='author' content='Worki Home Services' />",
+    "<meta name='keywords' content='home services Milton, HVAC repair Oakville, handyman Burlington, smart home installation GTA, appliance repair Milton, plumber Oakville, electrician Burlington, home maintenance concierge' />",
+    "<meta name='robots' content='index, follow' />",
+    "<link rel='canonical' href='https://worki.ca/' />",
 
     "<meta property='og:type' content='website' />",
-    "<meta property='og:title' content='Your Open SaaS App' />",
-    "<meta property='og:site_name' content='Your Open SaaS App' />",
-    "<meta property='og:url' content='https://your-saas-app.com' />",
-    "<meta property='og:description' content='Your apps main description and features.' />",
-    "<meta property='og:image' content='https://your-saas-app.com/public-banner.webp' />",
-    "<meta name='twitter:image' content='https://your-saas-app.com/public-banner.webp' />",
-    "<meta name='twitter:image:width' content='800' />",
-    "<meta name='twitter:image:height' content='400' />",
+    "<meta property='og:title' content='Worki — Home Services Concierge | GTA\'s Top Rated Pros' />",
+    "<meta property='og:site_name' content='Worki' />",
+    "<meta property='og:url' content='https://worki.ca/' />",
+    "<meta property='og:description' content='Stop searching. Describe your problem once and we match you with a vetted, insured local pro. Earn rewards on every job booked.' />",
+    "<meta property='og:image' content='https://worki.ca/og-banner.webp' />",
     "<meta name='twitter:card' content='summary_large_image' />",
-    // TODO: You can put your Plausible analytics scripts below (https://docs.opensaas.sh/guides/analytics/):
-    // NOTE: Plausible does not use Cookies, so you can simply add the scripts here.
-    // Google, on the other hand, does, so you must instead add the script dynamically
-    // via the Cookie Consent component after the user clicks the "Accept" cookies button.
-    "<script defer data-domain='<your-site-id>' src='https://plausible.io/js/script.js'></script>",  // for production
-    "<script defer data-domain='<your-site-id>' src='https://plausible.io/js/script.local.js'></script>",  // for development
+    "<meta name='twitter:title' content='Worki — Home Services Concierge' />",
+    "<meta name='twitter:description' content='GTA\'s #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.' />",
+    "<meta name='twitter:image' content='https://worki.ca/og-banner.webp' />",
+
+    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"Worki Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, handyman, plumbing, electrical, and smart home professionals.\",\"url\":\"https://worki.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Handyman\",\"Plumbing\",\"Electrical\",\"Smart Home Installation\",\"Appliance Repair\"]}</script>",
   ],
 
   // 🔐 Auth out of the box! https://wasp.sh/docs/auth/overview
@@ -113,6 +114,15 @@ page HandymanLandingPage { component: import HandymanLandingPage from "@src/land
 route ApplianceRoute { path: "/appliance-repair", to: ApplianceLandingPage }
 page ApplianceLandingPage { component: import ApplianceLandingPage from "@src/landing-page/ApplianceLandingPage" }
 
+route SmartHomeRoute { path: "/smart-home", to: SmartHomeLandingPage }
+page SmartHomeLandingPage { component: import SmartHomeLandingPage from "@src/landing-page/SmartHomeLandingPage" }
+
+route PlumbingRoute { path: "/plumbing", to: PlumbingLandingPage }
+page PlumbingLandingPage { component: import PlumbingLandingPage from "@src/landing-page/PlumbingLandingPage" }
+
+route ElectricalRoute { path: "/electrical", to: ElectricalLandingPage }
+page ElectricalLandingPage { component: import ElectricalLandingPage from "@src/landing-page/ElectricalLandingPage" }
+
 route HowRewardsWorkRoute { path: "/how-rewards-work", to: HowRewardsWorkPage }
 page HowRewardsWorkPage { component: import HowRewardsWorkPage from "@src/landing-page/HowRewardsWorkPage" }
 
@@ -158,7 +168,7 @@ page EmailVerificationPage {
 
 //#region Consumer
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
-page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage", authRequired: true }
+page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage" }
 
 route DashboardRoute        { path: "/dashboard",           to: DashboardPage }
 page DashboardPage          { component: import DashboardPage from "@src/consumer/DashboardPage", authRequired: true }

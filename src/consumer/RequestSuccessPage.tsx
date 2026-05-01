@@ -13,10 +13,14 @@ export default function RequestSuccessPage() {
         </p>
 
         <div className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 p-6 rounded-3xl mb-10 text-left">
-          <h3 className="font-bold text-[var(--accent)] mb-2">Claim your rewards!</h3>
-          <p className="text-sm text-[var(--text-secondary)]">
-            Create an account now to track this request and earn <strong>500 points</strong> towards your first reward.
-          </p>
+          <h3 className="font-bold text-[var(--accent)] mb-3">You’re already earning rewards!</h3>
+          <div className="space-y-2 text-sm text-[var(--text-secondary)]">
+            <div className="flex justify-between"><span>Request submitted</span><span className="font-bold text-foreground">+$5 (500 pts)</span></div>
+            <div className="flex justify-between"><span>Appointment booked</span><span className="font-bold text-foreground">+$5 (500 pts)</span></div>
+            <div className="flex justify-between"><span>Job completed</span><span className="font-bold text-foreground">+$50 (5,000 pts)</span></div>
+            <div className="border-t border-[var(--border-default)] pt-2 flex justify-between font-black text-foreground"><span>Total possible</span><span className="text-[var(--accent)]">$60 back</span></div>
+          </div>
+          <p className="text-xs text-[var(--text-secondary)] mt-3">Create a free account to track your rewards and keep them when you redeem.</p>
         </div>
 
         <div className="flex flex-col gap-4">
