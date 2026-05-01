@@ -90,13 +90,9 @@ export const submitServiceRequest: SubmitServiceRequest<{
   description: string; 
   urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED' 
 }, ServiceRequest> = async (args, context) => {
-  if (!context.user) {
-    throw new HttpError(401);
-  }
-
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
-      consumerId: context.user.id,
+      consumerId: context.user?.id || undefined,
       name: args.name,
       phone: args.phone,
       postalCode: args.postalCode,
@@ -107,7 +103,5 @@ export const submitServiceRequest: SubmitServiceRequest<{
     }
   });
 
-  // Optionally trigger SMS sequence job here in the future
-  
   return newRequest;
 };

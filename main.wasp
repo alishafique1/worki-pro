@@ -101,6 +101,9 @@ page LandingPage {
   component: import LandingPage from "@src/landing-page/LandingPage"
 }
 
+route RequestSuccessRoute { path: "/request-success", to: RequestSuccessPage }
+page RequestSuccessPage { component: import RequestSuccessPage from "@src/consumer/RequestSuccessPage" }
+
 route HvacRoute { path: "/hvac", to: HvacLandingPage }
 page HvacLandingPage { component: import HvacLandingPage from "@src/landing-page/HvacLandingPage" }
 
