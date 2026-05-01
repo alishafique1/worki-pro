@@ -1,0 +1,531 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                        String          @id @default(uuid())
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @default(now()) @updatedAt
+
+  email                     String?         @unique
+  username                  String?         @unique
+  isAdmin                   Boolean         @default(false)
+
+  // -- Worki specific fields --
+  firstName                 String?
+  lastName                  String?
+  phone                     String?
+  postalCode                String?
+  role                      Role            @default(CONSUMER)
+  status                    UserStatus      @default(ACTIVE)
+  smsConsent                Boolean         @default(false)
+  smsConsentAt              DateTime?
+  emailConsent              Boolean         @default(false)
+
+  paymentProcessorUserId    String?         @unique
+  lemonSqueezyCustomerPortalUrl String?
+  subscriptionStatus        String?
+  subscriptionPlan          String?
+  datePaid                  DateTime?
+  credits                   Int             @default(3)
+
+  // SaaS Relations
+  gptResponses              GptResponse[]
+  contactFormMessages       ContactFormMessage[]
+  tasks                     Task[]
+  files                     File[]
+
+  // Worki Relations
+  provider          Provider?
+  serviceRequests   ServiceRequest[]  @relation("ConsumerRequests")
+  rewardAccount     RewardAccount?
+  rewardTransactions RewardTransaction[]
+  redemptions       Redemption[]
+  referralsGiven    Referral[]        @relation("ReferrerUser")
+  referralReceived  Referral?         @relation("ReferredUser")
+  communicationLogs CommunicationLog[]
+}
+
+enum Role {
+  CONSUMER
+  PROVIDER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+// ─── SaaS Built-ins ─────────────────────────────────────────────────────────
+
+model GptResponse {
+  id                        String          @id @default(uuid())
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  user                      User            @relation(fields: [userId], references: [id])
+  userId                    String
+
+  content                   String
+}
+
+model Task {
+  id                        String          @id @default(uuid())
+  createdAt                 DateTime        @default(now())
+
+  user                      User            @relation(fields: [userId], references: [id])
+  userId                    String
+
+  description               String
+  time                      String          @default("1")
+  isDone                    Boolean         @default(false)
+}
+
+model File {
+  id                        String          @id @default(uuid())
+  createdAt                 DateTime        @default(now())
+
+  user                      User            @relation(fields: [userId], references: [id])
+  userId                    String
+
+  name                      String
+  type                      String
+  s3Key                     String
+}
+
+model DailyStats {
+  id                               Int             @id @default(autoincrement())
+  date                             DateTime        @default(now()) @unique
+
+  totalViews                       Int             @default(0)
+  prevDayViewsChangePercent        String          @default("0")
+  userCount                        Int             @default(0)
+  paidUserCount                    Int             @default(0)
+  userDelta                        Int             @default(0)
+  paidUserDelta                    Int             @default(0)
+  totalRevenue                     Float           @default(0)
+  totalProfit                      Float           @default(0)
+
+  sources                          PageViewSource[]
+}
+
+model PageViewSource {
+  @@id([date, name])
+  name                     String
+  date                     DateTime        @default(now())
+
+  dailyStats               DailyStats?     @relation(fields: [dailyStatsId], references: [id])
+  dailyStatsId             Int?
+
+  visitors                 Int
+}
+
+model Logs {
+  id                       Int             @id @default(autoincrement())
+  createdAt                DateTime        @default(now())
+
+  message                  String
+  level                    String
+}
+
+model ContactFormMessage {
+  id                        String          @id @default(uuid())
+  createdAt                 DateTime        @default(now())
+
+  user                      User            @relation(fields: [userId], references: [id])
+  userId                    String
+
+  content                   String
+  isRead                    Boolean         @default(false)
+  repliedAt                 DateTime?
+}
+
+// ─── Worki Service Category ─────────────────────────────────────────────────
+
+model ServiceCategory {
+  id               String            @id @default(cuid())
+  name             String
+  slug             String            @unique
+  description      String?
+  active           Boolean           @default(true)
+  parentCategoryId String?
+  parent           ServiceCategory?  @relation("SubCategories", fields: [parentCategoryId], references: [id])
+  children         ServiceCategory[] @relation("SubCategories")
+  serviceRequests  ServiceRequest[]
+  providers        ProviderCategory[]
+  createdAt        DateTime          @default(now())
+}
+
+// ─── Worki Provider ─────────────────────────────────────────────────────────
+
+model Provider {
+  id                  String           @id @default(cuid())
+  userId              String           @unique
+  user                User             @relation(fields: [userId], references: [id])
+
+  businessName        String
+  contactName         String?
+  phone               String
+  email               String?
+  website             String?
+  licenceNumber       String?
+  licenceUrl          String?
+  insuranceUrl        String?
+  insuranceStatus     Boolean          @default(false)
+  serviceAreas        String[]         
+  ratingInternal      Float?
+  active              Boolean          @default(true)
+  verificationStatus  ProviderStatus   @default(PENDING)
+
+  plan                ProviderPlan     @default(STARTER)
+  stripeCustomerId    String?
+  stripeSubId         String?
+  subscriptionStatus  SubStatus        @default(INACTIVE)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  categories         ProviderCategory[]
+  serviceRequests    ServiceRequest[]
+  appointments       Appointment[]
+  fees               ProviderFee[]
+  communicationLogs  CommunicationLog[]
+}
+
+model ProviderCategory {
+  providerId         String
+  serviceCategoryId  String
+  provider           Provider        @relation(fields: [providerId], references: [id])
+  serviceCategory    ServiceCategory @relation(fields: [serviceCategoryId], references: [id])
+
+  @@id([providerId, serviceCategoryId])
+}
+
+enum ProviderStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+enum ProviderPlan {
+  STARTER
+  GROWTH
+  EXCLUSIVE
+}
+
+enum SubStatus {
+  ACTIVE
+  INACTIVE
+  PAST_DUE
+}
+
+// ─── Worki Service Request (Lead) ──────────────────────────────────────────
+
+model ServiceRequest {
+  id                  String          @id @default(cuid())
+  source              RequestSource   @default(WEBSITE)
+
+  consumerId          String?
+  consumer            User?           @relation("ConsumerRequests", fields: [consumerId], references: [id])
+  name                String
+  phone               String
+  postalCode          String
+  city                String?
+  email               String?
+  smsConsentGiven     Boolean         @default(false)
+  smsConsentIp        String?
+
+  serviceCategoryId   String?
+  serviceCategory     ServiceCategory? @relation(fields: [serviceCategoryId], references: [id])
+  description         String
+  urgency             Urgency         @default(STANDARD)
+  propertyType        String?         
+  ownOrRent           String?         
+  preferredTime       String?
+
+  twilioCallSid       String?         @unique
+  callRecordingUrl    String?
+  callerLocation      String?
+
+  status              RequestStatus   @default(NEW)
+  rewardEligible      Boolean         @default(true)
+  rewardStatus        RewardStatus?
+
+  assignedProviderId  String?
+  assignedProvider    Provider?       @relation(fields: [assignedProviderId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  bookedAt      DateTime?
+  completedAt   DateTime?
+
+  appointments       Appointment[]
+  rewardTransactions RewardTransaction[]
+  communicationLogs  CommunicationLog[]
+  notes              RequestNote[]
+  fees               ProviderFee[]
+}
+
+enum RequestSource {
+  WEBSITE
+  PHONE
+  SMS
+  ADMIN
+  REFERRAL
+}
+
+enum Urgency {
+  EMERGENCY
+  STANDARD
+  PLANNED
+}
+
+enum RequestStatus {
+  NEW
+  SMS_STARTED
+  QUALIFYING
+  QUALIFIED
+  ASSIGNED
+  ACCEPTED_BY_PROVIDER
+  BOOKED
+  COMPLETED
+  REWARD_PENDING
+  REWARD_APPROVED
+  CLOSED
+  LOST
+  INVALID
+  SPAM
+}
+
+// ─── Worki Appointment ──────────────────────────────────────────────────────
+
+model Appointment {
+  id                   String            @id @default(cuid())
+  serviceRequestId     String
+  serviceRequest       ServiceRequest    @relation(fields: [serviceRequestId], references: [id])
+  providerId           String
+  provider             Provider          @relation(fields: [providerId], references: [id])
+  consumerId           String?
+  scheduledAt          DateTime?
+  status               AppointmentStatus @default(PROPOSED)
+  providerNotes        String?
+  consumerNotes        String?
+  completionProofUrl   String?
+  completedAt          DateTime?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  fees  ProviderFee[]
+}
+
+enum AppointmentStatus {
+  PROPOSED
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// ─── Worki Reward Account (points wallet) ──────────────────────────────────
+
+model RewardAccount {
+  id             String        @id @default(cuid())
+  consumerId     String        @unique
+  consumer       User          @relation(fields: [consumerId], references: [id])
+  pointsBalance  Int           @default(0)
+  lifetimePoints Int           @default(0)
+  level          RewardLevel   @default(NEW_HOMEOWNER)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+enum RewardLevel {
+  NEW_HOMEOWNER
+  ACTIVE_HOMEOWNER
+  SMART_MAINTAINER
+  HOME_REWARDS_PRO
+}
+
+// ─── Worki Reward Transaction (points ledger) ──────────────────────────────
+
+model RewardTransaction {
+  id                  String              @id @default(cuid())
+  consumerId          String
+  consumer            User                @relation(fields: [consumerId], references: [id])
+  serviceRequestId    String?
+  serviceRequest      ServiceRequest?     @relation(fields: [serviceRequestId], references: [id])
+  type                TransactionType
+  points              Int
+  status              TransactionStatus   @default(PENDING)
+  reason              String?
+  approvedByAdminId   String?
+  createdAt           DateTime            @default(now())
+  approvedAt          DateTime?
+  expiresAt           DateTime?
+}
+
+enum TransactionType {
+  SIGNUP_BONUS
+  PROFILE_COMPLETION
+  SERVICE_REQUEST
+  BOOKED_APPOINTMENT
+  COMPLETED_SERVICE
+  REFERRAL
+  MANUAL_ADJUSTMENT
+  REDEMPTION
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REDEEMED
+  EXPIRED
+}
+
+// ─── Worki Redemption ──────────────────────────────────────────────────────
+
+model Redemption {
+  id                  String           @id @default(cuid())
+  consumerId          String
+  consumer            User             @relation(fields: [consumerId], references: [id])
+  pointsUsed          Int
+  cashValue           Decimal          @db.Decimal(10, 2)
+  giftCardProvider    String?          
+  giftCardEmail       String?
+  tremendousOrderId   String?
+  tremendousRewardId  String?
+  status              RedemptionStatus @default(REQUESTED)
+  issuedAt            DateTime?
+  createdAt           DateTime         @default(now())
+}
+
+enum RedemptionStatus {
+  REQUESTED
+  APPROVED
+  SENT
+  FAILED
+  CANCELLED
+}
+
+// ─── Worki Referral ────────────────────────────────────────────────────────
+
+model Referral {
+  id                   String         @id @default(cuid())
+  referrerUserId       String
+  referrer             User           @relation("ReferrerUser", fields: [referrerUserId], references: [id])
+  referredUserId       String?        @unique
+  referred             User?          @relation("ReferredUser", fields: [referredUserId], references: [id])
+  referralCode         String         @unique
+  status               ReferralStatus @default(CREATED)
+  createdAt            DateTime       @default(now())
+  completedAt          DateTime?
+  rewardTransactionId  String?
+}
+
+enum ReferralStatus {
+  CREATED
+  SIGNED_UP
+  SERVICE_COMPLETED
+  REWARDED
+  CANCELLED
+}
+
+// ─── Worki Communication Log ───────────────────────────────────────────────
+
+model CommunicationLog {
+  id                String       @id @default(cuid())
+  userId            String?
+  user              User?        @relation(fields: [userId], references: [id])
+  serviceRequestId  String?
+  serviceRequest    ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+  providerId        String?
+  provider          Provider?    @relation(fields: [providerId], references: [id])
+
+  channel           Channel
+  direction         Direction
+  from              String
+  to                String
+  body              String?
+  providerMessageId String?      
+  status            String?      
+  duration          Int?         
+  recordingUrl      String?
+  digits            String?      
+  rawPayload        Json?        
+
+  createdAt DateTime @default(now())
+}
+
+enum Channel {
+  SMS
+  EMAIL
+  PHONE
+  INTERNAL_NOTE
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
+
+// ─── Worki Provider Fee ────────────────────────────────────────────────────
+
+model ProviderFee {
+  id                String      @id @default(cuid())
+  providerId        String
+  provider          Provider    @relation(fields: [providerId], references: [id])
+  serviceRequestId  String?
+  serviceRequest    ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+  appointmentId     String?
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  feeType           FeeType
+  amount            Decimal     @db.Decimal(10, 2)
+  status            FeeStatus   @default(PENDING)
+  invoiceId         String?
+  createdAt         DateTime    @default(now())
+  paidAt            DateTime?
+}
+
+enum FeeType {
+  MONTHLY_SUBSCRIPTION
+  QUALIFIED_LEAD
+  BOOKED_APPOINTMENT
+  COMPLETED_JOB
+  SUCCESS_FEE
+}
+
+enum FeeStatus {
+  PENDING
+  INVOICED
+  PAID
+  WAIVED
+  DISPUTED
+}
+
+// ─── Worki Request Notes ───────────────────────────────────────────────────
+
+model RequestNote {
+  id               String         @id @default(cuid())
+  serviceRequestId String
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+  authorId         String
+  body             String
+  createdAt        DateTime       @default(now())
+}
+
+enum RewardStatus {
+  PENDING_VERIFICATION
+  APPROVED
+  REJECTED
+  ISSUED
+}

@@ -1,0 +1,54 @@
+---
+description: Describes where the ui components built on top with Shadcn UI exist, how they are customized, and Wasp specific rules concerning how new ShadCN UI components should be installed
+alwaysApply: false
+---
+This project uses Tailwindcss v4 with a custom Dribbble-inspired UI aesthetic.
+
+ShadCN components have been setup with this project template. All ShadCN specific components exist in [src/client/components/ui](../../src/client/components/ui/)
+
+### Dribbble UI Constraints
+
+When adding or modifying components, strictly adhere to our UI constraints:
+- **Colors**: `--surface-base` (`#000000`) for pages, `--surface-raised` (`#FEFEFD`) for cards, `--accent` (`#F2B5D7`) for primary actions. 
+- **Typography**: `Inter` font only. Headings `42px/700`, Body `14px/300`.
+- **Spacing**: Strictly 4px grid.
+- **Border Radius**: 14px for general elements, 22px+ for pill buttons.
+
+## Adding a new ShadCN component
+
+We will use button as an example.
+Same rules apply to any ShadCN component.
+
+### 1. Add a new component 
+
+```bash
+npx shadcn@latest add button
+```
+
+This will generate a button component in `src/client/components/ui/button.tsx`.
+
+### 2. Adjust the `utils` import in `button.tsx` 
+
+```diff
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+-import { cn } from "src/lib/utils"
++import { cn } from "../../utils"
+```
+
+### 3. Use the `Button` React component
+
+Now you are ready to use the `Button` component. That's it!
+```tsx
+import { Button } from './components/ui/button'
+
+function SomePage() {
+  return (
+    <div>
+      <Button>This works</Button>
+    </div>
+  )
+}
+```
