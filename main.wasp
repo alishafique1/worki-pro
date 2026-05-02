@@ -187,6 +187,9 @@ page RewardsPage            { component: import RewardsPage from "@src/consumer/
 route ReferralRoute         { path: "/referral",            to: ReferralPage }
 page ReferralPage           { component: import ReferralPage from "@src/consumer/ReferralPage", authRequired: true }
 
+route DiscoveryRoute        { path: "/discover",            to: DiscoveryPage }
+page DiscoveryPage          { component: import DiscoveryPage from "@src/consumer/DiscoveryPage" }
+
 query getMyRequests {
   fn: import { getMyRequests } from "@src/consumer/operations",
   entities: [ServiceRequest]
@@ -210,6 +213,11 @@ action submitServiceRequest {
 query getServiceCategories {
   fn: import { getServiceCategories } from "@src/consumer/operations",
   entities: [ServiceCategory]
+}
+
+query getProviders {
+  fn: import { getProviders } from "@src/consumer/operations",
+  entities: [Provider, ProviderCategory, ServiceCategory]
 }
 //#endregion
 

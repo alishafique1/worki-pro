@@ -1,5 +1,5 @@
-import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory } from 'wasp/entities';
-import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories } from 'wasp/server/operations';
+import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory, Provider, ProviderCategory } from 'wasp/entities';
+import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories, GetProviders } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 
 export const getServiceCategories: GetServiceCategories<void, ServiceCategory[]> = async (args, context) => {
@@ -148,4 +148,42 @@ export const submitServiceRequest: SubmitServiceRequest<{
   }
 
   return newRequest;
+};
+
+type ProviderWithCategories = Provider & {
+  categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
+};
+
+export const getProviders: GetProviders<{ categorySlug?: string; search?: string }, ProviderWithCategories[]> = async ({ categorySlug, search }, context) => {
+  const where: Record<string, any> = {
+    active: true,
+    verificationStatus: 'VERIFIED',
+  };
+
+  if (categorySlug) {
+    where.categories = {
+      some: {
+        serviceCategory: { slug: categorySlug },
+      },
+    };
+  }
+
+  let providers = await context.entities.Provider.findMany({
+    where,
+    include: {
+      categories: { include: { serviceCategory: true } },
+    },
+    orderBy: { ratingInternal: 'desc' },
+  });
+
+  if (search) {
+    const q = search.toLowerCase();
+    providers = providers.filter(
+      (p) =>
+        p.businessName.toLowerCase().includes(q) ||
+        p.categories.some((c) => c.serviceCategory.name.toLowerCase().includes(q))
+    );
+  }
+
+  return providers;
 };
