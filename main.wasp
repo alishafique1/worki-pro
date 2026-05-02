@@ -69,7 +69,7 @@ app OpenSaaS {
       // }
     },
     onAuthFailedRedirectTo: "/login",
-    onAuthSucceededRedirectTo: "/dashboard",
+    onAuthSucceededRedirectTo: "/auth-callback",
   },
 
   db: {
@@ -163,6 +163,11 @@ page PasswordResetPage {
 route EmailVerificationRoute { path: "/email-verification", to: EmailVerificationPage }
 page EmailVerificationPage {
   component: import { EmailVerificationPage } from "@src/auth/email-and-pass/EmailVerificationPage",
+}
+
+route AuthCallbackRoute { path: "/auth-callback", to: AuthCallbackPage }
+page AuthCallbackPage {
+  component: import AuthCallback from "@src/auth/AuthCallback"
 }
 //#endregion
 

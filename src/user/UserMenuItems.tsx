@@ -11,11 +11,15 @@ export const UserMenuItems = ({
   user?: Partial<User>;
   onItemClick?: () => void;
 }) => {
+  const userRole = user?.role;
+
   return (
     <>
       {userMenuItems.map((item) => {
         if (item.isAuthRequired && !user) return null;
         if (item.isAdminOnly && (!user || !user.isAdmin)) return null;
+        if ('isProviderOnly' in item && item.isProviderOnly && userRole !== 'PROVIDER') return null;
+        if ('isConsumerOnly' in item && item.isConsumerOnly && userRole !== 'CONSUMER') return null;
 
         return (
           <li key={item.name}>

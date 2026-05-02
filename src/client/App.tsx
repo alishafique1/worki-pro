@@ -7,8 +7,11 @@ import NavBar from "./components/NavBar/NavBar";
 import {
   demoNavigationitems,
   marketingNavigationItems,
+  consumerNavigationItems,
+  providerNavigationItems,
 } from "./components/NavBar/constants";
 import CookieConsentBanner from "./components/cookie-consent/Banner";
+import { useAuth } from "wasp/client/auth";
 
 /**
  * use this component to wrap all child components
@@ -16,15 +19,13 @@ import CookieConsentBanner from "./components/cookie-consent/Banner";
  */
 export default function App() {
   const location = useLocation();
+  const { data: user } = useAuth();
+
   const isMarketingPage = useMemo(() => {
     return (
       location.pathname === "/" || location.pathname.startsWith("/pricing")
     );
   }, [location]);
-
-  const navigationItems = isMarketingPage
-    ? marketingNavigationItems
-    : demoNavigationitems;
 
   const shouldDisplayAppNavBar = useMemo(() => {
     return (
@@ -36,6 +37,13 @@ export default function App() {
   const isAdminDashboard = useMemo(() => {
     return location.pathname.startsWith("/admin");
   }, [location]);
+
+  const navigationItems = useMemo(() => {
+    if (isMarketingPage) return marketingNavigationItems;
+    if (!user) return demoNavigationitems;
+    if (user.role === "PROVIDER") return providerNavigationItems;
+    return consumerNavigationItems;
+  }, [isMarketingPage, user]);
 
   useEffect(() => {
     if (location.hash) {

@@ -18,3 +18,17 @@ export const demoNavigationitems: NavigationItem[] = [
   { name: "Provider Portal", to: "/provider/dashboard" },
   { name: "Admin", to: "/admin" },
 ] as const;
+
+export const consumerNavigationItems: NavigationItem[] = [
+  { name: "Request Service", to: "/request-service" },
+  { name: "My Requests", to: "/my-requests" },
+  { name: "Rewards", to: "/rewards" },
+  { name: "Referrals", to: "/referral" },
+] as const;
+
+export const providerNavigationItems: NavigationItem[] = [
+  { name: "Dashboard", to: "/provider/dashboard" },
+  { name: "Leads", to: "/provider/leads" },
+  { name: "Appointments", to: "/provider/appointments" },
+  { name: "Profile", to: "/provider/profile" },
+] as const;

@@ -5,6 +5,7 @@ const adminEmails = process.env.ADMIN_EMAILS?.split(",") || [];
 
 const emailDataSchema = z.object({
   email: z.string(),
+  role: z.enum(["CONSUMER", "PROVIDER"]).optional().default("CONSUMER"),
 });
 
 export const getEmailUserFields = defineUserSignupFields({
@@ -19,6 +20,10 @@ export const getEmailUserFields = defineUserSignupFields({
   isAdmin: (data) => {
     const emailData = emailDataSchema.parse(data);
     return adminEmails.includes(emailData.email);
+  },
+  role: (data) => {
+    const emailData = emailDataSchema.parse(data);
+    return emailData.role ?? "CONSUMER";
   },
 });
 
