@@ -2,6 +2,40 @@ import { faker } from "@faker-js/faker";
 import type { PrismaClient } from "@prisma/client";
 import { type User } from "wasp/entities";
 
+// ─── Default Service Categories ────────────────────────────────────────────
+export const DEFAULT_VENDOR_CATEGORIES = [
+  { name: "HVAC", slug: "hvac", description: "Heating, ventilation, and air conditioning" },
+  { name: "Plumbing", slug: "plumbing", description: "Pipes, drains, water heaters, and fixtures" },
+  { name: "Electrical", slug: "electrical", description: "Wiring, panels, outlets, and lighting" },
+  { name: "Handyman", slug: "handyman", description: "General repairs and maintenance" },
+  { name: "Appliance Repair", slug: "appliance-repair", description: "Major home appliances" },
+  { name: "Smart Home", slug: "smart-home", description: "Smart thermostats, cameras, and automation" },
+  { name: "Cleaning", slug: "cleaning", description: "House cleaning and maid services" },
+  { name: "Painting", slug: "painting", description: "Interior and exterior painting" },
+  { name: "Flooring", slug: "flooring", description: "Hardwood, tile, laminate, and carpet" },
+  { name: "Roofing", slug: "roofing", description: "Roof repair and replacement" },
+  { name: "Landscaping", slug: "landscaping", description: "Lawn care, gardens, and outdoor spaces" },
+  { name: "Pest Control", slug: "pest-control", description: "Rodent and insect removal" },
+  { name: "Locksmith", slug: "locksmith", description: "Lock installation and emergency entry" },
+];
+
+export async function seedVendorCategories(prisma: PrismaClient) {
+  console.log("Seeding vendor service categories...");
+  for (const cat of DEFAULT_VENDOR_CATEGORIES) {
+    await prisma.serviceCategory.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: {
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description,
+        active: true,
+      },
+    });
+  }
+  console.log(`Seeded ${DEFAULT_VENDOR_CATEGORIES.length} vendor categories.`);
+}
+
 export async function seedMockUsers(prisma: PrismaClient) {
   console.log("Seeding Worki Sample Data...");
 

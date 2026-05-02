@@ -1,6 +1,13 @@
-import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption } from 'wasp/entities';
-import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints } from 'wasp/server/operations';
+import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory } from 'wasp/entities';
+import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
+
+export const getServiceCategories: GetServiceCategories<void, ServiceCategory[]> = async (args, context) => {
+  return context.entities.ServiceCategory.findMany({
+    where: { active: true },
+    orderBy: { name: 'asc' },
+  });
+};
 
 export const getMyRequests: GetMyRequests<void, ServiceRequest[]> = async (args, context) => {
   if (!context.user) {
@@ -91,15 +98,21 @@ export const POINTS = {
   REFERRAL: 500,          // $5 — both referrer and referred
 } as const;
 
-export const submitServiceRequest: SubmitServiceRequest<{ 
+export const submitServiceRequest: SubmitServiceRequest<{
   name: string;
   email: string;
-  phone: string; 
-  postalCode: string; 
-  description: string; 
+  phone: string;
+  postalCode: string;
+  description: string;
   urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED';
   serviceType?: string;
 }, ServiceRequest> = async (args, context) => {
+  let serviceCategoryId = undefined;
+  if (args.serviceType) {
+    const cat = await context.entities.ServiceCategory.findUnique({ where: { slug: args.serviceType } });
+    serviceCategoryId = cat?.id;
+  }
+
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
       consumerId: context.user?.id || undefined,
@@ -111,6 +124,7 @@ export const submitServiceRequest: SubmitServiceRequest<{
       urgency: args.urgency,
       source: 'WEBSITE',
       status: 'NEW',
+      serviceCategoryId: serviceCategoryId || undefined,
     }
   });
 

@@ -75,7 +75,7 @@ app OpenSaaS {
   db: {
     // Run `wasp db seed` to seed the database with the seed functions below:
     seeds: [
-      // Populates the database with a bunch of fake users to work with during development.
+      import { seedVendorCategories } from "@src/server/scripts/dbSeeds",
       import { seedMockUsers } from "@src/server/scripts/dbSeeds",
     ]
   },
@@ -204,7 +204,12 @@ action redeemPoints {
 
 action submitServiceRequest {
   fn: import { submitServiceRequest } from "@src/consumer/operations",
-  entities: [ServiceRequest, RewardTransaction, RewardAccount]
+  entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount]
+}
+
+query getServiceCategories {
+  fn: import { getServiceCategories } from "@src/consumer/operations",
+  entities: [ServiceCategory]
 }
 //#endregion
 

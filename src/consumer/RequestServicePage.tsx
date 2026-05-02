@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAction, submitServiceRequest } from 'wasp/client/operations';
+import { useAction, useQuery, submitServiceRequest } from 'wasp/client/operations';
+import { getServiceCategories } from 'wasp/client/operations';
 import { useNavigate, useLocation } from 'react-router';
 
 export default function RequestServicePage() {
@@ -8,9 +9,11 @@ export default function RequestServicePage() {
   const queryParams = new URLSearchParams(search);
   const initialPostalCode = queryParams.get('postalCode') || '';
 
+  const categories = useQuery(getServiceCategories);
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: '', phone: '', postalCode: initialPostalCode, description: '', urgency: 'STANDARD'
+    name: '', phone: '', postalCode: initialPostalCode, description: '', urgency: 'STANDARD', serviceType: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitRequest = useAction(submitServiceRequest);
@@ -61,9 +64,22 @@ export default function RequestServicePage() {
                 value={formData.description}
                 onChange={e => setFormData({ ...formData, description: e.target.value })}
               />
-              
+
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2">Urgency</label>
+                <label className="block text-sm text-[var(--text-secondary)] mb-2">Service Category</label>
+                <select
+                  className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors appearance-none cursor-pointer"
+                  value={formData.serviceType}
+                  onChange={e => setFormData({ ...formData, serviceType: e.target.value })}
+                >
+                  <option value="">Select a category...</option>
+                  {categories.data?.map((cat: any) => (
+                    <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <div className="flex gap-4">
                   {['STANDARD', 'EMERGENCY', 'PLANNED'].map((urgency) => (
                     <button
