@@ -201,3 +201,23 @@ export const markJobCompleted: MarkJobCompleted<{ appointmentId: string }, Appoi
 
   return updatedAppt;
 };
+
+type ServiceListing = {
+  id: string;
+  name: string;
+  description: string;
+  price: number | null;
+  categorySlug: string;
+};
+
+type UpdateProviderServicesInput = {
+  services: ServiceListing[];
+};
+
+export const updateProviderServices: UpdateProviderServices<UpdateProviderServicesInput, Provider> = async ({ services }, context) => {
+  const provider = await requireProvider(context);
+  return context.entities.Provider.update({
+    where: { id: provider.id },
+    data: { servicesJson: JSON.stringify(services) }
+  });
+};

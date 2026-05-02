@@ -179,8 +179,9 @@ model Provider {
   licenceUrl          String?
   insuranceUrl        String?
   insuranceStatus     Boolean          @default(false)
-  serviceAreas        String[]         
+  serviceAreas        String[]
   ratingInternal      Float?
+  servicesJson        String?          @default("[]")
   active              Boolean          @default(true)
   verificationStatus  ProviderStatus   @default(PENDING)
 

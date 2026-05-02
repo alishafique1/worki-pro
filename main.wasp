@@ -237,6 +237,9 @@ page ProviderProfilePage { component: import ProviderProfilePage from "@src/prov
 route ProviderBillingRoute { path: "/provider/billing", to: ProviderBillingPage }
 page ProviderBillingPage { component: import ProviderBillingPage from "@src/provider/BillingPage", authRequired: true }
 
+route ProviderServicesRoute { path: "/provider/services", to: ProviderServicesPage }
+page ProviderServicesPage { component: import ProviderServicesPage from "@src/provider/ServicesPage", authRequired: true }
+
 query getProviderLeads {
   fn: import { getProviderLeads } from "@src/provider/operations",
   entities: [ServiceRequest, Provider]
@@ -269,6 +272,11 @@ action markJobCompleted {
 
 action updateProviderProfile {
   fn: import { updateProviderProfile } from "@src/provider/operations",
+  entities: [Provider]
+}
+
+action updateProviderServices {
+  fn: import { updateProviderServices } from "@src/provider/operations",
   entities: [Provider]
 }
 
