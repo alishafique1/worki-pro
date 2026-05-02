@@ -1,6 +1,7 @@
 import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount } from 'wasp/entities';
-import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction } from 'wasp/server/operations';
+import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectProvider } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
+import { emailSender } from 'wasp/server/email';
 
 const requireAdmin = (context: any) => {
   if (!context.user || !context.user.isAdmin) {
@@ -35,10 +36,74 @@ export const getAdminRewards: GetAdminRewards<void, RewardTransaction[]> = async
 
 export const approveProvider: ApproveProvider<{ providerId: string }, Provider> = async ({ providerId }, context) => {
   requireAdmin(context);
-  return context.entities.Provider.update({
+
+  const provider = await context.entities.Provider.findUnique({
+    where: { id: providerId },
+    include: { user: true }
+  });
+  if (!provider) throw new HttpError(404, 'Provider not found.');
+
+  const updated = await context.entities.Provider.update({
     where: { id: providerId },
     data: { verificationStatus: 'VERIFIED' }
   });
+
+  // Send approval email
+  const userEmail = provider.email ?? provider.user?.email;
+  if (userEmail) {
+    await emailSender.send({
+      to: userEmail,
+      subject: `Your Worki Pro account is verified!`,
+      html: `
+        <h2>Great news, ${provider.businessName}!</h2>
+        <p>Your provider application has been approved and your account is now <strong>verified</strong>.</p>
+        <p>You can now log in to your dashboard and start receiving job leads.</p>
+        <p><a href="${process.env.APP_URL ?? 'https://worki.ca'}/provider/dashboard">Go to your dashboard →</a></p>
+      `,
+      text: `Great news! Your Worki Pro account is verified. Log in at ${process.env.APP_URL ?? 'https://worki.ca'}/provider/dashboard`,
+    });
+  }
+
+  return updated;
+};
+
+type RejectProviderInput = { providerId: string; reason?: string };
+
+export const rejectProvider: RejectProvider<RejectProviderInput, Provider> = async ({ providerId, reason }, context) => {
+  requireAdmin(context);
+
+  const provider = await context.entities.Provider.findUnique({
+    where: { id: providerId },
+    include: { user: true }
+  });
+  if (!provider) throw new HttpError(404, 'Provider not found.');
+
+  const updated = await context.entities.Provider.update({
+    where: { id: providerId },
+    data: { verificationStatus: 'REJECTED' }
+  });
+
+  // Send rejection email
+  const userEmail = provider.email ?? provider.user?.email;
+  if (userEmail) {
+    const reasonText = reason
+      ? `Reason: ${reason}`
+      : 'If you have questions, please contact us at support@worki.ca.';
+    await emailSender.send({
+      to: userEmail,
+      subject: `Update on your Worki Pro application`,
+      html: `
+        <h2>Hello ${provider.businessName},</h2>
+        <p>Thank you for applying to join the Worki Pro network.</p>
+        <p>After review, we're unable to approve your application at this time.</p>
+        <p>${reasonText}</p>
+        <p>You are welcome to apply again in the future.</p>
+      `,
+      text: `Thank you for applying to Worki Pro. After review, we are unable to approve your application at this time. ${reasonText}`,
+    });
+  }
+
+  return updated;
 };
 
 export const assignRequestToProvider: AssignRequestToProvider<{ requestId: string, providerId: string }, ServiceRequest> = async ({ requestId, providerId }, context) => {

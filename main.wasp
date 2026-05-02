@@ -258,6 +258,11 @@ action updateProviderProfile {
   fn: import { updateProviderProfile } from "@src/provider/operations",
   entities: [Provider]
 }
+
+action createProviderProfile {
+  fn: import { createProviderProfile } from "@src/provider/operations",
+  entities: [Provider]
+}
 //#endregion
 
 //#region User
@@ -438,6 +443,11 @@ query getAdminRewards {
 
 action approveProvider {
   fn: import { approveProvider } from "@src/admin/operations",
+  entities: [Provider]
+}
+
+action rejectProvider {
+  fn: import { rejectProvider } from "@src/admin/operations",
   entities: [Provider]
 }
 

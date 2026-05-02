@@ -1,5 +1,5 @@
 import type { ServiceRequest, Provider, Appointment, ProviderFee, ProviderCategory, ServiceCategory, RewardTransaction, RewardAccount } from 'wasp/entities';
-import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, UpdateProviderProfile } from 'wasp/server/operations';
+import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, UpdateProviderProfile, CreateProviderProfile } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 
 const requireProvider = async (context: any) => {
@@ -8,6 +8,49 @@ const requireProvider = async (context: any) => {
     where: { userId: context.user.id }
   });
   if (!provider) throw new HttpError(403, "Provider profile required.");
+  return provider;
+};
+
+type CreateProviderProfileInput = {
+  businessName: string;
+  contactName?: string;
+  phone: string;
+  email?: string;
+  website?: string;
+  serviceAreas?: string[];
+};
+
+export const createProviderProfile: CreateProviderProfile<CreateProviderProfileInput, Provider> = async (args, context) => {
+  if (!context.user) throw new HttpError(401);
+
+  // Check if provider profile already exists for this user
+  const existing = await context.entities.Provider.findUnique({
+    where: { userId: context.user.id }
+  });
+  if (existing) {
+    throw new HttpError(409, "Provider profile already exists.");
+  }
+
+  if (!args.businessName?.trim()) {
+    throw new HttpError(400, "Business name is required.");
+  }
+  if (!args.phone?.trim()) {
+    throw new HttpError(400, "Phone number is required.");
+  }
+
+  const provider = await context.entities.Provider.create({
+    data: {
+      userId: context.user.id,
+      businessName: args.businessName.trim(),
+      contactName: args.contactName,
+      phone: args.phone.trim(),
+      email: args.email ?? context.user.email,
+      website: args.website,
+      serviceAreas: args.serviceAreas ?? [],
+      verificationStatus: 'PENDING',
+    }
+  });
+
   return provider;
 };
 
