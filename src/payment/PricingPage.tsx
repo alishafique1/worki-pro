@@ -1,238 +1,277 @@
 import { CheckCircle } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useAuth } from "wasp/client/auth";
-import {
-  generateCheckoutSession,
-  getCustomerPortalUrl,
-  useQuery,
-} from "wasp/client/operations";
-import { Alert, AlertDescription } from "../client/components/ui/alert";
-import { Button } from "../client/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardTitle,
-} from "../client/components/ui/card";
+import { routes } from "wasp/client/router";
 import { cn } from "../client/utils";
-import {
-  PaymentPlanId,
-  paymentPlans,
-  prettyPaymentPlanName,
-  SubscriptionStatus,
-} from "./plans";
 
-const bestDealPaymentPlanId: PaymentPlanId = PaymentPlanId.Pro;
-
-interface PaymentPlanCard {
-  name: string;
-  price: string;
-  description: string;
-  features: string[];
-}
-
-export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
-  [PaymentPlanId.Hobby]: {
-    name: prettyPaymentPlanName(PaymentPlanId.Hobby),
-    price: "$9.99",
-    description: "All you need to get started",
-    features: ["Limited monthly usage", "Basic support"],
+const PROVIDER_PLANS = [
+  {
+    name: "Starter",
+    price: "Free",
+    priceSub: "forever",
+    description: "Get your profile online and start receiving leads in your area.",
+    features: [
+      "Profile with business info & photo",
+      "Receive up to 5 leads/month",
+      "Basic appointment management",
+      "5% cashback on completed jobs",
+      "Worki verified badge",
+    ],
+    cta: "Start Free",
+    ctaLink: "/providers/apply",
+    highlighted: false,
   },
-  [PaymentPlanId.Pro]: {
-    name: prettyPaymentPlanName(PaymentPlanId.Pro),
-    price: "$19.99",
-    description: "Our most popular plan",
-    features: ["Unlimited monthly usage", "Priority customer support"],
+  {
+    name: "Growth",
+    price: "$49",
+    priceSub: "/month",
+    description: "More leads, more tools to turn them into loyal customers.",
+    features: [
+      "Everything in Starter",
+      "Unlimited leads",
+      "Priority placement in search results",
+      "Automated SMS/email replies",
+      "Customer reviews management",
+      "Advanced appointment scheduling",
+    ],
+    cta: "Apply for Growth",
+    ctaLink: "/providers/apply",
+    highlighted: true,
   },
-  [PaymentPlanId.Credits10]: {
-    name: prettyPaymentPlanName(PaymentPlanId.Credits10),
-    price: "$9.99",
-    description: "One-time purchase of 10 credits for your account",
-    features: ["Use credits for e.g. OpenAI API calls", "No expiration date"],
+  {
+    name: "Exclusive",
+    price: "$149",
+    priceSub: "/month",
+    description: "Maximum visibility and full-service support for established businesses.",
+    features: [
+      "Everything in Growth",
+      "Top placement in all category searches",
+      "Dedicated account manager",
+      "Lead matching before they search",
+      "Quarterly business review",
+      "Priority support (< 2 hour response)",
+    ],
+    cta: "Apply for Exclusive",
+    ctaLink: "/providers/apply",
+    highlighted: false,
   },
-};
+];
 
-const PricingPage = () => {
-  const [isPaymentLoading, setIsPaymentLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+const CONSUMER_PERKS = [
+  {
+    icon: "🔍",
+    title: "Free to Request",
+    desc: "Submit service requests at no cost. You're never charged to ask.",
+  },
+  {
+    icon: "✅",
+    title: "Verified Pros",
+    desc: "Every pro is background-checked, licensed, and insured.",
+  },
+  {
+    icon: "💰",
+    title: "5% Cashback",
+    desc: "Earn rewards on every completed job —redeemable toward future services.",
+  },
+  {
+    icon: "⚡",
+    title: "Real-Time Matching",
+    desc: "Your request is matched to available pros in minutes, not days.",
+  },
+];
 
+const FAQ = [
+  {
+    q: "Is Worki really free for homeowners?",
+    a: "Yes. Creating a service request is completely free. You only pay the pro directly for the completed work, and earn 5% cashback on every booking through Worki Rewards.",
+  },
+  {
+    q: "How does the 5% cashback work?",
+    a: "When you complete a job booked through Worki, you earn cashback points. These are added to your Worki Rewards wallet and can be applied to future service requests.",
+  },
+  {
+    q: "What if I'm not satisfied with a pro?",
+    a: "Every pro on Worki is vetted before joining. If you're ever unsatisfied, contact us and we'll make it right.",
+  },
+  {
+    q: "How do I become a Worki pro?",
+    a: "Click 'Apply as Pro' below. The Starter plan is free — you can start receiving leads immediately after completing your profile.",
+  },
+  {
+    q: "What areas does Worki serve?",
+    a: "Worki currently serves Milton, Oakville, Burlington, Mississauga, Brampton, Hamilton, Toronto, Etobicoke, Caledon, Vaughan, Richmond Hill, Markham, and Scarborough.",
+  },
+];
+
+export default function PricingPage() {
   const { data: user } = useAuth();
-  const isUserSubscribed =
-    !!user &&
-    !!user.subscriptionStatus &&
-    user.subscriptionStatus !== SubscriptionStatus.Deleted;
-
-  const {
-    data: customerPortalUrl,
-    isLoading: isCustomerPortalUrlLoading,
-    error: customerPortalUrlError,
-  } = useQuery(getCustomerPortalUrl, { enabled: isUserSubscribed });
-
-  const navigate = useNavigate();
-
-  async function handleBuyNowClick(paymentPlanId: PaymentPlanId) {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-    try {
-      setIsPaymentLoading(true);
-
-      const checkoutResults = await generateCheckoutSession(paymentPlanId);
-
-      if (checkoutResults?.sessionUrl) {
-        window.open(checkoutResults.sessionUrl, "_self");
-      } else {
-        throw new Error("Error generating checkout session URL");
-      }
-    } catch (error: unknown) {
-      console.error(error);
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage("Error processing payment. Please try again later.");
-      }
-      setIsPaymentLoading(false); // We only set this to false here and not in the try block because we redirect to the checkout url within the same window
-    }
-  }
-
-  const handleCustomerPortalClick = () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-
-    if (customerPortalUrlError) {
-      setErrorMessage("Error fetching Customer Portal URL");
-      return;
-    }
-
-    if (!customerPortalUrl) {
-      setErrorMessage(`Customer Portal does not exist for user ${user.id}`);
-      return;
-    }
-
-    window.open(customerPortalUrl, "_blank");
-  };
 
   return (
-    <div className="py-10 lg:mt-10">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div id="pricing" className="mx-auto max-w-4xl text-center">
-          <h2 className="text-foreground mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-            Pick your <span className="text-primary">pricing</span>
-          </h2>
+    <div className="min-h-screen bg-[var(--surface-base)]">
+      {/* Hero */}
+      <div className="relative overflow-hidden bg-[var(--surface-raised)] border-b border-[var(--border-default)]">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--accent)] via-transparent to-transparent" />
         </div>
-        <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-center text-lg leading-8">
-          Choose between Stripe, LemonSqueezy or Polar as your payment provider.
-          Just add your Product IDs! Try it out below with test credit card
-          number <br />
-          <span className="bg-muted text-muted-foreground rounded-md px-2 py-1 font-mono text-sm">
-            4242 4242 4242 4242 4242
-          </span>
-        </p>
-        {errorMessage && (
-          <Alert variant="destructive" className="mt-8">
-            <AlertDescription>{errorMessage}</AlertDescription>
-          </Alert>
-        )}
-        <div className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8">
-          {Object.values(PaymentPlanId).map((planId) => (
-            <Card
-              key={planId}
+        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-4">
+            Simple, transparent pricing.
+          </h1>
+          <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-8">
+            For homeowners: free to request, pay only for work done.<br />
+            For pros: a plan that scales with your business.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/request-service"
+              className="px-8 py-4 bg-[var(--accent)] text-[#000] font-bold rounded-[20px] text-base hover:scale-105 transition-transform"
+            >
+              Request a Service — Free
+            </Link>
+            <Link
+              to="/providers/apply"
+              className="px-8 py-4 bg-[var(--surface-base)] border border-[var(--border-default)] font-bold rounded-[20px] text-base hover:border-[var(--accent)] transition-colors"
+            >
+              Apply as a Pro
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Consumer perks */}
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="mb-14 text-center">
+          <h2 className="text-3xl font-bold tracking-tight mb-3">Why homeowners love Worki</h2>
+          <p className="text-[var(--text-secondary)]">No subscriptions. No hidden fees. Just help when you need it.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CONSUMER_PERKS.map((perk) => (
+            <div
+              key={perk.title}
+              className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-colors"
+            >
+              <div className="text-3xl mb-4">{perk.icon}</div>
+              <h3 className="font-bold text-lg mb-2">{perk.title}</h3>
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{perk.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Provider plans */}
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="mb-14 text-center">
+          <h2 className="text-3xl font-bold tracking-tight mb-3">For Service Professionals</h2>
+          <p className="text-[var(--text-secondary)]">Grow your client base with Worki's lead-matching platform.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {PROVIDER_PLANS.map((plan) => (
+            <div
+              key={plan.name}
               className={cn(
-                "relative flex grow flex-col justify-between overflow-hidden transition-all duration-300 hover:shadow-lg",
-                {
-                  "ring-primary bg-transparent! ring-2":
-                    planId === bestDealPaymentPlanId,
-                  "ring-border ring-1 lg:my-8":
-                    planId !== bestDealPaymentPlanId,
-                },
+                "rounded-[24px] p-8 flex flex-col",
+                plan.highlighted
+                  ? "bg-[var(--accent)] text-[#000] ring-4 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--surface-base)]"
+                  : "bg-[var(--surface-raised)] border border-[var(--border-default)]"
               )}
             >
-              {planId === bestDealPaymentPlanId && (
-                <div
-                  className="absolute top-0 right-0 -z-10 h-full w-full transform-gpu blur-3xl"
-                  aria-hidden="true"
-                >
-                  <div
-                    className="from-primary/40 via-primary/20 to-primary/10 absolute h-full w-full bg-linear-to-br opacity-30"
-                    style={{
-                      clipPath: "circle(670% at 50% 50%)",
-                    }}
-                  />
+              {plan.highlighted && (
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 bg-[#000] text-[var(--accent)] text-xs font-bold rounded-full uppercase tracking-wide">
+                    Most Popular
+                  </span>
                 </div>
               )}
-              <CardContent className="h-full justify-between p-8 xl:p-10">
-                <div className="flex items-center justify-between gap-x-4">
-                  <CardTitle
-                    id={planId}
-                    className="text-foreground text-lg leading-8 font-semibold"
-                  >
-                    {paymentPlanCards[planId].name}
-                  </CardTitle>
+              <div className="mb-6">
+                <h3 className={cn("text-xl font-bold mb-1", plan.highlighted ? "text-[#000]" : "")}>
+                  {plan.name}
+                </h3>
+                <div className="flex items-baseline gap-1">
+                  <span className={cn("text-4xl font-black tracking-tight", plan.highlighted ? "text-[#000]" : "")}>
+                    {plan.price}
+                  </span>
+                  <span className={cn("text-sm font-medium", plan.highlighted ? "text-[#000]/70" : "text-[var(--text-secondary)]")}>
+                    {plan.priceSub}
+                  </span>
                 </div>
-                <p className="text-muted-foreground mt-4 text-sm leading-6">
-                  {paymentPlanCards[planId].description}
+                <p className={cn("text-sm mt-2 leading-relaxed", plan.highlighted ? "text-[#000]/80" : "text-[var(--text-secondary)]")}>
+                  {plan.description}
                 </p>
-                <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className="text-foreground text-4xl font-bold tracking-tight">
-                    {paymentPlanCards[planId].price}
-                  </span>
-                  <span className="text-muted-foreground text-sm leading-6 font-semibold">
-                    {paymentPlans[planId].effect.kind === "subscription" &&
-                      "/month"}
-                  </span>
-                </p>
-                <ul
-                  role="list"
-                  className="text-muted-foreground mt-8 space-y-3 text-sm leading-6"
-                >
-                  {paymentPlanCards[planId].features.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckCircle
-                        className="text-primary h-5 w-5 flex-none"
-                        aria-hidden="true"
-                      />
+              </div>
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3">
+                    <CheckCircle
+                      className={cn("w-5 h-5 flex-none mt-0.5", plan.highlighted ? "text-[#000]" : "text-[var(--accent)]")}
+                    />
+                    <span className={cn("text-sm", plan.highlighted ? "text-[#000]/90" : "")}>
                       {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-              <CardFooter>
-                {isUserSubscribed ? (
-                  <Button
-                    onClick={handleCustomerPortalClick}
-                    disabled={isCustomerPortalUrlLoading}
-                    aria-describedby="manage-subscription"
-                    variant={
-                      planId === bestDealPaymentPlanId ? "default" : "outline"
-                    }
-                    className="w-full"
-                  >
-                    Manage Subscription
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => handleBuyNowClick(planId)}
-                    aria-describedby={planId}
-                    variant={
-                      planId === bestDealPaymentPlanId ? "default" : "outline"
-                    }
-                    className="w-full"
-                    disabled={isPaymentLoading}
-                  >
-                    {!!user ? "Buy plan" : "Log in to buy plan"}
-                  </Button>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to={plan.ctaLink}
+                className={cn(
+                  "block w-full text-center px-6 py-4 font-bold rounded-[18px] text-base transition-all",
+                  plan.highlighted
+                    ? "bg-[#000] text-[var(--accent)] hover:bg-[#111]"
+                    : "bg-[var(--accent)] text-[#000] hover:opacity-90"
                 )}
-              </CardFooter>
-            </Card>
+              >
+                {plan.cta}
+              </Link>
+            </div>
           ))}
+        </div>
+
+        <p className="text-center text-sm text-[var(--text-secondary)] mt-8">
+          All plans include Worki's 5% customer cashback program.{" "}
+          <Link to="/how-rewards-work" className="text-[var(--accent)] font-bold hover:underline">
+            How rewards work →
+          </Link>
+        </p>
+      </div>
+
+      {/* FAQ */}
+      <div className="mx-auto max-w-3xl px-6 py-16 lg:px-8">
+        <h2 className="text-3xl font-bold tracking-tight text-center mb-12">Frequently asked questions</h2>
+        <div className="space-y-6">
+          {FAQ.map((item) => (
+            <div
+              key={item.q}
+              className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] p-6"
+            >
+              <h3 className="font-bold text-base mb-2">{item.q}</h3>
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA footer */}
+      <div className="bg-[var(--accent)] text-[#000]">
+        <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8 text-center">
+          <h2 className="text-4xl font-black tracking-tight mb-4">Ready to get started?</h2>
+          <p className="text-lg font-medium opacity-80 mb-8">
+            Join thousands of GTA homeowners who trust Worki for their home services.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/request-service"
+              className="px-8 py-4 bg-[#000] text-[var(--accent)] font-bold rounded-[20px] text-base hover:bg-[#111] transition-colors"
+            >
+              Request a Service — Free
+            </Link>
+            <Link
+              to="/discover"
+              className="px-8 py-4 bg-transparent border-2 border-[#000] font-bold rounded-[20px] text-base hover:bg-[#000]/10 transition-colors"
+            >
+              Browse Pros First
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default PricingPage;
+}
