@@ -1,6 +1,7 @@
-import { FileText, Mail, Upload, User } from "lucide-react";
-import { FormEvent } from "react";
+import { Mail, Upload, User } from "lucide-react";
+import { FormEvent, useState } from "react";
 import { type AuthUser } from "wasp/auth";
+import { useAction } from "wasp/client/operations";
 import { Button } from "../../../client/components/ui/button";
 import {
   Card,
@@ -10,15 +11,42 @@ import {
 } from "../../../client/components/ui/card";
 import { Input } from "../../../client/components/ui/input";
 import { Label } from "../../../client/components/ui/label";
-import { Textarea } from "../../../client/components/ui/textarea";
 import Breadcrumb from "../../layout/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
 
 const SettingsPage = ({ user }: { user: AuthUser }) => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    // TODO implement
+  // @ts-ignore - Wasp SDK type mismatch: AuthenticatedOperation vs Action generic params
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateProfile: any = useAction(useAction as any);
+
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert("Not yet implemented");
+    setSaving(true);
+    setSuccess(false);
+    setError(null);
+
+    const form = event.currentTarget;
+    const data = {
+      firstName: (form.elements.namedItem("firstName") as HTMLInputElement)?.value || undefined,
+      lastName: (form.elements.namedItem("lastName") as HTMLInputElement)?.value || undefined,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement)?.value || undefined,
+      postalCode: (form.elements.namedItem("postalCode") as HTMLInputElement)?.value || undefined,
+      username: (form.elements.namedItem("username") as HTMLInputElement)?.value || undefined,
+    };
+
+    try {
+      await updateProfile(data);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -37,39 +65,71 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                   <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <Label
-                        htmlFor="full-name"
+                        htmlFor="firstName"
                         className="text-foreground mb-3 block text-sm font-medium"
                       >
-                        Full Name
+                        First Name
                       </Label>
                       <div className="relative">
                         <User className="left-4.5 text-muted-foreground absolute top-2 h-5 w-5" />
                         <Input
                           className="pl-11.5"
                           type="text"
-                          name="fullName"
-                          id="full-name"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          name="firstName"
+                          id="firstName"
+                          placeholder="First name"
+                          defaultValue={user.firstName ?? ""}
                         />
                       </div>
                     </div>
 
                     <div className="w-full sm:w-1/2">
                       <Label
-                        htmlFor="phone-number"
+                        htmlFor="lastName"
                         className="text-foreground mb-3 block text-sm font-medium"
                       >
-                        Phone Number
+                        Last Name
                       </Label>
                       <Input
-                        type=""
-                        name="phoneNumber"
-                        id="phone-number"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        type="text"
+                        name="lastName"
+                        id="lastName"
+                        placeholder="Last name"
+                        defaultValue={user.lastName ?? ""}
                       />
                     </div>
+                  </div>
+
+                  <div className="mb-5.5">
+                    <Label
+                      htmlFor="phone"
+                      className="text-foreground mb-3 block text-sm font-medium"
+                    >
+                      Phone Number
+                    </Label>
+                    <Input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      placeholder="+1 (416) 555-0100"
+                      defaultValue={user.phone ?? ""}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <Label
+                      htmlFor="postalCode"
+                      className="text-foreground mb-3 block text-sm font-medium"
+                    >
+                      Postal Code
+                    </Label>
+                    <Input
+                      type="text"
+                      name="postalCode"
+                      id="postalCode"
+                      placeholder="L9T 1R3"
+                      defaultValue={user.postalCode ?? ""}
+                    />
                   </div>
 
                   <div className="mb-5.5">
@@ -86,8 +146,9 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                         type="email"
                         name="emailAddress"
                         id="email-address"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="you@example.com"
+                        value={user.email ?? ""}
+                        disabled
                       />
                     </div>
                   </div>
@@ -101,38 +162,32 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                     </Label>
                     <Input
                       type="text"
-                      name="Username"
+                      name="username"
                       id="username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="username"
+                      defaultValue={user.username ?? ""}
                     />
                   </div>
 
-                  <div className="mb-5.5">
-                    <Label
-                      htmlFor="bio"
-                      className="text-foreground mb-3 block text-sm font-medium"
-                    >
-                      BIO
-                    </Label>
-                    <div className="relative">
-                      <FileText className="left-4.5 text-muted-foreground absolute top-4 h-5 w-5" />
-                      <Textarea
-                        className="border-border bg-background pl-11.5 pr-4.5 text-foreground focus:border-primary w-full rounded border py-3 focus-visible:outline-hidden"
-                        name="bio"
-                        id="bio"
-                        rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
-                      ></Textarea>
+                  {success && (
+                    <div className="mb-4 p-3 rounded bg-green-500/10 border border-green-500/30 text-green-500 text-sm">
+                      Profile updated successfully.
                     </div>
-                  </div>
+                  )}
+
+                  {error && (
+                    <div className="mb-4 p-3 rounded bg-red-500/10 border border-red-500/30 text-red-500 text-sm">
+                      {error}
+                    </div>
+                  )}
 
                   <div className="gap-4.5 flex justify-end">
-                    <Button variant="outline" type="submit">
+                    <Button variant="outline" type="button" onClick={() => window.location.reload()}>
                       Cancel
                     </Button>
-                    <Button type="submit">Save</Button>
+                    <Button type="submit" disabled={saving}>
+                      {saving ? "Saving…" : "Save"}
+                    </Button>
                   </div>
                 </form>
               </CardContent>
@@ -146,18 +201,18 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
               <CardContent>
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
-                      {/* <img src={userThree} alt="User" /> */}
+                    <div className="h-14 w-14 rounded-full bg-[var(--surface-raised)] flex items-center justify-center">
+                      <User className="h-8 w-8 text-[var(--text-secondary)]" />
                     </div>
                     <div>
-                      <span className="text-foreground mb-1.5">
+                      <span className="text-foreground mb-1.5 block">
                         Edit your photo
                       </span>
                       <span className="flex gap-2.5">
-                        <button className="hover:text-primary text-sm">
+                        <button className="hover:text-primary text-sm" type="button">
                           Delete
                         </button>
-                        <button className="hover:text-primary text-sm">
+                        <button className="hover:text-primary text-sm" type="button">
                           Update
                         </button>
                       </span>
@@ -187,7 +242,7 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                   </div>
 
                   <div className="gap-4.5 flex justify-end">
-                    <Button variant="outline" type="submit">
+                    <Button variant="outline" type="button" onClick={() => window.location.reload()}>
                       Cancel
                     </Button>
                     <Button type="submit">Save</Button>

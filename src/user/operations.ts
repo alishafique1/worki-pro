@@ -4,6 +4,7 @@ import { HttpError, prisma } from "wasp/server";
 import {
   type GetPaginatedUsers,
   type UpdateIsUserAdminById,
+  type UpdateUserProfile,
 } from "wasp/server/operations";
 import * as z from "zod";
 import { SubscriptionStatus } from "../payment/plans";
@@ -42,6 +43,39 @@ export const updateIsUserAdminById: UpdateIsUserAdminById<
   return context.entities.User.update({
     where: { id },
     data: { isAdmin },
+  });
+};
+
+const updateUserProfileInputSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  phone: z.string().optional(),
+  postalCode: z.string().optional(),
+  username: z.string().optional(),
+});
+
+type UpdateUserProfileInput = z.infer<typeof updateUserProfileInputSchema>;
+
+export const updateUserProfile: UpdateUserProfile<
+  UpdateUserProfileInput,
+  User
+> = async (rawArgs, context) => {
+  const { firstName, lastName, phone, postalCode, username } =
+    ensureArgsSchemaOrThrowHttpError(updateUserProfileInputSchema, rawArgs);
+
+  if (!context.user) {
+    throw new HttpError(401, "Authentication required");
+  }
+
+  return context.entities.User.update({
+    where: { id: context.user.id },
+    data: {
+      ...(firstName !== undefined && { firstName }),
+      ...(lastName !== undefined && { lastName }),
+      ...(phone !== undefined && { phone }),
+      ...(postalCode !== undefined && { postalCode }),
+      ...(username !== undefined && { username }),
+    },
   });
 };
 
