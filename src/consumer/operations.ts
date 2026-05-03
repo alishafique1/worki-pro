@@ -1,5 +1,5 @@
 import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory, Provider, ProviderCategory } from 'wasp/entities';
-import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories, GetProviders } from 'wasp/server/operations';
+import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories, GetProviders, GetConsumerStats } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 
 export const getServiceCategories: GetServiceCategories<void, ServiceCategory[]> = async (args, context) => {
@@ -186,4 +186,94 @@ export const getProviders: GetProviders<{ categorySlug?: string; search?: string
   }
 
   return providers;
+};
+
+// ─── Consumer Analytics ───────────────────────────────────────────────────────
+
+type ConsumerStats = {
+  totalRequests: number;
+  completedRequests: number;
+  pendingRequests: number;
+  totalPointsEarned: number;
+  totalPointsRedeemed: number;
+  currentBalance: number;
+  lifetimePoints: number;
+  requestsByStatus: Record<string, number>;
+  requestsByCategory: Record<string, number>;
+  monthlyPoints: { month: string; earned: number; redeemed: number }[];
+};
+
+export const getConsumerStats: GetConsumerStats<void, ConsumerStats> = async (args, context) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+
+  const requests = await context.entities.ServiceRequest.findMany({
+    where: { consumerId: context.user.id },
+    include: { serviceCategory: true },
+  });
+
+  const { account, transactions } = await getMyRewardAccount(args, context);
+
+  const totalRequests = requests.length;
+  const completedRequests = requests.filter((r) =>
+    ['COMPLETED', 'REWARD_APPROVED', 'CLOSED'].includes(r.status)
+  ).length;
+  const pendingRequests = totalRequests - completedRequests;
+
+  const totalPointsEarned = transactions
+    .filter((t) => t.points > 0)
+    .reduce((sum, t) => sum + t.points, 0);
+  const totalPointsRedeemed = Math.abs(
+    transactions.filter((t) => t.points < 0).reduce((sum, t) => sum + t.points, 0)
+  );
+
+  const requestsByStatus: Record<string, number> = {};
+  for (const r of requests) {
+    requestsByStatus[r.status] = (requestsByStatus[r.status] || 0) + 1;
+  }
+
+  const requestsByCategory: Record<string, number> = {};
+  for (const r of requests) {
+    const cat = r.serviceCategory?.name ?? 'Unknown';
+    requestsByCategory[cat] = (requestsByCategory[cat] || 0) + 1;
+  }
+
+  // Monthly points for last 6 months
+  const now = new Date();
+  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+  const monthlyPoints: { month: string; earned: number; redeemed: number }[] = [];
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthKey = d.toLocaleString('default', { month: 'short', year: '2-digit' });
+    const earned = transactions
+      .filter((t) => {
+        const td = new Date(t.createdAt);
+        return td >= d && td < new Date(d.getFullYear(), d.getMonth() + 1, 1) && t.points > 0;
+      })
+      .reduce((s, t) => s + t.points, 0);
+    const redeemed = Math.abs(
+      transactions
+        .filter((t) => {
+          const td = new Date(t.createdAt);
+          return td >= d && td < new Date(d.getFullYear(), d.getMonth() + 1, 1) && t.points < 0;
+        })
+        .reduce((s, t) => s + t.points, 0)
+    );
+    monthlyPoints.push({ month: monthKey, earned, redeemed });
+  }
+  monthlyPoints.reverse();
+
+  return {
+    totalRequests,
+    completedRequests,
+    pendingRequests,
+    totalPointsEarned,
+    totalPointsRedeemed,
+    currentBalance: account?.pointsBalance ?? 0,
+    lifetimePoints: account?.lifetimePoints ?? 0,
+    requestsByStatus,
+    requestsByCategory,
+    monthlyPoints,
+  };
 };
