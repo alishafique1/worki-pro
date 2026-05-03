@@ -193,6 +193,9 @@ page AnalyticsPage          { component: import AnalyticsPage from "@src/consume
 route DiscoveryRoute        { path: "/discover",            to: DiscoveryPage }
 page DiscoveryPage          { component: import DiscoveryPage from "@src/consumer/DiscoveryPage" }
 
+route ContactRoute          { path: "/contact",             to: ContactPage }
+page ContactPage            { component: import ContactPage from "@src/consumer/ContactPage" }
+
 query getMyRequests {
   fn: import { getMyRequests } from "@src/consumer/operations",
   entities: [ServiceRequest]
@@ -211,6 +214,11 @@ action redeemPoints {
 action submitServiceRequest {
   fn: import { submitServiceRequest } from "@src/consumer/operations",
   entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount]
+}
+
+action submitLead {
+  fn: import { submitLead } from "@src/consumer/operations",
+  entities: [Lead]
 }
 
 query getServiceCategories {

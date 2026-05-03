@@ -1,5 +1,6 @@
-import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory, Provider, ProviderCategory } from 'wasp/entities';
+import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory, Provider, ProviderCategory, Lead } from 'wasp/entities';
 import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories, GetProviders, GetConsumerStats } from 'wasp/server/operations';
+import type { SubmitLead } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 
 export const getServiceCategories: GetServiceCategories<void, ServiceCategory[]> = async (args, context) => {
@@ -276,4 +277,29 @@ export const getConsumerStats: GetConsumerStats<void, ConsumerStats> = async (ar
     requestsByCategory,
     monthlyPoints,
   };
+};
+
+// ─── Lead / Contact Flow ─────────────────────────────────────────────────────
+
+export const submitLead: SubmitLead<{
+  name: string;
+  email: string;
+  phone?: string;
+  postalCode?: string;
+  serviceType?: string;
+  message?: string;
+  source?: string;
+}, Lead> = async ({ name, email, phone, postalCode, serviceType, message, source }, context) => {
+  return context.entities.Lead.create({
+    data: {
+      name,
+      email,
+      phone: phone || null,
+      postalCode: postalCode || null,
+      serviceType: serviceType || null,
+      message: message || null,
+      source: source || 'WEBSITE',
+      status: 'NEW',
+    },
+  });
 };

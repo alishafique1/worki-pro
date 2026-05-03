@@ -530,3 +530,33 @@ enum RewardStatus {
   REJECTED
   ISSUED
 }
+
+// ─── Worki Lead (anonymous contact/lead capture) ────────────────────────────
+
+model Lead {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+
+  name        String
+  email       String
+  phone       String?
+  postalCode  String?
+
+  serviceType String?   // e.g. "hvac", "plumbing", "handyman"
+  message     String?
+  source      String    @default("WEBSITE") // UTM source if available
+
+  status      LeadStatus @default(NEW)
+  assignedTo  String?
+  notes       String?
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  LOST
+}

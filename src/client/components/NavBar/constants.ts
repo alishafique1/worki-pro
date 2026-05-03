@@ -10,10 +10,13 @@ export const marketingNavigationItems: NavigationItem[] = [
   { name: "Appliance Repair", to: "/appliance-repair" },
   { name: "How it Works", to: "/how-rewards-work" },
   { name: "For Pros", to: "/providers" },
+  { name: "Contact", to: "/contact" },
 ] as const;
 
 export const demoNavigationitems: NavigationItem[] = [
   { name: "Request Service", to: "/request-service" },
+  { name: "Discover Pros", to: "/discover" },
+  { name: "Contact", to: "/contact" },
   { name: "Dashboard", to: "/dashboard" },
   { name: "Provider Portal", to: "/provider/dashboard" },
   { name: "Admin", to: "/admin" },

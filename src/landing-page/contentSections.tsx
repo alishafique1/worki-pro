@@ -110,13 +110,15 @@ export const faqs = [
 
 export const footerNavigation = {
   app: [
-    { name: "Documentation", href: DocsUrl },
-    { name: "Blog", href: BlogUrl },
+    { name: "Discover Pros", href: "/discover" },
+    { name: "Request Service", href: "/request-service" },
+    { name: "For Pros", href: "/providers" },
+    { name: "Contact", href: "/contact" },
   ],
   company: [
-    { name: "About", href: "https://wasp.sh" },
-    { name: "Privacy", href: "#" },
-    { name: "Terms of Service", href: "#" },
+    { name: "About", href: "/" },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms of Service", href: "/terms" },
   ],
 };
 
