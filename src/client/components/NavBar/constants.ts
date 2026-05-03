@@ -7,6 +7,7 @@ export const marketingNavigationItems: NavigationItem[] = [
   { name: "Services", to: "/services" },
   { name: "How it Works", to: "/how-rewards-work" },
   { name: "For Pros", to: "/providers" },
+  { name: "List Your Services", to: "/list-your-services" },
   { name: "Contact", to: "/contact" },
 ] as const;
 
@@ -33,6 +34,5 @@ export const providerNavigationItems: NavigationItem[] = [
   { name: "Leads", to: "/provider/leads" },
   { name: "Services", to: "/provider/services" },
   { name: "Appointments", to: "/provider/appointments" },
-  { name: "Services", to: "/provider/services" },
   { name: "Profile", to: "/provider/profile" },
 ];

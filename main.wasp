@@ -131,6 +131,9 @@ page ProviderLandingPage { component: import ProviderLandingPage from "@src/prov
 route ProviderApplyRoute { path: "/providers/apply", to: ProviderApplyPage }
 page ProviderApplyPage { component: import ProviderApplyPage from "@src/provider/ApplyPage" }
 
+route ListYourServicesRoute { path: "/list-your-services", to: ListYourServicesPage }
+page ListYourServicesPage { component: import ListYourServicesPage from "@src/provider/ListYourServicesPage" }
+
 route TermsRoute { path: "/terms", to: TermsPage }
 page TermsPage { component: import TermsPage from "@src/shared/TermsPage" }
 
