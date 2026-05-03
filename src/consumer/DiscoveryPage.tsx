@@ -3,15 +3,42 @@ import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
 
+const AREAS = [
+  { slug: '', label: 'All GTA Areas' },
+  { slug: 'milton', label: 'Milton' },
+  { slug: 'oakville', label: 'Oakville' },
+  { slug: 'burlington', label: 'Burlington' },
+  { slug: 'mississauga', label: 'Mississauga' },
+  { slug: 'brampton', label: 'Brampton' },
+  { slug: 'hamilton', label: 'Hamilton' },
+  { slug: 'toronto', label: 'Toronto' },
+  { slug: 'etobicoke', label: 'Etobicoke' },
+  { slug: 'caledon', label: 'Caledon' },
+  { slug: 'vaughan', label: 'Vaughan' },
+  { slug: 'richmond-hill', label: 'Richmond Hill' },
+  { slug: 'markham', label: 'Markham' },
+  { slug: 'scarborough', label: 'Scarborough' },
+];
+
 export default function DiscoveryPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
 
   const { data: categories } = useQuery(getServiceCategories);
   const { data: providers, isLoading } = useQuery(getProviders, {
     categorySlug: selectedCategory || undefined,
     search: searchQuery || undefined,
   });
+
+  // Client-side area filter — providers have serviceAreas[] from Prisma
+  const filteredProviders = selectedArea
+    ? providers?.filter((p: any) =>
+        p.serviceAreas?.some(
+          (area: string) => area.toLowerCase() === selectedArea.toLowerCase()
+        )
+      )
+    : providers;
 
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-[80vh]">
@@ -49,6 +76,16 @@ export default function DiscoveryPage() {
             <option key={cat.id} value={cat.slug}>{cat.name}</option>
           ))}
         </select>
+
+        <select
+          value={selectedArea}
+          onChange={(e) => setSelectedArea(e.target.value)}
+          className="px-5 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors cursor-pointer min-w-[180px]"
+        >
+          {AREAS.map((area) => (
+            <option key={area.slug} value={area.slug}>{area.label}</option>
+          ))}
+        </select>
       </div>
 
       {/* Results */}
@@ -58,17 +95,29 @@ export default function DiscoveryPage() {
             <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-52 border border-[var(--border-default)]" />
           ))}
         </div>
-      ) : providers?.length === 0 ? (
+      ) : filteredProviders?.length === 0 ? (
         <div className="text-center py-20">
           <div className="w-20 h-20 bg-[var(--surface-raised)] rounded-full mx-auto mb-6 flex items-center justify-center">
             <span className="text-3xl opacity-50">🔍</span>
           </div>
           <h3 className="text-xl font-bold mb-2">No pros found</h3>
-          <p className="text-[var(--text-secondary)]">Try adjusting your search or category filter.</p>
+          <p className="text-[var(--text-secondary)]">
+            {selectedArea
+              ? `No pros serving ${AREAS.find(a => a.slug === selectedArea)?.label} yet. Try another area.`
+              : 'Try adjusting your search or category filter.'}
+          </p>
+          {selectedArea && (
+            <button
+              onClick={() => setSelectedArea('')}
+              className="mt-4 px-5 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm"
+            >
+              Clear Area Filter
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {providers?.map((provider) => (
+          {filteredProviders?.map((provider: any) => (
             <Link
               key={provider.id}
               to={`/pro/${provider.id}`}
@@ -91,7 +140,7 @@ export default function DiscoveryPage() {
 
               {/* Categories */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {provider.categories.slice(0, 3).map((pc) => (
+                {provider.categories.slice(0, 3).map((pc: any) => (
                   <span
                     key={pc.serviceCategory.id}
                     className="px-3 py-1 bg-[var(--surface-overlay)] text-xs font-medium rounded-full"
@@ -124,7 +173,7 @@ export default function DiscoveryPage() {
               </div>
 
               {/* Service areas */}
-              {provider.serviceAreas.length > 0 && (
+              {provider.serviceAreas?.length > 0 && (
                 <p className="text-[var(--text-secondary)] text-xs mt-3">
                   Serves: {provider.serviceAreas.slice(0, 2).join(', ')}
                   {provider.serviceAreas.length > 2 && ` +${provider.serviceAreas.length - 2} more`}
@@ -139,7 +188,7 @@ export default function DiscoveryPage() {
       <div className="mt-12 pt-8 border-t border-[var(--border-default)]">
         <h2 className="text-lg font-bold mb-4">Browse by Service</h2>
         <div className="flex flex-wrap gap-3">
-          {categories?.map((cat) => (
+          {categories?.map((cat: any) => (
             <button
               key={cat.id}
               onClick={() => {
@@ -153,6 +202,30 @@ export default function DiscoveryPage() {
               }`}
             >
               {cat.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Area quick-links */}
+      <div className="mt-8 pb-12">
+        <h2 className="text-lg font-bold mb-4">Browse by Area</h2>
+        <div className="flex flex-wrap gap-3">
+          {AREAS.slice(1).map((area) => (
+            <button
+              key={area.slug}
+              onClick={() => {
+                setSelectedArea(area.slug);
+                setSelectedCategory('');
+                setSearchQuery('');
+              }}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-colors ${
+                selectedArea === area.slug
+                  ? 'bg-[var(--accent)] text-[#000] border-[var(--accent)]'
+                  : 'bg-[var(--surface-raised)] border-[var(--border-default)] hover:border-[var(--accent)]'
+              }`}
+            >
+              {area.label}
             </button>
           ))}
         </div>
