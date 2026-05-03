@@ -35,6 +35,7 @@ export const consumerNavigationItems: NavigationItem[] = [
 export const providerNavigationItems: NavigationItem[] = [
   { name: "Dashboard", to: "/provider/dashboard" },
   { name: "Leads", to: "/provider/leads" },
+  { name: "Services", to: "/provider/services" },
   { name: "Appointments", to: "/provider/appointments" },
   { name: "Profile", to: "/provider/profile" },
 ] as const;
