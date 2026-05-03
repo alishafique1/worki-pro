@@ -16,6 +16,7 @@ export const marketingNavigationItems: NavigationItem[] = [
 export const demoNavigationitems: NavigationItem[] = [
   { name: "Request Service", to: "/request-service" },
   { name: "Discover Pros", to: "/discover" },
+  { name: "Services", to: "/services" },
   { name: "Contact", to: "/contact" },
   { name: "Dashboard", to: "/dashboard" },
   { name: "Provider Portal", to: "/provider/dashboard" },

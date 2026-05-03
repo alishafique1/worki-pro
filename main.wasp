@@ -193,6 +193,9 @@ page AnalyticsPage          { component: import AnalyticsPage from "@src/consume
 route DiscoveryRoute        { path: "/discover",            to: DiscoveryPage }
 page DiscoveryPage          { component: import DiscoveryPage from "@src/consumer/DiscoveryPage" }
 
+route ConsumerServicesRoute { path: "/services",            to: ConsumerServicesPage }
+page ConsumerServicesPage   { component: import ConsumerServicesPage from "@src/consumer/ServicesPage" }
+
 route ProviderDetailRoute   { path: "/pro/:providerId",      to: ProviderDetailPage }
 page ProviderDetailPage     { component: import ProviderDetailPage from "@src/consumer/ProviderDetailPage" }
 
