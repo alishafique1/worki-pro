@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useAction, useQuery, submitServiceRequest } from 'wasp/client/operations';
-import { getServiceCategories } from 'wasp/client/operations';
+import React, { useState, useEffect } from 'react';
+import { useAction, useQuery, submitServiceRequest, getServiceCategories, getProviderById } from 'wasp/client/operations';
 import { useNavigate, useLocation } from 'react-router';
 
 export default function RequestServicePage() {
@@ -8,8 +7,14 @@ export default function RequestServicePage() {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const initialPostalCode = queryParams.get('postalCode') || '';
+  const preSelectedProId = queryParams.get('proId') || '';
 
   const categories = useQuery(getServiceCategories);
+  const { data: preSelectedPro } = useQuery(
+    getProviderById,
+    { providerId: preSelectedProId },
+    { enabled: !!preSelectedProId }
+  );
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -18,16 +23,29 @@ export default function RequestServicePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitRequest = useAction(submitServiceRequest);
 
+  // Pre-populate service type from the selected pro's first category
+  useEffect(() => {
+    if (preSelectedPro && categories.data && formData.serviceType === '') {
+      const firstCat = preSelectedPro.categories?.[0]?.serviceCategory;
+      if (firstCat) {
+        setFormData(prev => ({ ...prev, serviceType: firstCat.slug }));
+      }
+    }
+  }, [preSelectedPro, categories.data]);
+
   const handleNext = () => setStep(s => Math.min(3, s + 1));
   const handlePrev = () => setStep(s => Math.max(1, s - 1));
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 3) return handleNext();
-    
+
     setIsSubmitting(true);
     try {
-      await submitRequest(formData as any);
+      await submitRequest({
+        ...formData,
+        preferredProviderId: preSelectedProId || undefined,
+      } as any);
       navigate('/request-success');
     } catch (err: any) {
       alert("Error submitting request: " + err.message);
@@ -42,16 +60,29 @@ export default function RequestServicePage() {
         <h1 className="text-5xl font-black tracking-tighter mb-4">Request Service</h1>
         <p className="text-[var(--text-secondary)]">Get matched with a pro in seconds.</p>
       </div>
-      
+
+      {/* Pre-selected pro banner */}
+      {preSelectedPro && (
+        <div className="mb-8 flex items-center gap-3 bg-[var(--accent)]/10 border border-[var(--accent)]/30 rounded-[16px] px-5 py-3 max-w-md mx-auto w-full">
+          <div className="w-9 h-9 rounded-full bg-[var(--accent)] flex items-center justify-center text-black font-black text-sm shrink-0">
+            {preSelectedPro.businessName?.charAt(0).toUpperCase() ?? 'P'}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold truncate">{preSelectedPro.businessName}</p>
+            <p className="text-xs text-[var(--text-secondary)]">This pro will be notified first</p>
+          </div>
+        </div>
+      )}
+
       <div className="w-full bg-[var(--surface-overlay)] h-1.5 rounded-full mb-12 overflow-hidden max-w-md mx-auto">
-        <div 
-          className="h-full bg-[var(--accent)] transition-all duration-700 ease-out shadow-[0_0_10px_var(--accent)]" 
+        <div
+          className="h-full bg-[var(--accent)] transition-all duration-700 ease-out shadow-[0_0_10px_var(--accent)]"
           style={{ width: `${(step / 3) * 100}%` }}
         />
       </div>
 
       <form onSubmit={handleSubmit} className="glass dark:glass-dark p-12 rounded-[40px] border border-white/10 shadow-2xl relative overflow-hidden">
-        
+
         {step === 1 && (
           <div className="animate-in fade-in slide-in-from-right-4 duration-500">
             <h2 className="text-2xl font-bold mb-6">What do you need help with?</h2>
@@ -87,8 +118,8 @@ export default function RequestServicePage() {
                       key={urgency}
                       onClick={() => setFormData({ ...formData, urgency })}
                       className={`flex-1 py-3 rounded-[14px] font-bold border transition-colors ${
-                        formData.urgency === urgency 
-                          ? 'bg-[var(--accent)] text-[#000] border-[var(--accent)]' 
+                        formData.urgency === urgency
+                          ? 'bg-[var(--accent)] text-[#000] border-[var(--accent)]'
                           : 'bg-[var(--surface-base)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-[var(--text-tertiary)]'
                       }`}
                     >
@@ -153,7 +184,7 @@ export default function RequestServicePage() {
               Back
             </button>
           ) : <div></div>}
-          
+
           <button type="submit" disabled={isSubmitting} className="px-8 py-3 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] hover:opacity-90 transition-opacity">
             {step === 3 ? (isSubmitting ? 'Submitting...' : 'Submit Request') : 'Next Step'}
           </button>

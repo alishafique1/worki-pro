@@ -216,7 +216,7 @@ action redeemPoints {
 
 action submitServiceRequest {
   fn: import { submitServiceRequest } from "@src/consumer/operations",
-  entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount]
+  entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount, Provider]
 }
 
 action submitLead {

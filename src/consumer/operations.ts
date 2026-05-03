@@ -107,12 +107,17 @@ export const submitServiceRequest: SubmitServiceRequest<{
   description: string;
   urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED';
   serviceType?: string;
+  preferredProviderId?: string;
 }, ServiceRequest> = async (args, context) => {
   let serviceCategoryId = undefined;
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({ where: { slug: args.serviceType } });
     serviceCategoryId = cat?.id;
   }
+
+  const preferredProviderId = args.preferredProviderId
+    ? (await context.entities.Provider.findUnique({ where: { id: args.preferredProviderId } }))?.id
+    : undefined;
 
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
@@ -124,8 +129,9 @@ export const submitServiceRequest: SubmitServiceRequest<{
       description: args.description,
       urgency: args.urgency,
       source: 'WEBSITE',
-      status: 'NEW',
+      status: preferredProviderId ? 'ASSIGNED' : 'NEW',
       serviceCategoryId: serviceCategoryId || undefined,
+      assignedProviderId: preferredProviderId || undefined,
     }
   });
 
