@@ -6,25 +6,19 @@ export default function Login() {
   return (
     <AuthPageLayout>
       <LoginForm />
-      <br />
-      <span className="text-sm font-medium text-gray-900 dark:text-gray-900">
-        Don't have an account yet?{" "}
-        <WaspRouterLink to={routes.SignupRoute.to} className="underline">
-          go to signup
-        </WaspRouterLink>
-        .
-      </span>
-      <br />
-      <span className="text-sm font-medium text-gray-900">
-        Forgot your password?{" "}
-        <WaspRouterLink
-          to={routes.RequestPasswordResetRoute.to}
-          className="underline"
-        >
-          reset it
-        </WaspRouterLink>
-        .
-      </span>
+      <div className="mt-6 space-y-3 text-center text-sm text-[var(--text-secondary)]">
+        <p>
+          Don't have an account?{' '}
+          <WaspRouterLink to={routes.SignupRoute.to} className="text-[var(--accent)] font-semibold hover:underline">
+            Sign up free
+          </WaspRouterLink>
+        </p>
+        <p>
+          <WaspRouterLink to={routes.RequestPasswordResetRoute.to} className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
+            Forgot password?
+          </WaspRouterLink>
+        </p>
+      </div>
     </AuthPageLayout>
   );
 }

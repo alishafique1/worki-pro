@@ -33,7 +33,7 @@ export function UserDropdown({ user }: { user: Partial<UserEntity> }) {
           return (
             <DropdownMenuItem key={item.name}>
               <WaspRouterLink
-                to={item.to}
+                to={item.to as any}
                 onClick={() => {
                   setOpen(false);
                 }}

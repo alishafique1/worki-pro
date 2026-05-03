@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="col-span-1 md:col-span-1">
           <Link to="/" className="text-2xl font-black text-foreground">Worki</Link>
           <p className="mt-4 text-[var(--text-secondary)] text-sm">
-            Home services, rewarded. The smartest way to take care of your home in the GTA.
+            Expert home services, managed for you — plus real cashback on every job. Serving the GTA.
           </p>
         </div>
         
@@ -17,6 +17,9 @@ export default function Footer() {
             <li><Link to="/hvac" className="hover:text-[var(--accent)] transition-colors">HVAC Services</Link></li>
             <li><Link to="/handyman" className="hover:text-[var(--accent)] transition-colors">Handyman</Link></li>
             <li><Link to="/appliance-repair" className="hover:text-[var(--accent)] transition-colors">Appliance Repair</Link></li>
+            <li><Link to="/plumbing" className="hover:text-[var(--accent)] transition-colors">Plumbing</Link></li>
+            <li><Link to="/electrical" className="hover:text-[var(--accent)] transition-colors">Electrical</Link></li>
+            <li><Link to="/smart-home" className="hover:text-[var(--accent)] transition-colors">Smart Home</Link></li>
           </ul>
         </div>
 
@@ -30,13 +33,14 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Popular Searches</h3>
-          <ul className="space-y-2 text-[10px] text-[var(--text-secondary)]">
-            <li>Furnace repair Milton</li>
-            <li>AC installation Oakville</li>
-            <li>Emergency handyman Burlington</li>
-            <li>Appliance repair near me</li>
-            <li>HVAC contractors GTA</li>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Service Areas</h3>
+          <ul className="space-y-4 text-sm">
+            <li><Link to="/areas/milton" className="hover:text-[var(--accent)] transition-colors">Milton</Link></li>
+            <li><Link to="/areas/oakville" className="hover:text-[var(--accent)] transition-colors">Oakville</Link></li>
+            <li><Link to="/areas/burlington" className="hover:text-[var(--accent)] transition-colors">Burlington</Link></li>
+            <li><Link to="/areas/mississauga" className="hover:text-[var(--accent)] transition-colors">Mississauga</Link></li>
+            <li><Link to="/areas/brampton" className="hover:text-[var(--accent)] transition-colors">Brampton</Link></li>
+            <li><Link to="/areas/hamilton" className="hover:text-[var(--accent)] transition-colors">Hamilton</Link></li>
           </ul>
         </div>
 

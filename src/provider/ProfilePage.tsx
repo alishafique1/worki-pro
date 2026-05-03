@@ -13,6 +13,7 @@ type FormData = {
   email: string;
   website: string;
   serviceAreas: string;
+  calComUsername: string;
 };
 
 const statusBadgeClass: Record<string, string> = {
@@ -34,6 +35,7 @@ export default function ProviderProfilePage() {
     email: '',
     website: '',
     serviceAreas: '',
+    calComUsername: '',
   });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -48,6 +50,7 @@ export default function ProviderProfilePage() {
         email: (profile as any).email ?? '',
         website: (profile as any).website ?? '',
         serviceAreas: profile.serviceAreas?.join(', ') ?? '',
+        calComUsername: (profile as any).calComUsername ?? '',
       });
     }
   }, [profile]);
@@ -67,6 +70,7 @@ export default function ProviderProfilePage() {
         email: (profile as any).email ?? '',
         website: (profile as any).website ?? '',
         serviceAreas: profile.serviceAreas?.join(', ') ?? '',
+        calComUsername: (profile as any).calComUsername ?? '',
       });
     }
     setErrorMsg(null);
@@ -100,6 +104,7 @@ export default function ProviderProfilePage() {
         email: formData.email || undefined,
         website: formData.website || undefined,
         serviceAreas,
+        calComUsername: formData.calComUsername || undefined,
       });
 
       setSuccessMsg('Profile updated ✓');
@@ -160,6 +165,19 @@ export default function ProviderProfilePage() {
               {field('Email', (profile as any).email)}
               {field('Website', (profile as any).website)}
             </div>
+            {(profile as any).calComUsername && (
+              <div className="pt-2 border-t border-[var(--border-default)]">
+                <p className="text-sm text-[var(--text-secondary)] mb-1">Cal.com Booking Link</p>
+                <a
+                  href={`https://cal.com/${(profile as any).calComUsername}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[var(--accent)] hover:underline"
+                >
+                  cal.com/{(profile as any).calComUsername}
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Verification Status */}
@@ -220,6 +238,7 @@ export default function ProviderProfilePage() {
             { label: 'Phone *', key: 'phone' as const },
             { label: 'Email', key: 'email' as const },
             { label: 'Website', key: 'website' as const },
+            { label: 'Cal.com Username', key: 'calComUsername' as const },
           ].map(({ label, key }) => (
             <div key={key}>
               <label className="block text-sm text-[var(--text-secondary)] mb-1">{label}</label>
@@ -229,6 +248,21 @@ export default function ProviderProfilePage() {
                 onChange={(e) => setFormData((prev) => ({ ...prev, [key]: e.target.value }))}
                 className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
               />
+              {key === 'calComUsername' && (
+                <p className="text-xs text-[var(--text-tertiary)] mt-1.5">
+                  Your cal.com username so clients can book you directly.{' '}
+                  {formData.calComUsername && (
+                    <a
+                      href={`https://cal.com/${formData.calComUsername}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-[var(--text-secondary)]"
+                    >
+                      cal.com/{formData.calComUsername}
+                    </a>
+                  )}
+                </p>
+              )}
             </div>
           ))}
 

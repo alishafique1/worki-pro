@@ -1,254 +1,334 @@
-import React from 'react';
-import { useQuery, useAction, getProviderAppointments, markJobCompleted } from 'wasp/client/operations';
+import React from "react";
+import { Link } from "react-router";
+import {
+  useAction,
+  useQuery,
+  getProviderAppointments,
+  markJobCompleted,
+  updateProviderAppointment,
+  sendProviderMessage,
+} from "wasp/client/operations";
+import {
+  CalendarClock,
+  CheckCircle2,
+  Clock3,
+  MessageSquareText,
+  Send,
+  UserRound,
+} from "lucide-react";
 
-const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; dot: string }> = {
-  PROPOSED:    { label: 'Proposed',    bg: 'bg-[var(--surface-overlay)]',    text: 'text-[var(--text-secondary)]', dot: 'bg-yellow-400' },
-  CONFIRMED:   { label: 'Confirmed',  bg: 'bg-blue-500/10',                 text: 'text-blue-400',                dot: 'bg-blue-400' },
-  RESCHEDULED: { label: 'Rescheduled',bg: 'bg-orange-500/10',               text: 'text-orange-400',              dot: 'bg-orange-400' },
-  COMPLETED:   { label: 'Completed',  bg: 'bg-green-500/10',                text: 'text-green-400',               dot: 'bg-green-400' },
-  CANCELLED:   { label: 'Cancelled',  bg: 'bg-red-500/10',                  text: 'text-red-400',                dot: 'bg-red-400' },
-  NO_SHOW:     { label: 'No Show',    bg: 'bg-red-500/10',                  text: 'text-red-400',                dot: 'bg-red-400' },
+const formatStatus = (s: string) =>
+  s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+const toDateTimeLocal = (value?: string | Date | null) => {
+  if (!value) return "";
+  const date = new Date(value);
+  const offsetDate = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60000,
+  );
+  return offsetDate.toISOString().slice(0, 16);
 };
 
-const URGENCY_CONFIG: Record<string, { label: string; badge: string }> = {
-  EMERGENCY: { label: 'Emergency', badge: 'bg-red-500/20 text-red-400 border border-red-500/30' },
-  STANDARD:  { label: 'Standard',  badge: 'bg-[var(--surface-overlay)] text-[var(--text-secondary)]' },
-  PLANNED:   { label: 'Planned',   badge: 'bg-blue-500/10 text-blue-400 border border-blue-500/20' },
-};
+function ProviderMessageComposer({ requestId }: { requestId: string }) {
+  const sendMessage = useAction(sendProviderMessage);
+  const [body, setBody] = React.useState("");
+  const [isSending, setIsSending] = React.useState(false);
 
-function isToday(date: Date): boolean {
-  const today = new Date();
-  return date.getFullYear() === today.getFullYear() &&
-    date.getMonth() === today.getMonth() &&
-    date.getDate() === today.getDate();
-}
-
-function isPast(date: Date): boolean {
-  return date.getTime() < Date.now();
-}
-
-function formatCountdown(date: Date): string {
-  const diff = date.getTime() - Date.now();
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  if (days > 0) return `in ${days}d ${hours}h`;
-  if (hours > 0) return `in ${hours}h`;
-  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  return `in ${mins}m`;
-}
-
-export default function ProviderAppointmentsPage() {
-  const { data: appts, isLoading } = useQuery(getProviderAppointments);
-  const markCompletedFn = useAction(markJobCompleted);
-
-  const handleComplete = async (id: string) => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!body.trim()) return;
+    setIsSending(true);
     try {
-      await markCompletedFn({ appointmentId: id });
-      alert("Job marked as completed!");
-    } catch (e: any) {
-      alert("Error updating job: " + e.message);
+      await sendMessage({ requestId, body });
+      setBody("");
+    } catch (error: any) {
+      alert(error?.message || "Could not send message.");
+    } finally {
+      setIsSending(false);
     }
   };
 
-  const upcomingAppts = appts?.filter((a: any) =>
-    a.status !== 'COMPLETED' && a.status !== 'CANCELLED'
-  ) ?? [];
-  const pastAppts = appts?.filter((a: any) =>
-    a.status === 'COMPLETED' || a.status === 'CANCELLED'
-  ) ?? [];
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="mt-4 flex flex-col gap-3 sm:flex-row"
+    >
+      <label className="sr-only" htmlFor={`provider-message-${requestId}`}>
+        Message customer
+      </label>
+      <input
+        id={`provider-message-${requestId}`}
+        value={body}
+        onChange={(event) => setBody(event.target.value)}
+        placeholder="Send an update to the customer..."
+        maxLength={1000}
+        className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+      />
+      <button
+        type="submit"
+        disabled={isSending || !body.trim()}
+        className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
+      </button>
+    </form>
+  );
+}
+
+function AppointmentCard({ appt }: { appt: any }) {
+  const updateAppointment = useAction(updateProviderAppointment);
+  const markCompletedFn = useAction(markJobCompleted);
+  const [scheduledAt, setScheduledAt] = React.useState(
+    toDateTimeLocal(appt.scheduledAt),
+  );
+  const [providerNotes, setProviderNotes] = React.useState(
+    appt.providerNotes || "",
+  );
+  const [status, setStatus] = React.useState(appt.status || "PROPOSED");
+  const [isSaving, setIsSaving] = React.useState(false);
+  const request = appt.serviceRequest;
+  const messages = request?.communicationLogs || [];
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updateAppointment({
+        appointmentId: appt.id,
+        scheduledAt: scheduledAt || undefined,
+        status,
+        providerNotes,
+      });
+      alert("Appointment updated.");
+    } catch (error: any) {
+      alert(error?.message || "Could not update appointment.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleComplete = async () => {
+    try {
+      await markCompletedFn({ appointmentId: appt.id });
+      alert("Job marked as completed.");
+    } catch (error: any) {
+      alert(error?.message || "Error updating job.");
+    }
+  };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-10">
-
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-4xl font-extrabold tracking-tight">Appointments</h1>
-          <p className="text-[var(--text-secondary)] mt-1">
-            {upcomingAppts.length > 0
-              ? `You have ${upcomingAppts.length} upcoming appointment${upcomingAppts.length > 1 ? 's' : ''}`
-              : 'No upcoming appointments'}
-          </p>
+    <article className="space-y-5 rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6 shadow-sm">
+      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+        <div className="min-w-0">
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-[var(--surface-overlay)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
+              {formatStatus(appt.status)}
+            </span>
+            {request?.urgency && (
+              <span className="rounded-full bg-[var(--surface-overlay)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
+                {request.urgency}
+              </span>
+            )}
+          </div>
+          <h2 className="text-xl font-bold leading-snug">
+            {request?.description || "Customer request"}
+          </h2>
+          <div className="mt-3 grid gap-2 text-sm text-[var(--text-secondary)] sm:grid-cols-2">
+            <p className="flex items-center gap-2">
+              <UserRound className="size-4" /> {request?.name || "Customer"}
+            </p>
+            <p className="flex items-center gap-2">
+              <CalendarClock className="size-4" />{" "}
+              {appt.scheduledAt
+                ? new Date(appt.scheduledAt).toLocaleString()
+                : "Pending scheduling"}
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
-          <span className="text-sm font-medium text-[var(--text-secondary)]">Live sync</span>
-        </div>
+        {appt.status !== "COMPLETED" && (
+          <button
+            onClick={handleComplete}
+            className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#567a58] px-5 py-3 text-sm font-bold text-white"
+          >
+            <CheckCircle2 className="size-4" /> Mark Completed
+          </button>
+        )}
       </div>
 
-      {/* Upcoming Appointments */}
-      <section>
-        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-          <span className="w-2 h-2 bg-[var(--accent)] rounded-full"></span>
-          Upcoming
-        </h2>
-
-        {isLoading && (
+      <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
+          <div className="mb-4 flex items-center gap-2 text-sm font-bold">
+            <Clock3 className="size-4 text-[var(--accent)]" /> Booking controls
+          </div>
           <div className="space-y-4">
-            {[1, 2].map(i => (
-              <div key={i} className="animate-pulse h-48 bg-[var(--surface-raised)] rounded-[24px] border border-[var(--border-default)]" />
-            ))}
+            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+              Appointment date and time
+              <input
+                type="datetime-local"
+                value={scheduledAt}
+                onChange={(event) => setScheduledAt(event.target.value)}
+                className="mt-2 w-full rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+              />
+            </label>
+            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+              Repair status
+              <select
+                value={status}
+                onChange={(event) => setStatus(event.target.value)}
+                className="mt-2 w-full rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+              >
+                <option value="PROPOSED">Proposed</option>
+                <option value="CONFIRMED">Confirmed</option>
+                <option value="RESCHEDULED">Rescheduled</option>
+                <option value="CANCELLED">Cancelled</option>
+                <option value="NO_SHOW">No show</option>
+              </select>
+            </label>
+            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+              Internal/provider notes
+              <textarea
+                rows={3}
+                value={providerNotes}
+                onChange={(event) => setProviderNotes(event.target.value)}
+                className="mt-2 w-full resize-none rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+                placeholder="Parts needed, arrival window, access notes..."
+              />
+            </label>
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="w-full rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSaving ? "Saving..." : "Save booking update"}
+            </button>
           </div>
-        )}
-
-        {!isLoading && upcomingAppts.length === 0 && (
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-12 text-center">
-            <div className="w-16 h-16 bg-[var(--surface-overlay)] rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">
-              📅
-            </div>
-            <h3 className="text-lg font-bold mb-1">All caught up</h3>
-            <p className="text-[var(--text-secondary)] text-sm">No upcoming appointments right now.</p>
-          </div>
-        )}
-
-        <div className="space-y-4">
-          {upcomingAppts.map((appt: any) => {
-            const sr = appt.serviceRequest;
-            const scheduledAt = appt.scheduledAt ? new Date(appt.scheduledAt) : null;
-            const statusCfg = STATUS_CONFIG[appt.status] ?? STATUS_CONFIG.PROPOSED;
-            const urgencyCfg = sr?.urgency ? URGENCY_CONFIG[sr.urgency] ?? URGENCY_CONFIG.STANDARD : null;
-            const isScheduledSoon = scheduledAt && !isPast(scheduledAt) && scheduledAt.getTime() - Date.now() < 24 * 60 * 60 * 1000;
-
-            return (
-              <div key={appt.id} className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)]/40 transition-colors">
-
-                {/* Card header row */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-5">
-                  <div className="flex items-center gap-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusCfg.bg} ${statusCfg.text}`}>
-                      <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${statusCfg.dot}`} />
-                      {statusCfg.label}
-                    </span>
-                    {urgencyCfg && (
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${urgencyCfg.badge}`}>
-                        {urgencyCfg.label}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    {scheduledAt ? (
-                      <div className="text-right">
-                        <p className={`font-bold text-lg ${isScheduledSoon && !isPast(scheduledAt) ? 'text-[var(--accent)]' : ''}`}>
-                          {isToday(scheduledAt) ? 'Today' : scheduledAt.toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' })}
-                        </p>
-                        <p className="text-sm text-[var(--text-secondary)]">
-                          {scheduledAt.toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' })}
-                          {' — '}
-                          <span className={isScheduledSoon && !isPast(scheduledAt) ? 'text-[var(--accent)] font-bold' : ''}>
-                            {formatCountdown(scheduledAt)}
-                          </span>
-                        </p>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-[var(--text-secondary)] font-medium">No time set</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Job details */}
-                <div className="mb-5">
-                  <h3 className="text-xl font-bold mb-1 line-clamp-2">{sr?.description || 'No description'}</h3>
-                  {sr?.serviceCategory && (
-                    <p className="text-sm text-[var(--text-secondary)]">{sr.serviceCategory.name}</p>
-                  )}
-                </div>
-
-                {/* Info grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 p-4 bg-[var(--surface-base)] rounded-[16px] border border-[var(--border-default)]">
-                  <div>
-                    <p className="text-xs text-[var(--text-secondary)] font-semibold uppercase tracking-wider mb-1">Homeowner</p>
-                    <p className="font-bold text-sm">{sr?.name || 'Unknown'}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[var(--text-secondary)] font-semibold uppercase tracking-wider mb-1">Phone</p>
-                    <a href={`tel:${sr?.phone}`} className="font-bold text-sm text-[var(--accent)] hover:underline">
-                      {sr?.phone || 'N/A'}
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[var(--text-secondary)] font-semibold uppercase tracking-wider mb-1">Location</p>
-                    <p className="font-bold text-sm">{[sr?.city, sr?.postalCode].filter(Boolean).join(', ') || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[var(--text-secondary)] font-semibold uppercase tracking-wider mb-1">Property</p>
-                    <p className="font-bold text-sm">
-                      {[sr?.propertyType, sr?.ownOrRent].filter(Boolean).join(' · ') || 'N/A'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Notes */}
-                {(appt.providerNotes || appt.consumerNotes) && (
-                  <div className="mb-5 space-y-2">
-                    {appt.consumerNotes && (
-                      <div className="p-3 bg-blue-500/5 border border-blue-500/20 rounded-[12px]">
-                        <p className="text-xs font-bold text-blue-400 mb-1">Customer Notes</p>
-                        <p className="text-sm">{appt.consumerNotes}</p>
-                      </div>
-                    )}
-                    {appt.providerNotes && (
-                      <div className="p-3 bg-[var(--surface-overlay)] rounded-[12px]">
-                        <p className="text-xs font-bold text-[var(--text-secondary)] mb-1">Your Notes</p>
-                        <p className="text-sm">{appt.providerNotes}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Actions */}
-                {appt.status !== 'COMPLETED' && appt.status !== 'CANCELLED' && (
-                  <div className="flex gap-3 pt-2 border-t border-[var(--border-default)]">
-                    <a
-                      href={`tel:${sr?.phone}`}
-                      className="flex-1 px-5 py-3 bg-[var(--surface-overlay)] border border-[var(--border-default)] rounded-[22px] font-bold text-center hover:border-[var(--accent)] transition-colors"
-                    >
-                      Call Customer
-                    </a>
-                    <button
-                      onClick={() => handleComplete(appt.id)}
-                      className="flex-1 px-5 py-3 bg-[var(--accent)] text-[#000] rounded-[22px] font-bold hover:scale-[1.02] transition-transform"
-                    >
-                      Mark Completed
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </div>
-      </section>
 
-      {/* Past Appointments */}
-      {pastAppts.length > 0 && (
-        <section>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 bg-[var(--text-secondary)] rounded-full opacity-40"></span>
-            Past Appointments
-          </h2>
-          <div className="space-y-3">
-            {pastAppts.map((appt: any) => {
-              const sr = appt.serviceRequest;
-              const scheduledAt = appt.scheduledAt ? new Date(appt.scheduledAt) : null;
-              const statusCfg = STATUS_CONFIG[appt.status] ?? STATUS_CONFIG.PROPOSED;
-              return (
-                <div key={appt.id} className="bg-[var(--surface-raised)] border border-[var(--border-default)]/50 rounded-[16px] p-4 flex justify-between items-center opacity-75">
-                  <div className="flex items-center gap-3">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${statusCfg.bg} ${statusCfg.text}`}>
-                      {statusCfg.label}
-                    </span>
-                    <div>
-                      <p className="font-bold text-sm line-clamp-1">{sr?.description || 'No description'}</p>
-                      <p className="text-xs text-[var(--text-secondary)]">
-                        {scheduledAt ? scheduledAt.toLocaleDateString('en-CA') : 'No date'} · {sr?.name || 'Unknown'}
+        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
+          <div className="mb-3 flex items-center gap-2 text-sm font-bold">
+            <MessageSquareText className="size-4 text-[var(--accent)]" />{" "}
+            Customer messages
+          </div>
+          <div className="max-h-80 space-y-3 overflow-y-auto pr-1">
+            {messages.length === 0 ? (
+              <p className="text-sm text-[var(--text-secondary)]">
+                No customer messages yet. Send the first update after
+                scheduling.
+              </p>
+            ) : (
+              messages.map((message: any) => {
+                const fromProvider = message.direction === "OUTBOUND";
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex ${
+                      fromProvider ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-[18px] px-4 py-3 text-sm ${
+                        fromProvider
+                          ? "bg-[var(--accent)] text-black"
+                          : "bg-[var(--surface-raised)] text-foreground"
+                      }`}
+                    >
+                      <p className="font-semibold">
+                        {fromProvider ? "You" : message.from}
+                      </p>
+                      <p className="mt-1 leading-5">{message.body}</p>
+                      <p className="mt-2 text-[10px] opacity-70">
+                        {new Date(message.createdAt).toLocaleString()}
                       </p>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
-        </section>
+          {request?.id && <ProviderMessageComposer requestId={request.id} />}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export default function ProviderAppointmentsPage() {
+  const { data: appts, isLoading, error } = useQuery(getProviderAppointments);
+
+  return (
+    <div className="mx-auto max-w-6xl space-y-8 p-8">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight">
+            Bookings & Repairs
+          </h1>
+          <p className="mt-2 text-[var(--text-secondary)]">
+            Set appointment details, update repair status, and message customers
+            for accepted work.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            to="/provider/dashboard"
+            className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-bold hover:border-[var(--accent)]"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/provider/leads"
+            className="rounded-[18px] bg-[var(--accent)] px-4 py-2 text-sm font-bold text-black"
+          >
+            View leads
+          </Link>
+        </div>
+      </div>
+
+      {isLoading && (
+        <div className="space-y-4">
+          {[0, 1].map((item) => (
+            <div
+              key={item}
+              className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6"
+            >
+              <div className="h-5 w-1/2 animate-pulse rounded bg-[var(--surface-overlay)]" />
+              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[var(--surface-overlay)]" />
+              <div className="mt-6 h-24 animate-pulse rounded-[18px] bg-[var(--surface-overlay)]" />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!isLoading && error && (
+        <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-8">
+          <p className="text-lg font-semibold">Appointments could not load</p>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+            Refresh the page and try again before updating bookings or sending
+            messages.
+          </p>
+        </div>
+      )}
+
+      {!isLoading && !error && appts?.length === 0 && (
+        <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-10 text-center text-[var(--text-secondary)]">
+          <p className="font-semibold text-foreground">No appointments yet</p>
+          <p className="mt-2 text-sm">
+            Accepted leads will appear here so you can add schedule details and
+            customer updates.
+          </p>
+          <Link
+            to="/provider/leads"
+            className="mt-4 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+          >
+            Open lead inbox →
+          </Link>
+        </div>
+      )}
+
+      {!error && !!appts?.length && (
+        <div className="space-y-6">
+          {appts.map((appt: any) => (
+            <AppointmentCard key={appt.id} appt={appt} />
+          ))}
+        </div>
       )}
     </div>
   );

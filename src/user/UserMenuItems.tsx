@@ -24,7 +24,7 @@ export const UserMenuItems = ({
         return (
           <li key={item.name}>
             <WaspRouterLink
-              to={item.to}
+              to={item.to as any}
               onClick={onItemClick}
               className="text-foreground hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium leading-7 transition-colors"
             >

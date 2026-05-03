@@ -1,170 +1,314 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router';
-import heroImg from '../client/static/modern_home_service_hero_1777676793583.png';
-import rewardsImg from '../client/static/rewards_and_points_visual_1777677025069.png';
+import {
+  Button,
+  CategoryCard,
+  Container,
+  CTASection,
+  FAQAccordion,
+  FeatureCard,
+  Footer,
+  Hero,
+  ProviderBenefitCard,
+  SectionHeader,
+  StatsCard,
+  StepCard,
+  TestimonialCard,
+  TrustBadge,
+} from "./marketplace/components";
+import {
+  categories,
+  customerSteps,
+  faqs,
+  internalFeatures,
+  painPoints,
+  providerBenefits,
+  providerSteps,
+  solutionSteps,
+  trustFeatures,
+} from "./marketplace/content";
+import {
+  BadgeCheck,
+  ClipboardCheck,
+  MapPin,
+  ShieldCheck,
+  UsersRound,
+} from "lucide-react";
 
 export default function LandingPage() {
-  const [zip, setZip] = React.useState('');
-  const navigate = useNavigate();
-
-  const handleQuickStart = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Redirect to request page with pre-filled postal code
-    navigate(`/request-service?postalCode=${zip}`);
-  };
-
   return (
-    <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark selection:bg-[var(--accent)] selection:text-black">
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1 text-left z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold uppercase tracking-wider mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]"></span>
-              </span>
-              Now serving Milton, Oakville & Burlington
-            </div>
-            <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
-              Home Services, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-[#ff80b5]">Rewarded.</span>
-            </h1>
-            <p className="text-xl text-[var(--text-secondary)] max-w-xl mb-10 leading-relaxed">
-              The smartest way to maintain your home. Connect with top-tier HVAC and handyman pros while earning points for every dollar spent.
-            </p>
-            
-            <form onSubmit={handleQuickStart} className="max-w-md glass dark:glass-dark p-2 rounded-[28px] border border-white/10 flex items-center gap-2 mb-10 group focus-within:border-[var(--accent)]/50 transition-all">
-              <input 
-                type="text" 
-                placeholder="Enter Postal Code" 
-                value={zip}
-                onChange={(e) => setZip(e.target.value)}
-                className="flex-1 bg-transparent border-none focus:ring-0 px-6 py-2 text-lg outline-none"
-              />
-              <button 
-                type="submit"
-                className="px-6 py-3 bg-[var(--accent)] text-black font-black rounded-2xl hover:scale-105 transition-transform whitespace-nowrap"
-              >
-                Start Concierge
-              </button>
-            </form>
+    <main className="min-h-screen bg-[#000000] font-sans selection:bg-[#F2B5D7] selection:text-[#0C110F]">
+      <Hero />
 
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/request-service"
-                className="px-10 py-5 bg-[var(--accent)] text-black font-black rounded-3xl text-lg hover:shadow-[0_0_30px_rgba(242,181,215,0.4)] transition-all hover:-translate-y-1"
-              >
-                Request Service
-              </Link>
-              <Link
-                to="/how-rewards-work"
-                className="px-10 py-5 glass dark:glass-dark text-foreground font-bold rounded-3xl text-lg hover:bg-[var(--surface-overlay)] transition-all"
-              >
-                How it Works
-              </Link>
-            </div>
+      <section className="bg-[#000000] pb-6">
+        <Container>
+          <div className="grid gap-3 rounded-[23px] border border-white/10 bg-[#1B1B1C] p-3 sm:grid-cols-3 sm:p-4">
+            <StatsCard value="Local-first" label="Service model" />
+            <StatsCard value="Select pros" label="Provider onboarding" />
+            <StatsCard value="One place" label="Bookings, messages, updates" />
           </div>
-          
-          <div className="flex-1 relative">
-            <div className="relative z-10 rounded-[40px] overflow-hidden shadow-2xl border border-white/10 rotate-2 hover:rotate-0 transition-transform duration-700">
-              <img src={heroImg} alt="Modern Home" className="w-full h-auto" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8">
-                <p className="text-white font-bold text-lg">"The best HVAC service in Milton!"</p>
-                <p className="text-white/60 text-sm">— Sarah J., Homeowner</p>
-              </div>
-            </div>
-            {/* Abstract blobs for modern feel */}
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-[var(--accent)]/20 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-          </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-32 px-6 lg:px-8 bg-[var(--surface-base)]/50 backdrop-blur-sm border-y border-[var(--border-default)]">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-20">
-            <h2 className="text-4xl font-black tracking-tight mb-4">Our Core Services</h2>
-            <p className="text-[var(--text-secondary)] text-lg">Top-rated professionals, guaranteed results.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: 'HVAC', desc: 'Heating, Cooling & Air Quality', link: '/hvac', icon: '❄️' },
-              { title: 'Handyman', desc: 'Repairs, Mounting & Assembly', link: '/handyman', icon: '🔨' },
-              { title: 'Appliance Repair', desc: 'Kitchen & Laundry Repairs', link: '/appliance-repair', icon: '⚡' }
-            ].map((service) => (
-              <Link 
-                to={service.link} 
-                key={service.title}
-                className="group p-10 glass dark:glass-dark rounded-[40px] border border-[var(--border-default)] hover:border-[var(--accent)] transition-all hover-lift"
-              >
-                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform">{service.icon}</div>
-                <h3 className="text-2xl font-black mb-3">{service.title}</h3>
-                <p className="text-[var(--text-secondary)] mb-8">{service.desc}</p>
-                <div className="text-[var(--accent)] font-bold flex items-center gap-2">
-                  Learn More <span className="group-hover:translate-x-2 transition-transform">→</span>
-                </div>
-              </Link>
+      <section id="problem" className="bg-[#F7F3EF] py-16 sm:py-20">
+        <Container>
+          <SectionHeader
+            eyebrow="The problem"
+            title="Finding a reliable pro should not feel like detective work."
+            description="Most homeowners still rely on group chats, old referrals, missed calls, and directories that do not tell the full story."
+          />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {painPoints.map((point) => (
+              <FeatureCard
+                key={point.title}
+                icon={point.icon}
+                title={point.title}
+                description={point.description}
+              />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Rewards Highlight */}
-      <section className="py-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row-reverse items-center gap-20">
-          <div className="flex-1 text-left">
-            <h2 className="text-5xl font-black tracking-tight mb-8">
-              Collect Points. <br />
-              <span className="text-[var(--accent)]">Spend on Rewards.</span>
-            </h2>
-            <p className="text-xl text-[var(--text-secondary)] mb-10 leading-relaxed">
-              Every job you book through Worki earns you real cash-back rewards. 100 points = $1 — redeem for gift cards or service credits.
-            </p>
-            <div className="space-y-6">
-              {[
-                'Submit a request — earn $5 instantly',
-                'Appointment confirmed — earn another $5',
-                'Job completed — earn $50 cash-back'
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-4 text-lg font-bold">
-                  <div className="w-8 h-8 rounded-xl bg-[var(--accent)] text-black flex items-center justify-center text-xs">✓</div>
-                  {item}
-                </div>
+      <section id="how-it-works" className="bg-[#FEFEFD] py-16 sm:py-20">
+        <Container>
+          <div className="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <SectionHeader
+              align="left"
+              eyebrow="The solution"
+              title="One place to request local home services."
+              description="Worki turns a messy service request into a structured intake flow so homeowners can share the right details from the start."
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {solutionSteps.map((step) => (
+                <FeatureCard
+                  key={step.title}
+                  icon={step.icon}
+                  title={step.title}
+                  description={step.description}
+                />
               ))}
             </div>
           </div>
-          <div className="flex-1">
-             <div className="p-4 glass dark:glass-dark rounded-[50px] shadow-2xl relative">
-               <img src={rewardsImg} alt="Rewards Visual" className="w-full h-auto rounded-[40px]" />
-               <div className="absolute -top-10 -left-10 p-6 glass rounded-3xl shadow-xl animate-bounce">
-                 <p className="text-sm font-bold">Wallet: 2,500 pts</p>
-               </div>
-             </div>
-          </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Trust & CTA */}
-      <section className="py-32 px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto glass dark:glass-dark p-16 sm:p-24 rounded-[60px] text-center border border-white/10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 to-transparent"></div>
-          <h2 className="text-5xl sm:text-7xl font-black tracking-tighter mb-8 relative z-10">Ready to get <br /> <span className="text-[var(--accent)]">started?</span></h2>
-          <p className="text-xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto relative z-10">
-            Join thousands of GTA homeowners who are already earning rewards for their home maintenance.
-          </p>
-          <div className="relative z-10">
-            <Link
-              to="/signup"
-              className="inline-block px-14 py-6 bg-foreground text-background font-black rounded-[30px] text-xl hover:scale-105 transition-transform"
-            >
-              Join Worki Today
-            </Link>
+      <section id="services" className="bg-[#F7F3EF] py-16 sm:py-20">
+        <Container>
+          <SectionHeader
+            eyebrow="Marketplace categories"
+            title="The service categories available in Worki today."
+            description="Request HVAC, handyman, plumbing, electrical, appliance repair, or smart home help from the live service form."
+          />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.name}
+                icon={category.icon}
+                name={category.name}
+                description={category.description}
+              />
+            ))}
           </div>
-        </div>
+        </Container>
       </section>
-    </div>
+
+      <section className="bg-[#000000] py-16 sm:py-20">
+        <Container>
+          <SectionHeader
+            eyebrow="Two-sided marketplace"
+            title="Simple for homeowners. Useful for providers."
+            description="The customer journey and provider workflow are designed together so every request has better context from the start."
+            className="text-[#FEFEFD] [&_h2]:text-[#FEFEFD] [&_p]:text-[#CCC9D8]"
+          />
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            <div className="rounded-[23px] border border-white/10 bg-[#1B1B1C] p-5 sm:p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex size-11 items-center justify-center rounded-[14px] bg-[#F2B5D7] text-[#0C110F]">
+                  <UsersRound className="size-5" />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-[#FEFEFD]">
+                    For customers
+                  </p>
+                  <p className="text-sm text-[#CCC9D8]">
+                    Less chasing. More clarity.
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {customerSteps.map((step) => (
+                  <StepCard
+                    key={step.title}
+                    step={step.step}
+                    title={step.title}
+                    description={step.description}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[23px] border border-white/10 bg-[#1B1B1C] p-5 sm:p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex size-11 items-center justify-center rounded-[14px] bg-[#F2B5D7] text-[#0C110F]">
+                  <ClipboardCheck className="size-5" />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-[#FEFEFD]">
+                    For providers
+                  </p>
+                  <p className="text-sm text-[#CCC9D8]">
+                    Better leads. Less admin.
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {providerSteps.map((step) => (
+                  <StepCard
+                    key={step.title}
+                    step={step.step}
+                    title={step.title}
+                    description={step.description}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-[#FEFEFD] py-16 sm:py-20">
+        <Container>
+          <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <TrustBadge
+                icon={<BadgeCheck className="size-4" />}
+                label="Internal roadmap"
+              />
+              <SectionHeader
+                align="left"
+                title="Future assistance stays behind the scenes."
+                description="Any automation is framed as internal support for clearer requests and operations. Worki's live customer flow is the service request form."
+                className="mt-5"
+              />
+              <Button href="/request-service" className="mt-6">
+                Request Service
+              </Button>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {internalFeatures.map((feature) => (
+                <FeatureCard
+                  key={feature.title}
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+                />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="trust" className="bg-[#F7F3EF] py-16 sm:py-20">
+        <Container>
+          <SectionHeader
+            eyebrow="Trust layer"
+            title="Built for trust from the first click."
+            description="Worki gives customers and providers shared context, clearer expectations, and a local-first marketplace foundation."
+          />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {trustFeatures.map((feature) => (
+              <FeatureCard
+                key={feature.title}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="providers" className="bg-[#FEFEFD] py-16 sm:py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <TrustBadge
+                icon={<MapPin className="size-4" />}
+                label="Provider applications open"
+              />
+              <SectionHeader
+                align="left"
+                title="Apply to become a Worki provider."
+                description="Providers can apply to be considered for categories and service areas supported by the marketplace."
+                className="mt-5"
+              />
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Button href="/providers/apply">Become a Provider</Button>
+                <Button href="/request-service" variant="secondary">
+                  Request Service
+                </Button>
+              </div>
+              <p className="mt-4 text-sm text-[#797886]">
+                Provider availability depends on category and service area.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {providerBenefits.map((benefit) => (
+                <ProviderBenefitCard
+                  key={benefit.title}
+                  title={benefit.title}
+                  description={benefit.description}
+                />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-[#FEFEFD] py-16 sm:py-20">
+        <Container>
+          <div className="grid items-start gap-8 lg:grid-cols-[0.75fr_1.25fr]">
+            <SectionHeader
+              align="left"
+              eyebrow="Marketplace foundation"
+              title="Starting local. Built to scale."
+              description="Worki operates locally first so the marketplace can grow around supported categories, provider coverage, and real service demand."
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TestimonialCard />
+              <FeatureCard
+                icon={<ShieldCheck className="size-5" />}
+                title="Select-provider model"
+                description="Supply quality comes before broad coverage or vanity metrics."
+              />
+              <FeatureCard
+                icon={<MapPin className="size-5" />}
+                title="Local service rollout"
+                description="Coverage expands by city, category, and provider availability."
+              />
+              <FeatureCard
+                icon={<ClipboardCheck className="size-5" />}
+                title="Marketplace foundation"
+                description="Requests, appointments, provider applications, and status updates can scale from the same structure."
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="faq" className="bg-[#F7F3EF] py-16 sm:py-20">
+        <Container>
+          <SectionHeader
+            eyebrow="FAQ"
+            title="Questions before requesting service?"
+            description="Straight answers for homeowners and providers."
+          />
+          <div className="mx-auto mt-10 max-w-3xl">
+            <FAQAccordion faqs={faqs} />
+          </div>
+        </Container>
+      </section>
+
+      <CTASection />
+      <Footer />
+    </main>
   );
 }

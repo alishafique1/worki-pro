@@ -1,32 +1,14 @@
-const ANNOUNCEMENT_URL = "https://github.com/wasp-lang/wasp";
-
 export function Announcement() {
   return (
-    <div className="from-accent to-secondary text-primary-foreground relative flex w-full items-center justify-center gap-3 bg-linear-to-r p-3 text-center font-semibold">
+    <div className="relative flex w-full items-center justify-center gap-3 bg-[#000000] px-4 py-3 text-center text-sm font-medium text-[#FEFEFD]">
+      <span className="hidden text-[#CCC9D8] sm:inline">
+        Local home services are live for request intake.
+      </span>
       <a
-        href={ANNOUNCEMENT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hidden cursor-pointer transition-opacity hover:opacity-90 hover:drop-shadow-sm lg:block"
+        href="/request-service"
+        className="rounded-[22px] bg-[#F2B5D7] px-3 py-1 text-xs font-semibold text-[#0C110F] transition duration-200 hover:bg-[#f5c6e1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2B5D7]"
       >
-        Support Open-Source Software!
-      </a>
-      <div className="bg-primary-foreground/20 hidden w-0.5 self-stretch lg:block"></div>
-      <a
-        href={ANNOUNCEMENT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-background/20 hover:bg-background/30 hidden cursor-pointer rounded-full px-2.5 py-1 text-xs tracking-wider transition-colors lg:block"
-      >
-        Star Our Repo on Github ⭐️ →
-      </a>
-      <a
-        href={ANNOUNCEMENT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-background/20 hover:bg-background/30 cursor-pointer rounded-full px-2.5 py-1 text-xs transition-colors lg:hidden"
-      >
-        ⭐️ Star the Our Repo and Support Open-Source! ⭐️
+        Request Service
       </a>
     </div>
   );

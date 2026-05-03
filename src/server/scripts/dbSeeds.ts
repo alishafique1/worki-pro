@@ -1,6 +1,44 @@
 import { faker } from "@faker-js/faker";
 import type { PrismaClient } from "@prisma/client";
 import { type User } from "wasp/entities";
+import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/utils";
+
+const LEGACY_TEST_PASSWORD = "Password123!";
+const QA_TEST_PASSWORD = "WorkiTest123";
+
+async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, password: string) {
+  const providerId = createProviderId("email", email);
+  const existingIdentity = await prisma.authIdentity.findUnique({
+    where: { providerName_providerUserId: providerId },
+  });
+
+  if (existingIdentity) return;
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new Error(`Cannot create auth identity: user ${email} not found`);
+  }
+
+  const providerData = await sanitizeAndSerializeProviderData({
+    hashedPassword: password,
+    isEmailVerified: true,
+    emailVerificationSentAt: null,
+    passwordResetSentAt: null,
+  });
+
+  await prisma.auth.create({
+    data: {
+      userId: user.id,
+      identities: {
+        create: {
+          providerName: providerId.providerName,
+          providerUserId: providerId.providerUserId,
+          providerData,
+        },
+      },
+    },
+  });
+}
 
 // ─── Default Service Categories ────────────────────────────────────────────
 export const DEFAULT_VENDOR_CATEGORIES = [
@@ -53,6 +91,23 @@ export async function seedMockUsers(prisma: PrismaClient) {
       }
     });
   }
+  await ensureEmailAuthIdentity(prisma, "test@worki.ai", LEGACY_TEST_PASSWORD);
+
+  // Additional QA account used in docs/manual testing.
+  let qaConsumer = await prisma.user.findUnique({ where: { username: "consumer.test@worki.ai" } });
+  if (!qaConsumer) {
+    qaConsumer = await prisma.user.create({
+      data: {
+        email: "consumer.test@worki.ai",
+        username: "consumer.test@worki.ai",
+        firstName: "Consumer",
+        lastName: "Tester",
+        role: "CONSUMER",
+        status: "ACTIVE",
+      }
+    });
+  }
+  await ensureEmailAuthIdentity(prisma, "consumer.test@worki.ai", QA_TEST_PASSWORD);
 
   // Ensure consumer has a reward account
   const rewardAcct = await prisma.rewardAccount.findUnique({ where: { consumerId: consumer.id } });
@@ -68,12 +123,12 @@ export async function seedMockUsers(prisma: PrismaClient) {
   }
 
   // 2. Ensure test provider exists
-  let providerUser = await prisma.user.findUnique({ where: { username: "pro@worki.ai" } });
+  let providerUser = await prisma.user.findUnique({ where: { username: "pro.test@worki.ai" } });
   if (!providerUser) {
     providerUser = await prisma.user.create({
       data: {
-        email: "pro@worki.ai",
-        username: "pro@worki.ai",
+        email: "pro.test@worki.ai",
+        username: "pro.test@worki.ai",
         firstName: "Pro",
         lastName: "Worker",
         role: "PROVIDER",
@@ -81,6 +136,7 @@ export async function seedMockUsers(prisma: PrismaClient) {
       }
     });
   }
+  await ensureEmailAuthIdentity(prisma, "pro.test@worki.ai", QA_TEST_PASSWORD);
 
   let provider = await prisma.provider.findFirst({ where: { userId: providerUser.id } });
   if (!provider) {

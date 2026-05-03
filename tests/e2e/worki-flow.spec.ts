@@ -7,6 +7,12 @@ test.describe('Worki End-to-End Flow', () => {
     
     // We are expecting the "Log in to your account" heading
     await expect(page.locator('text=Log in to your account')).toBeVisible();
+
+    // Dismiss cookie consent if it appears so it does not intercept clicks.
+    const rejectCookiesButton = page.getByRole('button', { name: 'Reject all' });
+    if (await rejectCookiesButton.isVisible().catch(() => false)) {
+      await rejectCookiesButton.click();
+    }
     
     // Log in as the test user. (Note: Wasp uses standard input types)
     await page.fill('input[type="email"]', 'test@worki.ai');

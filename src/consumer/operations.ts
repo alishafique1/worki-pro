@@ -1,48 +1,94 @@
-import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, ServiceCategory, Provider, ProviderCategory, Lead } from 'wasp/entities';
-import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, GetServiceCategories, GetProviders, GetConsumerStats } from 'wasp/server/operations';
-import type { SubmitLead } from 'wasp/server/operations';
-import { HttpError } from 'wasp/server';
+import type {
+  ServiceRequest,
+  RewardAccount,
+  RewardTransaction,
+  Redemption,
+  CommunicationLog,
+  ServiceCategory,
+  Provider,
+  ProviderCategory,
+  Lead,
+} from "wasp/entities";
+import type {
+  GetMyRequests,
+  GetMyRewardAccount,
+  SubmitServiceRequest,
+  RedeemPoints,
+  SendCustomerMessage,
+  GetServiceCategories,
+  GetProviders,
+  GetConsumerStats,
+  SubmitLead,
+} from "wasp/server/operations";
+import { HttpError } from "wasp/server";
+import { sendLeadToGHL } from "../server/services/ghl";
 
-export const getServiceCategories: GetServiceCategories<void, ServiceCategory[]> = async (args, context) => {
+export const getServiceCategories: GetServiceCategories<
+  void,
+  ServiceCategory[]
+> = async (args, context) => {
   return context.entities.ServiceCategory.findMany({
     where: { active: true },
-    orderBy: { name: 'asc' },
+    orderBy: { name: "asc" },
   });
 };
 
-export const getMyRequests: GetMyRequests<void, ServiceRequest[]> = async (args, context) => {
+export const getMyRequests: GetMyRequests<void, any[]> = async (
+  args,
+  context,
+) => {
   if (!context.user) {
     throw new HttpError(401);
   }
   return context.entities.ServiceRequest.findMany({
     where: { consumerId: context.user.id },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" },
+    include: {
+      assignedProvider: true,
+      appointments: {
+        orderBy: { createdAt: "desc" },
+        include: { provider: true },
+      },
+      communicationLogs: {
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 };
 
-export const getMyRewardAccount: GetMyRewardAccount<void, { account: RewardAccount | null, transactions: RewardTransaction[], redemptions: Redemption[] }> = async (args, context) => {
+export const getMyRewardAccount: GetMyRewardAccount<
+  void,
+  {
+    account: RewardAccount | null;
+    transactions: RewardTransaction[];
+    redemptions: Redemption[];
+  }
+> = async (args, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
-  
+
   const account = await context.entities.RewardAccount.findUnique({
-    where: { consumerId: context.user.id }
+    where: { consumerId: context.user.id },
   });
-  
+
   const transactions = await context.entities.RewardTransaction.findMany({
     where: { consumerId: context.user.id },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" },
   });
 
   const redemptions = await context.entities.Redemption.findMany({
     where: { consumerId: context.user.id },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" },
   });
-  
+
   return { account, transactions, redemptions };
 };
 
-export const redeemPoints: RedeemPoints<{ points: number; giftCardEmail: string }, Redemption> = async (args, context) => {
+export const redeemPoints: RedeemPoints<
+  { points: number; giftCardEmail: string },
+  Redemption
+> = async (args, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -50,15 +96,18 @@ export const redeemPoints: RedeemPoints<{ points: number; giftCardEmail: string 
   const { points, giftCardEmail } = args;
 
   if (points < 500 || points % 500 !== 0) {
-    throw new HttpError(400, 'Minimum redemption is 500 points in multiples of 500.');
+    throw new HttpError(
+      400,
+      "Minimum redemption is 500 points in multiples of 500.",
+    );
   }
 
   const account = await context.entities.RewardAccount.findUnique({
-    where: { consumerId: context.user.id }
+    where: { consumerId: context.user.id },
   });
 
   if (!account || account.pointsBalance < points) {
-    throw new HttpError(400, 'Insufficient points balance.');
+    throw new HttpError(400, "Insufficient points balance.");
   }
 
   const cashValue = points / 100;
@@ -69,23 +118,23 @@ export const redeemPoints: RedeemPoints<{ points: number; giftCardEmail: string 
       pointsUsed: points,
       cashValue,
       giftCardEmail,
-      status: 'REQUESTED',
-    }
+      status: "REQUESTED",
+    },
   });
 
   await context.entities.RewardTransaction.create({
     data: {
       consumerId: context.user.id,
-      type: 'REDEMPTION',
+      type: "REDEMPTION",
       points: -points,
-      status: 'REDEEMED',
-      reason: 'Gift card redemption',
-    }
+      status: "REDEEMED",
+      reason: "Gift card redemption",
+    },
   });
 
   await context.entities.RewardAccount.update({
     where: { consumerId: context.user.id },
-    data: { pointsBalance: { decrement: points } }
+    data: { pointsBalance: { decrement: points } },
   });
 
   return redemption;
@@ -93,30 +142,41 @@ export const redeemPoints: RedeemPoints<{ points: number; giftCardEmail: string 
 
 // Points constants — single source of truth
 export const POINTS = {
-  SERVICE_REQUEST: 500,   // $5 — awarded when request is submitted
+  SERVICE_REQUEST: 500, // $5 — awarded when request is submitted
   APPOINTMENT_BOOKED: 500, // $5 — awarded when appointment is confirmed
-  JOB_COMPLETED: 5000,    // $50 — awarded when job is marked complete
-  REFERRAL: 500,          // $5 — both referrer and referred
+  JOB_COMPLETED: 5000, // $50 — awarded when job is marked complete
+  REFERRAL: 500, // $5 — both referrer and referred
 } as const;
 
-export const submitServiceRequest: SubmitServiceRequest<{
-  name: string;
-  email: string;
-  phone: string;
-  postalCode: string;
-  description: string;
-  urgency: 'EMERGENCY' | 'STANDARD' | 'PLANNED';
-  serviceType?: string;
-  preferredProviderId?: string;
-}, ServiceRequest> = async (args, context) => {
+export const submitServiceRequest: SubmitServiceRequest<
+  {
+    name: string;
+    email: string;
+    phone: string;
+    postalCode: string;
+    description: string;
+    urgency: "EMERGENCY" | "STANDARD" | "PLANNED";
+    serviceType?: string;
+    preferredProviderId?: string;
+    estimatedSchedule?: string;
+    preferredTime?: string;
+  },
+  ServiceRequest
+> = async (args, context) => {
   let serviceCategoryId = undefined;
   if (args.serviceType) {
-    const cat = await context.entities.ServiceCategory.findUnique({ where: { slug: args.serviceType } });
+    const cat = await context.entities.ServiceCategory.findUnique({
+      where: { slug: args.serviceType },
+    });
     serviceCategoryId = cat?.id;
   }
 
   const preferredProviderId = args.preferredProviderId
-    ? (await context.entities.Provider.findUnique({ where: { id: args.preferredProviderId } }))?.id
+    ? (
+        await context.entities.Provider.findUnique({
+          where: { id: args.preferredProviderId },
+        })
+      )?.id
     : undefined;
 
   const newRequest = await context.entities.ServiceRequest.create({
@@ -128,31 +188,57 @@ export const submitServiceRequest: SubmitServiceRequest<{
       postalCode: args.postalCode,
       description: args.description,
       urgency: args.urgency,
-      source: 'WEBSITE',
-      status: preferredProviderId ? 'ASSIGNED' : 'NEW',
+      estimatedSchedule: args.estimatedSchedule,
+      preferredTime: args.preferredTime,
+      source: "WEBSITE",
+      status: preferredProviderId ? "ASSIGNED" : "NEW",
+      rewardStatus: "PENDING_VERIFICATION",
       serviceCategoryId: serviceCategoryId || undefined,
       assignedProviderId: preferredProviderId || undefined,
-    }
+    },
   });
 
-  // Award 500 pts ($5) for submitting a service request (logged-in users only)
+  // Award 500 pts ($5) immediately for authenticated users.
+  // For guests, this request stays reward-eligible and is claimed after signup/onboarding.
   if (context.user?.id) {
     await context.entities.RewardTransaction.create({
       data: {
         consumerId: context.user.id,
         serviceRequestId: newRequest.id,
-        type: 'SERVICE_REQUEST',
+        type: "SERVICE_REQUEST",
         points: POINTS.SERVICE_REQUEST,
-        status: 'PENDING',
-        reason: 'Request submitted — $5 reward pending verification',
-      }
+        status: "PENDING",
+        reason: "Request submitted — $5 reward pending verification",
+      },
     });
     await context.entities.RewardAccount.upsert({
       where: { consumerId: context.user.id },
-      create: { consumerId: context.user.id, pointsBalance: 0, lifetimePoints: 0 },
+      create: {
+        consumerId: context.user.id,
+        pointsBalance: 0,
+        lifetimePoints: 0,
+      },
       update: {},
     });
   }
+
+  // ── Fire outbound webhook to GoHighLevel (fire-and-forget, logs to WebhookLog) ──
+  sendLeadToGHL(
+    {
+      serviceRequestId: newRequest.id,
+      name: args.name,
+      phone: args.phone,
+      email: args.email || undefined,
+      postalCode: args.postalCode,
+      serviceType: args.serviceType,
+      description: args.description,
+      urgency: args.urgency,
+      source: "WEBSITE",
+    },
+    context.entities as any,
+  ).catch(() => {
+    /* already logged inside sendLeadToGHL */
+  });
 
   return newRequest;
 };
@@ -161,10 +247,13 @@ type ProviderWithCategories = Provider & {
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
 };
 
-export const getProviders: GetProviders<{ categorySlug?: string; search?: string }, ProviderWithCategories[]> = async ({ categorySlug, search }, context) => {
+export const getProviders: GetProviders<
+  { categorySlug?: string; search?: string },
+  ProviderWithCategories[]
+> = async ({ categorySlug, search }, context) => {
   const where: Record<string, any> = {
     active: true,
-    verificationStatus: 'VERIFIED',
+    verificationStatus: "VERIFIED",
   };
 
   if (categorySlug) {
@@ -180,19 +269,68 @@ export const getProviders: GetProviders<{ categorySlug?: string; search?: string
     include: {
       categories: { include: { serviceCategory: true } },
     },
-    orderBy: { ratingInternal: 'desc' },
+    orderBy: { ratingInternal: "desc" },
   });
 
   if (search) {
     const q = search.toLowerCase();
     providers = providers.filter(
-      (p) =>
-        p.businessName.toLowerCase().includes(q) ||
-        p.categories.some((c) => c.serviceCategory.name.toLowerCase().includes(q))
+      (provider) =>
+        provider.businessName.toLowerCase().includes(q) ||
+        provider.categories.some((category) =>
+          category.serviceCategory.name.toLowerCase().includes(q),
+        ),
     );
   }
 
   return providers;
+};
+
+export const sendCustomerMessage: SendCustomerMessage<
+  { requestId: string; body: string },
+  CommunicationLog
+> = async ({ requestId, body }, context) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+
+  const trimmedBody = body.trim();
+  if (trimmedBody.length < 1) {
+    throw new HttpError(400, "Message cannot be empty.");
+  }
+  if (trimmedBody.length > 1000) {
+    throw new HttpError(400, "Message must be 1,000 characters or fewer.");
+  }
+
+  const serviceRequest = await context.entities.ServiceRequest.findFirst({
+    where: {
+      id: requestId,
+      consumerId: context.user.id,
+    },
+    include: { assignedProvider: true },
+  });
+
+  if (!serviceRequest) {
+    throw new HttpError(404, "Service request not found.");
+  }
+
+  return context.entities.CommunicationLog.create({
+    data: {
+      userId: context.user.id,
+      serviceRequestId: serviceRequest.id,
+      providerId: serviceRequest.assignedProviderId || undefined,
+      channel: "INTERNAL_NOTE",
+      direction: "INBOUND",
+      from:
+        context.user.email ||
+        serviceRequest.email ||
+        serviceRequest.name ||
+        "Customer",
+      to: serviceRequest.assignedProvider?.businessName || "Worki coordination",
+      body: trimmedBody,
+      status: "SENT",
+    },
+  });
 };
 
 type ProviderDetail = Provider & {
@@ -236,7 +374,13 @@ export const getConsumerStats: GetConsumerStats<void, ConsumerStats> = async (ar
     include: { serviceCategory: true },
   });
 
-  const { account, transactions } = await getMyRewardAccount(args, context);
+  const account = await context.entities.RewardAccount.findUnique({
+    where: { consumerId: context.user.id },
+  });
+  const transactions = await context.entities.RewardTransaction.findMany({
+    where: { consumerId: context.user.id },
+    orderBy: { createdAt: "desc" },
+  });
 
   const totalRequests = requests.length;
   const completedRequests = requests.filter((r) =>

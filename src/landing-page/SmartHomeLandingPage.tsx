@@ -1,27 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-export default function HvacLandingPage() {
+export default function SmartHomeLandingPage() {
   return (
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-bold uppercase tracking-wider mb-6">
-            Expert HVAC in GTA
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-500 text-xs font-bold uppercase tracking-wider mb-6">
+            Smart Home Experts in GTA
           </div>
           <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl">
-            Reliable <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">HVAC</span> Solutions.
+            Your Home, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">Smarter.</span>
           </h1>
           <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">
-            Stay comfortable all year round. From furnace repairs to AC installations, we match you with vetted HVAC pros. We handle the matching, scheduling, and follow-up.
+            From smart locks to full home automation, our vetted techs handle installation and setup. We match, schedule, and follow up — you just enjoy the upgrade.
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-4 mb-4">
             <Link
-              to="/request-service"
+              to="/request-service?service=smart-home"
               className="px-10 py-5 bg-[var(--accent)] text-black font-black rounded-3xl text-lg hover:shadow-[0_0_30px_rgba(242,181,215,0.4)] transition-all hover:-translate-y-1"
             >
-              Request HVAC Quote
+              Request Smart Home Quote
             </Link>
           </div>
           <p className="text-sm text-[var(--text-secondary)] mb-16">🎁 Plus earn cashback on every job booked</p>
@@ -29,9 +29,9 @@ export default function HvacLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24">
             {[
-              { label: 'Verified Pros', icon: '✅' },
-              { label: 'Licensed & Insured', icon: '🛡️' },
-              { label: 'Managed Scheduling', icon: '📅' }
+              { label: 'Certified Installers', icon: '📱' },
+              { label: 'All Major Brands', icon: '🏷️' },
+              { label: 'Managed Setup', icon: '⚙️' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2">
                 <div className="text-3xl">{stat.icon}</div>
@@ -42,9 +42,9 @@ export default function HvacLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { title: 'Heating', desc: 'Furnace repair, maintenance, and new high-efficiency installations.', icon: '🔥' },
-              { title: 'Cooling', desc: 'Stay cool with expert AC repair and modern cooling solutions.', icon: '❄️' },
-              { title: 'Air Quality', desc: 'Humidifiers, air purifiers, and duct cleaning for a healthy home.', icon: '💨' }
+              { title: 'Smart Security', desc: 'Smart locks, video doorbells, cameras, and full security system setup.', icon: '🔒' },
+              { title: 'Home Automation', desc: 'Smart hubs, voice control integration, and full home automation.', icon: '🎮' },
+              { title: 'AV & Connectivity', desc: 'TV mounting, surround sound, structured wiring, and Wi-Fi optimization.', icon: '📡' }
             ].map((service) => (
               <div key={service.title} className="p-10 glass dark:glass-dark rounded-[40px] border border-[var(--border-default)] hover-lift text-left">
                 <div className="text-4xl mb-6">{service.icon}</div>

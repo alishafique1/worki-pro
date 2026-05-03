@@ -190,6 +190,8 @@ model Provider {
   stripeSubId         String?
   subscriptionStatus  SubStatus        @default(INACTIVE)
 
+  calComUsername      String?          // e.g. "john-doe" → cal.com/john-doe/worki-service
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -250,6 +252,7 @@ model ServiceRequest {
   urgency             Urgency         @default(STANDARD)
   propertyType        String?         
   ownOrRent           String?         
+  estimatedSchedule   String?
   preferredTime       String?
 
   twilioCallSid       String?         @unique
@@ -273,6 +276,7 @@ model ServiceRequest {
   communicationLogs  CommunicationLog[]
   notes              RequestNote[]
   fees               ProviderFee[]
+  webhookLogs        WebhookLog[]
 }
 
 enum RequestSource {
@@ -321,6 +325,7 @@ model Appointment {
   consumerNotes        String?
   completionProofUrl   String?
   completedAt          DateTime?
+  calComBookingUid     String?          // cal.com booking UID for sync
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
 
@@ -559,4 +564,24 @@ enum LeadStatus {
   CONTACTED
   CONVERTED
   LOST
+}
+
+// ─── GHL / External Webhook Log ───────────────────────────────────────────
+
+model WebhookLog {
+  id                String            @id @default(cuid())
+  direction         WebhookDirection
+  source            String            // e.g. 'GHL', 'STRIPE'
+  event             String?           // e.g. 'contact.created', 'lead.qualified'
+  serviceRequestId  String?
+  serviceRequest    ServiceRequest?   @relation(fields: [serviceRequestId], references: [id])
+  payload           Json
+  statusCode        Int?              // HTTP status of the outbound call, or 200 for inbound
+  error             String?
+  createdAt         DateTime          @default(now())
+}
+
+enum WebhookDirection {
+  OUTBOUND   // site → GHL
+  INBOUND    // GHL → site
 }

@@ -22,8 +22,11 @@ export default function App() {
   const { data: user } = useAuth();
 
   const isMarketingPage = useMemo(() => {
+    const marketingPaths = ['/', '/hvac', '/handyman', '/appliance-repair', '/plumbing', '/electrical', '/smart-home', '/how-rewards-work', '/providers', '/request-service', '/request-success'];
     return (
-      location.pathname === "/" || location.pathname.startsWith("/pricing")
+      marketingPaths.includes(location.pathname) ||
+      location.pathname.startsWith('/areas') ||
+      location.pathname.startsWith('/providers')
     );
   }, [location]);
 

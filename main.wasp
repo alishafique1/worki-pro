@@ -11,21 +11,21 @@ app OpenSaaS {
     "<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />",
     "<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' rel='stylesheet' />",
 
-    "<meta name='description' content='Worki is Milton, Oakville & Burlington\'s #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.' />",
+    "<meta name='description' content=\"Worki is Milton, Oakville & Burlington's #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.\" />",
     "<meta name='author' content='Worki Home Services' />",
     "<meta name='keywords' content='home services Milton, HVAC repair Oakville, handyman Burlington, smart home installation GTA, appliance repair Milton, plumber Oakville, electrician Burlington, home maintenance concierge' />",
     "<meta name='robots' content='index, follow' />",
     "<link rel='canonical' href='https://worki.ca/' />",
 
     "<meta property='og:type' content='website' />",
-    "<meta property='og:title' content='Worki — Home Services Concierge | GTA\'s Top Rated Pros' />",
+    "<meta property='og:title' content=\"Worki — Home Services Concierge | GTA's Top Rated Pros\" />",
     "<meta property='og:site_name' content='Worki' />",
     "<meta property='og:url' content='https://worki.ca/' />",
     "<meta property='og:description' content='Stop searching. Describe your problem once and we match you with a vetted, insured local pro. Earn rewards on every job booked.' />",
     "<meta property='og:image' content='https://worki.ca/og-banner.webp' />",
     "<meta name='twitter:card' content='summary_large_image' />",
     "<meta name='twitter:title' content='Worki — Home Services Concierge' />",
-    "<meta name='twitter:description' content='GTA\'s #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.' />",
+    "<meta name='twitter:description' content=\"GTA's #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.\" />",
     "<meta name='twitter:image' content='https://worki.ca/og-banner.webp' />",
 
     "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"Worki Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, handyman, plumbing, electrical, and smart home professionals.\",\"url\":\"https://worki.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Handyman\",\"Plumbing\",\"Electrical\",\"Smart Home Installation\",\"Appliance Repair\"]}</script>",
@@ -39,8 +39,8 @@ app OpenSaaS {
       //   (RequestPasswordReset(Route|Page), PasswordReset(Route|Page), EmailVerification(Route|Page))
       email: {
         fromField: {
-          name: "Worki App",
-          email: "me@example.com"
+          name: "Worki",
+          email: "hello@worki.ca"
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
@@ -53,10 +53,10 @@ app OpenSaaS {
         userSignupFields: import { getEmailUserFields } from "@src/auth/userSignupFields",
       },
       // Uncomment to enable Google Auth (check https://wasp.sh/docs/auth/social-auth/google for setup instructions):
-      // google: { // Guide for setting up Auth via Google
-      //   userSignupFields: import { getGoogleUserFields } from "@src/auth/userSignupFields",
-      //   configFn: import { getGoogleAuthConfig } from "@src/auth/userSignupFields",
-      // },
+      google: {
+        userSignupFields: import { getGoogleUserFields } from "@src/auth/userSignupFields",
+        configFn: import { getGoogleAuthConfig } from "@src/auth/userSignupFields",
+      },
       // Uncomment to enable GitHub Auth (check https://wasp.sh/docs/auth/social-auth/github for setup instructions):
       // gitHub: {
       //   userSignupFields: import { getGitHubUserFields } from "@src/auth/userSignupFields",
@@ -69,13 +69,13 @@ app OpenSaaS {
       // }
     },
     onAuthFailedRedirectTo: "/login",
-    onAuthSucceededRedirectTo: "/auth-callback",
+    onAuthSucceededRedirectTo: "/onboarding",
   },
 
   db: {
     // Run `wasp db seed` to seed the database with the seed functions below:
     seeds: [
-      import { seedVendorCategories } from "@src/server/scripts/dbSeeds",
+      // Populates the database with a bunch of fake users to work with during development.
       import { seedMockUsers } from "@src/server/scripts/dbSeeds",
     ]
   },
@@ -85,14 +85,10 @@ app OpenSaaS {
   },
 
   emailSender: {
-    // NOTE: "Dummy" provider is just for local development purposes.
-    //   Make sure to check the server logs for the email confirmation url (it will not be sent to an address)!
-    //   Once you are ready for production, switch to e.g. "SendGrid" or "Mailgun" providers. Check out https://docs.opensaas.sh/guides/email-sending/ .
-    provider: Dummy,
+    provider: Mailgun,
     defaultFrom: {
-      name: "Open SaaS App",
-      // When using a real provider, e.g. SendGrid, you must use the same email address that you configured your account to send out emails with!
-      email: "me@example.com"
+      name: "Worki",
+      email: "hello@worki.ca"
     },
   },
 }
@@ -126,6 +122,9 @@ page ElectricalLandingPage { component: import ElectricalLandingPage from "@src/
 route HowRewardsWorkRoute { path: "/how-rewards-work", to: HowRewardsWorkPage }
 page HowRewardsWorkPage { component: import HowRewardsWorkPage from "@src/landing-page/HowRewardsWorkPage" }
 
+route AreaRoute { path: "/areas/:areaSlug", to: AreaLandingPage }
+page AreaLandingPage { component: import AreaLandingPage from "@src/landing-page/AreaLandingPage" }
+
 route ProviderLandingRoute { path: "/providers", to: ProviderLandingPage }
 page ProviderLandingPage { component: import ProviderLandingPage from "@src/provider/LandingPage" }
 
@@ -138,6 +137,12 @@ page TermsPage { component: import TermsPage from "@src/shared/TermsPage" }
 route PrivacyRoute { path: "/privacy", to: PrivacyPage }
 page PrivacyPage { component: import PrivacyPage from "@src/shared/PrivacyPage" }
 
+
+route OnboardingRoute { path: "/onboarding", to: OnboardingPage }
+page OnboardingPage {
+  authRequired: true,
+  component: import OnboardingPage from "@src/auth/OnboardingPage"
+}
 
 //#region Auth Pages
 route LoginRoute { path: "/login", to: LoginPage }
@@ -164,16 +169,19 @@ route EmailVerificationRoute { path: "/email-verification", to: EmailVerificatio
 page EmailVerificationPage {
   component: import { EmailVerificationPage } from "@src/auth/email-and-pass/EmailVerificationPage",
 }
-
-route AuthCallbackRoute { path: "/auth-callback", to: AuthCallbackPage }
-page AuthCallbackPage {
-  component: import AuthCallback from "@src/auth/AuthCallback"
-}
 //#endregion
+
+action completeOnboarding {
+  fn: import { completeOnboarding } from "@src/auth/onboardingOperations",
+  entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest]
+}
 
 //#region Consumer
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
 page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage" }
+
+route BookingRoute          { path: "/book/:requestId",     to: BookingPage }
+page BookingPage            { component: import BookingPage from "@src/consumer/BookingPage", authRequired: true }
 
 route DashboardRoute        { path: "/dashboard",           to: DashboardPage }
 page DashboardPage          { component: import DashboardPage from "@src/consumer/DashboardPage", authRequired: true }
@@ -204,7 +212,17 @@ page ContactPage            { component: import ContactPage from "@src/consumer/
 
 query getMyRequests {
   fn: import { getMyRequests } from "@src/consumer/operations",
-  entities: [ServiceRequest]
+  entities: [ServiceRequest, Appointment, Provider, CommunicationLog]
+}
+
+query getServiceCategories {
+  fn: import { getServiceCategories } from "@src/consumer/operations",
+  entities: [ServiceCategory]
+}
+
+query getProviders {
+  fn: import { getProviders } from "@src/consumer/operations",
+  entities: [Provider, ProviderCategory, ServiceCategory]
 }
 
 query getMyRewardAccount {
@@ -219,7 +237,7 @@ action redeemPoints {
 
 action submitServiceRequest {
   fn: import { submitServiceRequest } from "@src/consumer/operations",
-  entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount, Provider]
+  entities: [ServiceRequest, ServiceCategory, RewardTransaction, RewardAccount, Provider, WebhookLog]
 }
 
 action submitLead {
@@ -227,14 +245,9 @@ action submitLead {
   entities: [Lead]
 }
 
-query getServiceCategories {
-  fn: import { getServiceCategories } from "@src/consumer/operations",
-  entities: [ServiceCategory]
-}
-
-query getProviders {
-  fn: import { getProviders } from "@src/consumer/operations",
-  entities: [Provider, ProviderCategory, ServiceCategory]
+action sendCustomerMessage {
+  fn: import { sendCustomerMessage } from "@src/consumer/operations",
+  entities: [ServiceRequest, CommunicationLog, Provider]
 }
 
 query getProviderById {
@@ -274,7 +287,7 @@ query getProviderLeads {
 
 query getProviderAppointments {
   fn: import { getProviderAppointments } from "@src/provider/operations",
-  entities: [Appointment, Provider]
+  entities: [Appointment, Provider, ServiceRequest, CommunicationLog]
 }
 
 query getProviderProfile {
@@ -289,7 +302,7 @@ query getProviderFees {
 
 action acceptServiceRequest {
   fn: import { acceptServiceRequest } from "@src/provider/operations",
-  entities: [ServiceRequest, Appointment, ProviderFee, Provider]
+  entities: [ServiceRequest, Appointment, ProviderFee, Provider, RewardTransaction, RewardAccount]
 }
 
 action markJobCompleted {
@@ -297,9 +310,9 @@ action markJobCompleted {
   entities: [Appointment, ServiceRequest, RewardTransaction, RewardAccount, ProviderFee, Provider]
 }
 
-action updateProviderProfile {
-  fn: import { updateProviderProfile } from "@src/provider/operations",
-  entities: [Provider]
+action submitProviderApplication {
+  fn: import { submitProviderApplication } from "@src/provider/operations",
+  entities: [User, Provider, ProviderCategory, ServiceCategory]
 }
 
 action updateProviderServices {
@@ -309,6 +322,21 @@ action updateProviderServices {
 
 action createProviderProfile {
   fn: import { createProviderProfile } from "@src/provider/operations",
+  entities: [Provider]
+}
+
+action updateProviderAppointment {
+  fn: import { updateProviderAppointment } from "@src/provider/operations",
+  entities: [Appointment, ServiceRequest, Provider]
+}
+
+action sendProviderMessage {
+  fn: import { sendProviderMessage } from "@src/provider/operations",
+  entities: [ServiceRequest, CommunicationLog, Provider]
+}
+
+action updateProviderProfile {
+  fn: import { updateProviderProfile } from "@src/provider/operations",
   entities: [Provider]
 }
 //#endregion
@@ -396,6 +424,12 @@ api paymentsWebhook {
   entities: [User],
   middlewareConfigFn: import { paymentsMiddlewareConfigFn } from "@src/payment/webhook",
   httpRoute: (POST, "/payments-webhook")
+}
+
+api calcomWebhook {
+  fn: import { calcomWebhook } from "@src/server/webhooks/calcom",
+  entities: [Appointment, ServiceRequest, Provider],
+  httpRoute: (POST, "/calcom-webhook")
 }
 //#endregion
 
@@ -550,5 +584,11 @@ api twilioWebhook {
   fn: import { handleTwilioSms } from "@src/server/webhooks/twilio",
   httpRoute: (POST, "/webhooks/twilio"),
   entities: [ServiceRequest, User, CommunicationLog]
+}
+
+api ghlWebhook {
+  fn: import { handleGhlWebhook } from "@src/server/webhooks/ghl",
+  httpRoute: (POST, "/webhooks/ghl"),
+  entities: [ServiceRequest, CommunicationLog, WebhookLog]
 }
 //#endregion

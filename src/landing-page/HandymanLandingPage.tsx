@@ -13,10 +13,10 @@ export default function HandymanLandingPage() {
             Tackle Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">To-Do</span> List.
           </h1>
           <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">
-            Professional help for furniture assembly, mounting, painting, and small repairs. Earn rewards while checking items off your list.
+            Professional help for furniture assembly, mounting, painting, and small repairs. Our concierge handles everything — so you can focus on what matters.
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4 mb-20">
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
             <Link
               to="/request-service"
               className="px-10 py-5 bg-[var(--accent)] text-black font-black rounded-3xl text-lg hover:shadow-[0_0_30px_rgba(242,181,215,0.4)] transition-all hover:-translate-y-1"
@@ -24,13 +24,14 @@ export default function HandymanLandingPage() {
               Get Help Now
             </Link>
           </div>
+          <p className="text-sm text-[var(--text-secondary)] mb-16">🎁 Plus earn cashback on every job booked</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24">
             {[
               { label: 'Verified Pros', icon: '✅' },
               { label: 'Background Checked', icon: '🔍' },
-              { label: 'Earn 250 Points', icon: '💎' }
+              { label: 'Satisfaction Guaranteed', icon: '⭐' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2">
                 <div className="text-3xl">{stat.icon}</div>
