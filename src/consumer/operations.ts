@@ -189,6 +189,22 @@ export const getProviders: GetProviders<{ categorySlug?: string; search?: string
   return providers;
 };
 
+type ProviderDetail = Provider & {
+  categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
+  services: { id: string; name: string; description: string; price: number | null; categorySlug: string }[];
+};
+
+export const getProviderById: GetProviders<{ providerId: string }, ProviderDetail | null> = async ({ providerId }, context) => {
+  const provider = await context.entities.Provider.findUnique({
+    where: { id: providerId, active: true },
+    include: { categories: { include: { serviceCategory: true } } },
+  });
+  if (!provider) return null;
+
+  const services = provider.servicesJson ? JSON.parse(provider.servicesJson) : [];
+  return { ...provider, services };
+};
+
 // ─── Consumer Analytics ───────────────────────────────────────────────────────
 
 type ConsumerStats = {

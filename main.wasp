@@ -193,6 +193,9 @@ page AnalyticsPage          { component: import AnalyticsPage from "@src/consume
 route DiscoveryRoute        { path: "/discover",            to: DiscoveryPage }
 page DiscoveryPage          { component: import DiscoveryPage from "@src/consumer/DiscoveryPage" }
 
+route ProviderDetailRoute   { path: "/pro/:providerId",      to: ProviderDetailPage }
+page ProviderDetailPage     { component: import ProviderDetailPage from "@src/consumer/ProviderDetailPage" }
+
 route ContactRoute          { path: "/contact",             to: ContactPage }
 page ContactPage            { component: import ContactPage from "@src/consumer/ContactPage" }
 
@@ -228,6 +231,11 @@ query getServiceCategories {
 
 query getProviders {
   fn: import { getProviders } from "@src/consumer/operations",
+  entities: [Provider, ProviderCategory, ServiceCategory]
+}
+
+query getProviderById {
+  fn: import { getProviderById } from "@src/consumer/operations",
   entities: [Provider, ProviderCategory, ServiceCategory]
 }
 

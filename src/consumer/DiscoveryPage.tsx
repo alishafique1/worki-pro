@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
 
@@ -68,9 +69,10 @@ export default function DiscoveryPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {providers?.map((provider) => (
-            <div
+            <Link
               key={provider.id}
-              className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 group"
+              to={`/pro/${provider.id}`}
+              className="block bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 group"
             >
               {/* Provider header */}
               <div className="flex items-start justify-between mb-4">
@@ -116,12 +118,9 @@ export default function DiscoveryPage() {
                     <span className="text-[var(--text-secondary)] text-sm">New pro</span>
                   )}
                 </div>
-                <a
-                  href={`/request-service?serviceType=${provider.categories[0]?.serviceCategory.slug ?? ''}`}
-                  className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm hover:scale-105 transition-transform"
-                >
-                  Request
-                </a>
+                <span className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm">
+                  View Profile
+                </span>
               </div>
 
               {/* Service areas */}
@@ -131,7 +130,7 @@ export default function DiscoveryPage() {
                   {provider.serviceAreas.length > 2 && ` +${provider.serviceAreas.length - 2} more`}
                 </p>
               )}
-            </div>
+            </Link>
           ))}
         </div>
       )}
