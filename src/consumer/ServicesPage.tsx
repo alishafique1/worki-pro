@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
 
@@ -20,9 +20,12 @@ type ProviderWithServices = {
   services: ServiceListing[];
 };
 
+type SortOption = 'name-asc' | 'price-asc' | 'price-desc' | 'popular';
+
 export default function ServicesPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<SortOption>('name-asc');
 
   const { data: categories } = useQuery(getServiceCategories);
   const { data: providers, isLoading } = useQuery(getProviders, {
@@ -30,7 +33,7 @@ export default function ServicesPage() {
     search: searchQuery || undefined,
   });
 
-  // Extract all unique services from all providers, grouped by category
+  // Extract all unique services from all providers, grouped by service name + categorySlug
   const allServicesMap = new Map<string, { service: ServiceListing; providerCount: number; providers: string[] }>();
 
   providers?.forEach((provider: any) => {
@@ -54,15 +57,27 @@ export default function ServicesPage() {
     });
   });
 
-  const servicesList = Array.from(allServicesMap.values()).sort((a, b) => a.service.name.localeCompare(b.service.name));
+  // Apply category filter client-side (services carry their own categorySlug independent of provider filter)
+  let servicesList = Array.from(allServicesMap.values()).filter((entry) =>
+    selectedCategory ? entry.service.categorySlug === selectedCategory : true
+  );
 
-  // Filter by search
-  const filtered = searchQuery
+  // Apply search
+  servicesList = searchQuery
     ? servicesList.filter((s) =>
         s.service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.service.description.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : servicesList;
+
+  // Apply sort
+  servicesList = [...servicesList].sort((a, b) => {
+    if (sortBy === 'name-asc') return a.service.name.localeCompare(b.service.name);
+    if (sortBy === 'price-asc') return (a.service.price ?? Infinity) - (b.service.price ?? Infinity);
+    if (sortBy === 'price-desc') return (b.service.price ?? -Infinity) - (a.service.price ?? -Infinity);
+    if (sortBy === 'popular') return b.providerCount - a.providerCount;
+    return 0;
+  });
 
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-[80vh]">
@@ -74,8 +89,8 @@ export default function ServicesPage() {
         </p>
       </div>
 
-      {/* Search + Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-10">
+      {/* Controls bar */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <div className="relative flex-1">
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]"
@@ -102,12 +117,23 @@ export default function ServicesPage() {
             <option key={cat.id} value={cat.slug}>{cat.name}</option>
           ))}
         </select>
+
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortOption)}
+          className="px-5 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors cursor-pointer min-w-[160px]"
+        >
+          <option value="name-asc">Name A–Z</option>
+          <option value="price-asc">Price ↑</option>
+          <option value="price-desc">Price ↓</option>
+          <option value="popular">Most Popular</option>
+        </select>
       </div>
 
       {/* Results count */}
       <div className="mb-6">
         <p className="text-sm text-[var(--text-secondary)]">
-          {isLoading ? 'Loading...' : `${filtered.length} service${filtered.length !== 1 ? 's' : ''} found`}
+          {isLoading ? 'Loading...' : `${servicesList.length} service${servicesList.length !== 1 ? 's' : ''} found`}
           {selectedCategory && categories?.find((c) => c.slug === selectedCategory)
             ? ` in ${categories.find((c) => c.slug === selectedCategory)?.name}`
             : ''}
@@ -121,7 +147,7 @@ export default function ServicesPage() {
             <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-44 border border-[var(--border-default)]" />
           ))}
         </div>
-      ) : filtered.length === 0 ? (
+      ) : servicesList.length === 0 ? (
         <div className="text-center py-20">
           <div className="w-20 h-20 bg-[var(--surface-raised)] rounded-full mx-auto mb-6 flex items-center justify-center">
             <span className="text-3xl opacity-50">🛠️</span>
@@ -131,7 +157,7 @@ export default function ServicesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((entry) => (
+          {servicesList.map((entry) => (
             <div
               key={`${entry.service.name}-${entry.service.categorySlug}`}
               className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 flex flex-col"
