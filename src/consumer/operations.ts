@@ -248,9 +248,9 @@ type ProviderWithCategories = Provider & {
 };
 
 export const getProviders: GetProviders<
-  { categorySlug?: string; search?: string },
+  { categorySlug?: string; search?: string; areaSlug?: string },
   ProviderWithCategories[]
-> = async ({ categorySlug, search }, context) => {
+> = async ({ categorySlug, search, areaSlug }, context) => {
   const where: Record<string, any> = {
     active: true,
     verificationStatus: "VERIFIED",
@@ -261,6 +261,13 @@ export const getProviders: GetProviders<
       some: {
         serviceCategory: { slug: categorySlug },
       },
+    };
+  }
+
+  // Server-side area filter using PostgreSQL array contains
+  if (areaSlug) {
+    where.serviceAreas = {
+      has: areaSlug.toLowerCase(),
     };
   }
 

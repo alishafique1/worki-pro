@@ -20,25 +20,44 @@ const AREAS = [
   { slug: 'scarborough', label: 'Scarborough' },
 ];
 
+const SORT_OPTIONS = [
+  { value: 'rating', label: 'Top Rated' },
+  { value: 'name', label: 'Name A-Z' },
+];
+
+type SortValue = 'rating' | 'name';
+
 export default function DiscoveryPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
+  const [sortBy, setSortBy] = useState<SortValue>('rating');
 
   const { data: categories } = useQuery(getServiceCategories);
   const { data: providers, isLoading } = useQuery(getProviders, {
     categorySlug: selectedCategory || undefined,
     search: searchQuery || undefined,
+    areaSlug: selectedArea || undefined,
   });
 
-  // Client-side area filter — providers have serviceAreas[] from Prisma
-  const filteredProviders = selectedArea
-    ? providers?.filter((p: any) =>
-        p.serviceAreas?.some(
-          (area: string) => area.toLowerCase() === selectedArea.toLowerCase()
-        )
-      )
-    : providers;
+  // Sort providers client-side (server always returns rating-desc)
+  const sortedProviders = React.useMemo(() => {
+    if (!providers) return [];
+    const list = [...providers];
+    if (sortBy === 'name') {
+      list.sort((a, b) => a.businessName.localeCompare(b.businessName));
+    }
+    // rating is already server-sorted desc
+    return list;
+  }, [providers, sortBy]);
+
+  const featuredProviders = React.useMemo(() => {
+    return sortedProviders.slice(0, 3);
+  }, [sortedProviders]);
+
+  const remainingProviders = React.useMemo(() => {
+    return sortedProviders.slice(3);
+  }, [sortedProviders]);
 
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-[80vh]">
@@ -49,7 +68,7 @@ export default function DiscoveryPage() {
       </div>
 
       {/* Search + Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-10">
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <div className="relative flex-1">
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]"
@@ -86,16 +105,33 @@ export default function DiscoveryPage() {
             <option key={area.slug} value={area.slug}>{area.label}</option>
           ))}
         </select>
+
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortValue)}
+          className="px-5 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors cursor-pointer min-w-[140px]"
+        >
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
       </div>
 
       {/* Results */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-52 border border-[var(--border-default)]" />
-          ))}
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-52 border border-[var(--border-default)]" />
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-52 border border-[var(--border-default)]" />
+            ))}
+          </div>
         </div>
-      ) : filteredProviders?.length === 0 ? (
+      ) : sortedProviders?.length === 0 ? (
         <div className="text-center py-20">
           <div className="w-20 h-20 bg-[var(--surface-raised)] rounded-full mx-auto mb-6 flex items-center justify-center">
             <span className="text-3xl opacity-50">🔍</span>
@@ -116,72 +152,136 @@ export default function DiscoveryPage() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProviders?.map((provider: any) => (
-            <Link
-              key={provider.id}
-              to={`/pro/${provider.id}`}
-              className="block bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 group"
-            >
-              {/* Provider header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-full bg-[var(--surface-overlay)] flex items-center justify-center text-2xl font-bold text-[var(--accent)] mb-3">
-                  {provider.businessName.charAt(0).toUpperCase()}
-                </div>
-                <span className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold rounded-full uppercase tracking-wider">
-                  {provider.verificationStatus}
-                </span>
+        <>
+          {/* Featured Pros — only when no filters active */}
+          {!selectedCategory && !searchQuery && !selectedArea && featuredProviders.length > 0 && (
+            <div className="mb-10">
+              <div className="flex items-center gap-2 mb-5">
+                <span className="text-2xl">⭐</span>
+                <h2 className="text-2xl font-black tracking-tight">Top Rated Near You</h2>
               </div>
-
-              <h3 className="text-xl font-bold mb-1 truncate">{provider.businessName}</h3>
-              {provider.contactName && (
-                <p className="text-[var(--text-secondary)] text-sm mb-3">{provider.contactName}</p>
-              )}
-
-              {/* Categories */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {provider.categories.slice(0, 3).map((pc: any) => (
-                  <span
-                    key={pc.serviceCategory.id}
-                    className="px-3 py-1 bg-[var(--surface-overlay)] text-xs font-medium rounded-full"
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featuredProviders.map((provider: any, index: number) => (
+                  <Link
+                    key={provider.id}
+                    to={`/pro/${provider.id}`}
+                    className="relative block bg-gradient-to-br from-[var(--surface-raised)] to-[var(--surface-overlay)] border-2 border-[var(--accent)] rounded-[24px] p-6 hover:scale-105 transition-all duration-300 group shadow-lg"
                   >
-                    {pc.serviceCategory.name}
-                  </span>
+                    {index === 0 && (
+                      <span className="absolute -top-3 left-6 px-3 py-1 bg-[var(--accent)] text-[#000] text-xs font-black rounded-full uppercase tracking-wider">
+                        #1 Rated
+                      </span>
+                    )}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-14 h-14 rounded-full bg-[var(--accent)]/20 flex items-center justify-center text-2xl font-black text-[var(--accent)]">
+                        {provider.businessName.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold rounded-full uppercase tracking-wider">
+                          {provider.verificationStatus}
+                        </span>
+                        {provider.ratingInternal && (
+                          <span className="text-[var(--accent)] font-black text-lg">
+                            ★ {provider.ratingInternal.toFixed(1)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-black mb-1 truncate">{provider.businessName}</h3>
+                    {provider.contactName && (
+                      <p className="text-[var(--text-secondary)] text-sm mb-3">{provider.contactName}</p>
+                    )}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {provider.categories.slice(0, 2).map((pc: any) => (
+                        <span key={pc.serviceCategory.id} className="px-3 py-1 bg-[var(--surface-base)] text-xs font-medium rounded-full">
+                          {pc.serviceCategory.name}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-[var(--border-default)]">
+                      <span className="text-sm text-[var(--text-secondary)]">
+                        {provider.serviceAreas?.slice(0, 2).join(', ')}
+                      </span>
+                      <span className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm">
+                        View Profile
+                      </span>
+                    </div>
+                  </Link>
                 ))}
-                {provider.categories.length > 3 && (
-                  <span className="px-3 py-1 bg-[var(--surface-overlay)] text-xs font-medium rounded-full text-[var(--text-secondary)]">
-                    +{provider.categories.length - 3}
-                  </span>
-                )}
               </div>
+            </div>
+          )}
 
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-[var(--border-default)]">
-                <div className="flex items-center gap-1">
-                  {provider.ratingInternal ? (
-                    <>
-                      <span className="text-[var(--accent)] font-bold">{provider.ratingInternal.toFixed(1)}</span>
-                      <span className="text-[var(--text-secondary)] text-sm">rating</span>
-                    </>
-                  ) : (
-                    <span className="text-[var(--text-secondary)] text-sm">New pro</span>
+          {/* All Providers */}
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-xl font-bold">
+                {remainingProviders.length > 0 || featuredProviders.length === 0
+                  ? `${sortedProviders.length} Pro${sortedProviders.length !== 1 ? 's' : ''} Found`
+                  : `All Pros (${sortedProviders.length})`}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(featuredProviders.length > 0 ? remainingProviders : sortedProviders)?.map((provider: any) => (
+                <Link
+                  key={provider.id}
+                  to={`/pro/${provider.id}`}
+                  className="block bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 group"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-full bg-[var(--surface-overlay)] flex items-center justify-center text-2xl font-bold text-[var(--accent)]">
+                      {provider.businessName.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold rounded-full uppercase tracking-wider">
+                      {provider.verificationStatus}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold mb-1 truncate">{provider.businessName}</h3>
+                  {provider.contactName && (
+                    <p className="text-[var(--text-secondary)] text-sm mb-3">{provider.contactName}</p>
                   )}
-                </div>
-                <span className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm">
-                  View Profile
-                </span>
-              </div>
 
-              {/* Service areas */}
-              {provider.serviceAreas?.length > 0 && (
-                <p className="text-[var(--text-secondary)] text-xs mt-3">
-                  Serves: {provider.serviceAreas.slice(0, 2).join(', ')}
-                  {provider.serviceAreas.length > 2 && ` +${provider.serviceAreas.length - 2} more`}
-                </p>
-              )}
-            </Link>
-          ))}
-        </div>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {provider.categories.slice(0, 3).map((pc: any) => (
+                      <span key={pc.serviceCategory.id} className="px-3 py-1 bg-[var(--surface-overlay)] text-xs font-medium rounded-full">
+                        {pc.serviceCategory.name}
+                      </span>
+                    ))}
+                    {provider.categories.length > 3 && (
+                      <span className="px-3 py-1 bg-[var(--surface-overlay)] text-xs font-medium rounded-full text-[var(--text-secondary)]">
+                        +{provider.categories.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-[var(--border-default)]">
+                    <div className="flex items-center gap-1">
+                      {provider.ratingInternal ? (
+                        <>
+                          <span className="text-[var(--accent)] font-bold">{provider.ratingInternal.toFixed(1)}</span>
+                          <span className="text-[var(--text-secondary)] text-sm">rating</span>
+                        </>
+                      ) : (
+                        <span className="text-[var(--text-secondary)] text-sm">New pro</span>
+                      )}
+                    </div>
+                    <span className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm">
+                      View Profile
+                    </span>
+                  </div>
+
+                  {provider.serviceAreas?.length > 0 && (
+                    <p className="text-[var(--text-secondary)] text-xs mt-3">
+                      Serves: {provider.serviceAreas.slice(0, 2).join(', ')}
+                      {provider.serviceAreas.length > 2 && ` +${provider.serviceAreas.length - 2} more`}
+                    </p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Category quick-links */}
