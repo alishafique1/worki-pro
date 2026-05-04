@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "wasp/client/router";
+import { Link } from 'wasp/client/router';
 import {
   useAction,
   useQuery,
@@ -153,6 +153,15 @@ function RequestCard({ req }: { req: any }) {
 
   return (
     <article className="space-y-5 rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-5 shadow-sm">
+      {/* Floating detail link */}
+      <div className="flex justify-end">
+        <Link
+          to={`/my-requests/${req.id}`}
+          className="text-xs font-bold text-[var(--accent)] hover:underline"
+        >
+          Open details →
+        </Link>
+      </div>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <div className="min-w-0">
           <p className="text-sm font-medium leading-snug text-[var(--text-primary)] md:text-base">

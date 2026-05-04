@@ -193,6 +193,9 @@ page DashboardPage          { component: import DashboardPage from "@src/consume
 route MyRequestsRoute       { path: "/my-requests",         to: MyRequestsPage }
 page MyRequestsPage         { component: import MyRequestsPage from "@src/consumer/MyRequestsPage", authRequired: true }
 
+route RequestDetailRoute    { path: "/my-requests/:requestId", to: RequestDetailPage }
+page RequestDetailPage      { component: import RequestDetailPage from "@src/consumer/RequestDetailPage", authRequired: true }
+
 route RewardsRoute          { path: "/rewards",             to: RewardsPage }
 page RewardsPage            { component: import RewardsPage from "@src/consumer/RewardsPage", authRequired: true }
 
