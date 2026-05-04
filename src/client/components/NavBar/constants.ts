@@ -21,6 +21,9 @@ export const demoNavigationitems: NavigationItem[] = [
 ];
 
 export const consumerNavigationItems: NavigationItem[] = [
+  { name: "Discover Pros", to: "/discover" },
+  { name: "Services", to: "/services" },
+  { name: "Listings", to: "/listings" },
   { name: "My Requests", to: "/my-requests" },
   { name: "Analytics", to: "/analytics" },
   { name: "Rewards", to: "/rewards" },
