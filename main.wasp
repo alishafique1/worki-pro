@@ -196,6 +196,9 @@ page MyRequestsPage         { component: import MyRequestsPage from "@src/consum
 route RewardsRoute          { path: "/rewards",             to: RewardsPage }
 page RewardsPage            { component: import RewardsPage from "@src/consumer/RewardsPage", authRequired: true }
 
+route HelpRoute             { path: "/help",                to: HelpPage }
+page HelpPage               { component: import HelpPage from "@src/consumer/HelpPage" }
+
 route ReferralRoute         { path: "/referral",            to: ReferralPage }
 page ReferralPage           { component: import ReferralPage from "@src/consumer/ReferralPage", authRequired: true }
 
