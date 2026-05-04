@@ -39,10 +39,13 @@ export default function OnboardingPage() {
     serviceAreas: '',
   });
 
+  const getDashboardPath = (role?: Role | null) =>
+    role === 'PROVIDER' ? '/provider/dashboard' : '/dashboard';
+
   // If user already completed onboarding, redirect to dashboard
   useEffect(() => {
     if (user && user.firstName) {
-      navigate('/dashboard');
+      navigate(getDashboardPath((user.role as Role | undefined) ?? null));
     }
   }, [user, navigate]);
 
@@ -103,7 +106,7 @@ export default function OnboardingPage() {
             ? form.serviceAreas.split(',').map(s => s.trim()).filter(Boolean)
             : undefined,
       });
-      navigate('/dashboard');
+      navigate(getDashboardPath(form.role));
     } catch (e: any) {
       setError(e.message ?? 'Something went wrong. Please try again.');
     } finally {

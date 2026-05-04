@@ -163,7 +163,7 @@ export const submitServiceRequest: SubmitServiceRequest<
   },
   ServiceRequest
 > = async (args, context) => {
-  let serviceCategoryId = undefined;
+  let serviceCategoryId: string | undefined = undefined;
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({
       where: { slug: args.serviceType },

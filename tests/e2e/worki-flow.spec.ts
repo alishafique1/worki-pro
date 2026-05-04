@@ -1,34 +1,54 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+const LOGIN_EMAIL = 'test@worki.ai';
+const LOGIN_PASSWORD = 'Password123!';
+
+async function dismissCookieConsent(page: Page) {
+  const reject = page.getByRole('button', { name: /reject all/i });
+  if (await reject.isVisible().catch(() => false)) {
+    await reject.click().catch(() => {});
+  }
+
+  const accept = page.getByRole('button', { name: /accept all/i });
+  if (await accept.isVisible().catch(() => false)) {
+    await accept.click().catch(() => {});
+  }
+}
+
+async function login(page: Page, email = LOGIN_EMAIL, password = LOGIN_PASSWORD) {
+  await page.goto('/login');
+  await dismissCookieConsent(page);
+
+  await expect(page.getByRole('heading', { name: /log in/i })).toBeVisible();
+  await page
+    .getByLabel(/e-?mail/i)
+    .or(page.locator('input[type="email"]'))
+    .first()
+    .fill(email);
+  await page
+    .getByLabel(/password/i)
+    .or(page.locator('input[type="password"]'))
+    .first()
+    .fill(password);
+  await page.getByRole('button', { name: /log in/i }).click();
+
+  await page.waitForURL(/\/(dashboard|onboarding|provider\/dashboard|provider\/apply)(\?.*)?$/i, {
+    timeout: 15000,
+  });
+
+  const url = page.url();
+  if (url.includes('/onboarding')) {
+    await page.goto('/provider/dashboard');
+  }
+}
 
 test.describe('Worki End-to-End Flow', () => {
   test('Provider Dashboard renders correctly', async ({ page }) => {
-    // 1. Navigate to the login page
-    await page.goto('/login');
-    
-    // We are expecting the "Log in to your account" heading
-    await expect(page.locator('text=Log in to your account')).toBeVisible();
-
-    // Dismiss cookie consent if it appears so it does not intercept clicks.
-    const rejectCookiesButton = page.getByRole('button', { name: 'Reject all' });
-    if (await rejectCookiesButton.isVisible().catch(() => false)) {
-      await rejectCookiesButton.click();
-    }
-    
-    // Log in as the test user. (Note: Wasp uses standard input types)
-    await page.fill('input[type="email"]', 'test@worki.ai');
-    await page.fill('input[type="password"]', 'Password123!');
-    await page.click('button[type="submit"]');
-    
-    // Wait for the redirect to the dashboard
-    await page.waitForURL('/dashboard');
-    
-    // 2. Navigate to the Provider Portal
+    await login(page);
     await page.goto('/provider/dashboard');
-    
-    // 3. Verify the Provider Dashboard is populated
-    await expect(page.locator('text=Provider Portal')).toBeVisible();
-    
-    // We expect the "New Leads" column to exist
-    await expect(page.locator('text=New Leads')).toBeVisible();
+    await dismissCookieConsent(page);
+
+    await expect(page.getByRole('heading', { name: /provider portal/i })).toBeVisible();
+    await expect(page.getByText(/new leads/i)).toBeVisible();
   });
 });

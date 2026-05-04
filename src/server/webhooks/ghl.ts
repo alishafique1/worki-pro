@@ -1,5 +1,4 @@
 import type { GhlWebhook } from 'wasp/server/api';
-import { HttpError } from 'wasp/server';
 
 /**
  * GoHighLevel → Worki inbound webhook
@@ -29,8 +28,15 @@ import { HttpError } from 'wasp/server';
  */
 export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
   // ── Authenticate ──────────────────────────────────────────────────────────
+  const isProduction = process.env.NODE_ENV === 'production';
   const secret = process.env.GHL_WEBHOOK_SECRET;
-  if (secret && req.headers['x-worki-secret'] !== secret && req.body.secret !== secret) {
+  if (isProduction && !secret) {
+    return res.status(401).json({ error: 'Webhook secret is required in production' });
+  }
+
+  const headerSecret = req.headers['x-worki-secret'];
+  const bodySecret = (req.body as { secret?: string })?.secret;
+  if (secret && headerSecret !== secret && bodySecret !== secret) {
     return res.status(401).json({ error: 'Invalid webhook secret' });
   }
 
@@ -117,4 +123,3 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
 
   return res.status(200).json({ received: true, updatedStatus: newStatus ?? event });
 };
-

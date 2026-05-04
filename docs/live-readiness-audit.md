@@ -4,6 +4,64 @@ Date: 2026-05-01
 Owner: Worker 5
 Scope: Google Auth and launch readiness from code/config perspective. Reviewed `main.wasp`, auth files, env examples, schema, payment, GHL, Twilio, and relevant consumer/provider UI. No env secrets were changed.
 
+Verification checklist reference: `app/docs/release-verification-checklist.md`
+
+## Status Update (2026-05-03)
+
+Source of truth update from current repo state and latest local E2E runs.
+
+### Overall
+
+Status: **not ready for public launch yet**.
+
+Major security and launch-copy blockers were implemented locally, but the E2E suite is still failing broadly due to test/UI contract drift and runtime/config mismatches. Do not treat current automated QA as a release gate until E2E stabilization is complete.
+
+Launch gate note: use `app/docs/release-verification-checklist.md` as the actionable staging/production verification source of truth. Current decision remains **No-Go** until the E2E gate passes.
+
+### Done Since 2026-05-01
+
+- Removed Google OAuth values from client env example (`.env.client.example`) so client examples are `REACT_APP_*` only.
+- Added/clarified server env requirements for webhook security in `.env.server.example`, including `TWILIO_AUTH_TOKEN` and production requirement for `GHL_WEBHOOK_SECRET`.
+- Fixed GoHighLevel outbound webhook logging delegate in `src/server/services/ghl.ts` to use `WebhookLog` delegate shape (with compatibility fallback).
+- Hardened GHL inbound webhook auth in `src/server/webhooks/ghl.ts`:
+  - Production now rejects requests when `GHL_WEBHOOK_SECRET` is missing.
+  - When secret exists, inbound must match header/body secret.
+- Implemented Twilio signature verification in `src/server/webhooks/twilio.ts` using `X-Twilio-Signature` + `TWILIO_AUTH_TOKEN` with timing-safe compare.
+- Replaced demo/template pricing copy with Worki-oriented copy in `src/payment/PricingPage.tsx`.
+- Fixed onboarding redirect behavior in `src/auth/OnboardingPage.tsx`:
+  - Provider users now route to `/provider/dashboard`.
+  - Consumers route to `/dashboard`.
+- Replaced cookie-consent legal placeholders with real app routes:
+  - `/privacy`
+  - `/terms`
+- Replaced obvious admin launch stubs with safe placeholders:
+  - `src/admin/dashboards/messages/MessagesPage.tsx`
+  - `src/admin/elements/settings/SettingsPage.tsx`
+- Synced blocker tracking to GitHub issues:
+  - `#27` OAuth env hygiene
+  - `#28` GHL webhook hardening + logging
+  - `#29` Twilio signature validation
+  - `#30` Pricing copy de-template
+  - `#31` Provider onboarding redirect
+  - `#32` Legal links + admin stubs
+  - `#20` E2E rewrite/stabilization
+
+### Remaining Before Go-Live
+
+- E2E test suite stabilization (critical):
+  - Current failures are widespread across auth/consumer/provider specs.
+  - Several assertions no longer match actual UI text/labels/headings.
+  - Base URL/port assumptions are inconsistent with current runtime (local app observed at client `:3000`, server `:3100`).
+- Re-run full Playwright suite with fixed selectors and stable fixtures/test accounts until passing.
+- Validate webhook hardening behavior in integration/staging (signed/unsigned GHL and Twilio payloads).
+- Final production config validation:
+  - OAuth callback URLs in Google Cloud.
+  - Live payment IDs + webhook secrets.
+  - Email sender/provider setup and deliverability checks.
+- Clean release branch hygiene:
+  - Remove/ignore local test artifacts in `test-results`.
+  - Ensure only intended migrations/config/code changes are in the release PR.
+
 ## Executive Status
 
 Status: **not ready for public launch without fixes**.
