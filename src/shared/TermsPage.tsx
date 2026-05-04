@@ -4,19 +4,105 @@ export default function TermsPage() {
   return (
     <div className="bg-background text-foreground min-h-screen py-20 px-6">
       <div className="max-w-3xl mx-auto prose prose-invert">
-        <h1 className="text-4xl font-black mb-8">Terms of Service</h1>
-        <p className="text-[var(--text-secondary)]">Last updated: May 1, 2026</p>
-        
-        <h2 className="text-2xl font-bold mt-12 mb-4">1. Acceptance of Terms</h2>
-        <p>By accessing or using the Worki platform, you agree to be bound by these Terms of Service. If you do not agree, you may not use the platform.</p>
+        <h1 className="text-4xl font-black mb-2">Terms of Service</h1>
+        <p className="text-[var(--text-secondary)] mb-8">Last updated: May 1, 2026</p>
 
-        <h2 className="text-2xl font-bold mt-12 mb-4">2. The Marketplace</h2>
-        <p>Worki provides a marketplace connecting homeowners with service providers. We do not provide home services ourselves. We are not responsible for the quality of work provided by independent pros.</p>
+        <h2 className="text-2xl font-bold mt-10 mb-3">1. About Worki</h2>
+        <p>
+          Worki Home Services operates a home services marketplace that connects homeowners
+          in the Greater Toronto Area with independent, vetted service providers. Worki does
+          not itself perform home services.
+        </p>
 
-        <h2 className="text-2xl font-bold mt-12 mb-4">3. Rewards Program</h2>
-        <p>Points are awarded after a job is completed and verified by Worki. Points have no cash value until redeemed through our official platform for gift cards or service discounts.</p>
-        
-        <p className="mt-20 text-sm text-[var(--text-secondary)]">Full legal text for GTA compliance goes here...</p>
+        <h2 className="text-2xl font-bold mt-10 mb-3">2. Acceptance of Terms</h2>
+        <p>
+          By accessing or using the Worki platform — including submitting a service request,
+          creating an account, or accessing any provider features — you agree to be bound
+          by these Terms of Service. If you do not agree, do not use the platform.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">3. The Marketplace</h2>
+        <p>
+          Worki provides a marketplace connecting homeowners with independent service providers
+          ("Providers"). Worki is not a party to any service agreement between you and a
+          Provider. All services are performed by independent Providers. Worki does not
+          guarantee the quality, completeness, or outcome of any Provider's work.
+        </p>
+        <p>
+          When you submit a service request, you authorize Worki to share your contact and
+          job details with relevant Providers for the purpose of fulfilling your request.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">4. Accounts and Eligibility</h2>
+        <p>
+          Service requests can be submitted without an account. To track requests, book
+          appointments, and access rewards, you must create an account with accurate
+          information. You are responsible for maintaining the confidentiality of your login
+          credentials. You must be at least 18 years old to create an account.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">5. Rewards Program</h2>
+        <p>
+          Worki operates a points-based rewards program. Points are awarded for eligible
+          actions including submitting a service request, booking an appointment, and
+          completing a verified job. Points have no monetary value outside of the Worki
+          rewards redemption process. Points cannot be exchanged for cash. Redemption
+          options and minimum thresholds are set by Worki and may change at any time.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">6. Provider Relationships</h2>
+        <p>
+          Providers on Worki are independent businesses. Worki does not employ Providers or
+          their staff. Any engagement between you and a Provider — including scheduling,
+          pricing, scope of work, and payment — is solely between you and the Provider.
+          Worki is not responsible for any disputes, damages, or claims arising from a
+          Provider's services.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">7. Prohibited Use</h2>
+        <p>You may not use Worki to:</p>
+        <ul>
+          <li>Submit false, fraudulent, or misleading service requests</li>
+          <li>Harass, defame, or threaten Providers or Worki staff</li>
+          <li>Use the platform for any illegal purpose</li>
+          <li>Attempt to circumvent the platform by arranging services outside of Worki</li>
+        </ul>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">8. Limitation of Liability</h2>
+        <p>
+          To the maximum extent permitted by law, Worki Home Services is not liable for
+          any indirect, incidental, special, or consequential damages arising from your use
+          of the platform or any Provider's services. Worki's total liability for any claim
+          shall not exceed the amount you paid to Worki in the twelve months preceding the
+          claim.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">9. Changes to Terms</h2>
+        <p>
+          Worki may update these Terms at any time. Updated terms will be posted on this
+          page with a revised "Last updated" date. Continued use of the platform after
+          changes constitutes acceptance of the updated Terms.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">10. Governing Law</h2>
+        <p>
+          These Terms are governed by the laws of the Province of Ontario and the federal
+          laws of Canada applicable therein. Any disputes shall be subject to the exclusive
+          jurisdiction of the courts of Ontario.
+        </p>
+
+        <h2 className="text-2xl font-bold mt-10 mb-3">11. Contact</h2>
+        <p>
+          For questions about these Terms, contact us at{' '}
+          <a href="mailto:hello@worki.ca" className="text-[var(--accent)] hover:underline">
+            hello@worki.ca
+          </a>
+          .
+        </p>
+
+        <p className="mt-16 text-sm text-[var(--text-tertiary)]">
+          Worki Home Services Inc. — Milton, Ontario, Canada.
+        </p>
       </div>
     </div>
   );

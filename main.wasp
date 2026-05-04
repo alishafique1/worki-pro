@@ -208,6 +208,9 @@ page DiscoveryPage          { component: import DiscoveryPage from "@src/consume
 route ConsumerServicesRoute { path: "/services",            to: ConsumerServicesPage }
 page ConsumerServicesPage   { component: import ConsumerServicesPage from "@src/consumer/ServicesPage" }
 
+route HowItWorksRoute       { path: "/how-it-works",         to: HowItWorksPage }
+page HowItWorksPage         { component: import HowItWorksPage from "@src/consumer/HowItWorksPage" }
+
 route ProviderDetailRoute   { path: "/pro/:providerId",      to: ProviderDetailPage }
 page ProviderDetailPage     { component: import ProviderDetailPage from "@src/consumer/ProviderDetailPage" }
 
