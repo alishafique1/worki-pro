@@ -12,16 +12,19 @@ export const marketingNavigationItems: NavigationItem[] = [
 ] as const;
 
 export const demoNavigationitems: NavigationItem[] = [
-  { name: "Request Service", to: "/request-service" },
   { name: "Discover Pros", to: "/discover" },
   { name: "Services", to: "/services" },
+  { name: "Pricing", to: "/pricing" },
   { name: "Contact", to: "/contact" },
+  { name: "Request Service", to: "/request-service" },
   { name: "Dashboard", to: "/dashboard" },
   { name: "Provider Portal", to: "/provider/dashboard" },
   { name: "Admin", to: "/admin" },
 ];
 
 export const consumerNavigationItems: NavigationItem[] = [
+  { name: "Discover Pros", to: "/discover" },
+  { name: "Services", to: "/services" },
   { name: "My Requests", to: "/my-requests" },
   { name: "Analytics", to: "/analytics" },
   { name: "Rewards", to: "/rewards" },
