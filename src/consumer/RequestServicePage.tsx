@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useAction, useQuery, submitServiceRequest, getProviderById } from 'wasp/client/operations';
+import React, { useEffect, useState, useRef } from 'react';
+import { useAction, useQuery, submitServiceRequest, getProviderById, getProviders } from 'wasp/client/operations';
 import { useNavigate, useLocation } from 'react-router';
 
 const SERVICES = [
@@ -53,6 +53,20 @@ export default function RequestServicePage() {
     { enabled: !!preSelectedProId }
   );
 
+  // Lead Builder state — pro search picker
+  const [proPickerOpen, setProPickerOpen] = useState(false);
+  const [proSearchQuery, setProSearchQuery] = useState('');
+  const [searchedPro, setSearchedPro] = useState<any | null>(null);
+  const proSearchRef = useRef<HTMLInputElement>(null);
+
+  const { data: proResults } = useQuery(
+    getProviders,
+    {
+      search: proSearchQuery.length >= 2 ? proSearchQuery : undefined,
+    },
+    { enabled: proSearchQuery.length >= 2 }
+  );
+
   const [formData, setFormData] = useState<{
     name: string;
     email: string;
@@ -77,6 +91,10 @@ export default function RequestServicePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitRequest = useAction(submitServiceRequest);
 
+  // The effective pro: user-selected from search takes priority over URL param
+  const effectiveProId = searchedPro?.id ?? preSelectedProId;
+  const effectivePro = searchedPro ?? preSelectedPro;
+
   useEffect(() => {
     if (!preSelectedPro || formData.serviceType !== '') return;
     const firstCategory = preSelectedPro.categories?.[0]?.serviceCategory;
@@ -85,6 +103,28 @@ export default function RequestServicePage() {
       setFormData(prev => ({ ...prev, serviceType: slug }));
     }
   }, [preSelectedPro, formData.serviceType]);
+
+  // Close picker on outside click
+  useEffect(() => {
+    if (!proPickerOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (proSearchRef.current && !proSearchRef.current.contains(e.target as Node)) {
+        setProPickerOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [proPickerOpen]);
+
+  const selectPro = (pro: any) => {
+    setSearchedPro(pro);
+    setProSearchQuery('');
+    setProPickerOpen(false);
+  };
+
+  const clearPro = () => {
+    setSearchedPro(null);
+  };
 
   const selectedService = SERVICES.find(service => service.slug === formData.serviceType);
 
@@ -111,7 +151,7 @@ export default function RequestServicePage() {
         description: formData.description,
         urgency: formData.urgency,
         serviceType: formData.serviceType || undefined,
-        preferredProviderId: preSelectedProId || undefined,
+        preferredProviderId: effectiveProId || undefined,
         estimatedSchedule: formData.estimatedSchedule,
         preferredTime: formData.preferredTime || 'ANYTIME',
       });
@@ -177,19 +217,106 @@ export default function RequestServicePage() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col px-6 lg:px-12 pb-12">
-          {preSelectedPro && (
-            <div className="mb-6 flex items-center gap-3 rounded-[20px] border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-black text-black">
-                {preSelectedPro.businessName?.charAt(0).toUpperCase() ?? 'P'}
+          {effectivePro && (
+            <div className="mb-6 flex items-center justify-between gap-3 rounded-[20px] border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-sm font-black text-black">
+                  {effectivePro.businessName?.charAt(0).toUpperCase() ?? 'P'}
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-black">{effectivePro.businessName}</p>
+                  <p className="text-xs font-semibold text-[var(--text-secondary)]">
+                    {searchedPro ? 'You selected this pro.' : 'Linked from discovery.'}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-black">{preSelectedPro.businessName}</p>
-                <p className="text-xs font-semibold text-[var(--text-secondary)]">This pro will be notified first.</p>
-              </div>
+              {searchedPro && (
+                <button
+                  type="button"
+                  onClick={clearPro}
+                  className="shrink-0 w-7 h-7 rounded-full bg-[var(--accent)]/20 text-[var(--accent)] flex items-center justify-center text-xs font-black hover:bg-[var(--accent)]/30 transition-colors"
+                  title="Remove this pro"
+                >
+                  ×
+                </button>
+              )}
             </div>
           )}
+
           <div className="flex-1 glass dark:glass-dark rounded-[32px] border border-white/10 shadow-2xl p-8 lg:p-12 overflow-hidden">
             <div className="space-y-10">
+
+              {/* ── Lead Builder: Pro search picker ──────────────────────────── */}
+              <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                {!proPickerOpen ? (
+                  <button
+                    type="button"
+                    onClick={() => setProPickerOpen(true)}
+                    className="w-full flex items-center gap-3 px-5 py-3 rounded-[18px] border-2 border-dashed border-[var(--border-default)] text-left text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--accent)]/50 hover:text-[var(--text-primary)] transition-colors"
+                  >
+                    <span className="text-lg">🔍</span>
+                    <span>Have a pro in mind? Search to request them directly.</span>
+                  </button>
+                ) : (
+                  <div ref={proSearchRef} className="relative">
+                    <div className="flex items-center gap-3">
+                      <div className="relative flex-1">
+                        <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input
+                          autoFocus
+                          type="text"
+                          placeholder="Search pro by name..."
+                          value={proSearchQuery}
+                          onChange={e => setProSearchQuery(e.target.value)}
+                          className="w-full pl-11 pr-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-sm focus:outline-none focus:border-[var(--accent)] transition-colors"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => { setProPickerOpen(false); setProSearchQuery(''); }}
+                        className="px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    {proSearchQuery.length >= 2 && proResults && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[16px] shadow-xl z-50 max-h-64 overflow-y-auto">
+                        {proResults.length === 0 ? (
+                          <div className="px-4 py-6 text-center text-sm text-[var(--text-secondary)]">
+                            No pros found for "{proSearchQuery}"
+                          </div>
+                        ) : (
+                          proResults.slice(0, 8).map((pro: any) => (
+                            <button
+                              key={pro.id}
+                              type="button"
+                              onClick={() => selectPro(pro)}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--surface-overlay)] transition-colors text-left first:rounded-t-[16px] last:rounded-b-[16px]"
+                            >
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/20 text-xs font-black text-[var(--accent)]">
+                                {pro.businessName?.charAt(0).toUpperCase() ?? 'P'}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-sm font-semibold truncate">{pro.businessName}</p>
+                                <p className="text-xs text-[var(--text-secondary)] truncate">
+                                  {pro.categories?.slice(0, 2).map((pc: any) => pc.serviceCategory?.name).filter(Boolean).join(', ') || 'General services'}
+                                  {pro.serviceAreas?.length > 0 ? ` · ${pro.serviceAreas.slice(0, 2).join(', ')}` : ''}
+                                </p>
+                              </div>
+                              {pro.ratingInternal && (
+                                <span className="ml-auto shrink-0 text-xs font-bold text-[var(--accent)]">★ {pro.ratingInternal.toFixed(1)}</span>
+                              )}
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-3">Question 1 of 3</p>
                 <h2 className="text-2xl font-black tracking-tight mb-2">What kind of help do you need?</h2>
