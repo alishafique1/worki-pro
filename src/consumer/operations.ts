@@ -243,7 +243,14 @@ export const submitServiceRequest: SubmitServiceRequest<
   return newRequest;
 };
 
-type ProviderWithCategories = Provider & {
+type ProviderWithCategories = {
+  id: string;
+  businessName: string;
+  contactName: string | null;
+  ratingInternal: number | null;
+  verificationStatus: string;
+  serviceAreas: string[];
+  servicesJson: string | null;
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
 };
 
@@ -274,7 +281,9 @@ export const getProviders: GetProviders<
   let providers = await context.entities.Provider.findMany({
     where,
     include: {
-      categories: { include: { serviceCategory: true } },
+      categories: {
+        include: { serviceCategory: true },
+      },
     },
     orderBy: { ratingInternal: "desc" },
   });
