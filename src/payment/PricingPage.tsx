@@ -35,27 +35,31 @@ interface PaymentPlanCard {
 export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
   [PaymentPlanId.Hobby]: {
     name: prettyPaymentPlanName(PaymentPlanId.Hobby),
-    price: "$9.99",
-    description: "Essentials for homeowners getting started on Worki",
+    price: "$0",
+    description: "Free forever — submit requests and browse pros at no cost",
     features: [
-      "Post and manage service requests",
-      "Basic request insights and status tracking",
+      "Post unlimited service requests",
+      "Browse verified pro profiles",
+      "Track request status in real time",
+      "Earn rewards on completed jobs",
     ],
   },
   [PaymentPlanId.Pro]: {
     name: prettyPaymentPlanName(PaymentPlanId.Pro),
-    price: "$19.99",
-    description: "Built for active users who need faster outcomes",
+    price: "$9.99/mo",
+    description: "Maximum visibility and speed for homeowners who use Worki regularly",
     features: [
-      "Priority visibility for service activity",
-      "Enhanced support response",
+      "Priority request visibility — pros respond faster",
+      "Enhanced support with dedicated concierge",
+      "First access to new service categories",
+      "Everything in Free",
     ],
   },
   [PaymentPlanId.Credits10]: {
     name: prettyPaymentPlanName(PaymentPlanId.Credits10),
     price: "$9.99",
-    description: "One-time credit bundle for on-demand actions",
-    features: ["10 credits added instantly", "Credits never expire"],
+    description: "One-time credit bundle — for single urgent jobs or one-off needs",
+    features: ["10 credits added instantly", "Credits never expire", "Applied automatically at checkout"],
   },
 };
 
@@ -127,12 +131,12 @@ const PricingPage = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div id="pricing" className="mx-auto max-w-4xl text-center">
           <h2 className="text-foreground mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-            Pick your <span className="text-primary">pricing</span>
+            Simple, transparent <span className="text-primary">pricing</span>
           </h2>
         </div>
         <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-center text-lg leading-8">
-          Choose the plan that matches how you use Worki. Upgrade any time from
-          your account billing settings.
+          No hidden fees. No subscriptions required. Browse and book background-checked pros in
+          Milton, Oakville, Burlington and across the GTA.
         </p>
         {errorMessage && (
           <Alert variant="destructive" className="mt-8">
