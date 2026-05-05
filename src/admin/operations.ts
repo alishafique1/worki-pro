@@ -1,4 +1,4 @@
-import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount } from 'wasp/entities';
+import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount, Lead } from 'wasp/entities';
 import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectProvider } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
@@ -156,3 +156,24 @@ export const approveRewardTransaction: ApproveRewardTransaction<{ transactionId:
 
   return updated;
 };
+
+export const getAdminLeads = (async (_args: void, context: any) => {
+  requireAdmin(context);
+  return context.entities.Lead.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
+}) as any;
+
+type UpdateLeadInput = { leadId: string; status?: string; assignedTo?: string; notes?: string };
+
+export const updateLead = (async ({ leadId, status, assignedTo, notes }: UpdateLeadInput, context: any) => {
+  requireAdmin(context);
+  const data: any = {};
+  if (status !== undefined) data.status = status;
+  if (assignedTo !== undefined) data.assignedTo = assignedTo;
+  if (notes !== undefined) data.notes = notes;
+  return context.entities.Lead.update({
+    where: { id: leadId },
+    data,
+  });
+}) as any;

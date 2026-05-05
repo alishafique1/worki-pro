@@ -544,6 +544,16 @@ query getAdminRewards {
   entities: [RewardTransaction, Redemption, ServiceRequest, User]
 }
 
+query getAdminLeads {
+  fn: import { getAdminLeads } from "@src/admin/operations",
+  entities: [Lead]
+}
+
+action updateLead {
+  fn: import { updateLead } from "@src/admin/operations",
+  entities: [Lead]
+}
+
 action approveProvider {
   fn: import { approveProvider } from "@src/admin/operations",
   entities: [Provider]
