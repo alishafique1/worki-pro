@@ -5,7 +5,7 @@ export const marketingNavigationItems: NavigationItem[] = [
   { name: "Handyman", to: "/handyman" },
   { name: "Appliance Repair", to: "/appliance-repair" },
   { name: "Services", to: "/services" },
-  { name: "How it Works", to: "/how-rewards-work" },
+  { name: "How it Works", to: "/how-it-works" },
   { name: "For Pros", to: "/providers" },
   { name: "List Your Services", to: "/list-your-services" },
   { name: "Contact", to: "/contact" },

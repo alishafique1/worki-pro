@@ -130,7 +130,7 @@ export default function DashboardPage() {
                     )}
                   </div>
                   <Link
-                    to="/my-requests"
+                    to={`/my-requests/${req.id}`}
                     className="mt-4 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
                   >
                     Open booking details and messages →

@@ -26,7 +26,7 @@ export default function Footer() {
         <div>
           <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-6">Marketplace</h3>
           <ul className="space-y-4 text-sm">
-            <li><Link to="/how-rewards-work" className="hover:text-[var(--accent)] transition-colors">How Rewards Work</Link></li>
+            <li><Link to="/how-it-works" className="hover:text-[var(--accent)] transition-colors">How Rewards Work</Link></li>
             <li><Link to="/providers" className="hover:text-[var(--accent)] transition-colors">Join as a Pro</Link></li>
             <li><Link to="/providers/apply" className="hover:text-[var(--accent)] transition-colors">Provider Application</Link></li>
           </ul>
