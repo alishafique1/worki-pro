@@ -5,6 +5,7 @@ import {
   acceptServiceRequest,
   getProviderAppointments,
   getProviderLeads,
+  getProviderProfile,
 } from "wasp/client/operations";
 import { Link } from "react-router";
 
@@ -19,6 +20,10 @@ export default function ProviderDashboardPage() {
     isLoading: apptsLoading,
     error: apptsError,
   } = useQuery(getProviderAppointments);
+  const {
+    data: profile,
+    isLoading: profileLoading,
+  } = useQuery(getProviderProfile);
   const acceptLeadFn = useAction(acceptServiceRequest);
 
   const handleAccept = async (id: string) => {
@@ -42,6 +47,12 @@ export default function ProviderDashboardPage() {
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
+            to="/provider/services"
+            className="rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black"
+          >
+            Manage listings
+          </Link>
+          <Link
             to="/provider/leads"
             className="rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black"
           >
@@ -54,6 +65,66 @@ export default function ProviderDashboardPage() {
             Manage bookings
           </Link>
         </div>
+      </div>
+
+      {/* My Listings Summary */}
+      <div className="bg-[var(--surface-raised)] rounded-[24px] border border-[var(--border-default)] p-8 shadow-xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+          <div>
+            <h2 className="text-2xl font-bold flex items-center gap-3">
+              <span className="text-2xl">📋</span>
+              My Service Listings
+            </h2>
+            <p className="text-[var(--text-secondary)] mt-1">
+              {profileLoading
+                ? 'Loading...'
+                : (() => {
+                    const services = (profile as any)?.servicesJson
+                      ? JSON.parse((profile as any).servicesJson)
+                      : [];
+                    return services.length === 0
+                      ? 'No services listed yet — add your first listing so customers can find you.'
+                      : `${services.length} service${services.length !== 1 ? 's' : ''} listed`;
+                  })()}
+            </p>
+          </div>
+          <Link
+            to="/provider/services"
+            className="px-6 py-3 bg-[var(--accent)] text-[#000] font-bold rounded-[18px] hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
+          >
+            {(() => {
+              const services = (profile as any)?.servicesJson
+                ? JSON.parse((profile as any).servicesJson)
+                : [];
+              return services.length === 0 ? 'Add your first listing' : 'Manage listings';
+            })()}
+          </Link>
+        </div>
+
+        {!profileLoading && (() => {
+          const services = (profile as any)?.servicesJson
+            ? JSON.parse((profile as any).servicesJson)
+            : [];
+          if (services.length === 0) return null;
+          return (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {services.slice(0, 6).map((svc: any) => (
+                <span
+                  key={svc.id}
+                  className="px-3 py-1.5 bg-[var(--surface-overlay)] border border-[var(--border-default)] rounded-full text-xs font-medium"
+                >
+                  {svc.name}
+                  {svc.price && <span className="text-[var(--accent)] ml-1 font-bold">${svc.price}</span>}
+                </span>
+              ))}
+              {services.length > 6 && (
+                <span className="px-3 py-1.5 text-xs text-[var(--text-tertiary)]">
+                  +{services.length - 6} more
+                </span>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
