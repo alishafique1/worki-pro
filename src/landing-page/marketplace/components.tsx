@@ -16,6 +16,7 @@ import {
   SlidersHorizontal,
   Sparkles,
   UserCheck,
+  Zap,
 } from "lucide-react";
 import { cn } from "../../client/utils";
 
@@ -121,19 +122,20 @@ export function Hero() {
         <div className="text-[#FEFEFD]">
           <TrustBadge
             icon={<Sparkles className="size-4" />}
-            label="Live local service requests"
+            label="Earn 5% cashback on every home service job"
             dark
           />
           <h1 className="mt-6 max-w-3xl text-balance text-[42px] font-bold leading-[1.02] text-[#FEFEFD] sm:text-6xl lg:text-7xl">
-            Find trusted local services without the back-and-forth.
+            Home jobs done.
+            <br />
+            Rewards earned.
           </h1>
           <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-[#CCC9D8] sm:text-lg">
-            Worki helps homeowners submit clear requests for HVAC, handyman,
-            plumbing, electrical, appliance repair, and smart home services.
+            Taskora connects you with verified local pros — and gives you cashback on every job you were always going to pay for anyway.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button href="/request-service">
-              Request Service <ArrowRight className="size-4" />
+            <Button href="/get-a-pro">
+              Start Earning <ArrowRight className="size-4" />
             </Button>
             <Button href="/providers/apply" variant="secondary">
               Become a Provider
@@ -141,10 +143,10 @@ export function Hero() {
           </div>
           <div className="mt-7 grid gap-3 text-sm text-[#B7B7B7] sm:grid-cols-2">
             {[
-              "Live service request form",
-              "HVAC, plumbing, electrical",
-              "Handyman, appliance, smart home",
-              "Built for homeowners and pros",
+              "5% cashback on every job",
+              "Verified pros only",
+              "Gift card rewards",
+              "Free to request",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="flex size-5 items-center justify-center rounded-full bg-[#F2B5D7] text-[#0C110F]">
@@ -429,8 +431,8 @@ export function TestimonialCard() {
         Built around select local providers.
       </h3>
       <p className="mt-3 text-sm leading-6 text-[#797886]">
-        Worki is starting city by city so provider coverage and customer trust
-        can grow around real requests.
+        Taskora is starting city by city so provider coverage and customer
+        trust can grow around real requests.
       </p>
     </article>
   );
@@ -468,18 +470,17 @@ export function CTASection() {
         <div className="overflow-hidden rounded-[23px] border border-white/10 bg-[#1B1B1C] p-6 text-center shadow-[0_32px_80px_rgba(0,0,0,0.36)] sm:p-10">
           <TrustBadge
             dark
-            icon={<ShieldCheck className="size-4" />}
-            label="Live requests for supported service categories"
+            icon={<Zap className="size-4" />}
+            label="Takes less than 30 seconds"
           />
           <h2 className="mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-[#FEFEFD] sm:text-[42px]">
-            Stop chasing service providers. Start with Worki.
+            Ready to get it handled?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-[#CCC9D8]">
-            Submit a home service request now, or apply to become a provider for
-            supported categories and service areas.
+            Submit your first request now and earn 5% cashback on every task completed. Providers — apply to join a flexible marketplace built for local pros.
           </p>
           <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button href="/request-service">Request Service</Button>
+            <Button href="/get-a-pro">Get Your Pro</Button>
             <Button href="/providers/apply" variant="secondary">
               Become a Provider
             </Button>
@@ -494,8 +495,8 @@ export function Footer() {
   return (
     <footer className="bg-[#000000] px-4 pb-10 pt-8 text-[#9E9EA7] sm:px-6 lg:px-8">
       <Container className="flex flex-col justify-between gap-4 border-t border-white/10 pt-6 text-sm sm:flex-row">
-        <p className="font-semibold text-[#FEFEFD]">Worki</p>
-        <p>Trusted local services, handled in one place.</p>
+        <p className="font-semibold text-[#FEFEFD]">Taskora</p>
+        <p>Flexible marketplace. Verified pros. Rewards on every task.</p>
         <div className="flex gap-4">
           <Link to="/privacy" className="hover:text-[#FEFEFD]">
             Privacy
