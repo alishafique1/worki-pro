@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useAction, useQuery, submitServiceRequest, getProviderById, getProviders } from 'wasp/client/operations';
+import { useAction, useQuery, submitServiceRequest, getProviderById, getProviders, getMyRequests } from 'wasp/client/operations';
+import { useAuth } from 'wasp/client/auth';
 import { useNavigate, useLocation } from 'react-router';
 
 const SERVICES = [
@@ -41,6 +42,7 @@ const MATCHING_STEPS = [
 ];
 
 export default function RequestServicePage() {
+  const { data: user } = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
@@ -66,6 +68,10 @@ export default function RequestServicePage() {
     },
     { enabled: proSearchQuery.length >= 2 }
   );
+
+  const { data: myRequests } = useQuery(getMyRequests, undefined, { enabled: !!user });
+  const [prefillDismissed, setPrefillDismissed] = useState(false);
+  const [prefillApplied, setPrefillApplied] = useState(false);
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -103,6 +109,21 @@ export default function RequestServicePage() {
       setFormData(prev => ({ ...prev, serviceType: slug }));
     }
   }, [preSelectedPro, formData.serviceType]);
+
+  useEffect(() => {
+    if (!user || !myRequests || myRequests.length === 0 || prefillApplied) return;
+    const last = myRequests[0];
+    const updates: Partial<typeof formData> = {};
+    if (!formData.name && last.name) updates.name = last.name;
+    if (!formData.email && last.email) updates.email = last.email;
+    if (!formData.phone && last.phone) updates.phone = last.phone;
+    if (!formData.postalCode && last.postalCode) updates.postalCode = last.postalCode;
+    if (formData.urgency === 'STANDARD' && last.urgency) updates.urgency = last.urgency;
+    if (Object.keys(updates).length > 0) {
+      setFormData(prev => ({ ...prev, ...updates }));
+      setPrefillApplied(true);
+    }
+  }, [user, myRequests]);
 
   // Close picker on outside click
   useEffect(() => {
@@ -244,6 +265,19 @@ export default function RequestServicePage() {
           )}
 
           <div className="flex-1 glass dark:glass-dark rounded-[32px] border border-white/10 shadow-2xl p-8 lg:p-12 overflow-hidden">
+            {prefillApplied && !prefillDismissed && (
+              <div className="mb-6 flex items-center justify-between gap-3 bg-white/5 border border-white/10 text-[#CCC9D8] rounded-[14px] px-4 py-2 text-sm">
+                <span>We filled in your details from your last request.</span>
+                <button
+                  type="button"
+                  onClick={() => setPrefillDismissed(true)}
+                  className="shrink-0 ml-2 opacity-60 hover:opacity-100 transition-opacity font-bold text-base leading-none"
+                  aria-label="Dismiss"
+                >
+                  ×
+                </button>
+              </div>
+            )}
             <div className="space-y-10">
 
               {/* ── Lead Builder: Pro search picker ──────────────────────────── */}

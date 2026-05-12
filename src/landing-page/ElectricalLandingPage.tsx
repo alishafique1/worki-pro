@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function ElectricalLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="Licensed Electrician in Milton, GTA | TheHelper"
+        description="ESA-compliant electricians for panel upgrades, outlet repairs, and EV charger installs in Milton, Oakville & Burlington. Vetted, insured, and 5% cashback on every job."
+        ogTitle="Licensed Electricians in GTA | TheHelper"
+        ogDescription="Find trusted electricians in Milton, Oakville & the GTA. Panel upgrades, EV charger installs, pot lights, and electrical repairs — all managed end-to-end."
+        canonicalPath="/services/electrical"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function ElectricalLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

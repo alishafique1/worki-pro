@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function ApplianceLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="Appliance Repair in Mississauga & GTA | TheHelper"
+        description="Same-day appliance repair in Mississauga, Brampton & the GTA. Certified techs for fridges, washers, ovens, and dishwashers — all brands covered. Earn 5% cashback."
+        ogTitle="Same-Day Appliance Repair in GTA | TheHelper"
+        ogDescription="Book certified appliance repair techs in Mississauga, Brampton & the GTA. Fridges, washers, dryers, ovens — all brands, managed end-to-end."
+        canonicalPath="/services/appliance-repair"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function ApplianceLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

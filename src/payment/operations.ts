@@ -1,8 +1,8 @@
 import { HttpError } from "wasp/server";
-import type {
-  GenerateCheckoutSession,
-  GetCustomerPortalUrl,
-} from "wasp/server/operations";
+
+// Local type stubs replacing removed Wasp payment operation types
+type GenerateCheckoutSession<Args = any, Output = any> = (args: Args, context: any) => Promise<Output>;
+type GetCustomerPortalUrl<Args = any, Output = any> = (args: Args, context: any) => Promise<Output>;
 import * as z from "zod";
 import { PaymentPlanId, paymentPlans } from "../payment/plans";
 import { ensureArgsSchemaOrThrowHttpError } from "../server/validation";

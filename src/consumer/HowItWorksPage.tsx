@@ -43,7 +43,7 @@ const STEPS = [
     num: '03',
     icon: <ClipboardList className="size-5" />,
     title: 'We route it forward',
-    desc: 'Worki captures the structured details and passes them to the coordination workflow.',
+    desc: 'TheHelper captures the structured details and passes them to the coordination workflow.',
   },
   {
     num: '04',
@@ -66,7 +66,7 @@ export default function HowItWorksPage() {
       {/* Header */}
       <header className="border-b border-[var(--border-default)] bg-white/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-black tracking-tighter">Worki</Link>
+          <Link to="/" className="text-2xl font-black tracking-tighter">TheHelper</Link>
           <div className="flex items-center gap-4">
             <Link to="/discover" className="text-sm font-semibold text-[var(--text-secondary)] hover:text-foreground transition-colors">
               Browse Pros
@@ -85,12 +85,12 @@ export default function HowItWorksPage() {
 
         {/* Hero */}
         <section className="text-center max-w-3xl mx-auto">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-4">How Worki works</p>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-4">How TheHelper works</p>
           <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6">
             One form. Better home service requests.
           </h1>
           <p className="text-xl text-[var(--text-secondary)] leading-relaxed">
-            Worki replaces scattered calls and texts with a structured service request flow —
+            TheHelper replaces scattered calls and texts with a structured service request flow —
             so homeowners describe the job clearly and providers get what they need to help.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
@@ -137,7 +137,7 @@ export default function HowItWorksPage() {
         <section>
           <div className="text-center mb-12">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-3">What we cover</p>
-            <h2 className="text-4xl font-black tracking-tight">Service categories in Worki</h2>
+            <h2 className="text-4xl font-black tracking-tight">Service categories in TheHelper</h2>
             <p className="text-[var(--text-secondary)] mt-3">Select the category that fits your job when you submit a request.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -165,7 +165,7 @@ export default function HowItWorksPage() {
         {/* Trust */}
         <section>
           <div className="text-center mb-12">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-3">Why Worki</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-3">Why TheHelper</p>
             <h2 className="text-4xl font-black tracking-tight">Built for trust and clarity</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -188,7 +188,7 @@ export default function HowItWorksPage() {
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] mb-3">Service areas</p>
           <h2 className="text-3xl font-black tracking-tight mb-4">Serving the GTA</h2>
           <p className="text-[var(--text-secondary)] mb-8 max-w-xl mx-auto">
-            Worki is available across Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton.
+            TheHelper is available across Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton.
             Coverage grows as we onboard verified providers.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
@@ -221,7 +221,7 @@ export default function HowItWorksPage() {
       {/* Footer */}
       <footer className="border-t border-[var(--border-default)] py-10 px-6 mt-16">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--text-tertiary)]">
-          <p>© 2026 Worki Home Services. All rights reserved.</p>
+          <p>© 2026 TheHelper Home Services. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/terms" className="hover:text-foreground transition-colors">Terms</Link>
             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>

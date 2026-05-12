@@ -28,7 +28,7 @@ const consumerFaqs = [
   {
     question: 'Are providers background-checked?',
     answer:
-      'Provider onboarding includes verification of business details, credentials, and service areas. All providers must meet Worki\'s onboarding standards before accepting jobs.',
+      'Provider onboarding includes verification of business details, credentials, and service areas. All providers must meet TheHelper\'s onboarding standards before accepting jobs.',
   },
   {
     question: 'How do I track my service request?',
@@ -68,12 +68,12 @@ const consumerFaqs = [
   {
     question: 'What service categories are available?',
     answer:
-      'Worki covers HVAC, handyman, plumbing, electrical, appliance repair, and smart home installation. Browse all available categories on the Services page.',
+      'TheHelper covers HVAC, handyman, plumbing, electrical, appliance repair, and smart home installation. Browse all available categories on the Services page.',
   },
   {
     question: 'What areas do you serve?',
     answer:
-      'Worki currently serves Milton, Oakville, Burlington, Mississauga, Brampton, Hamilton, Toronto, and surrounding GTA areas. Coverage depends on provider availability in your neighbourhood.',
+      'TheHelper currently serves Milton, Oakville, Burlington, Mississauga, Brampton, Hamilton, Toronto, and surrounding GTA areas. Coverage depends on provider availability in your neighbourhood.',
   },
 ];
 
@@ -81,7 +81,7 @@ const quickLinks = [
   {
     icon: <MessageSquare className="w-5 h-5 text-[var(--accent)]" />,
     label: 'Contact Support',
-    description: 'Get help from the Worki team',
+    description: 'Get help from the TheHelper team',
     href: '/contact',
   },
   {
@@ -120,7 +120,7 @@ export default function HelpPage() {
           <div className="py-14 max-w-2xl">
             <h1 className="text-5xl font-black tracking-tighter mb-3">Help Centre</h1>
             <p className="text-[var(--text-secondary)] text-lg">
-              Everything you need to know about using Worki — from submitting your first request to redeeming rewards.
+              Everything you need to know about using TheHelper — from submitting your first request to redeeming rewards.
             </p>
           </div>
         </Container>

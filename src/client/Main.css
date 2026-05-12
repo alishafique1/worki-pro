@@ -131,6 +131,11 @@
   --animate-spin-1_5: spin 1.5s linear infinite;
   --animate-spin-2: spin 2s linear infinite;
   --animate-spin-3: spin 3s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s ease-in-out infinite;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -144,6 +149,16 @@
     50% {
       transform: rotate(0deg);
     }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to { background-position: 200% center; }
   }
 }
 
@@ -208,6 +223,36 @@
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   &:hover {
     transform: translateY(-8px);
+  }
+}
+
+@utility animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@utility btn-shine {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+    transform: translateX(-110%);
+    transition: transform 0.55s ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    transform: translateX(110%);
+  }
+}
+
+@utility card-glow-pink {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  &:hover {
+    box-shadow: 0 20px 44px rgba(242,181,215,0.22), 0 8px 24px rgba(12,17,15,0.08);
+    border-color: #F2B5D7;
+    transform: translateY(-3px);
   }
 }
 

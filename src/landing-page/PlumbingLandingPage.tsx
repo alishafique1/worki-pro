@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function PlumbingLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="Plumber in Oakville, Burlington & GTA | TheHelper"
+        description="Licensed plumbers for leak repair, drain cleaning, and fixture installs in Oakville, Burlington & Mississauga. Emergency plumbing available. Earn 5% cashback on every job."
+        ogTitle="Licensed Plumbers in GTA | TheHelper"
+        ogDescription="Trusted plumbers in Oakville, Burlington & the GTA. Emergency plumbing, drain cleaning, and fixture installs — vetted, insured, and managed end-to-end."
+        canonicalPath="/services/plumbing"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function PlumbingLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

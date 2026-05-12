@@ -67,7 +67,7 @@ export const solutionSteps = [
   {
     icon: <CalendarCheck className="size-5" />,
     title: "Coordinate",
-    description: "Worki captures the details needed to coordinate next steps.",
+    description: "The Helper captures the details needed to coordinate next steps.",
   },
   {
     icon: <MapPin className="size-5" />,
@@ -116,7 +116,7 @@ export const customerSteps = [
     step: "01",
     title: "Describe the job",
     description:
-      "Tell Worki what happened, where you are, and when you need help.",
+      "Tell The Helper what happened, where you are, and when you need help.",
   },
   {
     step: "02",
@@ -126,7 +126,7 @@ export const customerSteps = [
   {
     step: "03",
     title: "Submit the request",
-    description: "Send the request through the live Worki intake flow.",
+    description: "Send the request through the live TheHelper intake flow.",
   },
   {
     step: "04",
@@ -173,7 +173,7 @@ export const internalFeatures = [
     icon: <MapPin className="size-5" />,
     title: "Service-area context",
     description:
-      "Postal code and category details help Worki understand where coverage is needed.",
+      "Postal code and category details help The Helper understand where coverage is needed.",
   },
   {
     icon: <Clock3 className="size-5" />,
@@ -206,7 +206,7 @@ export const trustFeatures = [
     icon: <MapPin className="size-5" />,
     title: "Local-first marketplace",
     description:
-      "Worki starts city by city, building supply quality before scaling.",
+      "The Helper starts city by city, building supply quality before scaling.",
   },
 ];
 
@@ -233,7 +233,7 @@ export const providerBenefits = [
 
 export const faqs = [
   {
-    question: "Is Worki free to use?",
+    question: "Is The Helper free to use?",
     answer:
       "Submitting a service request is available through the live request form. Provider pricing and service fees may vary by job.",
   },
@@ -243,9 +243,9 @@ export const faqs = [
       "Provider applications can include business details, service categories, service areas, and credentials before approval.",
   },
   {
-    question: "Where is Worki available?",
+    question: "Where is The Helper available?",
     answer:
-      "Availability depends on service area and provider coverage. Submit a request with your postal code so Worki has the right location context.",
+      "Availability depends on service area and provider coverage. Submit a request with your postal code so The Helper has the right location context.",
   },
   {
     question: "Can providers join now?",
@@ -253,7 +253,7 @@ export const faqs = [
       "Yes. Providers can apply to be considered for supported service areas.",
   },
   {
-    question: "Does Worki use automation?",
+    question: "Does The Helper use automation?",
     answer:
       "Any automation is treated as future or internal support for operations. The live customer experience is the service request form.",
   },

@@ -30,7 +30,7 @@ export default function PrivacyPage() {
           <li>Manage your rewards points and redemptions</li>
           <li>Maintain your account and preferences</li>
           <li>Communicate with you about your requests, appointments, and support inquiries</li>
-          <li>Improve the Worki platform and user experience</li>
+          <li>Improve the TheHelper platform and user experience</li>
           <li>Comply with our legal obligations</li>
         </ul>
 
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
           <li>
             <strong>Business Tools:</strong> We use third-party services for SMS delivery
             (Twilio), email delivery (Mailgun), and webhook routing (GoHighLevel). These
-            providers process your data solely for the purpose of delivering Worki
+            providers process your data solely for the purpose of delivering TheHelper
             communications.
           </li>
           <li>
@@ -66,8 +66,8 @@ export default function PrivacyPage() {
           and communication records are retained for a minimum of 7 years to comply with
           Ontario business record requirements. You may request deletion of your account and
           associated personal data at any time by contacting us at{' '}
-          <a href="mailto:hello@worki.ca" className="text-[var(--accent)] hover:underline">
-            hello@worki.ca
+          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+            hello@thehelper.ca
           </a>
           ; we will process deletion requests within 30 days, subject to legal retention
           obligations.
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
 
         <h2 className="text-2xl font-bold mt-10 mb-3">5. Cookies</h2>
         <p>
-          Worki uses cookies and similar technologies for authentication, session management,
+          TheHelper uses cookies and similar technologies for authentication, session management,
           and analytics. You can control cookie preferences through your browser settings.
           Disabling cookies may affect platform functionality.
         </p>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
         <p>
           We use industry-standard encryption (TLS/HTTPS) for all data in transit and
           at rest. Provider payment processing is handled by independent payment providers;
-          Worki does not store raw payment card data. You are responsible for keeping your
+          TheHelper does not store raw payment card data. You are responsible for keeping your
           login credentials confidential.
         </p>
 
@@ -98,15 +98,15 @@ export default function PrivacyPage() {
         </ul>
         <p>
           To exercise any of these rights, contact us at{' '}
-          <a href="mailto:hello@worki.ca" className="text-[var(--accent)] hover:underline">
-            hello@worki.ca
+          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+            hello@thehelper.ca
           </a>
           .
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">8. Children's Privacy</h2>
         <p>
-          Worki is not intended for individuals under the age of 18. We do not knowingly
+          TheHelper is not intended for individuals under the age of 18. We do not knowingly
           collect personal information from minors. If we become aware that we have collected
           data from a minor, we will delete it promptly.
         </p>
@@ -122,14 +122,14 @@ export default function PrivacyPage() {
         <p>
           For privacy-related questions or to submit a data access request, contact our
           privacy team at{' '}
-          <a href="mailto:hello@worki.ca" className="text-[var(--accent)] hover:underline">
-            hello@worki.ca
+          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+            hello@thehelper.ca
           </a>
           .
         </p>
 
         <p className="mt-16 text-sm text-[var(--text-tertiary)]">
-          Worki Home Services Inc. — Milton, Ontario, Canada.
+          TheHelper Home Services Inc. — Milton, Ontario, Canada.
         </p>
       </div>
     </div>

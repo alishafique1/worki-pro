@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function HandymanLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="Handyman Services in Oakville & Burlington | TheHelper"
+        description="Trusted handyman pros for mounting, furniture assembly, drywall, and home repairs in Oakville, Burlington & Milton. Background-checked, vetted, and 5% cashback on every job."
+        ogTitle="Handyman Services in GTA | TheHelper"
+        ogDescription="Book background-checked handyman pros in Oakville, Burlington & the GTA. TV mounting, furniture assembly, painting, and home repairs — matched and managed for you."
+        canonicalPath="/services/handyman"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function HandymanLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

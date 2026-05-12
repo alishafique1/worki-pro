@@ -5,7 +5,8 @@ import { WebhookSubscriptionUpdatedPayload } from "@polar-sh/sdk/models/componen
 import { validateEvent } from "@polar-sh/sdk/webhooks";
 import express from "express";
 import type { MiddlewareConfigFn, PrismaClient } from "wasp/server";
-import type { PaymentsWebhook } from "wasp/server/api";
+// Local type stub replacing removed Wasp payment API type
+type PaymentsWebhook = (req: any, res: any, context: any) => Promise<void>;
 import { requireNodeEnvVar } from "../../server/utils";
 import { assertUnreachable } from "../../shared/utils";
 import { UnhandledWebhookEventError } from "../errors";

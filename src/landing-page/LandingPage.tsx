@@ -1,3 +1,4 @@
+import PageSeo from "./components/PageSeo";
 import {
   Button,
   CategoryCard,
@@ -36,7 +37,7 @@ const howItWorks = [
     step: "01",
     title: "Describe your task",
     description:
-      "Tell Taskora what you need done, where you are, and when you are available.",
+      "Tell TheHelper what you need done, where you are, and when you are available.",
   },
   {
     step: "02",
@@ -48,13 +49,13 @@ const howItWorks = [
     step: "03",
     title: "Match with a verified pro",
     description:
-      "Taskora connects your request to a verified local professional for your category and area.",
+      "TheHelper connects your request to a verified local professional for your category and area.",
   },
   {
     step: "04",
     title: "Job done. Cashback earned.",
     description:
-      "Every task completed through Taskora gets you 5% cashback — on top of your credit card rewards.",
+      "Every task completed through TheHelper gets you 5% cashback — on top of your credit card rewards.",
   },
 ];
 
@@ -72,7 +73,7 @@ const painPoints = [
   {
     icon: <Zap className="size-5" />,
     pain: "Rewards cards give 1-2% back",
-    solution: "Taskora stacks 5% cashback on top",
+    solution: "TheHelper stacks 5% cashback on top",
   },
 ];
 
@@ -105,24 +106,32 @@ const comingSoon = [
     icon: <MessageSquareText className="size-5" />,
     title: "In-app messaging",
     description:
-      "Message your pro directly through Taskora without back-and-forth phone calls or texts.",
+      "Message your pro directly through TheHelper without back-and-forth phone calls or texts.",
   },
   {
     icon: <MapPin className="size-5" />,
     title: "Expanded service areas",
     description:
-      "Taskora is growing city by city. More coverage is coming to your area soon.",
+      "TheHelper is growing city by city. More coverage is coming to your area soon.",
   },
 ];
 
 export default function LandingPage() {
   return (
+    <>
+      <PageSeo
+        title="TheHelper — Home Services Concierge | GTA Vetted Pros"
+        description="Milton, Oakville & Burlington's #1 home services concierge. Get matched with vetted HVAC, plumbing, electrical, handyman & smart home pros. Earn 5% cashback on every job."
+        ogTitle="TheHelper — Vetted Home Service Pros in GTA | 5% Cashback"
+        ogDescription="Stop searching. Describe your home service need once and The Helper matches you with a verified local pro. Serving Milton, Oakville, Burlington & more. Earn rewards every time."
+        canonicalPath="/"
+      />
     <main className="min-h-screen bg-[#000000] font-sans selection:bg-[#F2B5D7] selection:text-[#0C110F]">
       <Hero />
 
-      <section className="bg-[#000000] pb-6">
+      <section className="bg-[#000000] pb-8">
         <Container>
-          <div className="grid gap-3 rounded-[23px] border border-white/10 bg-[#1B1B1C] p-3 sm:grid-cols-3 sm:p-4">
+          <div className="grid gap-px rounded-[23px] border border-white/10 bg-white/10 overflow-hidden sm:grid-cols-3">
             <StatsCard value="AI-assisted" label="Lead intake & matching" />
             <StatsCard value="Verified only" label="Pro onboarding" />
             <StatsCard value="Every task" label="Earns you rewards" />
@@ -134,9 +143,9 @@ export default function LandingPage() {
       <section id="how-it-works" className="bg-[#FEFEFD] py-16 sm:py-20">
         <Container>
           <SectionHeader
-            eyebrow="How Taskora works"
+            eyebrow="How TheHelper works"
             title="From task to done — with rewards along the way."
-            description="Taskora turns a home service request into a structured, AI-assisted intake so verified pros get what they need from the start."
+            description="TheHelper turns a home service request into a structured, AI-assisted intake so verified pros get what they need from the start."
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step) => (
@@ -155,7 +164,7 @@ export default function LandingPage() {
       <section className="bg-[#000000] py-16 sm:py-20">
         <Container>
           <SectionHeader
-            eyebrow="Why Taskora"
+            eyebrow="Why TheHelper"
             title="Tired of the home service grind?"
             description="Finding reliable help shouldn't be this hard."
             className="text-[#FEFEFD] [&_h2]:text-[#FEFEFD] [&_p]:text-[#CCC9D8]"
@@ -182,7 +191,7 @@ export default function LandingPage() {
         <Container>
           <SectionHeader
             eyebrow="Service categories"
-            title="What can Taskora help you with today?"
+            title="What can TheHelper help you with today?"
             description="Request HVAC, handyman, plumbing, electrical, appliance repair, or smart home help through the live intake form."
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -196,7 +205,7 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="mt-8 flex justify-center">
-            <Button href="/get-a-pro">
+            <Button href="/request-service">
               Get Your Pro Today <ArrowRight className="size-4" />
             </Button>
           </div>
@@ -207,7 +216,7 @@ export default function LandingPage() {
       <section className="bg-[#000000] py-16 sm:py-20">
         <Container>
           <SectionHeader
-            eyebrow="What's coming to Taskora"
+            eyebrow="What's coming to TheHelper"
             title="A flexible marketplace built for the way you actually get things done."
             description="We're shipping fast. These features are in the pipeline — submit your first request now and be first in line when they go live."
             className="text-[#FEFEFD] [&_h2]:text-[#FEFEFD] [&_p]:text-[#CCC9D8]"
@@ -237,10 +246,10 @@ export default function LandingPage() {
               <SectionHeader
                 align="left"
                 title="Every task earns you cashback"
-                description="The more you get done through Taskora, the more you earn. Request a service today and start building toward your first reward."
+                description="The more you get done through TheHelper, the more you earn. Request a service today and start building toward your first reward."
                 className="mt-5"
               />
-              <Button href="/get-a-pro" className="mt-6">
+              <Button href="/request-service" className="mt-6">
                 Start Earning Today
               </Button>
             </div>
@@ -248,7 +257,7 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<BadgeCheck className="size-5" />}
                 title="5% cashback on every job"
-                description="Earn 5% back on every home service job you complete through Taskora."
+                description="Earn 5% back on every home service job you complete through TheHelper."
               />
               <FeatureCard
                 icon={<Gift className="size-5" />}
@@ -263,7 +272,7 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<CreditCard className="size-5" />}
                 title="Stack on credit card points"
-                description="Use your rewards credit card AND Taskora — stack the benefits."
+                description="Use your rewards credit card AND TheHelper — stack the benefits."
               />
             </div>
           </div>
@@ -281,7 +290,7 @@ export default function LandingPage() {
               />
               <SectionHeader
                 align="left"
-                title="Apply to become a Taskora provider."
+                title="Apply to become a TheHelper provider."
                 description="Providers can apply to be considered for categories and service areas supported by the marketplace."
                 className="mt-5"
               />
@@ -325,5 +334,6 @@ export default function LandingPage() {
       <CTASection />
       <Footer />
     </main>
+    </>
   );
 }

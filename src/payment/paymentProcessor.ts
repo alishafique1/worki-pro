@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { User } from "wasp/entities";
 import type { MiddlewareConfigFn } from "wasp/server";
-import type { PaymentsWebhook } from "wasp/server/api";
+// Local type stub replacing removed Wasp payment API type
+type PaymentsWebhook = (req: any, res: any, context: any) => Promise<void>;
 import type { PaymentPlan } from "./plans";
 import { stripePaymentProcessor } from "./stripe/paymentProcessor";
 

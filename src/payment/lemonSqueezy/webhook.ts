@@ -3,7 +3,8 @@ import { type PrismaClient } from "@prisma/client";
 import crypto from "crypto";
 import express from "express";
 import { HttpError, type MiddlewareConfigFn } from "wasp/server";
-import { type PaymentsWebhook } from "wasp/server/api";
+// Local type stub replacing removed Wasp payment API type
+type PaymentsWebhook = (req: any, res: any, context: any) => Promise<void>;
 import { requireNodeEnvVar } from "../../server/utils";
 import { assertUnreachable } from "../../shared/utils";
 import { UnhandledWebhookEventError } from "../errors";

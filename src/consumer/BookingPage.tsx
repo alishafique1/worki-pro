@@ -69,7 +69,7 @@ export default function BookingPage() {
 
   const request = requests?.find((r: any) => r.id === requestId);
 
-  // Determine cal.com link: provider's link > Worki default
+  // Determine cal.com link: provider's link > TheHelper default
   const providerCalUsername = request?.assignedProvider?.calComUsername;
   const defaultCalLink = import.meta.env.REACT_APP_CALCOM_DEFAULT_LINK || 'worki/consultation';
   const calLink = providerCalUsername

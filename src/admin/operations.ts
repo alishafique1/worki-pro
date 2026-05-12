@@ -53,14 +53,14 @@ export const approveProvider: ApproveProvider<{ providerId: string }, Provider> 
   if (userEmail) {
     await emailSender.send({
       to: userEmail,
-      subject: `Your Worki Pro account is verified!`,
+      subject: `Your TheHelper Pro account is verified!`,
       html: `
         <h2>Great news, ${provider.businessName}!</h2>
         <p>Your provider application has been approved and your account is now <strong>verified</strong>.</p>
         <p>You can now log in to your dashboard and start receiving job leads.</p>
-        <p><a href="${process.env.APP_URL ?? 'https://worki.ca'}/provider/dashboard">Go to your dashboard →</a></p>
+        <p><a href="${process.env.APP_URL ?? 'https://thehelper.ca'}/provider/dashboard">Go to your dashboard →</a></p>
       `,
-      text: `Great news! Your Worki Pro account is verified. Log in at ${process.env.APP_URL ?? 'https://worki.ca'}/provider/dashboard`,
+      text: `Great news! Your TheHelper Pro account is verified. Log in at ${process.env.APP_URL ?? 'https://thehelper.ca'}/provider/dashboard`,
     });
   }
 
@@ -88,18 +88,18 @@ export const rejectProvider: RejectProvider<RejectProviderInput, Provider> = asy
   if (userEmail) {
     const reasonText = reason
       ? `Reason: ${reason}`
-      : 'If you have questions, please contact us at support@worki.ca.';
+      : 'If you have questions, please contact us at support@thehelper.ca.';
     await emailSender.send({
       to: userEmail,
-      subject: `Update on your Worki Pro application`,
+      subject: `Update on your TheHelper Pro application`,
       html: `
         <h2>Hello ${provider.businessName},</h2>
-        <p>Thank you for applying to join the Worki Pro network.</p>
+        <p>Thank you for applying to join the TheHelper Pro network.</p>
         <p>After review, we're unable to approve your application at this time.</p>
         <p>${reasonText}</p>
         <p>You are welcome to apply again in the future.</p>
       `,
-      text: `Thank you for applying to Worki Pro. After review, we are unable to approve your application at this time. ${reasonText}`,
+      text: `Thank you for applying to TheHelper Pro. After review, we are unable to approve your application at this time. ${reasonText}`,
     });
   }
 

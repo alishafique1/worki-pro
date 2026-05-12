@@ -3,32 +3,32 @@ app OpenSaaS {
     version: "^0.21.0"
   },
 
-  title: "Worki — Home Services Concierge | HVAC, Handyman & Smart Home Pros in GTA",
+  title: "TheHelper — Home Services Concierge | HVAC, Handyman & Smart Home Pros in GTA",
 
   head: [
     "<link rel='icon' href='/favicon.ico' />",
     "<link rel='preconnect' href='https://fonts.googleapis.com' />",
     "<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />",
-    "<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' rel='stylesheet' />",
+    "<link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=DM+Sans:opsz,wght@9..40,300..700&display=swap' rel='stylesheet' />",
 
-    "<meta name='description' content=\"Worki is Milton, Oakville & Burlington's #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.\" />",
-    "<meta name='author' content='Worki Home Services' />",
+    "<meta name='description' content=\"TheHelper is Milton, Oakville & Burlington's #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.\" />",
+    "<meta name='author' content='TheHelper Home Services' />",
     "<meta name='keywords' content='home services Milton, HVAC repair Oakville, handyman Burlington, smart home installation GTA, appliance repair Milton, plumber Oakville, electrician Burlington, home maintenance concierge' />",
     "<meta name='robots' content='index, follow' />",
-    "<link rel='canonical' href='https://worki.ca/' />",
+    "<link rel='canonical' href='https://thehelper.ca/' />",
 
     "<meta property='og:type' content='website' />",
-    "<meta property='og:title' content=\"Worki — Home Services Concierge | GTA's Top Rated Pros\" />",
-    "<meta property='og:site_name' content='Worki' />",
-    "<meta property='og:url' content='https://worki.ca/' />",
+    "<meta property='og:title' content=\"TheHelper — Home Services Concierge | GTA's Top Rated Pros\" />",
+    "<meta property='og:site_name' content='TheHelper' />",
+    "<meta property='og:url' content='https://thehelper.ca/' />",
     "<meta property='og:description' content='Stop searching. Describe your problem once and we match you with a vetted, insured local pro. Earn rewards on every job booked.' />",
-    "<meta property='og:image' content='https://worki.ca/og-banner.webp' />",
+    "<meta property='og:image' content='https://thehelper.ca/og-banner.webp' />",
     "<meta name='twitter:card' content='summary_large_image' />",
-    "<meta name='twitter:title' content='Worki — Home Services Concierge' />",
+    "<meta name='twitter:title' content='TheHelper — Home Services Concierge' />",
     "<meta name='twitter:description' content=\"GTA's #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.\" />",
-    "<meta name='twitter:image' content='https://worki.ca/og-banner.webp' />",
+    "<meta name='twitter:image' content='https://thehelper.ca/og-banner.webp' />",
 
-    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"Worki Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, handyman, plumbing, electrical, and smart home professionals.\",\"url\":\"https://worki.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Handyman\",\"Plumbing\",\"Electrical\",\"Smart Home Installation\",\"Appliance Repair\"]}</script>",
+    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"TheHelper Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, handyman, plumbing, electrical, and smart home professionals.\",\"url\":\"https://thehelper.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Handyman\",\"Plumbing\",\"Electrical\",\"Smart Home Installation\",\"Appliance Repair\"]}</script>",
   ],
 
   // 🔐 Auth out of the box! https://wasp.sh/docs/auth/overview
@@ -39,8 +39,8 @@ app OpenSaaS {
       //   (RequestPasswordReset(Route|Page), PasswordReset(Route|Page), EmailVerification(Route|Page))
       email: {
         fromField: {
-          name: "Worki",
-          email: "hello@worki.ca"
+          name: "TheHelper",
+          email: "hello@thehelper.ca"
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
@@ -88,8 +88,8 @@ app OpenSaaS {
   emailSender: {
     provider: Mailgun,
     defaultFrom: {
-      name: "Worki",
-      email: "hello@worki.ca"
+      name: "TheHelper",
+      email: "hello@thehelper.ca"
     },
   },
 }
@@ -417,35 +417,6 @@ query getAllTasksByUser {
   entities: [Task]
 }
 //#endregion
-
-//#region Payment
-route PricingPageRoute { path: "/pricing", to: PricingPage }
-page PricingPage {
-  component: import PricingPage from "@src/payment/PricingPage"
-}
-
-route CheckoutResultRoute { path: "/checkout", to: CheckoutResultPage }
-page CheckoutResultPage {
-  authRequired: true,
-  component: import CheckoutResultPage from "@src/payment/CheckoutResultPage"
-}
-
-query getCustomerPortalUrl {
-  fn: import { getCustomerPortalUrl } from  "@src/payment/operations",
-  entities: [User]
-}
-
-action generateCheckoutSession {
-  fn: import { generateCheckoutSession } from "@src/payment/operations",
-  entities: [User]
-}
-
-api paymentsWebhook {
-  fn: import { paymentsWebhook } from "@src/payment/webhook",
-  entities: [User],
-  middlewareConfigFn: import { paymentsMiddlewareConfigFn } from "@src/payment/webhook",
-  httpRoute: (POST, "/payments-webhook")
-}
 
 api calcomWebhook {
   fn: import { calcomWebhook } from "@src/server/webhooks/calcom",

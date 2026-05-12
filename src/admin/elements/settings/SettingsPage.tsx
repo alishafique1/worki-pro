@@ -50,8 +50,8 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                           type="text"
                           name="fullName"
                           id="full-name"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="Full name"
+                          defaultValue={user.username ?? ""}
                         />
                       </div>
                     </div>
@@ -67,8 +67,8 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                         type=""
                         name="phoneNumber"
                         id="phone-number"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        placeholder="Phone number"
+                        defaultValue=""
                       />
                     </div>
                   </div>
@@ -87,8 +87,8 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                         type="email"
                         name="emailAddress"
                         id="email-address"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="Email address"
+                        defaultValue={user.email ?? ""}
                       />
                     </div>
                   </div>
@@ -104,8 +104,8 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                       type="text"
                       name="Username"
                       id="username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="Username"
+                      defaultValue={user.username ?? ""}
                     />
                   </div>
 
@@ -124,7 +124,7 @@ const SettingsPage = ({ user }: { user: AuthUser }) => {
                         id="bio"
                         rows={6}
                         placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        defaultValue=""
                       ></Textarea>
                     </div>
                   </div>

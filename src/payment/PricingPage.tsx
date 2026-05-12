@@ -2,11 +2,10 @@ import { CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "wasp/client/auth";
-import {
-  generateCheckoutSession,
-  getCustomerPortalUrl,
-  useQuery,
-} from "wasp/client/operations";
+// Payment operations removed — no monetization in MVP
+const generateCheckoutSession: any = null;
+const getCustomerPortalUrl: any = null;
+const useQuery: any = () => ({ data: null, isLoading: false });
 import { Alert, AlertDescription } from "../client/components/ui/alert";
 import { Button } from "../client/components/ui/button";
 import {

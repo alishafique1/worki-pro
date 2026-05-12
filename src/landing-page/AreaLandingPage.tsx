@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 interface AreaData {
   name: string;
@@ -111,7 +112,7 @@ export default function AreaLandingPage() {
           <div className="text-5xl mb-6">📍</div>
           <h1 className="text-3xl font-black tracking-tighter mb-4">Area Coming Soon</h1>
           <p className="text-[var(--text-secondary)] mb-8">
-            We're expanding quickly. Enter your postal code on the request form and we'll let you know when Worki arrives near you.
+            We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
           </p>
           <Link
             to="/request-service"
@@ -125,6 +126,14 @@ export default function AreaLandingPage() {
   }
 
   return (
+    <>
+      <PageSeo
+        title={`Home Services in ${area.name}, ${area.region} | TheHelper`}
+        description={`${area.tagline}. Vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}. Earn 5% cashback on every job.`}
+        ogTitle={`Home Services in ${area.name} | TheHelper`}
+        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman & more — matched, scheduled, and followed up for you.`}
+        canonicalPath={`/areas/${areaSlug}`}
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       {/* ── Hero ── */}
       <section className="pt-20 pb-24 px-6">
@@ -189,7 +198,7 @@ export default function AreaLandingPage() {
       <section className="py-20 px-6 bg-[var(--surface-base)]/30">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-black tracking-tighter mb-3">How Worki Works</h2>
+            <h2 className="text-4xl font-black tracking-tighter mb-3">How The Helper Works</h2>
             <p className="text-[var(--text-secondary)]">Three simple steps to a job well done.</p>
           </div>
 
@@ -287,5 +296,6 @@ export default function AreaLandingPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

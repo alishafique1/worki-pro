@@ -82,7 +82,7 @@ export default function ProviderApplyPage() {
   return (
     <div className="min-h-screen bg-background py-20 px-6">
       <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-black mb-4">Join the <span className="text-[var(--accent)]">Worki</span> Network</h1>
+        <h1 className="text-4xl font-black mb-4">Join the <span className="text-[var(--accent)]">TheHelper</span> Network</h1>
         <p className="text-[var(--text-secondary)] mb-12">
           Fill out the form below to start your application. We are currently accepting HVAC and Handyman pros in the GTA.
         </p>
@@ -169,7 +169,7 @@ export default function ProviderApplyPage() {
               className="w-full bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-2xl p-4 text-lg focus:outline-none focus:border-[var(--accent)]"
               placeholder="e.g. elitehvac"
             />
-            <p className="mt-2 text-sm text-[var(--text-tertiary)]">Optional, but recommended. This lets Worki send customers straight to your cal.com page.</p>
+            <p className="mt-2 text-sm text-[var(--text-tertiary)]">Optional, but recommended. This lets TheHelper send customers straight to your cal.com page.</p>
           </div>
           <fieldset>
             <legend className="block text-sm font-bold mb-3 uppercase tracking-widest text-[var(--text-secondary)]">Service Categories</legend>

@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function SmartHomeLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="Smart Home Installation in GTA | TheHelper"
+        description="Certified smart home installers in Milton, Oakville & the GTA. Smart locks, cameras, thermostats, and full home automation — matched and managed. Earn 5% cashback."
+        ogTitle="Smart Home Installation & Automation in GTA | TheHelper"
+        ogDescription="Book certified smart home pros in Milton, Oakville & the GTA. Smart security, home automation, and AV setup — vetted installers, managed end-to-end."
+        canonicalPath="/services/smart-home"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function SmartHomeLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

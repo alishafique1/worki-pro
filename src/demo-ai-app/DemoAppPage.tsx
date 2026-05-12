@@ -163,7 +163,7 @@ function NewTaskForm({
               altText="Go to pricing page to buy credits/subscription"
               asChild
             >
-              <Link to={routes.PricingPageRoute.to}>
+              <Link to={routes.RequestServiceRoute.to}>
                 Go to pricing page <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </ToastAction>

@@ -7,29 +7,29 @@ export default function TermsPage() {
         <h1 className="text-4xl font-black mb-2">Terms of Service</h1>
         <p className="text-[var(--text-secondary)] mb-8">Last updated: May 1, 2026</p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">1. About Worki</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3">1. About TheHelper</h2>
         <p>
-          Worki Home Services operates a home services marketplace that connects homeowners
-          in the Greater Toronto Area with independent, vetted service providers. Worki does
+          TheHelper Home Services operates a home services marketplace that connects homeowners
+          in the Greater Toronto Area with independent, vetted service providers. TheHelper does
           not itself perform home services.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">2. Acceptance of Terms</h2>
         <p>
-          By accessing or using the Worki platform — including submitting a service request,
+          By accessing or using the TheHelper platform — including submitting a service request,
           creating an account, or accessing any provider features — you agree to be bound
           by these Terms of Service. If you do not agree, do not use the platform.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">3. The Marketplace</h2>
         <p>
-          Worki provides a marketplace connecting homeowners with independent service providers
-          ("Providers"). Worki is not a party to any service agreement between you and a
-          Provider. All services are performed by independent Providers. Worki does not
+          TheHelper provides a marketplace connecting homeowners with independent service providers
+          ("Providers"). TheHelper is not a party to any service agreement between you and a
+          Provider. All services are performed by independent Providers. TheHelper does not
           guarantee the quality, completeness, or outcome of any Provider's work.
         </p>
         <p>
-          When you submit a service request, you authorize Worki to share your contact and
+          When you submit a service request, you authorize TheHelper to share your contact and
           job details with relevant Providers for the purpose of fulfilling your request.
         </p>
 
@@ -43,43 +43,43 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold mt-10 mb-3">5. Rewards Program</h2>
         <p>
-          Worki operates a points-based rewards program. Points are awarded for eligible
+          TheHelper operates a points-based rewards program. Points are awarded for eligible
           actions including submitting a service request, booking an appointment, and
-          completing a verified job. Points have no monetary value outside of the Worki
+          completing a verified job. Points have no monetary value outside of the TheHelper
           rewards redemption process. Points cannot be exchanged for cash. Redemption
-          options and minimum thresholds are set by Worki and may change at any time.
+          options and minimum thresholds are set by TheHelper and may change at any time.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">6. Provider Relationships</h2>
         <p>
-          Providers on Worki are independent businesses. Worki does not employ Providers or
+          Providers on TheHelper are independent businesses. TheHelper does not employ Providers or
           their staff. Any engagement between you and a Provider — including scheduling,
           pricing, scope of work, and payment — is solely between you and the Provider.
-          Worki is not responsible for any disputes, damages, or claims arising from a
+          TheHelper is not responsible for any disputes, damages, or claims arising from a
           Provider's services.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">7. Prohibited Use</h2>
-        <p>You may not use Worki to:</p>
+        <p>You may not use TheHelper to:</p>
         <ul>
           <li>Submit false, fraudulent, or misleading service requests</li>
-          <li>Harass, defame, or threaten Providers or Worki staff</li>
+          <li>Harass, defame, or threaten Providers or TheHelper staff</li>
           <li>Use the platform for any illegal purpose</li>
-          <li>Attempt to circumvent the platform by arranging services outside of Worki</li>
+          <li>Attempt to circumvent the platform by arranging services outside of TheHelper</li>
         </ul>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">8. Limitation of Liability</h2>
         <p>
-          To the maximum extent permitted by law, Worki Home Services is not liable for
+          To the maximum extent permitted by law, TheHelper Home Services is not liable for
           any indirect, incidental, special, or consequential damages arising from your use
-          of the platform or any Provider's services. Worki's total liability for any claim
-          shall not exceed the amount you paid to Worki in the twelve months preceding the
+          of the platform or any Provider's services. TheHelper's total liability for any claim
+          shall not exceed the amount you paid to TheHelper in the twelve months preceding the
           claim.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3">9. Changes to Terms</h2>
         <p>
-          Worki may update these Terms at any time. Updated terms will be posted on this
+          TheHelper may update these Terms at any time. Updated terms will be posted on this
           page with a revised "Last updated" date. Continued use of the platform after
           changes constitutes acceptance of the updated Terms.
         </p>
@@ -94,14 +94,14 @@ export default function TermsPage() {
         <h2 className="text-2xl font-bold mt-10 mb-3">11. Contact</h2>
         <p>
           For questions about these Terms, contact us at{' '}
-          <a href="mailto:hello@worki.ca" className="text-[var(--accent)] hover:underline">
-            hello@worki.ca
+          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+            hello@thehelper.ca
           </a>
           .
         </p>
 
         <p className="mt-16 text-sm text-[var(--text-tertiary)]">
-          Worki Home Services Inc. — Milton, Ontario, Canada.
+          TheHelper Home Services Inc. — Milton, Ontario, Canada.
         </p>
       </div>
     </div>

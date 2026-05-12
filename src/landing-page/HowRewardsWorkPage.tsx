@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 const FIRST_JOB_TIERS = [
   {
@@ -20,7 +21,7 @@ const FIRST_JOB_TIERS = [
     color: 'text-purple-400',
     bg: 'bg-purple-500/10 border-purple-500/20',
     icon: '📅',
-    desc: 'When a vetted Worki pro accepts and schedules your appointment, another 500 points ($5) are credited. You\'re already at $10 before the work starts.',
+    desc: 'When a vetted TheHelper pro accepts and schedules your appointment, another 500 points ($5) are credited. You\'re already at $10 before the work starts.',
   },
   {
     step: '03',
@@ -36,19 +37,27 @@ const FIRST_JOB_TIERS = [
 
 export default function HowRewardsWorkPage() {
   return (
+    <>
+      <PageSeo
+        title="How TheHelper Rewards Work — Earn 5% Cashback on Home Services"
+        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack TheHelper rewards on top of your credit card points. Cash out at $100."
+        ogTitle="Earn 5% Cashback on Home Services | TheHelper Rewards"
+        ogDescription="TheHelper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job — HVAC, plumbing, electrical & more in the GTA."
+        canonicalPath="/how-rewards-work"
+      />
     <div className='min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark'>
       <main className='max-w-5xl mx-auto px-6 lg:px-8 pt-24 pb-32'>
 
         {/* Hero */}
         <div className='text-center mb-20'>
           <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold uppercase tracking-wider mb-6'>
-            Worki Rewards
+            TheHelper Rewards
           </div>
           <h1 className='text-5xl sm:text-7xl font-black tracking-tighter mb-6'>
             Double the Rewards<br /><span className='text-[var(--accent)]'>On Every Job.</span>
           </h1>
           <p className='text-xl text-[var(--text-secondary)] max-w-2xl mx-auto'>
-            Your Visa or Amex already gives you points when you pay — Worki stacks <strong className='text-foreground'>cashback on top of that</strong>.
+            Your Visa or Amex already gives you points when you pay — TheHelper stacks <strong className='text-foreground'>cashback on top of that</strong>.
             Earn <strong className='text-foreground'>$60 back on your first job</strong>, then <strong className='text-foreground'>5% cashback</strong> on every job after.
             Double the rewards for home services you were always going to pay for.
             <br /><span className='text-sm mt-2 inline-block'>Cash out at $100. 100 pts = $1. Simple.</span>
@@ -98,7 +107,7 @@ export default function HowRewardsWorkPage() {
             <div className='flex-1'>
               <h2 className='text-2xl font-black mb-3'>Ongoing 5% Cashback — On Every Job</h2>
               <p className='text-[var(--text-secondary)] leading-relaxed'>
-                After your first job, every completed booking earns you 5% of the job value in Worki points.
+                After your first job, every completed booking earns you 5% of the job value in TheHelper points.
                 A $200 plumbing job? That's $10 back. A $500 HVAC tune-up? $25 back. It adds up fast — and never expires.
               </p>
             </div>
@@ -119,7 +128,7 @@ export default function HowRewardsWorkPage() {
             <div className='flex-1'>
               <h2 className='text-2xl font-black mb-2'>Cash Out at $100</h2>
               <p className='text-[var(--text-secondary)] leading-relaxed'>
-                Once your balance hits <strong className='text-foreground'>$100 (10,000 points)</strong>, you can redeem for Amazon gift cards, Starbucks, or credits toward your next Worki booking.
+                Once your balance hits <strong className='text-foreground'>$100 (10,000 points)</strong>, you can redeem for Amazon gift cards, Starbucks, or credits toward your next TheHelper booking.
                 Most homeowners hit $100 after their second or third job. Redemptions are processed within 24 hours.
               </p>
             </div>
@@ -137,7 +146,7 @@ export default function HowRewardsWorkPage() {
             {[
               { icon: '🎁', label: 'Amazon Gift Cards', desc: 'Spend on anything you need' },
               { icon: '☕', label: 'Starbucks Cards', desc: 'Your next coffee, on us' },
-              { icon: '🏠', label: 'Service Discounts', desc: 'Apply to your next Worki booking' },
+              { icon: '🏠', label: 'Service Discounts', desc: 'Apply to your next TheHelper booking' },
             ].map(r => (
               <div key={r.label} className='p-6 bg-[var(--surface-base)] rounded-2xl border border-[var(--border-default)]'>
                 <div className='text-3xl mb-3'>{r.icon}</div>
@@ -160,5 +169,6 @@ export default function HowRewardsWorkPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

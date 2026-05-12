@@ -8,7 +8,7 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
         <div>
           <div className="flex items-center gap-3 mb-16">
             <div className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center font-black text-black text-lg">W</div>
-            <span className="text-2xl font-black tracking-tight">Worki</span>
+            <span className="text-2xl font-black tracking-tight">TheHelper</span>
           </div>
           <div>
             <h1 className="text-5xl font-black tracking-tight leading-tight mb-6">Your home.<br/>Handled.</h1>

@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PageSeo from './components/PageSeo';
 
 export default function HvacLandingPage() {
   return (
+    <>
+      <PageSeo
+        title="HVAC Repair & Tune-Up in GTA | TheHelper"
+        description="Vetted HVAC contractors in Milton, Oakville & Burlington. Furnace repair, AC tune-ups, and heat pump installs — matched, scheduled, and managed for you. Earn 5% cashback."
+        ogTitle="HVAC Repair & Tune-Up in GTA | TheHelper"
+        ogDescription="Find trusted HVAC pros in Milton, Oakville & the GTA. Furnace repair, AC installations, and air quality services — all managed end-to-end. Earn rewards on every job."
+        canonicalPath="/services/hvac"
+      />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
       <main className="pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
@@ -56,5 +65,6 @@ export default function HvacLandingPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

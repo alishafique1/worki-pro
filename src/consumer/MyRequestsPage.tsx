@@ -335,7 +335,7 @@ export default function MyRequestsPage() {
           <p className="text-lg font-semibold">Requests could not load</p>
           <p className="mt-2 text-sm text-[var(--text-secondary)]">
             Refresh the page and try again. If this keeps happening, contact
-            Worki support with the email on your account.
+            TheHelper support with the email on your account.
           </p>
         </div>
       )}
