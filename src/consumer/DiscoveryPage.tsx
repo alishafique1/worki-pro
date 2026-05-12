@@ -2,22 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
+import { SERVICE_ZONES } from '../shared/geoConfig';
 
 const AREAS = [
-  { slug: '', label: 'All GTA Areas' },
-  { slug: 'milton', label: 'Milton' },
-  { slug: 'oakville', label: 'Oakville' },
-  { slug: 'burlington', label: 'Burlington' },
-  { slug: 'mississauga', label: 'Mississauga' },
-  { slug: 'brampton', label: 'Brampton' },
-  { slug: 'hamilton', label: 'Hamilton' },
-  { slug: 'toronto', label: 'Toronto' },
-  { slug: 'etobicoke', label: 'Etobicoke' },
-  { slug: 'caledon', label: 'Caledon' },
-  { slug: 'vaughan', label: 'Vaughan' },
-  { slug: 'richmond-hill', label: 'Richmond Hill' },
-  { slug: 'markham', label: 'Markham' },
-  { slug: 'scarborough', label: 'Scarborough' },
+  { slug: '', label: 'All Areas' },
+  ...SERVICE_ZONES.filter(z => z.active).map(z => ({
+    slug: z.name.toLowerCase(),
+    label: z.name,
+  })),
 ];
 
 const SORT_OPTIONS = [
@@ -187,7 +179,14 @@ export default function DiscoveryPage() {
                         )}
                       </div>
                     </div>
-                    <h3 className="text-xl font-black mb-1 truncate">{provider.businessName}</h3>
+                    <h3 className="text-xl font-black mb-1 flex flex-wrap items-center gap-2 truncate">
+                      <span className="truncate">{provider.businessName}</span>
+                      {provider.verificationStatus === 'VERIFIED' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-900/40 text-green-400 text-xs font-bold border border-green-800/50">
+                          ✓ Verified
+                        </span>
+                      )}
+                    </h3>
                     {provider.contactName && (
                       <p className="text-[var(--text-secondary)] text-sm mb-3">{provider.contactName}</p>
                     )}
@@ -237,7 +236,14 @@ export default function DiscoveryPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold mb-1 truncate">{provider.businessName}</h3>
+                  <h3 className="text-xl font-bold mb-1 flex flex-wrap items-center gap-2 truncate">
+                    <span className="truncate">{provider.businessName}</span>
+                    {provider.verificationStatus === 'VERIFIED' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-900/40 text-green-400 text-xs font-bold border border-green-800/50">
+                        ✓ Verified
+                      </span>
+                    )}
+                  </h3>
                   {provider.contactName && (
                     <p className="text-[var(--text-secondary)] text-sm mb-3">{provider.contactName}</p>
                   )}

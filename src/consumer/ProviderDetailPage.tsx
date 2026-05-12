@@ -70,8 +70,13 @@ export default function ProviderDetailPage() {
           <div className="flex-1">
             <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-1">
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-1 flex flex-wrap items-center gap-3">
                   {provider.businessName}
+                  {provider.verificationStatus === 'VERIFIED' && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-900/40 text-green-400 text-xs font-bold border border-green-800/50">
+                      ✓ Verified
+                    </span>
+                  )}
                 </h1>
                 {provider.contactName && (
                   <p className="text-[var(--text-secondary)] text-lg">{provider.contactName}</p>

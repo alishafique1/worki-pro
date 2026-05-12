@@ -7,9 +7,9 @@ export default function HvacLandingPage() {
     <>
       <PageSeo
         title="HVAC Repair & Tune-Up in GTA | TheHelper"
-        description="Vetted HVAC contractors in Milton, Oakville & Burlington. Furnace repair, AC tune-ups, and heat pump installs — matched, scheduled, and managed for you. Earn 5% cashback."
+        description="Licensed TSSA HVAC contractors for heating, cooling, and air quality in Oakville, Burlington & Milton. Fast response, verified pros, and a matching process that gets you the right tech."
         ogTitle="HVAC Repair & Tune-Up in GTA | TheHelper"
-        ogDescription="Find trusted HVAC pros in Milton, Oakville & the GTA. Furnace repair, AC installations, and air quality services — all managed end-to-end. Earn rewards on every job."
+        ogDescription="Find trusted HVAC pros in Milton, Oakville & the GTA. Furnace repair, AC installations, and air quality services — all managed end-to-end."
         canonicalPath="/services/hvac"
       />
     <div className="min-h-screen bg-background mesh-gradient dark:mesh-gradient-dark">
@@ -33,7 +33,7 @@ export default function HvacLandingPage() {
               Request HVAC Quote
             </Link>
           </div>
-          <p className="text-sm text-[var(--text-secondary)] mb-16">🎁 Plus earn cashback on every job booked</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-2 mb-16">Licensed TSSA contractors. You earn points when your job is done.</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24">

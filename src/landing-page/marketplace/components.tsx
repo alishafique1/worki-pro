@@ -127,30 +127,31 @@ export function Hero() {
         <div className="text-[#FEFEFD]">
           <TrustBadge
             icon={<Sparkles className="size-4" />}
-            label="Earn 5% cashback on every home service job"
+            label="Verified local pros, matched to your job"
             dark
           />
           <h1 className="font-display mt-6 max-w-3xl text-balance text-[42px] font-bold leading-[1.04] text-[#FEFEFD] sm:text-6xl lg:text-7xl">
-            Home jobs done.
+            The right pro, matched and vetted —
             <br />
-            <span className="text-[#F2B5D7]">Rewards earned.</span>
+            <span className="text-[#F2B5D7]">for every job at home.</span>
           </h1>
           <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-[#CCC9D8] sm:text-lg">
-            TheHelper connects you with verified local pros — and gives you cashback on every job you were always going to pay for anyway.
+            One request. One verified pro. GTA West only.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button href="/request-service">
-              Start Earning <ArrowRight className="size-4" />
+              Request a Pro <ArrowRight className="size-4" />
             </Button>
             <Button href="/providers/apply" variant="secondary">
               Become a Provider
             </Button>
           </div>
+          <p className="text-sm text-[var(--text-secondary)] mt-3">You earn points on every completed job.</p>
           <div className="mt-7 grid gap-3 text-sm text-[#B7B7B7] sm:grid-cols-2">
             {[
-              "5% cashback on every job",
+              "Licensed & insured pros",
               "Verified pros only",
-              "Gift card rewards",
+              "Matched to your job",
               "Free to request",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
@@ -489,7 +490,7 @@ export function CTASection() {
               Ready to get it handled?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-[#CCC9D8]">
-              Submit your first request now and earn 5% cashback on every task completed. Providers — apply to join a flexible marketplace built for local pros.
+              Submit your first request and get matched with a verified local pro. Providers — apply to join a flexible marketplace built for local pros.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Button href="/request-service">Get Your Pro</Button>
@@ -539,7 +540,7 @@ export function Footer() {
           <div>
             <p className="font-display text-xl font-bold text-[#FEFEFD]">TheHelper</p>
             <p className="mt-3 max-w-xs text-sm leading-6">
-              Verified home service pros in the GTA. 5% cashback on every job — stacked on top of your credit card rewards.
+              Verified home service pros in the GTA. Licensed, insured, and matched to your job.
             </p>
             <div className="mt-5 flex items-center gap-2">
               <span className="flex size-5 items-center justify-center rounded-full bg-[#F2B5D7] text-[#0C110F]">

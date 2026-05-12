@@ -151,7 +151,7 @@ export const POINTS = {
 export const submitServiceRequest: SubmitServiceRequest<
   {
     name: string;
-    email: string;
+    email?: string;
     phone: string;
     postalCode: string;
     description: string;
@@ -160,6 +160,8 @@ export const submitServiceRequest: SubmitServiceRequest<
     preferredProviderId?: string;
     estimatedSchedule?: string;
     preferredTime?: string;
+    smsConsentGiven?: boolean;
+    smsConsentFormVersion?: string;
   },
   ServiceRequest
 > = async (args, context) => {
@@ -183,13 +185,15 @@ export const submitServiceRequest: SubmitServiceRequest<
     data: {
       consumerId: context.user?.id || undefined,
       name: args.name,
-      email: args.email,
+      email: args.email || undefined,
       phone: args.phone,
       postalCode: args.postalCode,
       description: args.description,
       urgency: args.urgency,
       estimatedSchedule: args.estimatedSchedule,
       preferredTime: args.preferredTime,
+      smsConsentGiven: args.smsConsentGiven ?? false,
+      smsConsentFormVersion: args.smsConsentFormVersion || undefined,
       source: "WEBSITE",
       status: preferredProviderId ? "ASSIGNED" : "NEW",
       rewardStatus: "PENDING_VERIFICATION",

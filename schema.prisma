@@ -25,6 +25,9 @@ model User {
   status                    UserStatus      @default(ACTIVE)
   smsConsent                Boolean         @default(false)
   smsConsentAt              DateTime?
+  smsMarketingConsent   Boolean  @default(false)
+  smsMarketingConsentAt DateTime?
+  smsMarketingConsentIp String?
   emailConsent              Boolean         @default(false)
 
   paymentProcessorUserId    String?         @unique
@@ -179,6 +182,13 @@ model Provider {
   licenceUrl          String?
   insuranceUrl        String?
   insuranceStatus     Boolean          @default(false)
+  tssaRegistrationNumber String?
+  tssaVerified           Boolean  @default(false)
+  wsibClearanceNumber    String?
+  wsibCertExpiry         DateTime?
+  insuranceCertExpiry    DateTime?
+  referencesChecked      Boolean  @default(false)
+  onboardingCallDone     Boolean  @default(false)
   serviceAreas        String[]
   ratingInternal      Float?
   servicesJson        String?          @default("[]")
@@ -245,6 +255,7 @@ model ServiceRequest {
   email               String?
   smsConsentGiven     Boolean         @default(false)
   smsConsentIp        String?
+  smsConsentFormVersion String?
 
   serviceCategoryId   String?
   serviceCategory     ServiceCategory? @relation(fields: [serviceCategoryId], references: [id])

@@ -7,7 +7,7 @@ export default function ApplianceLandingPage() {
     <>
       <PageSeo
         title="Appliance Repair in Mississauga & GTA | TheHelper"
-        description="Same-day appliance repair in Mississauga, Brampton & the GTA. Certified techs for fridges, washers, ovens, and dishwashers — all brands covered. Earn 5% cashback."
+        description="Same-day appliance repair in Mississauga, Brampton & the GTA. Certified techs for fridges, washers, ovens, and dishwashers — all brands covered. Verified and insured pros."
         ogTitle="Same-Day Appliance Repair in GTA | TheHelper"
         ogDescription="Book certified appliance repair techs in Mississauga, Brampton & the GTA. Fridges, washers, dryers, ovens — all brands, managed end-to-end."
         canonicalPath="/services/appliance-repair"
@@ -33,7 +33,7 @@ export default function ApplianceLandingPage() {
               Book Repair Now
             </Link>
           </div>
-          <p className="text-sm text-[var(--text-secondary)] mb-16">🎁 Plus earn cashback on every job booked</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-2 mb-16">Certified appliance techs, all brands covered. You earn points on every completed job.</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24">

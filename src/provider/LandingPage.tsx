@@ -38,7 +38,7 @@ export default function ProviderLandingPage() {
             {[
               { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: '🎯' },
               { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: '📍' },
-              { title: 'Transparent Fees', desc: 'Simple monthly subscription plus success fees only when you book or complete jobs.', icon: '💰' }
+              { title: 'Transparent Fees', desc: 'Pay $45 per booked job, or $199/mo for priority routing. No annual contract, no dual fees.', icon: '💰' }
             ].map((feature) => (
               <div key={feature.title} className="p-10 glass dark:glass-dark rounded-[40px] border border-[var(--border-default)] hover-lift text-left">
                 <div className="text-4xl mb-6">{feature.icon}</div>

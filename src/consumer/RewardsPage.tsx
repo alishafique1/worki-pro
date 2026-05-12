@@ -31,10 +31,12 @@ const STATUS_BADGE: Record<string, string> = {
   CANCELLED: 'bg-[var(--surface-overlay)] text-[var(--text-tertiary)]',
 };
 
+const ptsToDollars = (pts: number) => (pts / 100).toFixed(2);
+
 const PRESETS = [
-  { points: 500,  label: '500 pts',  dollars: '$5'  },
-  { points: 1000, label: '1,000 pts', dollars: '$10' },
-  { points: 2000, label: '2,000 pts', dollars: '$20' },
+  { points: 500,  label: '$5.00'  },
+  { points: 1000, label: '$10.00' },
+  { points: 2000, label: '$20.00' },
 ];
 
 function getLevelInfo(balance: number) {
@@ -63,7 +65,7 @@ export default function RewardsPage() {
   const lifetime = data?.account?.lifetimePoints ?? 0;
   const { current, next, progress, toNext } = getLevelInfo(balance);
 
-  const effectivePoints = customPoints ? parseInt(customPoints) || 0 : selectedPoints;
+  const effectivePoints = customPoints ? Math.round(parseFloat(customPoints) * 100) || 0 : selectedPoints;
 
   async function handleRedeem(e: React.FormEvent) {
     e.preventDefault();
@@ -71,14 +73,14 @@ export default function RewardsPage() {
     setSuccess('');
     if (!email.trim()) { setError('Please enter a gift card email.'); return; }
     if (effectivePoints < 500 || effectivePoints % 500 !== 0) {
-      setError('Amount must be at least 500 and a multiple of 500.');
+      setError('Amount must be at least $5.00 and a multiple of $5.00.');
       return;
     }
-    if (effectivePoints > balance) { setError('Insufficient points balance.'); return; }
+    if (effectivePoints > balance) { setError('Insufficient balance.'); return; }
     setSubmitting(true);
     try {
       await redeemPointsAction({ points: effectivePoints, giftCardEmail: email });
-      setSuccess(`Successfully redeemed ${effectivePoints} pts ($${effectivePoints / 100}) — check your email!`);
+      setSuccess(`Successfully redeemed $${ptsToDollars(effectivePoints)} — check your email!`);
       setEmail('');
       setCustomPoints('');
       setSelectedPoints(500);
@@ -101,19 +103,18 @@ export default function RewardsPage() {
         ) : (
           <>
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-extrabold text-[var(--accent)]">{balance.toLocaleString()}</span>
-              <span className="text-xl text-[var(--text-secondary)] mb-1">points</span>
+              <span className="text-5xl font-extrabold text-[var(--accent)]">${ptsToDollars(balance)}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold bg-[var(--surface-overlay)] px-3 py-1 rounded-full text-[var(--accent)]">
                 {current.label}
               </span>
-              <span className="text-sm text-[var(--text-tertiary)]">· {lifetime.toLocaleString()} lifetime pts</span>
+              <span className="text-sm text-[var(--text-tertiary)]">· ${ptsToDollars(lifetime)} lifetime</span>
             </div>
             {next && (
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-[var(--text-tertiary)]">
-                  <span>{toNext.toLocaleString()} pts to {next.label}</span>
+                  <span>${ptsToDollars(toNext)} to {next.label}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
                 <div className="w-full h-2 bg-[var(--surface-overlay)] rounded-full overflow-hidden">
@@ -144,19 +145,19 @@ export default function RewardsPage() {
                     : 'bg-[var(--surface-overlay)] text-[var(--text-secondary)] border-[var(--border-default)] hover:border-[var(--accent)]'
                 }`}
               >
-                {p.label} · {p.dollars}
+                Redeem {p.label}
               </button>
             ))}
           </div>
           <div>
-            <label className="block text-xs text-[var(--text-tertiary)] mb-1">Custom amount (multiples of 500)</label>
+            <label className="block text-xs text-[var(--text-tertiary)] mb-1">Custom amount in dollars (multiples of $5.00)</label>
             <input
               type="number"
-              min={500}
-              step={500}
+              min={5}
+              step={5}
               value={customPoints}
               onChange={e => setCustomPoints(e.target.value)}
-              placeholder="e.g. 1500"
+              placeholder="10.00"
               className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[10px] px-3 py-2 text-sm focus:outline-none focus:border-[var(--accent)]"
             />
           </div>
@@ -177,10 +178,14 @@ export default function RewardsPage() {
             disabled={submitting || effectivePoints > balance}
             className="w-full py-2.5 rounded-[22px] bg-[var(--accent)] text-black font-bold text-sm disabled:opacity-40 transition-opacity"
           >
-            {submitting ? 'Processing…' : `Redeem ${effectivePoints >= 500 ? `${effectivePoints.toLocaleString()} pts` : ''}`}
+            {submitting
+              ? 'Processing…'
+              : effectivePoints >= 500
+                ? `Redeem $${ptsToDollars(effectivePoints)}`
+                : 'Enter an amount'}
           </button>
           {effectivePoints > balance && (
-            <p className="text-xs text-[var(--text-tertiary)] text-center">You need {(effectivePoints - balance).toLocaleString()} more points</p>
+            <p className="text-xs text-[var(--text-tertiary)] text-center">You need ${ptsToDollars(effectivePoints - balance)} more</p>
           )}
         </form>
       </div>
@@ -206,7 +211,7 @@ export default function RewardsPage() {
                   </div>
                 </div>
                 <span className={`text-sm font-bold ${tx.points > 0 ? 'text-[#567a58]' : 'text-[var(--destructive)]'}`}>
-                  {tx.points > 0 ? '+' : ''}{tx.points.toLocaleString()}
+                  {tx.points > 0 ? '+' : '-'}${ptsToDollars(Math.abs(tx.points))}
                 </span>
               </div>
             ))}
@@ -222,7 +227,7 @@ export default function RewardsPage() {
             {data.redemptions.map(r => (
               <div key={r.id} className="flex items-center justify-between py-2.5 border-b border-[var(--border-default)] last:border-0">
                 <div className="space-y-0.5">
-                  <p className="text-sm font-medium">{r.pointsUsed.toLocaleString()} pts · ${Number(r.cashValue).toFixed(2)} gift card</p>
+                  <p className="text-sm font-medium">${ptsToDollars(r.pointsUsed)} gift card</p>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[r.status] ?? 'bg-[var(--surface-overlay)] text-[var(--text-secondary)]'}`}>
                       {r.status.charAt(0) + r.status.slice(1).toLowerCase()}

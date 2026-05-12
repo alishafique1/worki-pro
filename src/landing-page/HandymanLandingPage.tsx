@@ -6,8 +6,8 @@ export default function HandymanLandingPage() {
   return (
     <>
       <PageSeo
-        title="Handyman Services in Oakville & Burlington | TheHelper"
-        description="Trusted handyman pros for mounting, furniture assembly, drywall, and home repairs in Oakville, Burlington & Milton. Background-checked, vetted, and 5% cashback on every job."
+        title="Handyman Services in Oakville & Burlington | Worki"
+        description="Trusted handyman pros for mounting, furniture assembly, drywall, and home repairs in Oakville, Burlington & Milton. Verified, insured, and background-checked."
         ogTitle="Handyman Services in GTA | TheHelper"
         ogDescription="Book background-checked handyman pros in Oakville, Burlington & the GTA. TV mounting, furniture assembly, painting, and home repairs — matched and managed for you."
         canonicalPath="/services/handyman"
@@ -33,7 +33,7 @@ export default function HandymanLandingPage() {
               Get Help Now
             </Link>
           </div>
-          <p className="text-sm text-[var(--text-secondary)] mb-16">🎁 Plus earn cashback on every job booked</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-2 mb-16">Verified handyman pros in Oakville, Burlington &amp; Milton — matched to your job. You earn points on every completed job.</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24">

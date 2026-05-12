@@ -21,8 +21,6 @@ import {
   Bot,
   CalendarCheck,
   Clock3,
-  CreditCard,
-  Gift,
   MapPin,
   MessageSquareText,
   ShieldCheck,
@@ -53,9 +51,8 @@ const howItWorks = [
   },
   {
     step: "04",
-    title: "Job done. Cashback earned.",
-    description:
-      "Every task completed through TheHelper gets you 5% cashback — on top of your credit card rewards.",
+    title: "Job done. Pro rated.",
+    description: "Rate your experience after the job. Every completed job builds a verified review record — so the next homeowner knows exactly what to expect.",
   },
 ];
 
@@ -71,9 +68,9 @@ const painPoints = [
     solution: "Verified before they work",
   },
   {
-    icon: <Zap className="size-5" />,
-    pain: "Rewards cards give 1-2% back",
-    solution: "TheHelper stacks 5% cashback on top",
+    icon: <ShieldCheck className="size-5" />,
+    pain: "No way to verify a pro's track record",
+    solution: "Every pro is licensed, insured, and reviewed",
   },
 ];
 
@@ -121,9 +118,9 @@ export default function LandingPage() {
     <>
       <PageSeo
         title="TheHelper — Home Services Concierge | GTA Vetted Pros"
-        description="Milton, Oakville & Burlington's #1 home services concierge. Get matched with vetted HVAC, plumbing, electrical, handyman & smart home pros. Earn 5% cashback on every job."
-        ogTitle="TheHelper — Vetted Home Service Pros in GTA | 5% Cashback"
-        ogDescription="Stop searching. Describe your home service need once and The Helper matches you with a verified local pro. Serving Milton, Oakville, Burlington & more. Earn rewards every time."
+        description="Milton, Oakville & Burlington's home services concierge. Get matched with licensed, insured, and reviewed HVAC, plumbing, electrical, handyman & smart home pros."
+        ogTitle="TheHelper — Vetted Home Service Pros in GTA"
+        ogDescription="Stop searching. Describe your home service need once and TheHelper matches you with a verified local pro. Serving Milton, Oakville, Burlington & more."
         canonicalPath="/"
       />
     <main className="min-h-screen bg-[#000000] font-sans selection:bg-[#F2B5D7] selection:text-[#0C110F]">
@@ -134,7 +131,7 @@ export default function LandingPage() {
           <div className="grid gap-px rounded-[23px] border border-white/10 bg-white/10 overflow-hidden sm:grid-cols-3">
             <StatsCard value="AI-assisted" label="Lead intake & matching" />
             <StatsCard value="Verified only" label="Pro onboarding" />
-            <StatsCard value="Every task" label="Earns you rewards" />
+            <StatsCard value="GTA West" label="Local service area" />
           </div>
         </Container>
       </section>
@@ -144,7 +141,7 @@ export default function LandingPage() {
         <Container>
           <SectionHeader
             eyebrow="How TheHelper works"
-            title="From task to done — with rewards along the way."
+            title="From task to done — with the right pro every time."
             description="TheHelper turns a home service request into a structured, AI-assisted intake so verified pros get what they need from the start."
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -240,39 +237,40 @@ export default function LandingPage() {
           <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
               <TrustBadge
-                icon={<Trophy className="size-4" />}
-                label="Rewards program"
+                icon={<ShieldCheck className="size-4" />}
+                label="Quality, speed, and trust"
               />
               <SectionHeader
                 align="left"
-                title="Every task earns you cashback"
-                description="The more you get done through TheHelper, the more you earn. Request a service today and start building toward your first reward."
+                title="One verified pro. Matched to your job."
+                description="We vet every pro for licensing, insurance, and track record — so you get the right person the first time."
                 className="mt-5"
               />
               <Button href="/request-service" className="mt-6">
-                Start Earning Today
+                Request a Pro
               </Button>
+              <p className="text-sm text-[var(--text-secondary)] mt-3">You earn points on every completed job.</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <FeatureCard
                 icon={<BadgeCheck className="size-5" />}
-                title="5% cashback on every job"
-                description="Earn 5% back on every home service job you complete through TheHelper."
+                title="Licensed and insured"
+                description="Every pro on TheHelper is licensed, insured, and background-checked before they take a job."
               />
               <FeatureCard
-                icon={<Gift className="size-5" />}
-                title="Gift card rewards"
-                description="Redeem your cashback for gift cards to popular retailers."
+                icon={<Star className="size-5" />}
+                title="Real review record"
+                description="Verified ratings from real completed jobs — so you know exactly what to expect."
               />
               <FeatureCard
                 icon={<Sparkles className="size-5" />}
-                title="$60 welcome bonus"
-                description="Complete your first task and get a bonus loaded to your account."
+                title="One pro per job"
+                description="No bidding wars or five phone calls. One request, one matched pro."
               />
               <FeatureCard
-                icon={<CreditCard className="size-5" />}
-                title="Stack on credit card points"
-                description="Use your rewards credit card AND TheHelper — stack the benefits."
+                icon={<MapPin className="size-5" />}
+                title="GTA West only"
+                description="Focused on Milton, Oakville, and Burlington — local pros who know the area."
               />
             </div>
           </div>

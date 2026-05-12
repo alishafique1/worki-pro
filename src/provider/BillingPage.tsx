@@ -7,6 +7,7 @@ export default function ProviderBillingPage() {
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">
       <h1 className="text-4xl font-bold tracking-tight">Billing & Invoices</h1>
+      <p className="text-sm text-[var(--text-secondary)]">No annual contract. Cancel anytime.</p>
       
       <div className="bg-[var(--surface-raised)] p-6 rounded-[14px] border border-[var(--border-default)]">
         <h2 className="text-xl font-bold mb-6">Recent Fees</h2>

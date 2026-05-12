@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useAction, getAdminProviders, approveProvider, rejectProvider } from 'wasp/client/operations';
+import { SERVICE_ZONES } from '../shared/geoConfig';
 
 export default function AdminProvidersPage() {
   const { data: providers, isLoading, refetch } = useQuery(getAdminProviders);
@@ -44,6 +45,26 @@ export default function AdminProvidersPage() {
         <p className="text-gray-500 mt-1">Approve, reject, and manage service provider applications.</p>
       </div>
 
+      <div className="bg-white rounded-xl border p-4">
+        <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Service Zone Status</h2>
+        <div className="flex flex-wrap gap-2">
+          {SERVICE_ZONES.map(zone => (
+            <span
+              key={zone.name}
+              className={`px-3 py-1 rounded-full text-sm font-semibold border ${
+                zone.active
+                  ? 'bg-green-50 text-green-700 border-green-200'
+                  : 'bg-gray-50 text-gray-400 border-gray-200'
+              }`}
+            >
+              {zone.active ? '●' : '○'} {zone.name}
+              <span className="ml-1 text-xs opacity-70">({zone.prefixes.length} prefixes)</span>
+            </span>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400 mt-2">Edit <code>src/shared/geoConfig.ts</code> to add or enable zones.</p>
+      </div>
+
       <div className="grid grid-cols-3 gap-4">
         {['PENDING', 'VERIFIED', 'REJECTED'].map(status => {
           const count = providers?.filter((p: any) => p.verificationStatus === status).length ?? 0;
@@ -75,6 +96,32 @@ export default function AdminProvidersPage() {
                 <p className="text-xs text-gray-400 mt-2">
                   Applied {new Date(prov.createdAt).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </p>
+                {/* Verification checklist */}
+                <p className="text-xs text-gray-400 mt-3 mb-1">
+                  Verification: {[prov.tssaVerified, !!prov.wsibCertExpiry, !!(prov.insuranceStatus && prov.insuranceCertExpiry), prov.referencesChecked, prov.onboardingCallDone].filter(Boolean).length}/5 complete
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { label: 'TSSA', done: prov.tssaVerified },
+                    { label: 'WSIB', done: !!prov.wsibCertExpiry },
+                    { label: 'Insurance', done: !!(prov.insuranceStatus && prov.insuranceCertExpiry) },
+                    { label: 'References', done: prov.referencesChecked },
+                    { label: 'Onboarding call', done: prov.onboardingCallDone },
+                  ].map(({ label, done }) => (
+                    <span
+                      key={label}
+                      className={`px-2 py-0.5 rounded-full text-xs font-semibold ${done ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-400'}`}
+                    >
+                      {done ? '✓' : '○'} {label}
+                    </span>
+                  ))}
+                </div>
+                {prov.wsibCertExpiry && (
+                  <p className="text-xs text-gray-400 mt-1">WSIB expires: {new Date(prov.wsibCertExpiry).toLocaleDateString('en-CA')}</p>
+                )}
+                {prov.insuranceCertExpiry && (
+                  <p className="text-xs text-gray-400">Insurance expires: {new Date(prov.insuranceCertExpiry).toLocaleDateString('en-CA')}</p>
+                )}
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
