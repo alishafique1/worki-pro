@@ -2,30 +2,36 @@ import React, { useState } from 'react';
 import { useQuery, useAction, getAdminProviders, approveProvider, rejectProvider } from 'wasp/client/operations';
 import { SERVICE_ZONES } from '../shared/geoConfig';
 
+import { useRoleGuard } from '../shared/useRoleGuard';
+
 export default function AdminProvidersPage() {
+  useRoleGuard('ADMIN');
   const { data: providers, isLoading, refetch } = useQuery(getAdminProviders);
   const approveFn = useAction(approveProvider);
   const rejectFn = useAction(rejectProvider);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState('');
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const handleApprove = async (id: string) => {
+    setActionError(null);
     try {
       await approveFn({ providerId: id });
       refetch();
     } catch (e: any) {
-      alert('Error: ' + (e.message || 'Failed to approve'));
+      setActionError(e.message || 'Failed to approve provider');
     }
   };
 
   const handleReject = async (id: string) => {
+    setActionError(null);
     try {
       await rejectFn({ providerId: id, reason: rejectReason || undefined });
       setRejectingId(null);
       setRejectReason('');
       refetch();
     } catch (e: any) {
-      alert('Error: ' + (e.message || 'Failed to reject'));
+      setActionError(e.message || 'Failed to reject provider');
     }
   };
 
@@ -40,6 +46,12 @@ export default function AdminProvidersPage() {
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">
+      {actionError && (
+        <div className="rounded-[12px] bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 flex items-center justify-between">
+          <span>{actionError}</span>
+          <button onClick={() => setActionError(null)} className="ml-3 font-bold">✕</button>
+        </div>
+      )}
       <div>
         <h1 className="text-4xl font-bold tracking-tight">Provider Management</h1>
         <p className="text-gray-500 mt-1">Approve, reject, and manage service provider applications.</p>

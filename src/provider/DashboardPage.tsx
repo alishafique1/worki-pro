@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useAction,
   useQuery,
@@ -8,8 +8,23 @@ import {
   getProviderProfile,
 } from "wasp/client/operations";
 import { Link } from "react-router";
+import { useRoleGuard } from '../shared/useRoleGuard';
+
+function safeParseServices(json: any): any[] {
+  try { return JSON.parse(json) || []; } catch { return []; }
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  ASSIGNED: 'New',
+  ACCEPTED_BY_PROVIDER: 'Accepted',
+  BOOKED: 'Booked',
+};
 
 export default function ProviderDashboardPage() {
+  useRoleGuard('PROVIDER');
+
+  const [acceptError, setAcceptError] = useState<string | null>(null);
+
   const {
     data: leads,
     isLoading: leadsLoading,
@@ -27,15 +42,44 @@ export default function ProviderDashboardPage() {
   const acceptLeadFn = useAction(acceptServiceRequest);
 
   const handleAccept = async (id: string) => {
+    setAcceptError(null);
     try {
       await acceptLeadFn({ requestId: id });
     } catch (err: any) {
-      alert("Error accepting lead: " + err.message);
+      setAcceptError("Could not accept lead: " + (err.message || 'Unknown error'));
     }
   };
 
+  const verificationStatus = (profile as any)?.verificationStatus;
+
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-12">
+      {/* Verification banner */}
+      {!profileLoading && verificationStatus && verificationStatus !== 'VERIFIED' && (
+        <div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${
+          verificationStatus === 'REJECTED'
+            ? 'bg-red-500/10 border-red-400/30 text-red-400'
+            : 'bg-yellow-500/10 border-yellow-400/30 text-yellow-500'
+        }`}>
+          <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
+          <div>
+            <p className="font-bold text-sm">
+              {verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'}
+            </p>
+            <p className="text-xs mt-0.5 opacity-80">
+              {verificationStatus === 'REJECTED'
+                ? 'Contact support to appeal or reapply.'
+                : 'Our team is reviewing your profile. You can browse leads but cannot claim them until approved by an admin.'}
+            </p>
+          </div>
+        </div>
+      )}
+      {acceptError && (
+        <div className="rounded-[14px] bg-red-500/10 border border-red-400/30 px-5 py-3 text-sm text-red-400 font-medium">
+          {acceptError}
+          <button onClick={() => setAcceptError(null)} className="ml-3 underline">Dismiss</button>
+        </div>
+      )}
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
@@ -79,9 +123,7 @@ export default function ProviderDashboardPage() {
               {profileLoading
                 ? 'Loading...'
                 : (() => {
-                    const services = (profile as any)?.servicesJson
-                      ? JSON.parse((profile as any).servicesJson)
-                      : [];
+                    const services = safeParseServices((profile as any)?.servicesJson);
                     return services.length === 0
                       ? 'No services listed yet — add your first listing so customers can find you.'
                       : `${services.length} service${services.length !== 1 ? 's' : ''} listed`;
@@ -93,18 +135,14 @@ export default function ProviderDashboardPage() {
             className="px-6 py-3 bg-[var(--accent)] text-[#000] font-bold rounded-[18px] hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
           >
             {(() => {
-              const services = (profile as any)?.servicesJson
-                ? JSON.parse((profile as any).servicesJson)
-                : [];
+              const services = safeParseServices((profile as any)?.servicesJson);
               return services.length === 0 ? 'Add your first listing' : 'Manage listings';
             })()}
           </Link>
         </div>
 
         {!profileLoading && (() => {
-          const services = (profile as any)?.servicesJson
-            ? JSON.parse((profile as any).servicesJson)
-            : [];
+          const services = safeParseServices((profile as any)?.servicesJson);
           if (services.length === 0) return null;
           return (
             <div className="flex flex-wrap gap-2 mt-2">
@@ -135,7 +173,7 @@ export default function ProviderDashboardPage() {
               <span className="bg-[var(--accent)] text-[#000] w-8 h-8 rounded-full flex items-center justify-center text-sm">
                 {leads?.length || 0}
               </span>
-              Assigned Leads
+              Active Leads
             </h2>
             <Link
               to="/provider/leads"
@@ -178,33 +216,45 @@ export default function ProviderDashboardPage() {
                     className="p-6 bg-[var(--surface-overlay)] rounded-[14px] border border-[var(--border-default)] hover:border-[var(--accent)] transition-colors group"
                   >
                     <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <span className="px-3 py-1 bg-[var(--surface-base)] text-xs font-bold rounded-full mb-3 inline-block uppercase">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="px-3 py-1 bg-[var(--surface-base)] text-xs font-bold rounded-full inline-block uppercase">
                           {lead.urgency}
                         </span>
-                        <h3 className="font-bold text-lg">
-                          {lead.city || lead.postalCode}
-                        </h3>
+                        <span className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold rounded-full inline-block uppercase border border-[var(--accent)]/30">
+                          {STATUS_LABEL[(lead as any).status] ?? (lead as any).status}
+                        </span>
                       </div>
-                      <span className="text-sm text-[var(--text-secondary)] font-medium">
+                      <span className="text-sm text-[var(--text-secondary)] font-medium shrink-0">
                         {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
                     </div>
+                    <h3 className="font-bold text-lg mb-1">
+                      {lead.city || lead.postalCode}
+                    </h3>
                     <p className="text-[var(--text-secondary)] mb-4 line-clamp-2">
                       {lead.description}
                     </p>
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => handleAccept(lead.id)}
-                        className="flex-1 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity"
-                      >
-                        Accept
-                      </button>
+                      {(lead as any).status === 'ASSIGNED' ? (
+                        <button
+                          onClick={() => handleAccept(lead.id)}
+                          className="flex-1 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity"
+                        >
+                          Accept
+                        </button>
+                      ) : (
+                        <Link
+                          to={`/provider/requests/${lead.id}/messages`}
+                          className="flex-1 py-2 text-center bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity"
+                        >
+                          Message customer →
+                        </Link>
+                      )}
                       <Link
                         to="/provider/leads"
-                        className="px-4 py-2 bg-[var(--surface-base)] border border-[var(--border-default)] text-[var(--text-primary)] font-bold rounded-[14px] hover:bg-[var(--surface-raised)]"
+                        className="px-4 py-2 bg-[var(--surface-base)] border border-[var(--border-default)] text-foreground font-bold rounded-[14px] hover:bg-[var(--surface-raised)]"
                       >
-                        Details
+                        All leads
                       </Link>
                     </div>
                   </div>

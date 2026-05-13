@@ -9,6 +9,7 @@ import {
   marketingNavigationItems,
   consumerNavigationItems,
   providerNavigationItems,
+  adminNavigationItems,
 } from "./components/NavBar/constants";
 import CookieConsentBanner from "./components/cookie-consent/Banner";
 import { useAuth } from "wasp/client/auth";
@@ -44,6 +45,7 @@ export default function App() {
   const navigationItems = useMemo(() => {
     if (isMarketingPage) return marketingNavigationItems;
     if (!user) return demoNavigationitems;
+    if ((user as any).isAdmin) return adminNavigationItems;
     if (user.role === "PROVIDER") return providerNavigationItems;
     return consumerNavigationItems;
   }, [isMarketingPage, user]);

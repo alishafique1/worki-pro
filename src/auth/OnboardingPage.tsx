@@ -14,6 +14,7 @@ type FormData = {
   smsConsent: boolean;
   businessName: string;
   serviceAreas: string;
+  referralCode: string;
 };
 
 const TOTAL_STEPS_CONSUMER = 2;
@@ -37,6 +38,7 @@ export default function OnboardingPage() {
     smsConsent: false,
     businessName: '',
     serviceAreas: '',
+    referralCode: '',
   });
 
   const getDashboardPath = (role?: Role | null) =>
@@ -105,6 +107,7 @@ export default function OnboardingPage() {
           form.role === 'PROVIDER' && form.serviceAreas.trim()
             ? form.serviceAreas.split(',').map(s => s.trim()).filter(Boolean)
             : undefined,
+        referralCode: form.referralCode.trim() || undefined,
       });
       navigate(getDashboardPath(form.role));
     } catch (e: any) {
@@ -231,6 +234,19 @@ export default function OnboardingPage() {
                   I agree to receive SMS updates about my service requests
                 </span>
               </label>
+              {form.role === 'CONSUMER' && (
+                <div>
+                  <label className={labelClass}>Referral Code <span className="font-normal opacity-60">(optional)</span></label>
+                  <input
+                    type="text"
+                    className={inputClass}
+                    placeholder="REF-XXXXXX"
+                    value={form.referralCode}
+                    onChange={e => updateForm('referralCode', e.target.value.toUpperCase())}
+                  />
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">Have a friend's referral code? Enter it to earn 500 bonus points each.</p>
+                </div>
+              )}
             </div>
           )}
 

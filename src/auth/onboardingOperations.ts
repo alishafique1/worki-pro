@@ -10,6 +10,7 @@ type CompleteOnboardingInput = {
   smsConsent?: boolean;
   businessName?: string;
   serviceAreas?: string[];
+  referralCode?: string;
 };
 
 type CompleteOnboardingOutput = { success: boolean };
@@ -23,7 +24,7 @@ export const completeOnboarding: CompleteOnboarding<
   }
 
   const userId = context.user.id;
-  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas } = args;
+  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode } = args;
 
   await context.entities.User.update({
     where: { id: userId },
@@ -128,6 +129,20 @@ export const completeOnboarding: CompleteOnboarding<
         lifetimePoints: { increment: 100 },
       },
     });
+  }
+
+  // Apply referral code if provided (consumers only)
+  if (referralCode && role === 'CONSUMER') {
+    const code = referralCode.trim().toUpperCase();
+    const referral = await context.entities.Referral.findUnique({
+      where: { referralCode: code },
+    });
+    if (referral && referral.referrerUserId !== userId && !referral.referredUserId) {
+      await context.entities.Referral.update({
+        where: { id: referral.id },
+        data: { referredUserId: userId, status: 'SIGNED_UP' },
+      });
+    }
   }
 
   return { success: true };

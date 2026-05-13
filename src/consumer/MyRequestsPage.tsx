@@ -104,45 +104,49 @@ function MessageComposer({ requestId }: { requestId: string }) {
   const sendMessage = useAction(sendCustomerMessage);
   const [body, setBody] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
+  const [sendError, setSendError] = React.useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!body.trim()) return;
+    setSendError(null);
     setIsSending(true);
     try {
       await sendMessage({ requestId, body });
       setBody("");
     } catch (error: any) {
-      alert(error?.message || "Could not send message.");
+      setSendError(error?.message || "Could not send message. Please try again.");
     } finally {
       setIsSending(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-4 flex flex-col gap-3 sm:flex-row"
-    >
-      <label className="sr-only" htmlFor={`message-${requestId}`}>
-        Message provider
-      </label>
-      <input
-        id={`message-${requestId}`}
-        value={body}
-        onChange={(event) => setBody(event.target.value)}
-        placeholder="Ask a question or share an update..."
-        maxLength={1000}
-        className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
-      />
-      <button
-        type="submit"
-        disabled={isSending || !body.trim()}
-        className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
-      </button>
-    </form>
+    <div className="mt-4 space-y-2">
+      {sendError && (
+        <p className="text-xs text-red-400 px-1">{sendError}</p>
+      )}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+        <label className="sr-only" htmlFor={`message-${requestId}`}>
+          Message provider
+        </label>
+        <input
+          id={`message-${requestId}`}
+          value={body}
+          onChange={(event) => setBody(event.target.value)}
+          placeholder="Ask a question or share an update..."
+          maxLength={1000}
+          className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+        />
+        <button
+          type="submit"
+          disabled={isSending || !body.trim()}
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
+        </button>
+      </form>
+    </div>
   );
 }
 

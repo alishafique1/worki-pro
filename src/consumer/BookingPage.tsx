@@ -9,7 +9,12 @@ declare global {
   }
 }
 
-function CalEmbed({ calLink }: { calLink: string }) {
+interface CalEmbedProps {
+  calLink: string;
+  prefill?: { name?: string; email?: string; notes?: string };
+}
+
+function CalEmbed({ calLink, prefill }: CalEmbedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
 
@@ -17,15 +22,20 @@ function CalEmbed({ calLink }: { calLink: string }) {
     if (loadedRef.current) return;
     loadedRef.current = true;
 
-    // Load the cal.com embed script once
-    const existing = document.getElementById('cal-embed-script');
-    const init = () => {
-      if (!window.Cal) return;
+    const CAL_SCRIPT_URL = 'https://app.cal.com/embed/embed.js';
+
+    const mountCal = () => {
+      if (!window.Cal) {
+        // Cal not loaded yet — retry after a short delay
+        setTimeout(mountCal, 100);
+        return;
+      }
       window.Cal('init', { origin: 'https://cal.com' });
       window.Cal('inline', {
         elementOrSelector: containerRef.current,
         calLink,
         layout: 'month_view',
+        ...(prefill ? { prefill } : {}),
       });
       window.Cal('ui', {
         theme: 'dark',
@@ -34,26 +44,26 @@ function CalEmbed({ calLink }: { calLink: string }) {
       });
     };
 
+    const existing = document.getElementById('cal-embed-script');
     if (existing) {
-      init();
+      mountCal();
       return;
     }
 
+    // Inject the official Cal.com loader bootstrap inline, then load the main script
+    const bootstrap = document.createElement('script');
+    bootstrap.innerHTML = `
+      (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,[L,namespace,api])}else p(cal,ar);return}p(cal,ar)};})(window,"${CAL_SCRIPT_URL}","init");
+    `;
+    document.head.appendChild(bootstrap);
+
     const script = document.createElement('script');
     script.id = 'cal-embed-script';
-    script.src = 'https://app.cal.com/embed/embed.js';
+    script.src = CAL_SCRIPT_URL;
     script.async = true;
-    // Inline bootstrap so Cal is ready immediately on load
-    script.innerHTML = `
-      (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, [L, namespace, api]);}else p(cal, ar); return;} p(cal, ar); }; })(window, "${script.src}", "init");
-    `;
-    script.onload = init;
+    script.onload = mountCal;
     document.head.appendChild(script);
-
-    return () => {
-      // cleanup inline calendar on unmount
-    };
-  }, [calLink]);
+  }, [calLink, prefill]);
 
   return (
     <div
@@ -71,16 +81,17 @@ export default function BookingPage() {
 
   // Determine cal.com link: provider's link > TheHelper default
   const providerCalUsername = request?.assignedProvider?.calComUsername;
-  const defaultCalLink = import.meta.env.REACT_APP_CALCOM_DEFAULT_LINK || 'worki/consultation';
+  const defaultCalLink = import.meta.env.VITE_CALCOM_DEFAULT_LINK || 'worki/consultation';
   const calLink = providerCalUsername
     ? `${providerCalUsername}/worki-service`
     : defaultCalLink;
 
+  const serviceName = (request as any)?.serviceCategory?.name ?? 'General';
   const prefill = request
     ? {
         name: request.name,
         email: request.email,
-        notes: `Service: ${request.serviceType ?? 'General'} — ${request.description ?? ''}`,
+        notes: `Service: ${serviceName} — ${request.description ?? ''}`,
       }
     : undefined;
 
@@ -111,7 +122,7 @@ export default function BookingPage() {
             <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] p-5 flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="flex-1">
                 <p className="text-xs text-[var(--text-tertiary)] uppercase tracking-wide mb-1">Your Request</p>
-                <p className="font-semibold">{request.serviceType ?? 'General Service'}</p>
+                <p className="font-semibold">{(request as any).serviceCategory?.name ?? 'General Service'}</p>
                 <p className="text-sm text-[var(--text-secondary)] mt-0.5 line-clamp-1">{request.description}</p>
               </div>
               <span className="text-xs px-3 py-1.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 font-semibold self-start sm:self-center whitespace-nowrap">
@@ -120,7 +131,7 @@ export default function BookingPage() {
             </div>
           )}
 
-          <CalEmbed calLink={calLink} />
+          <CalEmbed calLink={calLink} prefill={prefill} />
 
           <p className="text-xs text-center text-[var(--text-tertiary)]">
             Powered by{' '}

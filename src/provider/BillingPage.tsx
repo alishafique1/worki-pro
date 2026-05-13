@@ -1,8 +1,11 @@
 import React from 'react';
 import { useQuery, getProviderFees } from 'wasp/client/operations';
 
+import { useRoleGuard } from '../shared/useRoleGuard';
+
 export default function ProviderBillingPage() {
-  const { data: fees, isLoading } = useQuery(getProviderFees);
+  useRoleGuard('PROVIDER');
+  const { data: fees, isLoading, error } = useQuery(getProviderFees);
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">
@@ -13,8 +16,17 @@ export default function ProviderBillingPage() {
         <h2 className="text-xl font-bold mb-6">Recent Fees</h2>
         
         <div className="space-y-4">
-          {isLoading && <p>Loading billing info...</p>}
-          {fees?.length === 0 && <p className="text-[var(--text-secondary)]">No fees logged yet.</p>}
+          {isLoading && (
+            <div className="animate-pulse h-20 bg-[var(--surface-overlay)] rounded-[14px]" />
+          )}
+          {!isLoading && error && (
+            <div className="rounded-[14px] bg-red-500/10 border border-red-400/30 px-5 py-4 text-sm text-red-400">
+              Could not load billing data. Refresh the page to try again.
+            </div>
+          )}
+          {!isLoading && !error && fees?.length === 0 && (
+            <p className="text-[var(--text-secondary)]">No fees logged yet.</p>
+          )}
           
           {fees?.map((fee: any) => (
             <div key={fee.id} className="flex justify-between items-center p-4 border border-[var(--border-default)] rounded-[14px]">

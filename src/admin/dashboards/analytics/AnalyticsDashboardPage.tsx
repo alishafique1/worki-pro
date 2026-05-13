@@ -69,7 +69,7 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
           </div>
         </div>
 
-        {!stats && (
+        {stats === null && (
           <div className="bg-background/50 absolute inset-0 flex items-start justify-center">
             <div className="bg-card rounded-lg p-8 shadow-lg">
               <p className="text-foreground text-2xl font-bold">

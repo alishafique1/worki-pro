@@ -10,7 +10,10 @@ const URGENCY_STYLES: Record<string, string> = {
   PLANNED: 'bg-[var(--surface-raised)] text-[var(--text-secondary)]'
 };
 
+import { useRoleGuard } from '../shared/useRoleGuard';
+
 export default function AdminRequestsPage() {
+  useRoleGuard('ADMIN');
   const { data: requests, isLoading: reqLoading } = useQuery(getAdminRequests);
   const { data: providers } = useQuery(getAdminProviders);
   const assignRequestToProviderFn = useAction(assignRequestToProvider);

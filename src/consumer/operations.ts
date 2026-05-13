@@ -8,6 +8,9 @@ import type {
   Provider,
   ProviderCategory,
   Lead,
+  Review,
+  OtpVerification,
+  Referral,
 } from "wasp/entities";
 import type {
   GetMyRequests,
@@ -17,11 +20,21 @@ import type {
   SendCustomerMessage,
   GetServiceCategories,
   GetProviders,
+  GetProviderById,
   GetConsumerStats,
   SubmitLead,
+  SendOtp,
+  VerifyOtp,
+  SubmitReview,
+  GetReviewsForProvider,
+  GetMessagesForRequest,
+  GetMyReferral,
+  ApplyReferralCode,
 } from "wasp/server/operations";
-import { HttpError } from "wasp/server";
+import { HttpError, prisma } from "wasp/server";
+import { emailSender } from "wasp/server/email";
 import { sendLeadToGHL } from "../server/services/ghl";
+import crypto from "node:crypto";
 
 export const getServiceCategories: GetServiceCategories<
   void,
@@ -45,6 +58,7 @@ export const getMyRequests: GetMyRequests<void, any[]> = async (
     orderBy: { createdAt: "desc" },
     include: {
       assignedProvider: true,
+      serviceCategory: true,
       appointments: {
         orderBy: { createdAt: "desc" },
         include: { provider: true },
@@ -102,39 +116,45 @@ export const redeemPoints: RedeemPoints<
     );
   }
 
-  const account = await context.entities.RewardAccount.findUnique({
-    where: { consumerId: context.user.id },
-  });
-
-  if (!account || account.pointsBalance < points) {
-    throw new HttpError(400, "Insufficient points balance.");
-  }
-
   const cashValue = points / 100;
+  const userId = context.user.id;
 
-  const redemption = await context.entities.Redemption.create({
-    data: {
-      consumerId: context.user.id,
-      pointsUsed: points,
-      cashValue,
-      giftCardEmail,
-      status: "REQUESTED",
-    },
-  });
+  // Wrap in a transaction to prevent concurrent over-redemption race conditions
+  const redemption = await prisma.$transaction(async (tx) => {
+    const account = await tx.rewardAccount.findUnique({
+      where: { consumerId: userId },
+    });
 
-  await context.entities.RewardTransaction.create({
-    data: {
-      consumerId: context.user.id,
-      type: "REDEMPTION",
-      points: -points,
-      status: "REDEEMED",
-      reason: "Gift card redemption",
-    },
-  });
+    if (!account || account.pointsBalance < points) {
+      throw new HttpError(400, "Insufficient points balance.");
+    }
 
-  await context.entities.RewardAccount.update({
-    where: { consumerId: context.user.id },
-    data: { pointsBalance: { decrement: points } },
+    const newRedemption = await tx.redemption.create({
+      data: {
+        consumerId: userId,
+        pointsUsed: points,
+        cashValue,
+        giftCardEmail,
+        status: "REQUESTED",
+      },
+    });
+
+    await tx.rewardTransaction.create({
+      data: {
+        consumerId: userId,
+        type: "REDEMPTION",
+        points: -points,
+        status: "REDEEMED",
+        reason: "Gift card redemption",
+      },
+    });
+
+    await tx.rewardAccount.update({
+      where: { consumerId: userId },
+      data: { pointsBalance: { decrement: points } },
+    });
+
+    return newRedemption;
   });
 
   return redemption;
@@ -334,7 +354,7 @@ export const sendCustomerMessage: SendCustomerMessage<
     throw new HttpError(404, "Service request not found.");
   }
 
-  return context.entities.CommunicationLog.create({
+  const log = await context.entities.CommunicationLog.create({
     data: {
       userId: context.user.id,
       serviceRequestId: serviceRequest.id,
@@ -351,17 +371,41 @@ export const sendCustomerMessage: SendCustomerMessage<
       status: "SENT",
     },
   });
+
+  // Notify provider by email (fire-and-forget)
+  if (serviceRequest.assignedProvider?.email) {
+    const customerName =
+      serviceRequest.name || context.user.email || "A customer";
+    emailSender.send({
+      to: serviceRequest.assignedProvider.email,
+      subject: `New message from ${customerName}`,
+      text: `Hi,\n\n${customerName} sent you a message on TheHelper:\n\n"${trimmedBody}"\n\nView the thread:\nhttps://thehelper.ca/provider/requests/${serviceRequest.id}/messages\n\nThe TheHelper Team`,
+      html: `<p>Hi,</p><p><strong>${customerName}</strong> sent you a message on TheHelper:</p><blockquote>${trimmedBody}</blockquote><p><a href="https://thehelper.ca/provider/requests/${serviceRequest.id}/messages">View the thread</a></p>`,
+    }).catch((err: Error) => {
+      console.warn("[sendCustomerMessage] email notification failed:", err.message);
+    });
+  }
+
+  return log;
 };
 
 type ProviderDetail = Provider & {
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
   services: { id: string; name: string; description: string; price: number | null; categorySlug: string }[];
+  reviews: Review[];
 };
 
-export const getProviderById: GetProviders<{ providerId: string }, ProviderDetail | null> = async ({ providerId }, context) => {
+export const getProviderById: GetProviderById<{ providerId: string }, ProviderDetail | null> = async ({ providerId }, context) => {
   const provider = await context.entities.Provider.findUnique({
     where: { id: providerId, active: true },
-    include: { categories: { include: { serviceCategory: true } } },
+    include: {
+      categories: { include: { serviceCategory: true } },
+      reviews: {
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+      },
+    },
   });
   if (!provider) return null;
 
@@ -488,4 +532,265 @@ export const submitLead: SubmitLead<{
       status: 'NEW',
     },
   });
+};
+
+// ─── OTP Verification ────────────────────────────────────────────────────────
+
+const OTP_TTL_MINUTES = 10;
+const MAX_OTP_ATTEMPTS = 5;
+
+function hashOtp(code: string): string {
+  return crypto.createHash("sha256").update(code).digest("hex");
+}
+
+export const sendOtp: SendOtp<{ phone: string }, { sent: boolean }> = async (
+  { phone },
+  context,
+) => {
+  const normalized = phone.replace(/\s+/g, "").trim();
+  if (!normalized) throw new HttpError(400, "Phone number required.");
+
+  // Rate-limit: max 3 OTPs in last 5 minutes
+  const recentCount = await context.entities.OtpVerification.count({
+    where: {
+      phone: normalized,
+      createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+    },
+  });
+  if (recentCount >= 3) {
+    throw new HttpError(429, "Too many OTP requests. Please wait a few minutes.");
+  }
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000);
+
+  await context.entities.OtpVerification.create({
+    data: {
+      phone: normalized,
+      codeHash: hashOtp(code),
+      expiresAt,
+    },
+  });
+
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
+
+  if (accountSid && authToken && fromNumber) {
+    const body = `Your TheHelper verification code is: ${code}. Expires in ${OTP_TTL_MINUTES} minutes.`;
+    const basicAuth = Buffer.from(`${accountSid}:${authToken}`).toString("base64");
+    await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${basicAuth}`,
+        },
+        body: new URLSearchParams({ From: fromNumber, To: normalized, Body: body }).toString(),
+      },
+    );
+  } else {
+    // Dev mode: log to console
+    console.info(`[OTP dev] Code for ${normalized}: ${code}`);
+  }
+
+  return { sent: true };
+};
+
+export const verifyOtp: VerifyOtp<
+  { phone: string; code: string },
+  { verified: boolean }
+> = async ({ phone, code }, context) => {
+  const normalized = phone.replace(/\s+/g, "").trim();
+  const now = new Date();
+
+  const record = await context.entities.OtpVerification.findFirst({
+    where: {
+      phone: normalized,
+      verifiedAt: null,
+      expiresAt: { gte: now },
+      attempts: { lt: MAX_OTP_ATTEMPTS },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  if (!record) throw new HttpError(400, "No valid OTP found. Please request a new code.");
+
+  await context.entities.OtpVerification.update({
+    where: { id: record.id },
+    data: { attempts: { increment: 1 } },
+  });
+
+  if (record.codeHash !== hashOtp(code)) {
+    throw new HttpError(400, "Incorrect verification code.");
+  }
+
+  await context.entities.OtpVerification.update({
+    where: { id: record.id },
+    data: { verifiedAt: now },
+  });
+
+  return { verified: true };
+};
+
+// ─── Reviews ──────────────────────────────────────────────────────────────────
+
+export const submitReview: SubmitReview<
+  {
+    providerId: string;
+    serviceRequestId?: string;
+    rating: number;
+    title?: string;
+    body: string;
+  },
+  Review
+> = async ({ providerId, serviceRequestId, rating, title, body }, context) => {
+  if (!context.user) throw new HttpError(401);
+
+  if (rating < 1 || rating > 5) throw new HttpError(400, "Rating must be 1–5.");
+  if (!body.trim()) throw new HttpError(400, "Review body is required.");
+
+  // Each consumer can review a provider once per service request
+  if (serviceRequestId) {
+    const existing = await context.entities.Review.findFirst({
+      where: {
+        consumerId: context.user.id,
+        serviceRequestId,
+      },
+    });
+    if (existing) throw new HttpError(409, "You have already reviewed this service request.");
+  }
+
+  const review = await context.entities.Review.create({
+    data: {
+      providerId,
+      consumerId: context.user.id,
+      serviceRequestId: serviceRequestId || undefined,
+      rating,
+      title: title?.trim() || undefined,
+      body: body.trim(),
+      status: "PENDING", // enters admin moderation queue before publishing
+    },
+  });
+
+  // Recompute average rating only from published reviews
+  const agg = await context.entities.Review.aggregate({
+    where: { providerId, status: "PUBLISHED" },
+    _avg: { rating: true },
+  });
+
+  await context.entities.Provider.update({
+    where: { id: providerId },
+    data: { ratingInternal: agg._avg.rating ?? undefined },
+  });
+
+  return review;
+};
+
+export const getReviewsForProvider: GetReviewsForProvider<
+  { providerId: string },
+  Review[]
+> = async ({ providerId }, context) => {
+  return context.entities.Review.findMany({
+    where: { providerId, status: "PUBLISHED" },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+};
+
+// ─── Messages per ServiceRequest ─────────────────────────────────────────────
+
+export const getMessagesForRequest: GetMessagesForRequest<
+  { requestId: string },
+  {
+    messages: CommunicationLog[];
+    request: {
+      id: string;
+      name: string;
+      status: string;
+      assignedProvider: { businessName: string; id: string; slug: string | null } | null;
+    } | null;
+  }
+> = async ({ requestId }, context) => {
+  if (!context.user) throw new HttpError(401);
+
+  const request = await context.entities.ServiceRequest.findFirst({
+    where: {
+      id: requestId,
+      OR: [
+        { consumerId: context.user.id },
+        { assignedProvider: { userId: context.user.id } },
+      ],
+    },
+    select: {
+      id: true,
+      name: true,
+      status: true,
+      assignedProvider: {
+        select: { id: true, businessName: true, slug: true },
+      },
+    },
+  });
+
+  if (!request) throw new HttpError(404, "Request not found.");
+
+  const messages = await context.entities.CommunicationLog.findMany({
+    where: {
+      serviceRequestId: requestId,
+      channel: "INTERNAL_NOTE",
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return { messages, request };
+};
+
+// ─── Referral ──────────────────────────────────────────────────────────────
+
+export const getMyReferral: GetMyReferral<void, Referral> = async (
+  _args,
+  context,
+) => {
+  if (!context.user) throw new HttpError(401);
+
+  const userId = context.user.id;
+  const existing = await context.entities.Referral.findFirst({
+    where: { referrerUserId: userId },
+  });
+  if (existing) return existing;
+
+  const code = `REF-${userId.slice(-6).toUpperCase()}`;
+  return context.entities.Referral.create({
+    data: {
+      referrerUserId: userId,
+      referralCode: code,
+      status: "CREATED",
+    },
+  });
+};
+
+export const applyReferralCode: ApplyReferralCode<
+  { code: string },
+  { success: boolean; message: string }
+> = async ({ code }, context) => {
+  if (!context.user) throw new HttpError(401);
+
+  const userId = context.user.id;
+  const referral = await context.entities.Referral.findUnique({
+    where: { referralCode: code.trim().toUpperCase() },
+  });
+
+  if (!referral) return { success: false, message: "Invalid referral code." };
+  if (referral.referrerUserId === userId)
+    return { success: false, message: "You cannot use your own referral code." };
+  if (referral.referredUserId)
+    return { success: false, message: "This referral code has already been used." };
+
+  await context.entities.Referral.update({
+    where: { id: referral.id },
+    data: { referredUserId: userId, status: "SIGNED_UP" },
+  });
+
+  return { success: true, message: "Referral applied! You'll both earn rewards after your first service." };
 };

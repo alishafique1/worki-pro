@@ -6,6 +6,7 @@ import type {
   ProviderCategory,
   ServiceCategory,
   CommunicationLog,
+  Review,
 } from "wasp/entities";
 import type {
   GetProviderLeads,
@@ -20,6 +21,9 @@ import type {
   UpdateProviderProfile,
   UpdateProviderAppointment,
   SendProviderMessage,
+  GetPublicLeadFeed,
+  ClaimLead,
+  GetPublicProvider,
 } from "wasp/server/operations";
 import { HttpError } from "wasp/server";
 import { emailSender } from "wasp/server/email";
@@ -39,7 +43,10 @@ export const getProviderLeads: GetProviderLeads<
 > = async (args, context) => {
   const provider = await requireProvider(context);
   return context.entities.ServiceRequest.findMany({
-    where: { assignedProviderId: provider.id, status: "ASSIGNED" },
+    where: {
+      assignedProviderId: provider.id,
+      status: { in: ["ASSIGNED", "ACCEPTED_BY_PROVIDER", "BOOKED"] },
+    },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -149,6 +156,13 @@ type UpdateProviderProfileInput = {
   website?: string;
   serviceAreas?: string[];
   calComUsername?: string;
+  // Bark-style profile fields
+  slug?: string;
+  bio?: string;
+  profilePhotoUrl?: string;
+  portfolioJson?: string;
+  accreditationsJson?: string;
+  responseTimeMins?: number;
 };
 
 type CreateProviderProfileInput = {
@@ -320,6 +334,16 @@ export const updateProviderProfile: UpdateProviderProfile<
   if (args.website !== undefined) data.website = args.website;
   if (args.serviceAreas !== undefined) data.serviceAreas = args.serviceAreas;
   if (args.calComUsername !== undefined) data.calComUsername = args.calComUsername || null;
+  // Bark-style profile fields
+  if (args.slug !== undefined) {
+    const slug = args.slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    data.slug = slug || null;
+  }
+  if (args.bio !== undefined) data.bio = args.bio || null;
+  if (args.profilePhotoUrl !== undefined) data.profilePhotoUrl = args.profilePhotoUrl || null;
+  if (args.portfolioJson !== undefined) data.portfolioJson = args.portfolioJson;
+  if (args.accreditationsJson !== undefined) data.accreditationsJson = args.accreditationsJson;
+  if (args.responseTimeMins !== undefined) data.responseTimeMins = args.responseTimeMins || null;
 
   return context.entities.Provider.update({
     where: { id: provider.id },
@@ -371,6 +395,49 @@ export const markJobCompleted: MarkJobCompleted<
       },
       update: {},
     });
+
+    // Check if this consumer was referred — award 500 pts to both referrer and referred
+    const referral = await context.entities.Referral.findFirst({
+      where: { referredUserId: appt.consumerId, status: "SIGNED_UP" },
+    });
+    if (referral) {
+      // Award referred user
+      await context.entities.RewardTransaction.create({
+        data: {
+          consumerId: appt.consumerId,
+          type: "REFERRAL",
+          points: 500,
+          status: "APPROVED",
+          reason: "Referral bonus — first service completed",
+        },
+      });
+      await context.entities.RewardAccount.upsert({
+        where: { consumerId: appt.consumerId },
+        create: { consumerId: appt.consumerId, pointsBalance: 500, lifetimePoints: 500 },
+        update: { pointsBalance: { increment: 500 }, lifetimePoints: { increment: 500 } },
+      });
+
+      // Award referrer
+      await context.entities.RewardTransaction.create({
+        data: {
+          consumerId: referral.referrerUserId,
+          type: "REFERRAL",
+          points: 500,
+          status: "APPROVED",
+          reason: `Referral bonus — your referred friend completed their first service`,
+        },
+      });
+      await context.entities.RewardAccount.upsert({
+        where: { consumerId: referral.referrerUserId },
+        create: { consumerId: referral.referrerUserId, pointsBalance: 500, lifetimePoints: 500 },
+        update: { pointsBalance: { increment: 500 }, lifetimePoints: { increment: 500 } },
+      });
+
+      await context.entities.Referral.update({
+        where: { id: referral.id },
+        data: { status: "REWARDED", completedAt: completedAt },
+      });
+    }
   }
 
   return updatedAppt;
@@ -439,19 +506,29 @@ export const updateProviderAppointment: UpdateProviderAppointment<
     data,
   });
 
-  if (updated.status === "CONFIRMED" || updated.scheduledAt) {
-    await context.entities.ServiceRequest.update({
-      where: { id: updated.serviceRequestId },
-      data: {
-        status: "BOOKED",
-        bookedAt: updated.scheduledAt || new Date(),
-      },
-    });
-  } else if (updated.status === "CANCELLED" || updated.status === "NO_SHOW") {
-    await context.entities.ServiceRequest.update({
-      where: { id: updated.serviceRequestId },
-      data: { status: "CLOSED" },
-    });
+  // Only transition the ServiceRequest if it hasn't already reached a terminal state
+  const serviceRequest = await context.entities.ServiceRequest.findUnique({
+    where: { id: updated.serviceRequestId },
+    select: { status: true },
+  });
+  const terminalStatuses = ["COMPLETED", "CLOSED", "REWARD_APPROVED"];
+  const canTransition = serviceRequest && !terminalStatuses.includes(serviceRequest.status);
+
+  if (canTransition) {
+    if (updated.status === "CONFIRMED") {
+      await context.entities.ServiceRequest.update({
+        where: { id: updated.serviceRequestId },
+        data: {
+          status: "BOOKED",
+          bookedAt: updated.scheduledAt || new Date(),
+        },
+      });
+    } else if (updated.status === "CANCELLED" || updated.status === "NO_SHOW") {
+      await context.entities.ServiceRequest.update({
+        where: { id: updated.serviceRequestId },
+        data: { status: "CLOSED" },
+      });
+    }
   }
 
   return updated;
@@ -485,7 +562,7 @@ export const sendProviderMessage: SendProviderMessage<
     throw new HttpError(404, "Service request not found.");
   }
 
-  return context.entities.CommunicationLog.create({
+  const log = await context.entities.CommunicationLog.create({
     data: {
       userId: context.user!.id,
       serviceRequestId: serviceRequest.id,
@@ -498,4 +575,188 @@ export const sendProviderMessage: SendProviderMessage<
       status: "SENT",
     },
   });
+
+  // Notify consumer by email (fire-and-forget)
+  if (serviceRequest.email) {
+    emailSender.send({
+      to: serviceRequest.email,
+      subject: `New message from ${provider.businessName}`,
+      text: `Hi ${serviceRequest.name},\n\n${provider.businessName} sent you a message on TheHelper:\n\n"${trimmedBody}"\n\nView the thread:\nhttps://thehelper.ca/my-requests/${serviceRequest.id}/messages\n\nThe TheHelper Team`,
+      html: `<p>Hi ${serviceRequest.name},</p><p><strong>${provider.businessName}</strong> sent you a message on TheHelper:</p><blockquote>${trimmedBody}</blockquote><p><a href="https://thehelper.ca/my-requests/${serviceRequest.id}/messages">View the thread</a></p>`,
+    }).catch((err: Error) => {
+      console.warn("[sendProviderMessage] email notification failed:", err.message);
+    });
+  }
+
+  return log;
+};
+
+// ─── Bark-style Public Lead Feed (masked) ────────────────────────────────────
+
+type MaskedLead = {
+  id: string;
+  createdAt: Date;
+  serviceCategory: { name: string; slug: string } | null;
+  postalCode: string;
+  city: string | null;
+  urgency: string;
+  description: string;
+  estimatedSchedule: string | null;
+  status: string;
+  claimed: boolean;
+};
+
+export const getPublicLeadFeed: GetPublicLeadFeed<
+  { categorySlug?: string; urgency?: string; limit?: number; offset?: number },
+  MaskedLead[]
+> = async ({ categorySlug, urgency, limit = 20, offset = 0 }, context) => {
+  const provider = await requireProvider(context);
+
+  // Build category filter based on pro's registered categories
+  const providerCats = await context.entities.ProviderCategory.findMany({
+    where: { providerId: provider.id },
+    include: { serviceCategory: true },
+  });
+  const proSlugs = providerCats.map((pc) => pc.serviceCategory.slug);
+
+  const where: Record<string, any> = {
+    status: { in: ["NEW", "QUALIFYING", "QUALIFIED"] },
+  };
+
+  if (categorySlug) {
+    where.serviceCategory = { slug: categorySlug };
+  } else if (proSlugs.length > 0) {
+    where.serviceCategory = { slug: { in: proSlugs } };
+  }
+
+  if (urgency) {
+    where.urgency = urgency;
+  }
+
+  const requests = await context.entities.ServiceRequest.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    take: Math.min(limit, 50),
+    skip: offset,
+    include: { serviceCategory: true },
+  });
+
+  // Mask PII — never expose name, phone, email
+  return requests.map((r) => ({
+    id: r.id,
+    createdAt: r.createdAt,
+    serviceCategory: r.serviceCategory
+      ? { name: r.serviceCategory.name, slug: r.serviceCategory.slug }
+      : null,
+    postalCode: r.postalCode,
+    city: r.city,
+    urgency: r.urgency,
+    description:
+      r.description.length > 200
+        ? r.description.substring(0, 200) + "…"
+        : r.description,
+    estimatedSchedule: r.estimatedSchedule,
+    status: r.status,
+    claimed: !!r.assignedProviderId,
+  }));
+};
+
+// ─── Claim Lead (reveals contact, creates ProviderFee) ───────────────────────
+
+export const claimLead: ClaimLead<
+  { requestId: string },
+  { request: ServiceRequest; alreadyClaimed: boolean }
+> = async ({ requestId }, context) => {
+  const provider = await requireProvider(context);
+
+  if (provider.verificationStatus !== "VERIFIED") {
+    throw new HttpError(403, "Only verified providers can claim leads.");
+  }
+
+  const req = await context.entities.ServiceRequest.findUnique({
+    where: { id: requestId },
+  });
+  if (!req) throw new HttpError(404, "Lead not found.");
+
+  // Already claimed by this provider — return existing (idempotent)
+  if (req.assignedProviderId === provider.id) {
+    return { request: req, alreadyClaimed: true };
+  }
+
+  // Already claimed by someone else
+  if (req.assignedProviderId && req.assignedProviderId !== provider.id) {
+    throw new HttpError(409, "This lead has already been claimed by another provider.");
+  }
+
+  const updated = await context.entities.ServiceRequest.update({
+    where: { id: requestId },
+    data: {
+      assignedProviderId: provider.id,
+      status: "ASSIGNED",
+    },
+  });
+
+  // Create a fee record for this lead claim
+  await context.entities.ProviderFee.create({
+    data: {
+      providerId: provider.id,
+      serviceRequestId: requestId,
+      feeType: "QUALIFIED_LEAD",
+      amount: 5.0,
+      status: "PENDING",
+    },
+  });
+
+  // Open an internal thread note so messaging is seeded
+  await context.entities.CommunicationLog.create({
+    data: {
+      providerId: provider.id,
+      serviceRequestId: requestId,
+      channel: "INTERNAL_NOTE",
+      direction: "OUTBOUND",
+      from: provider.businessName,
+      to: req.email || req.name || "Customer",
+      body: "Lead claimed — contact details now available.",
+      status: "DELIVERED",
+    },
+  });
+
+  // Notify consumer by email (fire-and-forget)
+  if (req.email) {
+    emailSender.send({
+      to: req.email,
+      subject: `${provider.businessName} is interested in your request`,
+      text: `Hi ${req.name},\n\n${provider.businessName} has responded to your service request on TheHelper and is ready to help.\n\nLog in to view their message and contact details:\nhttps://thehelper.ca/my-requests/${requestId}/messages\n\nThe TheHelper Team`,
+      html: `<p>Hi ${req.name},</p><p><strong>${provider.businessName}</strong> has responded to your service request on TheHelper and is ready to help.</p><p><a href="https://thehelper.ca/my-requests/${requestId}/messages">View their message</a></p><p>The TheHelper Team</p>`,
+    }).catch((err: Error) => {
+      console.warn("[claimLead] email notification failed:", err.message);
+    });
+  }
+
+  return { request: updated, alreadyClaimed: false };
+};
+
+// ─── Public Provider Profile (by slug) ───────────────────────────────────────
+
+type PublicProviderProfile = Provider & {
+  categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
+  reviews: Review[];
+};
+
+export const getPublicProvider: GetPublicProvider<
+  { slug: string },
+  PublicProviderProfile | null
+> = async ({ slug }, context) => {
+  const provider = await context.entities.Provider.findFirst({
+    where: { slug, active: true, verificationStatus: "VERIFIED" },
+    include: {
+      categories: { include: { serviceCategory: true } },
+      reviews: {
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+        take: 30,
+      },
+    },
+  });
+  return provider;
 };

@@ -14,6 +14,11 @@ type FormData = {
   website: string;
   serviceAreas: string;
   calComUsername: string;
+  // Bark-style fields
+  slug: string;
+  bio: string;
+  profilePhotoUrl: string;
+  responseTimeMins: string;
 };
 
 const statusBadgeClass: Record<string, string> = {
@@ -23,7 +28,10 @@ const statusBadgeClass: Record<string, string> = {
   SUSPENDED: 'bg-[var(--text-tertiary)] text-white',
 };
 
+import { useRoleGuard } from '../shared/useRoleGuard';
+
 export default function ProviderProfilePage() {
+  useRoleGuard('PROVIDER');
   const { data: profile, isLoading, error } = useQuery(getProviderProfile);
   const updateProfileFn = useAction(updateProviderProfile);
 
@@ -36,6 +44,10 @@ export default function ProviderProfilePage() {
     website: '',
     serviceAreas: '',
     calComUsername: '',
+    slug: '',
+    bio: '',
+    profilePhotoUrl: '',
+    responseTimeMins: '',
   });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -51,6 +63,10 @@ export default function ProviderProfilePage() {
         website: (profile as any).website ?? '',
         serviceAreas: profile.serviceAreas?.join(', ') ?? '',
         calComUsername: (profile as any).calComUsername ?? '',
+        slug: (profile as any).slug ?? '',
+        bio: (profile as any).bio ?? '',
+        profilePhotoUrl: (profile as any).profilePhotoUrl ?? '',
+        responseTimeMins: (profile as any).responseTimeMins?.toString() ?? '',
       });
     }
   }, [profile]);
@@ -71,6 +87,10 @@ export default function ProviderProfilePage() {
         website: (profile as any).website ?? '',
         serviceAreas: profile.serviceAreas?.join(', ') ?? '',
         calComUsername: (profile as any).calComUsername ?? '',
+        slug: (profile as any).slug ?? '',
+        bio: (profile as any).bio ?? '',
+        profilePhotoUrl: (profile as any).profilePhotoUrl ?? '',
+        responseTimeMins: (profile as any).responseTimeMins?.toString() ?? '',
       });
     }
     setErrorMsg(null);
@@ -105,6 +125,10 @@ export default function ProviderProfilePage() {
         website: formData.website || undefined,
         serviceAreas,
         calComUsername: formData.calComUsername || undefined,
+        slug: formData.slug || undefined,
+        bio: formData.bio || undefined,
+        profilePhotoUrl: formData.profilePhotoUrl || undefined,
+        responseTimeMins: formData.responseTimeMins ? parseInt(formData.responseTimeMins, 10) : undefined,
       });
 
       setSuccessMsg('Profile updated ✓');
@@ -176,6 +200,25 @@ export default function ProviderProfilePage() {
                 >
                   cal.com/{(profile as any).calComUsername}
                 </a>
+              </div>
+            )}
+            {(profile as any).slug && (
+              <div className="pt-2 border-t border-[var(--border-default)]">
+                <p className="text-sm text-[var(--text-secondary)] mb-1">Public Profile</p>
+                <a
+                  href={`/pro-public/${(profile as any).slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[var(--accent)] hover:underline"
+                >
+                  worki.pro/pro-public/{(profile as any).slug}
+                </a>
+              </div>
+            )}
+            {(profile as any).bio && (
+              <div className="pt-2 border-t border-[var(--border-default)]">
+                <p className="text-sm text-[var(--text-secondary)] mb-2">Bio</p>
+                <p className="text-sm leading-relaxed text-foreground">{(profile as any).bio}</p>
               </div>
             )}
           </div>
@@ -277,6 +320,67 @@ export default function ProviderProfilePage() {
               placeholder="e.g. Toronto, Mississauga, Brampton"
               className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
             />
+          </div>
+
+          {/* Bark-style public profile fields */}
+          <div className="pt-4 border-t border-[var(--border-default)] space-y-4">
+            <h3 className="text-base font-bold text-foreground">Public Profile</h3>
+
+            <div>
+              <label className="block text-sm text-[var(--text-secondary)] mb-1">
+                Profile Slug <span className="text-[var(--text-tertiary)]">(e.g. "john-smith-hvac")</span>
+              </label>
+              <input
+                type="text"
+                value={formData.slug}
+                onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
+                placeholder="your-business-slug"
+                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              />
+              {formData.slug && (
+                <p className="text-xs text-[var(--accent)] mt-1">
+                  worki.pro/pro-public/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm text-[var(--text-secondary)] mb-1">Bio</label>
+              <textarea
+                value={formData.bio}
+                onChange={(e) => setFormData((prev) => ({ ...prev, bio: e.target.value }))}
+                placeholder="Tell customers about your experience, specialties, and what makes you stand out…"
+                rows={4}
+                maxLength={1000}
+                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)] resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-[var(--text-secondary)] mb-1">Profile Photo URL</label>
+              <input
+                type="url"
+                value={formData.profilePhotoUrl}
+                onChange={(e) => setFormData((prev) => ({ ...prev, profilePhotoUrl: e.target.value }))}
+                placeholder="https://…"
+                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-[var(--text-secondary)] mb-1">
+                Typical Response Time <span className="text-[var(--text-tertiary)]">(minutes)</span>
+              </label>
+              <input
+                type="number"
+                value={formData.responseTimeMins}
+                onChange={(e) => setFormData((prev) => ({ ...prev, responseTimeMins: e.target.value }))}
+                placeholder="e.g. 30"
+                min={1}
+                max={1440}
+                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 pt-2">

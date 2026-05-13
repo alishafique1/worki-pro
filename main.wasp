@@ -86,7 +86,7 @@ app OpenSaaS {
   },
 
   emailSender: {
-    provider: Mailgun,
+    provider: Dummy,
     defaultFrom: {
       name: "TheHelper",
       email: "hello@thehelper.ca"
@@ -177,7 +177,7 @@ page EmailVerificationPage {
 
 action completeOnboarding {
   fn: import { completeOnboarding } from "@src/auth/onboardingOperations",
-  entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest]
+  entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest, Referral]
 }
 
 //#region Consumer
@@ -226,9 +226,21 @@ page ProviderDetailPage     { component: import ProviderDetailPage from "@src/co
 route ContactRoute          { path: "/contact",             to: ContactPage }
 page ContactPage            { component: import ContactPage from "@src/consumer/ContactPage" }
 
+route RequestMessagesRoute  { path: "/my-requests/:requestId/messages", to: RequestMessagesPage }
+page RequestMessagesPage    { component: import RequestMessagesPage from "@src/consumer/RequestMessagesPage", authRequired: true }
+
+route SubmitReviewRoute     { path: "/my-requests/:requestId/review",   to: SubmitReviewPage }
+page SubmitReviewPage       { component: import SubmitReviewPage from "@src/consumer/SubmitReviewPage", authRequired: true }
+
+route ServiceAreaRoute      { path: "/services/:serviceSlug/:areaSlug", to: ServiceAreaLandingPage }
+page ServiceAreaLandingPage { component: import ServiceAreaLandingPage from "@src/landing-page/ServiceAreaLandingPage" }
+
+route ProPublicRoute        { path: "/pro-public/:slug",  to: ProPublicPage }
+page ProPublicPage          { component: import ProPublicPage from "@src/consumer/ProPublicPage" }
+
 query getMyRequests {
   fn: import { getMyRequests } from "@src/consumer/operations",
-  entities: [ServiceRequest, Appointment, Provider, CommunicationLog]
+  entities: [ServiceRequest, Appointment, Provider, CommunicationLog, ServiceCategory]
 }
 
 query getServiceCategories {
@@ -268,12 +280,50 @@ action sendCustomerMessage {
 
 query getProviderById {
   fn: import { getProviderById } from "@src/consumer/operations",
-  entities: [Provider, ProviderCategory, ServiceCategory]
+  entities: [Provider, ProviderCategory, ServiceCategory, Review]
 }
 
 query getConsumerStats {
   fn: import { getConsumerStats } from "@src/consumer/operations",
   entities: [ServiceRequest, RewardAccount, RewardTransaction, ServiceCategory]
+}
+
+// Messages per request (shared consumer + provider)
+query getMessagesForRequest {
+  fn: import { getMessagesForRequest } from "@src/consumer/operations",
+  entities: [CommunicationLog, ServiceRequest, Provider]
+}
+
+// OTP verification
+action sendOtp {
+  fn: import { sendOtp } from "@src/consumer/operations",
+  entities: [OtpVerification]
+}
+
+action verifyOtp {
+  fn: import { verifyOtp } from "@src/consumer/operations",
+  entities: [OtpVerification]
+}
+
+// Review
+action submitReview {
+  fn: import { submitReview } from "@src/consumer/operations",
+  entities: [Review, Provider, ServiceRequest]
+}
+
+query getReviewsForProvider {
+  fn: import { getReviewsForProvider } from "@src/consumer/operations",
+  entities: [Review]
+}
+
+query getMyReferral {
+  fn: import { getMyReferral } from "@src/consumer/operations",
+  entities: [Referral]
+}
+
+action applyReferralCode {
+  fn: import { applyReferralCode } from "@src/consumer/operations",
+  entities: [Referral]
 }
 //#endregion
 
@@ -295,6 +345,9 @@ page ProviderBillingPage { component: import ProviderBillingPage from "@src/prov
 
 route ProviderServicesRoute { path: "/provider/services", to: ProviderServicesPage }
 page ProviderServicesPage { component: import ProviderServicesPage from "@src/provider/ServicesPage", authRequired: true }
+
+route ProviderRequestMessagesRoute { path: "/provider/requests/:requestId/messages", to: ProviderRequestMessagesPage }
+page ProviderRequestMessagesPage { component: import ProviderRequestMessagesPage from "@src/provider/RequestMessagesPage", authRequired: true }
 
 query getProviderLeads {
   fn: import { getProviderLeads } from "@src/provider/operations",
@@ -323,7 +376,7 @@ action acceptServiceRequest {
 
 action markJobCompleted {
   fn: import { markJobCompleted } from "@src/provider/operations",
-  entities: [Appointment, ServiceRequest, RewardTransaction, RewardAccount, ProviderFee, Provider]
+  entities: [Appointment, ServiceRequest, RewardTransaction, RewardAccount, ProviderFee, Provider, Referral]
 }
 
 action submitProviderApplication {
@@ -354,6 +407,34 @@ action sendProviderMessage {
 action updateProviderProfile {
   fn: import { updateProviderProfile } from "@src/provider/operations",
   entities: [Provider]
+}
+
+// Bark-style lead feed + claim
+query getPublicLeadFeed {
+  fn: import { getPublicLeadFeed } from "@src/provider/operations",
+  entities: [ServiceRequest, Provider, ProviderCategory, ServiceCategory]
+}
+
+action claimLead {
+  fn: import { claimLead } from "@src/provider/operations",
+  entities: [ServiceRequest, Provider, ProviderFee, CommunicationLog]
+}
+
+// Public provider profile (by slug)
+query getPublicProvider {
+  fn: import { getPublicProvider } from "@src/provider/operations",
+  entities: [Provider, Review, ProviderCategory, ServiceCategory]
+}
+
+// Admin review moderation
+query getAdminReviews {
+  fn: import { getAdminReviews } from "@src/admin/operations",
+  entities: [Review, Provider]
+}
+
+action moderateReview {
+  fn: import { moderateReview } from "@src/admin/operations",
+  entities: [Review]
 }
 //#endregion
 
@@ -500,6 +581,9 @@ page AdminProvidersPage { component: import AdminProvidersPage from "@src/admin/
 route AdminRewardsRoute { path: "/admin/rewards", to: AdminRewardsPage }
 page AdminRewardsPage { component: import AdminRewardsPage from "@src/admin/RewardsPage", authRequired: true }
 
+route AdminReviewsRoute { path: "/admin/reviews", to: AdminReviewsPage }
+page AdminReviewsPage { component: import AdminReviewsPage from "@src/admin/ReviewsPage", authRequired: true }
+
 query getAdminRequests {
   fn: import { getAdminRequests } from "@src/admin/operations",
   entities: [ServiceRequest, Provider, User]
@@ -543,6 +627,11 @@ action assignRequestToProvider {
 action approveRewardTransaction {
   fn: import { approveRewardTransaction } from "@src/admin/operations",
   entities: [RewardTransaction, RewardAccount, ServiceRequest]
+}
+
+action rejectRewardTransaction {
+  fn: import { rejectRewardTransaction } from "@src/admin/operations",
+  entities: [RewardTransaction]
 }
 
 route AdminSettingsRoute { path: "/admin/settings", to: AdminSettingsPage }

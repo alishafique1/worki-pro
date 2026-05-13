@@ -202,6 +202,14 @@ model Provider {
 
   calComUsername      String?          // e.g. "john-doe" → cal.com/john-doe/worki-service
 
+  // Bark-style public profile fields
+  slug                String?          @unique
+  bio                 String?
+  profilePhotoUrl     String?
+  portfolioJson       String?          @default("[]")     // [{url, caption}]
+  accreditationsJson  String?          @default("[]")     // [{name, issuedBy, year}]
+  responseTimeMins    Int?
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -210,6 +218,7 @@ model Provider {
   appointments       Appointment[]
   fees               ProviderFee[]
   communicationLogs  CommunicationLog[]
+  reviews            Review[]
 }
 
 model ProviderCategory {
@@ -595,4 +604,42 @@ model WebhookLog {
 enum WebhookDirection {
   OUTBOUND   // site → GHL
   INBOUND    // GHL → site
+}
+
+// ─── Bark-style Review ────────────────────────────────────────────────────────
+
+model Review {
+  id               String       @id @default(cuid())
+  providerId       String
+  provider         Provider     @relation(fields: [providerId], references: [id])
+  consumerId       String
+  serviceRequestId String?
+  rating           Int          // 1–5
+  title            String?
+  body             String
+  status           ReviewStatus @default(PUBLISHED)
+  createdAt        DateTime     @default(now())
+
+  @@index([providerId, status])
+  @@index([consumerId])
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+// ─── OTP Verification (SMS phone verify on request submit) ───────────────────
+
+model OtpVerification {
+  id         String    @id @default(cuid())
+  phone      String
+  codeHash   String
+  attempts   Int       @default(0)
+  verifiedAt DateTime?
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, createdAt])
 }

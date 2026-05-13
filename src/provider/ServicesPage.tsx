@@ -17,7 +17,10 @@ type ProfileWithCategories = {
   services?: ServiceListing[];
 };
 
+import { useRoleGuard } from '../shared/useRoleGuard';
+
 export default function ProviderServicesPage() {
+  useRoleGuard('PROVIDER');
   const { data: profile, isLoading, error } = useQuery(getProviderProfile);
   const updateServicesFn = useAction(updateProviderServices);
 

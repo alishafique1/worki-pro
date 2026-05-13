@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { useQuery, useAction, getAdminRewards, approveRewardTransaction } from 'wasp/client/operations';
+import { useQuery, useAction, getAdminRewards, approveRewardTransaction, rejectRewardTransaction } from 'wasp/client/operations';
+
+import { useRoleGuard } from '../shared/useRoleGuard';
 
 export default function AdminRewardsPage() {
+  useRoleGuard('ADMIN');
   const { data: rewards, isLoading } = useQuery(getAdminRewards);
   const approveRewardTransactionFn = useAction(approveRewardTransaction);
+  const rejectRewardTransactionFn = useAction(rejectRewardTransaction);
 
   const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
-  const [successIds, setSuccessIds] = useState<Set<string>>(new Set());
+  const [approvedIds, setApprovedIds] = useState<Set<string>>(new Set());
+  const [rejectedIds, setRejectedIds] = useState<Set<string>>(new Set());
   const [errorMap, setErrorMap] = useState<Record<string, string>>({});
 
   const handleApprove = async (transactionId: string) => {
@@ -14,10 +19,22 @@ export default function AdminRewardsPage() {
     setErrorMap(prev => { const next = { ...prev }; delete next[transactionId]; return next; });
     try {
       await approveRewardTransactionFn({ transactionId });
-      setSuccessIds(prev => new Set(prev).add(transactionId));
-      setTimeout(() => setSuccessIds(prev => { const next = new Set(prev); next.delete(transactionId); return next; }), 2000);
+      setApprovedIds(prev => new Set(prev).add(transactionId));
     } catch (e: any) {
       setErrorMap(prev => ({ ...prev, [transactionId]: e?.message ?? 'Failed to approve' }));
+    } finally {
+      setLoadingIds(prev => { const next = new Set(prev); next.delete(transactionId); return next; });
+    }
+  };
+
+  const handleReject = async (transactionId: string) => {
+    setLoadingIds(prev => new Set(prev).add(transactionId));
+    setErrorMap(prev => { const next = { ...prev }; delete next[transactionId]; return next; });
+    try {
+      await rejectRewardTransactionFn({ transactionId });
+      setRejectedIds(prev => new Set(prev).add(transactionId));
+    } catch (e: any) {
+      setErrorMap(prev => ({ ...prev, [transactionId]: e?.message ?? 'Failed to reject' }));
     } finally {
       setLoadingIds(prev => { const next = new Set(prev); next.delete(transactionId); return next; });
     }
@@ -58,17 +75,28 @@ export default function AdminRewardsPage() {
                   <td className="py-3 text-[var(--text-secondary)]">{reward.reason || '—'}</td>
                   <td className="py-3">{reward.status}</td>
                   <td className="py-3 space-y-1">
-                    {successIds.has(reward.id) ? (
-                      <span className="text-xs text-green-400 font-medium">✓ Reward approved</span>
+                    {approvedIds.has(reward.id) ? (
+                      <span className="text-xs text-green-400 font-medium">✓ Approved</span>
+                    ) : rejectedIds.has(reward.id) ? (
+                      <span className="text-xs text-red-400 font-medium">✗ Rejected</span>
                     ) : (
                       <>
-                        <button
-                          onClick={() => handleApprove(reward.id)}
-                          disabled={loadingIds.has(reward.id)}
-                          className="text-xs bg-[#567a58] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {loadingIds.has(reward.id) ? 'Approving…' : 'Approve'}
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleApprove(reward.id)}
+                            disabled={loadingIds.has(reward.id)}
+                            className="text-xs bg-[#567a58] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {loadingIds.has(reward.id) ? '…' : 'Approve'}
+                          </button>
+                          <button
+                            onClick={() => handleReject(reward.id)}
+                            disabled={loadingIds.has(reward.id)}
+                            className="text-xs bg-red-600 text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Reject
+                          </button>
+                        </div>
                         {errorMap[reward.id] && (
                           <p className="text-xs text-red-400">{errorMap[reward.id]}</p>
                         )}

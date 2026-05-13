@@ -1,5 +1,5 @@
-import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount, Lead } from 'wasp/entities';
-import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectProvider } from 'wasp/server/operations';
+import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount, Lead, Review } from 'wasp/entities';
+import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
 
@@ -53,14 +53,14 @@ export const approveProvider: ApproveProvider<{ providerId: string }, Provider> 
   if (userEmail) {
     await emailSender.send({
       to: userEmail,
-      subject: `Your TheHelper Pro account is verified!`,
+      subject: `Your Worki Pro account is verified!`,
       html: `
         <h2>Great news, ${provider.businessName}!</h2>
         <p>Your provider application has been approved and your account is now <strong>verified</strong>.</p>
         <p>You can now log in to your dashboard and start receiving job leads.</p>
-        <p><a href="${process.env.APP_URL ?? 'https://thehelper.ca'}/provider/dashboard">Go to your dashboard →</a></p>
+        <p><a href="${process.env.APP_URL ?? 'https://worki.pro'}/provider/dashboard">Go to your dashboard →</a></p>
       `,
-      text: `Great news! Your TheHelper Pro account is verified. Log in at ${process.env.APP_URL ?? 'https://thehelper.ca'}/provider/dashboard`,
+      text: `Great news! Your Worki Pro account is verified. Log in at ${process.env.APP_URL ?? 'https://worki.pro'}/provider/dashboard`,
     });
   }
 
@@ -88,18 +88,18 @@ export const rejectProvider: RejectProvider<RejectProviderInput, Provider> = asy
   if (userEmail) {
     const reasonText = reason
       ? `Reason: ${reason}`
-      : 'If you have questions, please contact us at support@thehelper.ca.';
+      : 'If you have questions, please contact us at support@worki.pro.';
     await emailSender.send({
       to: userEmail,
-      subject: `Update on your TheHelper Pro application`,
+      subject: `Update on your Worki Pro application`,
       html: `
         <h2>Hello ${provider.businessName},</h2>
-        <p>Thank you for applying to join the TheHelper Pro network.</p>
+        <p>Thank you for applying to join the Worki Pro network.</p>
         <p>After review, we're unable to approve your application at this time.</p>
         <p>${reasonText}</p>
         <p>You are welcome to apply again in the future.</p>
       `,
-      text: `Thank you for applying to TheHelper Pro. After review, we are unable to approve your application at this time. ${reasonText}`,
+      text: `Thank you for applying to Worki Pro. After review, we are unable to approve your application at this time. ${reasonText}`,
     });
   }
 
@@ -134,17 +134,20 @@ export const approveRewardTransaction: ApproveRewardTransaction<{ transactionId:
     }
   });
 
+  // For REDEMPTION transactions (negative points), only decrement pointsBalance.
+  // lifetimePoints should never decrease — it tracks all-time earned points.
+  const isEarning = transaction.points > 0;
   await context.entities.RewardAccount.upsert({
     where: { consumerId: transaction.consumerId },
     create: {
       consumerId: transaction.consumerId,
       pointsBalance: transaction.points,
-      lifetimePoints: transaction.points
+      lifetimePoints: isEarning ? transaction.points : 0,
     },
     update: {
       pointsBalance: { increment: transaction.points },
-      lifetimePoints: { increment: transaction.points }
-    }
+      ...(isEarning ? { lifetimePoints: { increment: transaction.points } } : {}),
+    },
   });
 
   if (transaction.serviceRequestId) {
@@ -155,6 +158,26 @@ export const approveRewardTransaction: ApproveRewardTransaction<{ transactionId:
   }
 
   return updated;
+};
+
+export const rejectRewardTransaction: RejectRewardTransaction<{ transactionId: string }, RewardTransaction> = async ({ transactionId }, context) => {
+  requireAdmin(context);
+
+  const transaction = await context.entities.RewardTransaction.findUnique({
+    where: { id: transactionId }
+  });
+  if (!transaction) throw new HttpError(404, 'Reward transaction not found');
+  if (transaction.status !== 'PENDING') {
+    throw new HttpError(400, 'Only pending transactions can be rejected');
+  }
+
+  return context.entities.RewardTransaction.update({
+    where: { id: transactionId },
+    data: {
+      status: 'REJECTED',
+      approvedByAdminId: context.user!.id,
+    },
+  });
 };
 
 export const getAdminLeads = (async (_args: void, context: any) => {
@@ -176,4 +199,40 @@ export const updateLead = (async ({ leadId, status, assignedTo, notes }: UpdateL
     where: { id: leadId },
     data,
   });
+}) as any;
+
+// ─── Review Moderation ────────────────────────────────────────────────────────
+
+export const getAdminReviews = (async (_args: void, context: any) => {
+  requireAdmin(context);
+  return context.entities.Review.findMany({
+    orderBy: { createdAt: 'desc' },
+    include: { provider: { select: { businessName: true, slug: true } } },
+  });
+}) as any;
+
+export const moderateReview = (async (
+  { reviewId, status }: { reviewId: string; status: string },
+  context: any,
+) => {
+  requireAdmin(context);
+  const allowed = ['PENDING', 'PUBLISHED', 'REJECTED'];
+  if (!allowed.includes(status)) throw new HttpError(400, 'Invalid status.');
+
+  const review = await context.entities.Review.update({
+    where: { id: reviewId },
+    data: { status },
+  });
+
+  // Recalculate provider average rating
+  const agg = await context.entities.Review.aggregate({
+    where: { providerId: review.providerId, status: 'PUBLISHED' },
+    _avg: { rating: true },
+  });
+  await context.entities.Provider.update({
+    where: { id: review.providerId },
+    data: { ratingInternal: agg._avg.rating ?? undefined },
+  });
+
+  return review;
 }) as any;

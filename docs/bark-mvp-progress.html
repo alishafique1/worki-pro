@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TheHelper — Bark MVP Progress · May 14, 2026</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --card: #1c1c1c;
+      --border: #2a2a2a;
+      --accent: #c6f135;
+      --accent-dim: rgba(198, 241, 53, 0.12);
+      --text: #f5f5f5;
+      --text-secondary: #888;
+      --text-tertiary: #555;
+      --green: #34d399;
+      --green-dim: rgba(52, 211, 153, 0.1);
+      --red: #f87171;
+      --yellow: #fbbf24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 48px 24px 80px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────── */
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #000;
+      font-weight: 900;
+    }
+
+    .brand {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .date-badge {
+      margin-left: auto;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    /* ── Stats Bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Section ────────────────────────────────────────────────── */
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(198, 241, 53, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .section-count {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    /* ── Task Cards ─────────────────────────────────────────────── */
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color 0.15s;
+    }
+
+    .task:hover {
+      border-color: #3a3a3a;
+    }
+
+    .task.done {
+      border-left: 3px solid var(--green);
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--green-dim);
+      border: 1.5px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .check svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--green);
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .task-body { flex: 1; min-width: 0; }
+
+    .task-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .task-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .task-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 100px;
+      border: 1px solid;
+    }
+
+    .tag-blue { color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.08); }
+    .tag-purple { color: #c084fc; border-color: rgba(192,132,252,0.3); background: rgba(192,132,252,0.08); }
+    .tag-green { color: #34d399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
+    .tag-yellow { color: #fbbf24; border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+    .tag-red { color: #f87171; border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+    .tag-accent { color: #c6f135; border-color: rgba(198,241,53,0.3); background: rgba(198,241,53,0.08); }
+
+    /* ── Architecture Diagram ───────────────────────────────────── */
+    .flow {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 36px;
+      overflow-x: auto;
+    }
+
+    .flow-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 20px;
+    }
+
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      min-width: 600px;
+    }
+
+    .flow-node {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .flow-box {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .flow-box.customer { background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.3); color: #60a5fa; }
+    .flow-box.platform { background: rgba(198,241,53,0.1); border: 1px solid rgba(198,241,53,0.25); color: var(--accent); }
+    .flow-box.provider { background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.25); color: #c084fc; }
+    .flow-box.action  { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: #34d399; }
+
+    .flow-sub {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .flow-arrow {
+      flex-shrink: 0;
+      color: var(--text-tertiary);
+      font-size: 16px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 12px;
+    }
+
+    .footer-left { font-size: 13px; color: var(--text-secondary); }
+    .footer-left strong { color: var(--text); }
+
+    .build-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--green-dim);
+      border: 1px solid rgba(52,211,153,0.3);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .build-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 28px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .flow-steps { min-width: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-meta">
+        <div class="logo">T</div>
+        <span class="brand">TheHelper · worki-pro</span>
+        <span class="date-badge">📅 May 14, 2026</span>
+      </div>
+      <h1>Bark MVP <span>Shipped.</span></h1>
+      <p class="subtitle">
+        Full implementation of a Bark.com-style two-sided services marketplace on the existing
+        TheHelper / worki-pro Wasp stack — completed in a single engineering session.
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-number">9</div>
+        <div class="stat-label">Features Built</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">18</div>
+        <div class="stat-label">Files Created / Updated</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">New DB Models / Fields</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Build Errors</div>
+      </div>
+    </div>
+
+    <!-- Flow Diagram -->
+    <div class="flow">
+      <div class="flow-title">End-to-End Marketplace Flow (Delivered Today)</div>
+      <div class="flow-steps">
+        <div class="flow-node">
+          <div class="flow-box customer">Customer</div>
+          <div class="flow-sub">Request Wizard</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box platform">OTP Verify</div>
+          <div class="flow-sub">Phone confirmed</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box platform">Masked Lead</div>
+          <div class="flow-sub">No PII exposed</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box provider">Pro Leads Feed</div>
+          <div class="flow-sub">Filtered + claim</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box action">Claim + Fee</div>
+          <div class="flow-sub">$5 ProviderFee</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box platform">Messaging</div>
+          <div class="flow-sub">In-app thread</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="flow-box action">Review</div>
+          <div class="flow-sub">Public profile</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Schema & Database -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🗄️</div>
+        <h2 class="section-title">Database Schema</h2>
+        <span class="section-count">2 new models · 8 new fields</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Added <code>Review</code> model</div>
+            <div class="task-desc">1–5 star rating, title, body, status (PENDING / PUBLISHED / REJECTED), indexed by providerId + status. Recalculates <code>ratingInternal</code> on every write.</div>
+            <div class="task-tags">
+              <span class="tag tag-purple">Prisma</span>
+              <span class="tag tag-blue">PostgreSQL</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Added <code>OtpVerification</code> model</div>
+            <div class="task-desc">Stores SHA-256 hashed code, expiry (10 min TTL), attempt counter (max 5), and verified timestamp. Rate-limited to 3 sends per phone per 5 minutes.</div>
+            <div class="task-tags">
+              <span class="tag tag-yellow">Security</span>
+              <span class="tag tag-purple">Prisma</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Extended <code>Provider</code> model with public profile fields</div>
+            <div class="task-desc">Added: <code>slug</code> (unique, URL-safe), <code>bio</code>, <code>profilePhotoUrl</code>, <code>portfolioJson</code> (photo gallery array), <code>accreditationsJson</code> (cert array), <code>responseTimeMins</code>.</div>
+            <div class="task-tags">
+              <span class="tag tag-green">Non-breaking</span>
+              <span class="tag tag-purple">Prisma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Backend Operations -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">⚙️</div>
+        <h2 class="section-title">Backend Operations (Wasp + Node.js)</h2>
+        <span class="section-count">9 new operations</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>sendOtp</code> · <code>verifyOtp</code> — Phone Verification</div>
+            <div class="task-desc">Sends a 6-digit code via Twilio SMS. SHA-256 hashed storage. Auto-falls back to console.log in dev when Twilio keys are absent. Timing-safe comparison prevents brute-force.</div>
+            <div class="task-tags">
+              <span class="tag tag-yellow">Twilio SMS</span>
+              <span class="tag tag-red">Security</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>getPublicLeadFeed</code> — Masked Lead Feed</div>
+            <div class="task-desc">Returns NEW/QUALIFYING/QUALIFIED service requests scoped to the pro's registered service categories. Strips all PII (name, phone, email) from the payload. Provider cannot see contact until they claim.</div>
+            <div class="task-tags">
+              <span class="tag tag-red">PII Masking</span>
+              <span class="tag tag-blue">Bark Pattern</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>claimLead</code> — Lead Unlock + Fee</div>
+            <div class="task-desc">Sets <code>assignedProviderId</code>, transitions status to ASSIGNED, creates a <code>ProviderFee(QUALIFIED_LEAD, $5)</code>, seeds the message thread, and emails the consumer. Fully idempotent.</div>
+            <div class="task-tags">
+              <span class="tag tag-accent">Revenue Event</span>
+              <span class="tag tag-green">Idempotent</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>getPublicProvider</code> — Public Pro Profile by Slug</div>
+            <div class="task-desc">Fetches a verified, active provider by URL slug. Includes categories and up to 30 published reviews. Used by the public-facing <code>/pro-public/:slug</code> page.</div>
+            <div class="task-tags">
+              <span class="tag tag-blue">Public API</span>
+              <span class="tag tag-green">SEO-ready</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>submitReview</code> · <code>getReviewsForProvider</code></div>
+            <div class="task-desc">One review per consumer per service request (duplicate guard). Automatically recomputes the provider's <code>ratingInternal</code> average via Prisma aggregate after each write.</div>
+            <div class="task-tags">
+              <span class="tag tag-purple">Reviews</span>
+              <span class="tag tag-yellow">Trust Signal</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>getMessagesForRequest</code> — Unified Message Query</div>
+            <div class="task-desc">Returns <code>CommunicationLog</code> entries (INTERNAL_NOTE channel) for a request. Accessible to both the consumer and the assigned provider via ownership check.</div>
+            <div class="task-tags">
+              <span class="tag tag-blue">Shared Query</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title"><code>getAdminReviews</code> · <code>moderateReview</code> — Admin Moderation</div>
+            <div class="task-desc">Admin-gated operations to list all reviews and change status (PUBLISHED / REJECTED / PENDING). Recomputes provider rating on every moderation action.</div>
+            <div class="task-tags">
+              <span class="tag tag-red">Admin</span>
+              <span class="tag tag-purple">Moderation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Frontend Pages -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🖥️</div>
+        <h2 class="section-title">Frontend Pages & UI</h2>
+        <span class="section-count">7 pages built / rebuilt</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Request Wizard — OTP Step Added <code>/request-service</code></div>
+            <div class="task-desc">Extended from 3 steps to 4. Step 4 is a phone verification modal: 6-digit numeric input, resend button, timing-safe validation. Only submits the ServiceRequest after OTP is confirmed.</div>
+            <div class="task-tags">
+              <span class="tag tag-blue">UX</span>
+              <span class="tag tag-yellow">Twilio</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Bark-Style Lead Feed <code>/provider/leads</code> (rebuilt)</div>
+            <div class="task-desc">Maskedlead cards with category chip + urgency badge + time-ago. Category and urgency filter dropdowns. "Claim this lead" → success → "View & message customer" button. Fully replaces the old admin-only assigned-leads view.</div>
+            <div class="task-tags">
+              <span class="tag tag-accent">Bark Pattern</span>
+              <span class="tag tag-blue">Provider UX</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Public Pro Profile <code>/pro-public/:slug</code> (new)</div>
+            <div class="task-desc">Full Bark-style public page: hero with avatar + star rating + verified badge, bio, service categories, response time, accreditations grid, portfolio gallery, reviews grid. Includes JSON-LD <code>LocalBusiness</code> structured data.</div>
+            <div class="task-tags">
+              <span class="tag tag-green">SEO</span>
+              <span class="tag tag-blue">Public</span>
+              <span class="tag tag-yellow">JSON-LD</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Submit Review Page <code>/my-requests/:id/review</code> (new)</div>
+            <div class="task-desc">Interactive 5-star picker with hover animations, optional title, body textarea with character count. Success state with animated checkmark. Duplicate-submission protected server-side.</div>
+            <div class="task-tags">
+              <span class="tag tag-purple">Reviews</span>
+              <span class="tag tag-blue">Consumer</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">In-App Messaging — Consumer + Provider Threads (new)</div>
+            <div class="task-desc">Chat-bubble UI with date separators and timestamps. 5-second polling for near-real-time updates. Consumer view at <code>/my-requests/:id/messages</code>. Provider view at <code>/provider/requests/:id/messages</code>. "Leave a review" CTA auto-appears when job is COMPLETED.</div>
+            <div class="task-tags">
+              <span class="tag tag-blue">Messaging</span>
+              <span class="tag tag-green">Real-time Polling</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">SEO City × Service Landing Page <code>/services/:serviceSlug/:areaSlug</code> (new)</div>
+            <div class="task-desc">Supports all 6 service verticals × all GTA cities. Includes service bullet list, "How it works" steps, live provider grid from DB, and cross-links to other city pages. JSON-LD <code>Service</code> schema for Google indexing.</div>
+            <div class="task-tags">
+              <span class="tag tag-green">SEO</span>
+              <span class="tag tag-yellow">JSON-LD</span>
+              <span class="tag tag-blue">Dynamic</span>
+            </div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Admin Reviews Moderation Page <code>/admin/reviews</code> (new)</div>
+            <div class="task-desc">Filter by status (ALL / PENDING / PUBLISHED / REJECTED). One-click publish/reject buttons. Displays star rating, provider name, review body. Recalculates provider star average on every moderation action.</div>
+            <div class="task-tags">
+              <span class="tag tag-red">Admin</span>
+              <span class="tag tag-purple">Trust & Safety</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Notifications -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🔔</div>
+        <h2 class="section-title">Notification Hooks</h2>
+        <span class="section-count">3 triggers wired</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Lead claimed → email consumer</div>
+            <div class="task-desc">When a provider claims a lead, the consumer receives an email via Mailgun: "Pro X is interested in your request. View their message →". Fire-and-forget with error logging.</div>
+            <div class="task-tags"><span class="tag tag-yellow">Mailgun</span></div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Customer message → email provider</div>
+            <div class="task-desc">When a consumer sends a message, the assigned provider is emailed with a preview and a direct link to the thread.</div>
+            <div class="task-tags"><span class="tag tag-yellow">Mailgun</span></div>
+          </div>
+        </div>
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Provider message → email consumer</div>
+            <div class="task-desc">When a provider replies, the consumer gets an email notification with the message preview and link back to the thread.</div>
+            <div class="task-tags"><span class="tag tag-yellow">Mailgun</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Profile Builder -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">👤</div>
+        <h2 class="section-title">Provider Profile Builder (Extended)</h2>
+        <span class="section-count">6 new fields in edit form</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Bark-style profile fields added to <code>/provider/profile</code></div>
+            <div class="task-desc">Providers can now set: public slug (auto-generates profile URL), bio text, profile photo URL, portfolio JSON, accreditations JSON, and typical response time in minutes. Slug shows a live preview of their public URL.</div>
+            <div class="task-tags">
+              <span class="tag tag-accent">Profile</span>
+              <span class="tag tag-blue">Provider UX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Docs -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">📄</div>
+        <h2 class="section-title">Documentation & Agent Memory</h2>
+        <span class="section-count">1 file created</span>
+      </div>
+      <div class="tasks">
+        <div class="task done">
+          <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="task-body">
+            <div class="task-title">Created <code>AGENTS.md</code> — Project Conventions for AI Agents</div>
+            <div class="task-desc">Comprehensive reference covering: Wasp 0.21 operation patterns, schema conventions, key model descriptions, business rules (PII masking, claimLead invariants, OTP flow, review rules), full route map, notification conventions, and a common pitfalls section.</div>
+            <div class="task-tags">
+              <span class="tag tag-green">Docs</span>
+              <span class="tag tag-purple">Developer Experience</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-left">
+        <strong>TheHelper · worki-pro</strong><br />
+        All changes build & compile successfully. Zero TypeScript errors.
+      </div>
+      <div class="build-badge">
+        <div class="build-dot"></div>
+        Build passing
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

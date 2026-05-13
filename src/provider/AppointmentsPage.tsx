@@ -16,6 +16,7 @@ import {
   Send,
   UserRound,
 } from "lucide-react";
+import { useRoleGuard } from '../shared/useRoleGuard';
 
 const formatStatus = (s: string) =>
   s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -33,45 +34,47 @@ function ProviderMessageComposer({ requestId }: { requestId: string }) {
   const sendMessage = useAction(sendProviderMessage);
   const [body, setBody] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
+  const [sendError, setSendError] = React.useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!body.trim()) return;
+    setSendError(null);
     setIsSending(true);
     try {
       await sendMessage({ requestId, body });
       setBody("");
     } catch (error: any) {
-      alert(error?.message || "Could not send message.");
+      setSendError(error?.message || "Could not send message. Please try again.");
     } finally {
       setIsSending(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-4 flex flex-col gap-3 sm:flex-row"
-    >
-      <label className="sr-only" htmlFor={`provider-message-${requestId}`}>
-        Message customer
-      </label>
-      <input
-        id={`provider-message-${requestId}`}
-        value={body}
-        onChange={(event) => setBody(event.target.value)}
-        placeholder="Send an update to the customer..."
-        maxLength={1000}
-        className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
-      />
-      <button
-        type="submit"
-        disabled={isSending || !body.trim()}
-        className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
-      </button>
-    </form>
+    <div className="mt-4 space-y-1.5">
+      {sendError && <p className="text-xs text-red-400">{sendError}</p>}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+        <label className="sr-only" htmlFor={`provider-message-${requestId}`}>
+          Message customer
+        </label>
+        <input
+          id={`provider-message-${requestId}`}
+          value={body}
+          onChange={(event) => setBody(event.target.value)}
+          placeholder="Send an update to the customer..."
+          maxLength={1000}
+          className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+        />
+        <button
+          type="submit"
+          disabled={isSending || !body.trim()}
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
+        </button>
+      </form>
+    </div>
   );
 }
 
@@ -86,11 +89,18 @@ function AppointmentCard({ appt }: { appt: any }) {
   );
   const [status, setStatus] = React.useState(appt.status || "PROPOSED");
   const [isSaving, setIsSaving] = React.useState(false);
+  const [saveStatus, setSaveStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+  const [completeError, setCompleteError] = React.useState<string | null>(null);
+  const [isCompleting, setIsCompleting] = React.useState(false);
+  const [completed, setCompleted] = React.useState(appt.status === 'COMPLETED');
   const request = appt.serviceRequest;
   const messages = request?.communicationLogs || [];
 
   const handleSave = async () => {
     setIsSaving(true);
+    setSaveStatus('idle');
+    setSaveError(null);
     try {
       await updateAppointment({
         appointmentId: appt.id,
@@ -98,20 +108,26 @@ function AppointmentCard({ appt }: { appt: any }) {
         status,
         providerNotes,
       });
-      alert("Appointment updated.");
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (error: any) {
-      alert(error?.message || "Could not update appointment.");
+      setSaveStatus('error');
+      setSaveError(error?.message || "Could not update appointment.");
     } finally {
       setIsSaving(false);
     }
   };
 
   const handleComplete = async () => {
+    setIsCompleting(true);
+    setCompleteError(null);
     try {
       await markCompletedFn({ appointmentId: appt.id });
-      alert("Job marked as completed.");
+      setCompleted(true);
     } catch (error: any) {
-      alert(error?.message || "Error updating job.");
+      setCompleteError(error?.message || "Error marking job complete.");
+    } finally {
+      setIsCompleting(false);
     }
   };
 
@@ -144,13 +160,22 @@ function AppointmentCard({ appt }: { appt: any }) {
             </p>
           </div>
         </div>
-        {appt.status !== "COMPLETED" && (
-          <button
-            onClick={handleComplete}
-            className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#567a58] px-5 py-3 text-sm font-bold text-white"
-          >
-            <CheckCircle2 className="size-4" /> Mark Completed
-          </button>
+        {!completed && (
+          <div className="flex flex-col items-end gap-1.5">
+            <button
+              onClick={handleComplete}
+              disabled={isCompleting}
+              className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#567a58] px-5 py-3 text-sm font-bold text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <CheckCircle2 className="size-4" /> {isCompleting ? 'Completing…' : 'Mark Completed'}
+            </button>
+            {completeError && <p className="text-xs text-red-400 text-right">{completeError}</p>}
+          </div>
+        )}
+        {completed && (
+          <span className="px-4 py-2 rounded-full bg-[#567a58]/20 text-[#567a58] text-sm font-bold border border-[#567a58]/30">
+            ✓ Completed
+          </span>
         )}
       </div>
 
@@ -200,6 +225,12 @@ function AppointmentCard({ appt }: { appt: any }) {
             >
               {isSaving ? "Saving..." : "Save booking update"}
             </button>
+            {saveStatus === 'success' && (
+              <p className="text-xs text-green-400 text-center">✓ Appointment updated</p>
+            )}
+            {saveStatus === 'error' && saveError && (
+              <p className="text-xs text-red-400 text-center">{saveError}</p>
+            )}
           </div>
         </div>
 
@@ -252,6 +283,7 @@ function AppointmentCard({ appt }: { appt: any }) {
 }
 
 export default function ProviderAppointmentsPage() {
+  useRoleGuard('PROVIDER');
   const { data: appts, isLoading, error } = useQuery(getProviderAppointments);
 
   return (
