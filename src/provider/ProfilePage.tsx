@@ -22,10 +22,10 @@ type FormData = {
 };
 
 const statusBadgeClass: Record<string, string> = {
-  VERIFIED: 'bg-[#567a58] text-white',
-  PENDING: 'bg-[var(--accent)] text-black',
+  VERIFIED: 'bg-[#22C55E] text-white',
+  PENDING: 'bg-[#FEF3C7] text-amber-700',
   REJECTED: 'bg-red-600 text-white',
-  SUSPENDED: 'bg-[var(--text-tertiary)] text-white',
+  SUSPENDED: 'bg-[#94A3B8] text-white',
 };
 
 import { useRoleGuard } from '../shared/useRoleGuard';
@@ -142,8 +142,8 @@ export default function ProviderProfilePage() {
 
   const field = (label: string, value: string | undefined | null) => (
     <div>
-      <p className="text-sm text-[var(--text-secondary)] mb-1">{label}</p>
-      <p className="font-medium">{value || '—'}</p>
+      <p className="text-sm text-[#475569] mb-1">{label}</p>
+      <p className="font-medium text-[#0F172A]">{value || '—'}</p>
     </div>
   );
 
@@ -155,7 +155,7 @@ export default function ProviderProfilePage() {
         {!isEditing && profile && (
           <button
             onClick={handleEdit}
-            className="px-5 py-2 rounded-[14px] bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-90 transition-opacity"
+            className="px-5 py-2 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors"
           >
             Edit Profile
           </button>
@@ -164,7 +164,7 @@ export default function ProviderProfilePage() {
 
       {/* Feedback messages */}
       {successMsg && (
-        <div className="px-4 py-3 rounded-[14px] bg-[#567a58]/20 text-[#567a58] border border-[#567a58]/40 text-sm font-medium">
+        <div className="px-4 py-3 rounded-[14px] bg-green-50 text-green-700 border border-green-200 text-sm font-medium">
           {successMsg}
         </div>
       )}
@@ -174,14 +174,14 @@ export default function ProviderProfilePage() {
         </div>
       )}
 
-      {isLoading && <p className="text-[var(--text-secondary)]">Loading profile…</p>}
+      {isLoading && <p className="text-[#475569]">Loading profile…</p>}
       {error && <p className="text-red-400">Could not load profile. Have you applied yet?</p>}
 
       {profile && !isEditing && (
         <>
           {/* Business Info */}
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 space-y-4">
-            <h2 className="text-lg font-semibold">Business Info</h2>
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-[#0F172A]">Business Info</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {field('Business Name', profile.businessName)}
               {field('Contact Name', (profile as any).contactName)}
@@ -190,81 +190,81 @@ export default function ProviderProfilePage() {
               {field('Website', (profile as any).website)}
             </div>
             {(profile as any).calComUsername && (
-              <div className="pt-2 border-t border-[var(--border-default)]">
-                <p className="text-sm text-[var(--text-secondary)] mb-1">Cal.com Booking Link</p>
+              <div className="pt-2 border-t border-[#E2E8F0]">
+                <p className="text-sm text-[#475569] mb-1">Cal.com Booking Link</p>
                 <a
                   href={`https://cal.com/${(profile as any).calComUsername}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-[var(--accent)] hover:underline"
+                  className="font-medium text-[#2563EB] hover:underline"
                 >
                   cal.com/{(profile as any).calComUsername}
                 </a>
               </div>
             )}
             {(profile as any).slug && (
-              <div className="pt-2 border-t border-[var(--border-default)]">
-                <p className="text-sm text-[var(--text-secondary)] mb-1">Public Profile</p>
+              <div className="pt-2 border-t border-[#E2E8F0]">
+                <p className="text-sm text-[#475569] mb-1">Public Profile</p>
                 <a
                   href={`/pro-public/${(profile as any).slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-[var(--accent)] hover:underline"
+                  className="font-medium text-[#2563EB] hover:underline"
                 >
                   worki.pro/pro-public/{(profile as any).slug}
                 </a>
               </div>
             )}
             {(profile as any).bio && (
-              <div className="pt-2 border-t border-[var(--border-default)]">
-                <p className="text-sm text-[var(--text-secondary)] mb-2">Bio</p>
+              <div className="pt-2 border-t border-[#E2E8F0]">
+                <p className="text-sm text-[#475569] mb-2">Bio</p>
                 <p className="text-sm leading-relaxed text-foreground">{(profile as any).bio}</p>
               </div>
             )}
           </div>
 
           {/* Verification Status */}
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 flex items-center justify-between">
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--text-secondary)] mb-1">Verification Status</p>
+              <p className="text-sm text-[#475569] mb-1">Verification Status</p>
               <span
-                className={`px-3 py-1 text-xs font-semibold rounded-full ${statusBadgeClass[profile.verificationStatus] ?? 'bg-[var(--surface-overlay)] text-[var(--text-secondary)]'}`}
+                className={`px-3 py-1 text-xs font-semibold rounded-full ${statusBadgeClass[profile.verificationStatus] ?? 'bg-[#F8FAFC] text-[#475569]'}`}
               >
                 {profile.verificationStatus}
               </span>
             </div>
             <div className="text-right">
-              <p className="text-sm text-[var(--text-secondary)] mb-1">Service Plan</p>
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[var(--surface-overlay)] border border-[var(--border-default)]">
+              <p className="text-sm text-[#475569] mb-1">Service Plan</p>
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#EFF6FF] border border-[#BFDBFE]">
                 {(profile as any).plan ?? 'N/A'}
               </span>
             </div>
           </div>
 
           {/* Service Areas */}
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6">
-            <p className="text-sm text-[var(--text-secondary)] mb-2">Service Areas</p>
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6">
+            <p className="text-sm text-[#475569] mb-2">Service Areas</p>
             <p className="font-medium">
               {profile.serviceAreas?.length ? profile.serviceAreas.join(', ') : 'None specified'}
             </p>
           </div>
 
           {/* Categories */}
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6">
-            <p className="text-sm text-[var(--text-secondary)] mb-3">Categories</p>
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6">
+            <p className="text-sm text-[#475569] mb-3">Categories</p>
             {profile.categories?.length ? (
               <div className="flex flex-wrap gap-2">
                 {profile.categories.map((c) => (
                   <span
                     key={`${c.providerId}-${c.serviceCategoryId}`}
-                    className="px-3 py-1 text-sm rounded-[14px] bg-[var(--surface-overlay)] border border-[var(--border-default)]"
+                    className="px-3 py-1 text-sm rounded-[14px] bg-[#EFF6FF] border border-[#BFDBFE]"
                   >
                     {c.serviceCategory.name}
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-[var(--text-tertiary)] text-sm">No categories assigned.</p>
+              <p className="text-[#94A3B8] text-sm">No categories assigned.</p>
             )}
           </div>
         </>
@@ -272,8 +272,8 @@ export default function ProviderProfilePage() {
 
       {/* Edit Form */}
       {profile && isEditing && (
-        <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 space-y-5">
-          <h2 className="text-lg font-semibold">Edit Profile</h2>
+        <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 space-y-5">
+          <h2 className="text-lg font-semibold text-[#0F172A]">Edit Profile</h2>
 
           {[
             { label: 'Business Name *', key: 'businessName' as const },
@@ -284,22 +284,22 @@ export default function ProviderProfilePage() {
             { label: 'Cal.com Username', key: 'calComUsername' as const },
           ].map(({ label, key }) => (
             <div key={key}>
-              <label className="block text-sm text-[var(--text-secondary)] mb-1">{label}</label>
+              <label className="block text-sm text-[#475569] mb-1">{label}</label>
               <input
                 type="text"
                 value={formData[key]}
                 onChange={(e) => setFormData((prev) => ({ ...prev, [key]: e.target.value }))}
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
               />
               {key === 'calComUsername' && (
-                <p className="text-xs text-[var(--text-tertiary)] mt-1.5">
+                <p className="text-xs text-[#94A3B8] mt-1.5">
                   Your cal.com username so clients can book you directly.{' '}
                   {formData.calComUsername && (
                     <a
                       href={`https://cal.com/${formData.calComUsername}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline hover:text-[var(--text-secondary)]"
+                      className="underline hover:text-[#475569]"
                     >
                       cal.com/{formData.calComUsername}
                     </a>
@@ -310,66 +310,66 @@ export default function ProviderProfilePage() {
           ))}
 
           <div>
-            <label className="block text-sm text-[var(--text-secondary)] mb-1">
-              Service Areas <span className="text-[var(--text-tertiary)]">(comma-separated)</span>
+            <label className="block text-sm text-[#475569] mb-1">
+              Service Areas <span className="text-[#94A3B8]">(comma-separated)</span>
             </label>
             <input
               type="text"
               value={formData.serviceAreas}
               onChange={(e) => setFormData((prev) => ({ ...prev, serviceAreas: e.target.value }))}
               placeholder="e.g. Toronto, Mississauga, Brampton"
-              className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
             />
           </div>
 
           {/* Bark-style public profile fields */}
-          <div className="pt-4 border-t border-[var(--border-default)] space-y-4">
-            <h3 className="text-base font-bold text-foreground">Public Profile</h3>
+          <div className="pt-4 border-t border-[#E2E8F0] space-y-4">
+            <h3 className="text-base font-semibold text-[#0F172A]">Public Profile</h3>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-1">
-                Profile Slug <span className="text-[var(--text-tertiary)]">(e.g. "john-smith-hvac")</span>
+              <label className="block text-sm text-[#475569] mb-1">
+                Profile Slug <span className="text-[#94A3B8]">(e.g. "john-smith-hvac")</span>
               </label>
               <input
                 type="text"
                 value={formData.slug}
                 onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
                 placeholder="your-business-slug"
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
               />
               {formData.slug && (
-                <p className="text-xs text-[var(--accent)] mt-1">
+                <p className="text-xs text-[#2563EB] mt-1">
                   worki.pro/pro-public/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-1">Bio</label>
+              <label className="block text-sm text-[#475569] mb-1">Bio</label>
               <textarea
                 value={formData.bio}
                 onChange={(e) => setFormData((prev) => ({ ...prev, bio: e.target.value }))}
                 placeholder="Tell customers about your experience, specialties, and what makes you stand out…"
                 rows={4}
                 maxLength={1000}
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)] resize-none"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 resize-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-1">Profile Photo URL</label>
+              <label className="block text-sm text-[#475569] mb-1">Profile Photo URL</label>
               <input
                 type="url"
                 value={formData.profilePhotoUrl}
                 onChange={(e) => setFormData((prev) => ({ ...prev, profilePhotoUrl: e.target.value }))}
                 placeholder="https://…"
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-1">
-                Typical Response Time <span className="text-[var(--text-tertiary)]">(minutes)</span>
+              <label className="block text-sm text-[#475569] mb-1">
+                Typical Response Time <span className="text-[#94A3B8]">(minutes)</span>
               </label>
               <input
                 type="number"
@@ -378,7 +378,7 @@ export default function ProviderProfilePage() {
                 placeholder="e.g. 30"
                 min={1}
                 max={1440}
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
               />
             </div>
           </div>
@@ -387,14 +387,14 @@ export default function ProviderProfilePage() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-6 py-2.5 rounded-[14px] bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="px-6 py-2.5 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
             >
               {isSaving ? 'Saving…' : 'Save'}
             </button>
             <button
               onClick={handleCancel}
               disabled={isSaving}
-              className="px-6 py-2.5 rounded-[14px] border border-[var(--border-default)] text-sm font-semibold hover:bg-[var(--surface-overlay)] transition-colors disabled:opacity-50"
+              className="px-6 py-2.5 rounded-[14px] border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

@@ -6,10 +6,10 @@ export function Signup() {
   return (
     <AuthPageLayout>
       <SignupForm />
-      <div className="mt-6 text-center text-sm text-[var(--text-secondary)]">
+      <div className="mt-6 text-center text-sm text-[#475569]">
         <p>
           Already have an account?{' '}
-          <WaspRouterLink to={routes.LoginRoute.to} className="text-[var(--accent)] font-semibold hover:underline">
+          <WaspRouterLink to={routes.LoginRoute.to} className="text-[#2563EB] font-semibold hover:underline">
             Log in
           </WaspRouterLink>
         </p>

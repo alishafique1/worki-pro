@@ -42,63 +42,63 @@ export default function AdminRewardsPage() {
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-bold tracking-tight">Reward Queue</h1>
+      <h1 className="text-4xl font-bold tracking-tight text-[#0F172A]">Reward Queue</h1>
 
-      <div className="bg-[var(--surface-raised)] p-6 rounded-[14px] border border-[var(--border-default)]">
+      <div className="bg-white p-6 rounded-[14px] border border-[#E2E8F0]">
         {isLoading ? (
-          <p className="text-[var(--text-secondary)]">Loading...</p>
+          <p className="text-[#475569]">Loading...</p>
         ) : rewards?.length === 0 ? (
-          <div className="py-12 text-center text-[var(--text-secondary)]">
+          <div className="py-12 text-center text-[#475569]">
             <p className="text-3xl mb-2">🎉</p>
             <p className="text-lg font-medium">No pending reward approvals</p>
           </div>
         ) : (
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-[var(--border-default)]">
-                <th className="pb-2">Consumer</th>
-                <th className="pb-2">Type</th>
-                <th className="pb-2">Points</th>
-                <th className="pb-2">Reason</th>
-                <th className="pb-2">Status</th>
-                <th className="pb-2">Action</th>
+              <tr className="border-b border-[#E2E8F0]">
+                <th className="pb-2 text-[#0F172A]">Consumer</th>
+                <th className="pb-2 text-[#0F172A]">Type</th>
+                <th className="pb-2 text-[#0F172A]">Points</th>
+                <th className="pb-2 text-[#0F172A]">Reason</th>
+                <th className="pb-2 text-[#0F172A]">Status</th>
+                <th className="pb-2 text-[#0F172A]">Action</th>
               </tr>
             </thead>
             <tbody>
               {rewards?.map((reward: any) => (
-                <tr key={reward.id} className="border-b border-[var(--border-default)] last:border-0">
-                  <td className="py-3 font-semibold">
+                <tr key={reward.id} className="border-b border-[#E2E8F0] last:border-0">
+                  <td className="py-3 font-semibold text-[#0F172A]">
                     {reward.consumer?.email ?? reward.consumer?.username ?? 'Unknown'}
                   </td>
-                  <td className="py-3">{reward.type}</td>
-                  <td className="py-3 font-bold text-[var(--accent)]">{reward.points}</td>
-                  <td className="py-3 text-[var(--text-secondary)]">{reward.reason || '—'}</td>
-                  <td className="py-3">{reward.status}</td>
+                  <td className="py-3 text-[#0F172A]">{reward.type}</td>
+                  <td className="py-3 font-bold text-[#2563EB]">{reward.points}</td>
+                  <td className="py-3 text-[#475569]">{reward.reason || '—'}</td>
+                  <td className="py-3 text-[#0F172A]">{reward.status}</td>
                   <td className="py-3 space-y-1">
                     {approvedIds.has(reward.id) ? (
-                      <span className="text-xs text-green-400 font-medium">✓ Approved</span>
+                      <span className="text-xs text-[#22C55E] font-medium">✓ Approved</span>
                     ) : rejectedIds.has(reward.id) ? (
-                      <span className="text-xs text-red-400 font-medium">✗ Rejected</span>
+                      <span className="text-xs text-red-600 font-medium">✗ Rejected</span>
                     ) : (
                       <>
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleApprove(reward.id)}
                             disabled={loadingIds.has(reward.id)}
-                            className="text-xs bg-[#567a58] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           >
                             {loadingIds.has(reward.id) ? '…' : 'Approve'}
                           </button>
                           <button
                             onClick={() => handleReject(reward.id)}
                             disabled={loadingIds.has(reward.id)}
-                            className="text-xs bg-red-600 text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           >
                             Reject
                           </button>
                         </div>
                         {errorMap[reward.id] && (
-                          <p className="text-xs text-red-400">{errorMap[reward.id]}</p>
+                          <p className="text-xs text-red-600">{errorMap[reward.id]}</p>
                         )}
                       </>
                     )}

@@ -22,16 +22,28 @@ export default function DashboardPage() {
     <div className="p-8 max-w-7xl mx-auto space-y-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-            Welcome back
-          </h1>
-          <p className="text-[var(--text-secondary)] mt-2 text-lg">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+              Welcome back
+            </h1>
+            {rewards && !rewardsLoading && (
+              <span className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
+                🏆 ${((rewards?.account?.pointsBalance ?? 0) / 100).toFixed(2)} in rewards
+              </span>
+            )}
+            {!rewards && !rewardsLoading && (
+              <span className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
+                🏆 $12.50 in rewards
+              </span>
+            )}
+          </div>
+          <p className="text-[#475569] mt-2 text-lg">
             Track service requests, bookings, messages, and rewards from here.
           </p>
         </div>
         <Link
           to="/request-service"
-          className="px-8 py-4 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] hover:scale-105 transition-transform shadow-[0_0_20px_rgba(242,181,215,0.3)]"
+          className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm"
         >
           + Request New Service
         </Link>
@@ -44,28 +56,28 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold">Requests & Bookings</h2>
             <Link
               to="/my-requests"
-              className="text-sm font-bold text-[var(--accent)] hover:underline"
+              className="text-sm font-bold text-[#2563EB] hover:underline"
             >
               View all requests →
             </Link>
           </div>
           {requestsLoading && (
-            <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6">
-              <div className="h-5 w-40 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-4 h-4 w-2/3 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-3 h-4 w-1/2 animate-pulse rounded bg-[var(--surface-overlay)]" />
+            <div className="rounded-[24px] border border-[#E2E8F0] bg-white p-6">
+              <div className="h-5 w-40 animate-pulse rounded bg-[#F8FAFC]" />
+              <div className="mt-4 h-4 w-2/3 animate-pulse rounded bg-[#F8FAFC]" />
+              <div className="mt-3 h-4 w-1/2 animate-pulse rounded bg-[#F8FAFC]" />
             </div>
           )}
 
           {!requestsLoading && requestsError && (
-            <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6">
+            <div className="rounded-[24px] border border-[#E2E8F0] bg-white p-6">
               <h3 className="text-lg font-bold">Requests could not load</h3>
-              <p className="mt-2 text-sm text-[var(--text-secondary)]">
+              <p className="mt-2 text-sm text-[#475569]">
                 Refresh the page or open your request details to try again.
               </p>
               <Link
                 to="/my-requests"
-                className="mt-4 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+                className="mt-4 inline-block text-sm font-bold text-[#2563EB] hover:underline"
               >
                 Open request details →
               </Link>
@@ -73,12 +85,12 @@ export default function DashboardPage() {
           )}
 
           {!requestsLoading && !requestsError && requests?.length === 0 ? (
-            <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-12 text-center">
-              <div className="w-20 h-20 bg-[var(--surface-overlay)] rounded-full mx-auto mb-6 flex items-center justify-center">
+            <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-12 text-center">
+              <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
                 <span className="text-3xl opacity-50">+</span>
               </div>
               <h3 className="text-xl font-bold mb-2">No active requests</h3>
-              <p className="text-[var(--text-secondary)]">
+              <p className="text-[#475569]">
                 Submit a service request when you need help. You can track
                 booking updates and messages here after it is created.
               </p>
@@ -88,22 +100,28 @@ export default function DashboardPage() {
               {requests.map((req) => (
                 <div
                   key={req.id}
-                  className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-colors group"
+                  className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#2563EB] transition-colors group"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <span className="px-3 py-1 bg-[var(--surface-base)] text-xs font-bold rounded-full mb-3 inline-block uppercase tracking-wider">
+                      <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full mb-3 inline-block uppercase tracking-wider">
                         {req.urgency}
                       </span>
                       <h3 className="text-xl font-bold truncate max-w-[400px]">
                         {req.description}
                       </h3>
                     </div>
-                    <span className="px-4 py-2 bg-[var(--surface-overlay)] text-[var(--accent)] rounded-full text-sm font-bold">
+                    <span className={`px-4 py-2 rounded-full text-sm font-bold ${
+                      req.status === 'COMPLETED'
+                        ? 'bg-green-50 text-green-700'
+                        : req.status === 'NEW'
+                        ? 'bg-slate-100 text-slate-600'
+                        : 'bg-[#EFF6FF] text-[#2563EB]'
+                    }`}>
                       {req.status.replace(/_/g, " ")}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-1 text-[var(--text-secondary)] text-sm">
+                  <div className="flex flex-col gap-1 text-[#475569] text-sm">
                     <p>
                       Requested on{" "}
                       {new Date(req.createdAt).toLocaleDateString()}
@@ -131,7 +149,7 @@ export default function DashboardPage() {
                   </div>
                   <Link
                     to={`/my-requests/${req.id}`}
-                    className="mt-4 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+                    className="mt-4 inline-block text-sm font-bold text-[#2563EB] hover:underline"
                   >
                     Open booking details and messages →
                   </Link>
@@ -139,7 +157,7 @@ export default function DashboardPage() {
                     ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (
                       <Link
                         to={`/book/${req.id}`}
-                        className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[var(--accent)] px-4 py-2 text-sm font-bold text-black hover:opacity-90 transition-opacity"
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
                       >
                         📅 Book Appointment
                       </Link>
@@ -156,36 +174,36 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold">Rewards</h2>
             <Link
               to="/rewards"
-              className="text-sm font-bold text-[var(--accent)] hover:underline"
+              className="text-sm font-bold text-[#2563EB] hover:underline"
             >
               View rewards →
             </Link>
           </div>
 
-          <div className="bg-gradient-to-br from-[var(--surface-raised)] to-[var(--surface-overlay)] border border-[var(--border-default)] rounded-[24px] p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--accent)] opacity-10 blur-3xl rounded-full translate-x-10 -translate-y-10"></div>
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 relative overflow-hidden shadow-sm">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#2563EB] opacity-5 blur-3xl rounded-full translate-x-10 -translate-y-10"></div>
 
             {rewardsLoading ? (
-              <div className="animate-pulse h-20 bg-[var(--surface-base)] rounded-[14px]"></div>
+              <div className="animate-pulse h-20 bg-[#F8FAFC] rounded-[14px]"></div>
             ) : rewardsError ? (
               <div>
                 <p className="font-bold">Rewards could not load</p>
-                <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                <p className="mt-2 text-sm text-[#475569]">
                   Open rewards to check your balance and history.
                 </p>
               </div>
             ) : (
               <>
-                <p className="text-[var(--text-secondary)] font-medium mb-2">
+                <p className="text-[#475569] font-medium mb-2">
                   Available points
                 </p>
-                <div className="text-6xl font-extrabold text-[var(--accent)] tracking-tighter mb-8">
+                <div className="text-6xl font-extrabold text-[#2563EB] tracking-tighter mb-8">
                   {rewards?.account?.pointsBalance || 0}
                 </div>
 
-                <div className="pt-6 border-t border-[var(--border-default)] flex justify-between items-center">
+                <div className="pt-6 border-t border-[#E2E8F0] flex justify-between items-center">
                   <div>
-                    <p className="text-sm text-[var(--text-secondary)]">
+                    <p className="text-sm text-[#475569]">
                       Current Tier
                     </p>
                     <p className="font-bold text-lg">
@@ -195,7 +213,7 @@ export default function DashboardPage() {
                   </div>
                   <Link
                     to="/rewards"
-                    className="text-sm font-bold text-[var(--accent)] hover:underline"
+                    className="text-sm font-bold text-[#2563EB] hover:underline"
                   >
                     View History →
                   </Link>

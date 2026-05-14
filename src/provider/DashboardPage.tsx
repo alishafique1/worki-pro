@@ -53,13 +53,13 @@ export default function ProviderDashboardPage() {
   const verificationStatus = (profile as any)?.verificationStatus;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-12">
+    <div className="p-8 max-w-7xl mx-auto space-y-12 bg-[#F8FAFC] min-h-screen">
       {/* Verification banner */}
       {!profileLoading && verificationStatus && verificationStatus !== 'VERIFIED' && (
         <div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${
           verificationStatus === 'REJECTED'
-            ? 'bg-red-500/10 border-red-400/30 text-red-400'
-            : 'bg-yellow-500/10 border-yellow-400/30 text-yellow-500'
+            ? 'bg-red-500/10 border-red-400/30 text-red-600'
+            : 'bg-[#FEF3C7] border-[#FDE68A] text-amber-700'
         }`}>
           <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
           <div>
@@ -75,36 +75,36 @@ export default function ProviderDashboardPage() {
         </div>
       )}
       {acceptError && (
-        <div className="rounded-[14px] bg-red-500/10 border border-red-400/30 px-5 py-3 text-sm text-red-400 font-medium">
+        <div className="rounded-[14px] bg-red-500/10 border border-red-400/30 px-5 py-3 text-sm text-red-600 font-medium">
           {acceptError}
           <button onClick={() => setAcceptError(null)} className="ml-3 underline">Dismiss</button>
         </div>
       )}
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
         <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0F172A]">
             Provider Portal
           </h1>
-          <p className="text-[var(--text-secondary)] mt-2 text-lg">
+          <p className="text-[#475569] mt-2 text-lg">
             Review assigned leads, accept work, and manage booking updates.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
             to="/provider/services"
-            className="rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black"
+            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
           >
             Manage listings
           </Link>
           <Link
             to="/provider/leads"
-            className="rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black"
+            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
           >
             Open lead inbox
           </Link>
           <Link
             to="/provider/appointments"
-            className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-5 py-3 text-sm font-bold hover:border-[var(--accent)]"
+            className="rounded-[18px] border border-[#E2E8F0] bg-white px-5 py-3 text-sm font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors"
           >
             Manage bookings
           </Link>
@@ -112,14 +112,14 @@ export default function ProviderDashboardPage() {
       </div>
 
       {/* My Listings Summary */}
-      <div className="bg-[var(--surface-raised)] rounded-[24px] border border-[var(--border-default)] p-8 shadow-xl">
+      <div className="bg-white rounded-[24px] border border-[#E2E8F0] p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
-            <h2 className="text-2xl font-bold flex items-center gap-3">
+            <h2 className="text-2xl font-bold flex items-center gap-3 text-[#0F172A]">
               <span className="text-2xl">📋</span>
               My Service Listings
             </h2>
-            <p className="text-[var(--text-secondary)] mt-1">
+            <p className="text-[#475569] mt-1">
               {profileLoading
                 ? 'Loading...'
                 : (() => {
@@ -132,7 +132,7 @@ export default function ProviderDashboardPage() {
           </div>
           <Link
             to="/provider/services"
-            className="px-6 py-3 bg-[var(--accent)] text-[#000] font-bold rounded-[18px] hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
+            className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-sm whitespace-nowrap"
           >
             {(() => {
               const services = safeParseServices((profile as any)?.servicesJson);
@@ -149,14 +149,14 @@ export default function ProviderDashboardPage() {
               {services.slice(0, 6).map((svc: any) => (
                 <span
                   key={svc.id}
-                  className="px-3 py-1.5 bg-[var(--surface-overlay)] border border-[var(--border-default)] rounded-full text-xs font-medium"
+                  className="px-3 py-1.5 bg-[#EFF6FF] border border-[#BFDBFE] rounded-full text-xs font-medium text-[#0F172A]"
                 >
                   {svc.name}
-                  {svc.price && <span className="text-[var(--accent)] ml-1 font-bold">${svc.price}</span>}
+                  {svc.price && <span className="text-[#2563EB] ml-1 font-bold">${svc.price}</span>}
                 </span>
               ))}
               {services.length > 6 && (
-                <span className="px-3 py-1.5 text-xs text-[var(--text-tertiary)]">
+                <span className="px-3 py-1.5 text-xs text-[#94A3B8]">
                   +{services.length - 6} more
                 </span>
               )}
@@ -167,33 +167,33 @@ export default function ProviderDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Leads Column */}
-        <div className="bg-[var(--surface-raised)] rounded-[24px] border border-[var(--border-default)] p-8 shadow-xl">
+        <div className="bg-white rounded-[24px] border border-[#E2E8F0] p-8 shadow-sm">
           <div className="flex justify-between items-center gap-4 mb-6">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <span className="bg-[var(--accent)] text-[#000] w-8 h-8 rounded-full flex items-center justify-center text-sm">
+            <h2 className="text-2xl font-bold flex items-center gap-2 text-[#0F172A]">
+              <span className="bg-[#2563EB] text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
                 {leads?.length || 0}
               </span>
               Active Leads
             </h2>
             <Link
               to="/provider/leads"
-              className="text-sm font-bold text-[var(--accent)] hover:underline"
+              className="text-sm font-bold text-[#2563EB] hover:underline"
             >
               View all →
             </Link>
           </div>
 
           {leadsLoading ? (
-            <div className="animate-pulse h-32 bg-[var(--surface-overlay)] rounded-[14px]"></div>
+            <div className="animate-pulse h-32 bg-[#EFF6FF] rounded-[14px]"></div>
           ) : leadsError ? (
-            <div className="rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-overlay)] p-6">
-              <p className="font-bold">Leads could not load</p>
-              <p className="mt-2 text-sm text-[var(--text-secondary)]">
+            <div className="rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC] p-6">
+              <p className="font-bold text-[#0F172A]">Leads could not load</p>
+              <p className="mt-2 text-sm text-[#475569]">
                 Refresh the page or open the lead inbox to try again.
               </p>
               <Link
                 to="/provider/leads"
-                className="mt-3 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+                className="mt-3 inline-block text-sm font-bold text-[#2563EB] hover:underline"
               >
                 Open lead inbox →
               </Link>
@@ -201,11 +201,11 @@ export default function ProviderDashboardPage() {
           ) : (
             <div className="space-y-4">
               {leads?.length === 0 ? (
-                <div className="text-center p-8 bg-[var(--surface-overlay)] rounded-[14px] border border-[var(--border-default)]">
-                  <p className="text-[var(--text-secondary)]">
+                <div className="text-center p-8 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0]">
+                  <p className="text-[#475569]">
                     Your lead queue is empty.
                   </p>
-                  <p className="text-sm text-[var(--text-tertiary)] mt-1">
+                  <p className="text-sm text-[#94A3B8] mt-1">
                     Assigned requests will appear here when they are available.
                   </p>
                 </div>
@@ -213,46 +213,46 @@ export default function ProviderDashboardPage() {
                 leads?.map((lead) => (
                   <div
                     key={lead.id}
-                    className="p-6 bg-[var(--surface-overlay)] rounded-[14px] border border-[var(--border-default)] hover:border-[var(--accent)] transition-colors group"
+                    className="p-6 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0] hover:border-[#2563EB] transition-colors group"
                   >
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex flex-wrap gap-2 mb-2">
-                        <span className="px-3 py-1 bg-[var(--surface-base)] text-xs font-bold rounded-full inline-block uppercase">
+                        <span className="px-3 py-1 bg-white border border-[#E2E8F0] text-xs font-bold rounded-full inline-block uppercase text-[#475569]">
                           {lead.urgency}
                         </span>
-                        <span className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-bold rounded-full inline-block uppercase border border-[var(--accent)]/30">
+                        <span className="px-3 py-1 bg-[#FEF3C7] text-amber-700 text-xs font-bold rounded-full inline-block uppercase border border-[#FDE68A]">
                           {STATUS_LABEL[(lead as any).status] ?? (lead as any).status}
                         </span>
                       </div>
-                      <span className="text-sm text-[var(--text-secondary)] font-medium shrink-0">
+                      <span className="text-sm text-[#475569] font-medium shrink-0">
                         {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <h3 className="font-bold text-lg mb-1">
+                    <h3 className="font-bold text-lg mb-1 text-[#0F172A]">
                       {lead.city || lead.postalCode}
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-4 line-clamp-2">
+                    <p className="text-[#475569] mb-4 line-clamp-2">
                       {lead.description}
                     </p>
                     <div className="flex gap-3">
                       {(lead as any).status === 'ASSIGNED' ? (
                         <button
                           onClick={() => handleAccept(lead.id)}
-                          className="flex-1 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity"
+                          className="flex-1 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors"
                         >
                           Accept
                         </button>
                       ) : (
                         <Link
                           to={`/provider/requests/${lead.id}/messages`}
-                          className="flex-1 py-2 text-center bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity"
+                          className="flex-1 py-2 text-center bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors"
                         >
                           Message customer →
                         </Link>
                       )}
                       <Link
                         to="/provider/leads"
-                        className="px-4 py-2 bg-[var(--surface-base)] border border-[var(--border-default)] text-foreground font-bold rounded-[14px] hover:bg-[var(--surface-raised)]"
+                        className="px-4 py-2 bg-white border border-[#E2E8F0] text-[#0F172A] font-bold rounded-[14px] hover:border-[#2563EB] transition-colors"
                       >
                         All leads
                       </Link>
@@ -265,28 +265,28 @@ export default function ProviderDashboardPage() {
         </div>
 
         {/* Appointments Column */}
-        <div className="bg-[var(--surface-raised)] rounded-[24px] border border-[var(--border-default)] p-8 shadow-xl">
+        <div className="bg-white rounded-[24px] border border-[#E2E8F0] p-8 shadow-sm">
           <div className="mb-6 flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold">Bookings</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A]">Bookings</h2>
             <Link
               to="/provider/appointments"
-              className="text-sm font-bold text-[var(--accent)] hover:underline"
+              className="text-sm font-bold text-[#2563EB] hover:underline"
             >
               Manage all →
             </Link>
           </div>
 
           {apptsLoading ? (
-            <div className="animate-pulse h-32 bg-[var(--surface-overlay)] rounded-[14px]"></div>
+            <div className="animate-pulse h-32 bg-[#EFF6FF] rounded-[14px]"></div>
           ) : apptsError ? (
-            <div className="rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-overlay)] p-6">
-              <p className="font-bold">Bookings could not load</p>
-              <p className="mt-2 text-sm text-[var(--text-secondary)]">
+            <div className="rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC] p-6">
+              <p className="font-bold text-[#0F172A]">Bookings could not load</p>
+              <p className="mt-2 text-sm text-[#475569]">
                 Refresh the page or open bookings to try again.
               </p>
               <Link
                 to="/provider/appointments"
-                className="mt-3 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+                className="mt-3 inline-block text-sm font-bold text-[#2563EB] hover:underline"
               >
                 Open bookings →
               </Link>
@@ -294,8 +294,8 @@ export default function ProviderDashboardPage() {
           ) : (
             <div className="space-y-4">
               {appts?.length === 0 ? (
-                <div className="text-center p-8 bg-[var(--surface-overlay)] rounded-[14px] border border-[var(--border-default)]">
-                  <p className="text-[var(--text-secondary)]">
+                <div className="text-center p-8 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0]">
+                  <p className="text-[#475569]">
                     No accepted jobs or booking updates yet.
                   </p>
                 </div>
@@ -303,13 +303,13 @@ export default function ProviderDashboardPage() {
                 appts?.map((appt: any) => (
                   <div
                     key={appt.id}
-                    className="p-6 bg-[var(--surface-overlay)] rounded-[14px] border border-[var(--border-default)] flex justify-between items-center"
+                    className="p-6 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0] flex justify-between items-center"
                   >
                     <div>
-                      <p className="font-bold text-lg mb-1">
+                      <p className="font-bold text-lg mb-1 text-[#0F172A]">
                         {appt.serviceRequest?.description || "Customer Request"}
                       </p>
-                      <p className="text-sm text-[var(--text-secondary)]">
+                      <p className="text-sm text-[#475569]">
                         {appt.scheduledAt
                           ? new Date(appt.scheduledAt).toLocaleString([], {
                               weekday: "short",
@@ -321,7 +321,7 @@ export default function ProviderDashboardPage() {
                           : "Pending Scheduling"}
                       </p>
                     </div>
-                    <span className="px-4 py-2 bg-[var(--surface-base)] text-[var(--text-primary)] rounded-full text-xs font-bold uppercase tracking-wider border border-[var(--border-default)]">
+                    <span className="px-4 py-2 bg-[#EFF6FF] text-[#2563EB] rounded-full text-xs font-bold uppercase tracking-wider border border-[#BFDBFE]">
                       {appt.status}
                     </span>
                   </div>

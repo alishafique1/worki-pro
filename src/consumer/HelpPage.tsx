@@ -79,25 +79,25 @@ const consumerFaqs = [
 
 const quickLinks = [
   {
-    icon: <MessageSquare className="w-5 h-5 text-[var(--accent)]" />,
+    icon: <MessageSquare className="w-5 h-5 text-[#2563EB]" />,
     label: 'Contact Support',
     description: 'Get help from the TheHelper team',
     href: '/contact',
   },
   {
-    icon: <BookOpen className="w-5 h-5 text-[var(--accent)]" />,
+    icon: <BookOpen className="w-5 h-5 text-[#2563EB]" />,
     label: 'How It Works',
     description: 'Understand the full service flow',
     href: '/how-it-works',
   },
   {
-    icon: <CreditCard className="w-5 h-5 text-[var(--accent)]" />,
+    icon: <CreditCard className="w-5 h-5 text-[#2563EB]" />,
     label: 'Rewards',
     description: 'Check your points & redemption options',
     href: '/rewards',
   },
   {
-    icon: <Users className="w-5 h-5 text-[var(--accent)]" />,
+    icon: <Users className="w-5 h-5 text-[#2563EB]" />,
     label: 'Refer a Friend',
     description: 'Earn points when friends complete a job',
     href: '/referral',
@@ -113,13 +113,13 @@ const trustItems = [
 
 export default function HelpPage() {
   return (
-    <div className="min-h-[80vh]">
+    <div className="min-h-[80vh] bg-[#F8FAFC]">
       {/* Hero */}
-      <div className="bg-[var(--surface-raised)] border-b border-[var(--border-default)]">
+      <div className="bg-white border-b border-[#E2E8F0]">
         <Container>
           <div className="py-14 max-w-2xl">
-            <h1 className="text-5xl font-black tracking-tighter mb-3">Help Centre</h1>
-            <p className="text-[var(--text-secondary)] text-lg">
+            <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Help Centre</h1>
+            <p className="text-[#475569] text-lg">
               Everything you need to know about using TheHelper — from submitting your first request to redeeming rewards.
             </p>
           </div>
@@ -131,10 +131,10 @@ export default function HelpPage() {
           {/* FAQ Section */}
           <div>
             <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-1">Frequently Asked Questions</h2>
-              <p className="text-[var(--text-secondary)] text-sm">
+              <h2 className="text-2xl font-bold mb-1 text-[#0F172A]">Frequently Asked Questions</h2>
+              <p className="text-[#475569] text-sm">
                 Can't find what you're looking for?{' '}
-                <Link to="/contact" className="text-[var(--accent)] hover:underline">
+                <Link to="/contact" className="text-[#2563EB] hover:underline">
                   Contact our team
                 </Link>
               </p>
@@ -145,8 +145,8 @@ export default function HelpPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick links */}
-            <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] p-5">
-              <h3 className="font-bold mb-4 text-sm uppercase tracking-wider text-[var(--text-secondary)]">
+            <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-5">
+              <h3 className="font-bold mb-4 text-sm uppercase tracking-wider text-[#475569]">
                 Quick Links
               </h3>
               <div className="space-y-3">
@@ -154,45 +154,45 @@ export default function HelpPage() {
                   <Link
                     key={link.href}
                     to={link.href}
-                    className="flex items-start gap-3 p-3 rounded-[14px] bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] transition-colors group"
+                    className="flex items-start gap-3 p-3 rounded-[14px] bg-[#F8FAFC] hover:bg-[#EFF6FF] transition-colors group"
                   >
                     <div className="mt-0.5">{link.icon}</div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm group-hover:text-[var(--accent)] transition-colors">
+                      <p className="font-semibold text-sm group-hover:text-[#2563EB] transition-colors text-[#0F172A]">
                         {link.label}
                       </p>
-                      <p className="text-xs text-[var(--text-secondary)] mt-0.5">{link.description}</p>
+                      <p className="text-xs text-[#475569] mt-0.5">{link.description}</p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent)] transition-colors mt-0.5 flex-shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#2563EB] transition-colors mt-0.5 flex-shrink-0" />
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Trust strip */}
-            <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] p-5">
-              <h3 className="font-bold mb-4 text-sm uppercase tracking-wider text-[var(--text-secondary)]">
+            <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-5">
+              <h3 className="font-bold mb-4 text-sm uppercase tracking-wider text-[#475569]">
                 What You Get
               </h3>
               <div className="space-y-2.5">
                 {trustItems.map((item) => (
                   <div key={item.text} className="flex items-center gap-2.5">
-                    <div className="text-[var(--accent)]">{item.icon}</div>
-                    <span className="text-sm">{item.text}</span>
+                    <div className="text-[#2563EB]">{item.icon}</div>
+                    <span className="text-sm text-[#0F172A]">{item.text}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Contact CTA */}
-            <div className="bg-[var(--accent)] rounded-[20px] p-5">
-              <h3 className="font-bold text-black mb-1">Still need help?</h3>
-              <p className="text-sm text-black/70 mb-3">
+            <div className="bg-[#2563EB] rounded-[20px] p-5">
+              <h3 className="font-bold text-white mb-1">Still need help?</h3>
+              <p className="text-sm text-white/70 mb-3">
                 Our team is here for you. Send us a message and we'll get back to you.
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-1.5 bg-black text-white text-sm font-bold px-4 py-2.5 rounded-[14px] hover:bg-black/80 transition-colors"
+                className="inline-flex items-center gap-1.5 bg-white text-[#2563EB] text-sm font-bold px-4 py-2.5 rounded-[14px] hover:bg-[#EFF6FF] transition-colors"
               >
                 Contact Support
                 <ArrowRight className="w-4 h-4" />

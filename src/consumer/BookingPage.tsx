@@ -38,8 +38,8 @@ function CalEmbed({ calLink, prefill }: CalEmbedProps) {
         ...(prefill ? { prefill } : {}),
       });
       window.Cal('ui', {
-        theme: 'dark',
-        styles: { branding: { brandColor: '#a3f589' } },
+        theme: 'light',
+        styles: { branding: { brandColor: '#2563EB' } },
         hideEventTypeDetails: false,
       });
     };
@@ -68,7 +68,7 @@ function CalEmbed({ calLink, prefill }: CalEmbedProps) {
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[600px] rounded-[24px] overflow-hidden border border-[var(--border-default)]"
+      className="w-full min-h-[600px] rounded-[24px] overflow-hidden border border-[#E2E8F0] bg-white shadow-sm"
     />
   );
 }
@@ -96,16 +96,16 @@ export default function BookingPage() {
     : undefined;
 
   return (
-    <div className="min-h-screen p-6 max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#F8FAFC] p-6 max-w-4xl mx-auto">
       <div className="mb-8">
         <Link
           to={requestId ? `/my-requests` : '/dashboard'}
-          className="text-sm text-[var(--text-secondary)] hover:text-foreground transition-colors"
+          className="text-sm text-[#475569] hover:text-[#0F172A] transition-colors"
         >
           ← Back
         </Link>
-        <h1 className="text-3xl font-black tracking-tight mt-3 mb-1">Book Your Appointment</h1>
-        <p className="text-[var(--text-secondary)]">
+        <h1 className="text-3xl font-black tracking-tight mt-3 mb-1 text-[#0F172A]">Book Your Appointment</h1>
+        <p className="text-[#475569]">
           {providerCalUsername
             ? `Book directly with your matched pro.`
             : `Pick a time and our team will confirm the right pro for your job.`}
@@ -113,19 +113,19 @@ export default function BookingPage() {
       </div>
 
       {isLoading && (
-        <div className="text-[var(--text-secondary)] text-sm">Loading your request…</div>
+        <div className="text-[#94A3B8] text-sm">Loading your request…</div>
       )}
 
       {!isLoading && (
         <div className="space-y-6">
           {request && (
-            <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] p-5 flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-5 flex flex-col sm:flex-row sm:items-center gap-3 shadow-sm">
               <div className="flex-1">
-                <p className="text-xs text-[var(--text-tertiary)] uppercase tracking-wide mb-1">Your Request</p>
-                <p className="font-semibold">{(request as any).serviceCategory?.name ?? 'General Service'}</p>
-                <p className="text-sm text-[var(--text-secondary)] mt-0.5 line-clamp-1">{request.description}</p>
+                <p className="text-xs text-[#94A3B8] uppercase tracking-wide mb-1">Your Request</p>
+                <p className="font-semibold text-[#0F172A]">{(request as any).serviceCategory?.name ?? 'General Service'}</p>
+                <p className="text-sm text-[#475569] mt-0.5 line-clamp-1">{request.description}</p>
               </div>
-              <span className="text-xs px-3 py-1.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 font-semibold self-start sm:self-center whitespace-nowrap">
+              <span className="text-xs px-3 py-1.5 rounded-full bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE] font-semibold self-start sm:self-center whitespace-nowrap">
                 {request.status}
               </span>
             </div>
@@ -133,9 +133,9 @@ export default function BookingPage() {
 
           <CalEmbed calLink={calLink} prefill={prefill} />
 
-          <p className="text-xs text-center text-[var(--text-tertiary)]">
+          <p className="text-xs text-center text-[#94A3B8]">
             Powered by{' '}
-            <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--text-secondary)]">
+            <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#475569]">
               cal.com
             </a>
             {' '}· You'll get a confirmation email with all the details.

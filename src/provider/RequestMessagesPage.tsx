@@ -54,17 +54,17 @@ export default function ProviderRequestMessagesPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 max-w-3xl mx-auto">
-        <div className="animate-pulse h-80 bg-[var(--surface-raised)] rounded-[24px]" />
+      <div className="p-8 max-w-3xl mx-auto bg-[#F8FAFC] min-h-screen">
+        <div className="animate-pulse h-80 bg-[#EFF6FF] rounded-[24px]" />
       </div>
     );
   }
 
   if (error || !data?.request) {
     return (
-      <div className="p-8 max-w-3xl mx-auto text-center text-[var(--text-secondary)]">
+      <div className="p-8 max-w-3xl mx-auto text-center text-[#475569] bg-[#F8FAFC] min-h-screen">
         Request not found.{" "}
-        <Link to="/provider/leads" className="underline font-bold" style={{ color: "var(--accent)" }}>
+        <Link to="/provider/leads" className="underline font-bold text-[#2563EB]">
           Back to leads
         </Link>
       </div>
@@ -74,28 +74,30 @@ export default function ProviderRequestMessagesPage() {
   const { request, messages } = data;
 
   return (
-    <div className="flex flex-col max-w-3xl mx-auto min-h-[90vh] px-4 py-6">
+    <div className="flex flex-col max-w-3xl mx-auto min-h-[90vh] px-4 py-6 bg-[#F8FAFC]">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link
           to="/provider/leads"
-          className="text-[var(--text-secondary)] hover:text-foreground transition-colors"
+          className="text-[#475569] hover:text-[#0F172A] transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
         <div>
-          <p className="text-xs text-[var(--text-secondary)] uppercase tracking-widest font-bold mb-0.5">
+          <p className="text-xs text-[#475569] uppercase tracking-widest font-bold mb-0.5">
             Customer Message Thread
           </p>
-          <h1 className="text-xl font-black leading-none">{request.name}</h1>
+          <h1 className="text-xl font-black leading-none text-[#0F172A]">{request.name}</h1>
         </div>
         <span
           className={`ml-auto px-3 py-1 rounded-full border text-xs font-bold ${
             request.status === "COMPLETED"
-              ? "border-green-500/30 text-green-400 bg-green-400/10"
-              : "border-[var(--border-default)] text-[var(--text-secondary)]"
+              ? "bg-[#F0FDF4] text-[#15803D] border-green-200"
+              : request.status === "CANCELLED"
+              ? "bg-[#FEF2F2] text-red-600 border-red-200"
+              : "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]"
           }`}
         >
           {request.status.replace(/_/g, " ")}
@@ -103,9 +105,9 @@ export default function ProviderRequestMessagesPage() {
       </div>
 
       {/* Thread */}
-      <div className="flex-1 rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-raised)] overflow-y-auto p-6 space-y-4 mb-4 max-h-[60vh]">
+      <div className="flex-1 rounded-[18px] border border-[#E2E8F0] bg-white overflow-y-auto p-6 space-y-4 mb-4 max-h-[60vh]">
         {messages.length === 0 && (
-          <p className="text-center text-[var(--text-secondary)] text-sm py-8">
+          <p className="text-center text-[#475569] text-sm py-8">
             No messages yet — introduce yourself below.
           </p>
         )}
@@ -119,7 +121,7 @@ export default function ProviderRequestMessagesPage() {
           return (
             <div key={msg.id}>
               {showDate && (
-                <div className="text-center text-xs text-[var(--text-secondary)] my-3">
+                <div className="text-center text-xs text-[#94A3B8] my-3">
                   {dateLabel(msg.createdAt)}
                 </div>
               )}
@@ -127,14 +129,14 @@ export default function ProviderRequestMessagesPage() {
                 <div
                   className={`max-w-[75%] px-4 py-3 rounded-[16px] text-sm leading-relaxed ${
                     isProvider
-                      ? "bg-[var(--accent)] text-black rounded-br-[4px]"
-                      : "bg-[var(--surface-overlay)] text-foreground rounded-bl-[4px]"
+                      ? "bg-[#2563EB] text-white rounded-br-[4px]"
+                      : "bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] rounded-bl-[4px]"
                   }`}
                 >
                   {msg.body}
                   <p
                     className={`text-xs mt-1 ${
-                      isProvider ? "text-black/60 text-right" : "text-[var(--text-secondary)]"
+                      isProvider ? "text-white/60 text-right" : "text-[#94A3B8]"
                     }`}
                   >
                     {timeStamp(msg.createdAt)}
@@ -155,18 +157,18 @@ export default function ProviderRequestMessagesPage() {
           value={body}
           onChange={(e) => setBody(e.target.value)}
           disabled={sending}
-          className="flex-1 px-5 py-3.5 rounded-[16px] border-2 border-[var(--border-default)] bg-[var(--surface-raised)] text-foreground placeholder:text-[var(--text-secondary)] focus:border-[var(--accent)] focus:outline-none transition-colors"
+          className="flex-1 px-5 py-3.5 rounded-[16px] border-2 border-[#E2E8F0] bg-white text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:outline-none transition-colors"
         />
         <button
           type="submit"
           disabled={!body.trim() || sending}
-          className="px-5 py-3.5 bg-[var(--accent)] text-black font-black rounded-[16px] hover:opacity-90 disabled:opacity-40 transition-all"
+          className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors"
         >
           {sending ? "…" : "Send"}
         </button>
       </form>
 
-      {sendError && <p className="text-sm text-red-400 mt-2">{sendError}</p>}
+      {sendError && <p className="text-sm text-red-600 mt-2">{sendError}</p>}
     </div>
   );
 }

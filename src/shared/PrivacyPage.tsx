@@ -2,12 +2,12 @@ import React from 'react';
 
 export default function PrivacyPage() {
   return (
-    <div className="bg-background text-foreground min-h-screen py-20 px-6">
-      <div className="max-w-3xl mx-auto prose prose-invert">
-        <h1 className="text-4xl font-black mb-2">Privacy Policy</h1>
-        <p className="text-[var(--text-secondary)] mb-8">Last updated: May 1, 2026</p>
+    <div className="bg-[#F8FAFC] text-[#0F172A] min-h-screen py-20 px-6">
+      <div className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl p-10 shadow-sm">
+        <h1 className="text-4xl font-black mb-2 text-[#0F172A]">Privacy Policy</h1>
+        <p className="text-[#475569] mb-8">Last updated: May 1, 2026</p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">1. Information We Collect</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">1. Information We Collect</h2>
         <p>
           We collect information you provide directly to us when you:
         </p>
@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           and timestamps — collected automatically through our hosting and analytics infrastructure.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">2. How We Use Your Information</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">2. How We Use Your Information</h2>
         <p>We use the information we collect to:</p>
         <ul>
           <li>Process and route your service requests to relevant Providers</li>
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
           <li>Comply with our legal obligations</li>
         </ul>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">3. Data Sharing</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">3. Data Sharing</h2>
         <p>
           We share your personal information in the following circumstances:
         </p>
@@ -60,27 +60,27 @@ export default function PrivacyPage() {
           We do not sell your personal information to third parties.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">4. Data Retention</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">4. Data Retention</h2>
         <p>
           We retain your account data for as long as your account is active. Service request
           and communication records are retained for a minimum of 7 years to comply with
           Ontario business record requirements. You may request deletion of your account and
           associated personal data at any time by contacting us at{' '}
-          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+          <a href="mailto:hello@thehelper.ca" className="text-[#2563EB] hover:underline">
             hello@thehelper.ca
           </a>
           ; we will process deletion requests within 30 days, subject to legal retention
           obligations.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">5. Cookies</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">5. Cookies</h2>
         <p>
           TheHelper uses cookies and similar technologies for authentication, session management,
           and analytics. You can control cookie preferences through your browser settings.
           Disabling cookies may affect platform functionality.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">6. Data Security</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">6. Data Security</h2>
         <p>
           We use industry-standard encryption (TLS/HTTPS) for all data in transit and
           at rest. Provider payment processing is handled by independent payment providers;
@@ -88,7 +88,7 @@ export default function PrivacyPage() {
           login credentials confidential.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">7. Your Rights</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">7. Your Rights</h2>
         <p>Under Ontario's Freedom of Information and Protection of Privacy Act (FIPPA) and Canada's PIPEDA, you have the right to:</p>
         <ul>
           <li>Access the personal information we hold about you</li>
@@ -98,37 +98,37 @@ export default function PrivacyPage() {
         </ul>
         <p>
           To exercise any of these rights, contact us at{' '}
-          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+          <a href="mailto:hello@thehelper.ca" className="text-[#2563EB] hover:underline">
             hello@thehelper.ca
           </a>
           .
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">8. Children's Privacy</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">8. Children's Privacy</h2>
         <p>
           TheHelper is not intended for individuals under the age of 18. We do not knowingly
           collect personal information from minors. If we become aware that we have collected
           data from a minor, we will delete it promptly.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">9. Changes to This Policy</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">9. Changes to This Policy</h2>
         <p>
           We may update this Privacy Policy from time to time. Changes will be posted on
           this page with a revised "Last updated" date. We encourage you to review this
           policy periodically.
         </p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-3">10. Contact</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">10. Contact</h2>
         <p>
           For privacy-related questions or to submit a data access request, contact our
           privacy team at{' '}
-          <a href="mailto:hello@thehelper.ca" className="text-[var(--accent)] hover:underline">
+          <a href="mailto:hello@thehelper.ca" className="text-[#2563EB] hover:underline">
             hello@thehelper.ca
           </a>
           .
         </p>
 
-        <p className="mt-16 text-sm text-[var(--text-tertiary)]">
+        <p className="mt-16 text-sm text-[#94A3B8]">
           TheHelper Home Services Inc. — Milton, Ontario, Canada.
         </p>
       </div>

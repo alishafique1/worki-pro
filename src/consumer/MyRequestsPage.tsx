@@ -18,21 +18,21 @@ import {
 
 const statusColor = (s: string) => {
   if (["COMPLETED", "REWARD_APPROVED"].includes(s))
-    return "bg-[#567a58] text-white";
+    return "bg-[#F0FDF4] text-[#15803D] border border-green-200";
   if (["BOOKED", "ACCEPTED_BY_PROVIDER"].includes(s))
-    return "bg-blue-900/50 text-blue-300";
+    return "bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]";
   if (["NEW", "QUALIFYING", "QUALIFIED", "ASSIGNED"].includes(s))
-    return "bg-[var(--surface-overlay)] text-[var(--accent)]";
+    return "bg-[#FEF3C7] text-amber-700 border border-[#FDE68A]";
   if (["LOST", "INVALID", "SPAM", "CLOSED"].includes(s))
-    return "bg-[var(--surface-overlay)] text-[var(--text-tertiary)]";
-  return "bg-[var(--surface-overlay)] text-[var(--text-secondary)]";
+    return "bg-[#FEF2F2] text-red-600 border border-red-200";
+  return "bg-[#FEF3C7] text-amber-700 border border-[#FDE68A]";
 };
 
 const urgencyStyle = (u: string) => {
-  if (u === "EMERGENCY") return "bg-red-900/40 text-red-300";
+  if (u === "EMERGENCY") return "bg-[#FEF2F2] text-red-600 border border-red-200";
   if (u === "PLANNED")
-    return "bg-[var(--surface-overlay)] text-[var(--text-tertiary)]";
-  return "bg-[var(--surface-overlay)] text-[var(--text-secondary)]";
+    return "bg-[#F8FAFC] text-[#94A3B8] border border-[#E2E8F0]";
+  return "bg-[#F8FAFC] text-[#475569] border border-[#E2E8F0]";
 };
 
 const formatStatus = (s: string) =>
@@ -78,8 +78,8 @@ function RequestTimeline({ status }: { status: string }) {
             <span
               className={`flex size-6 items-center justify-center rounded-full ${
                 done
-                  ? "bg-[var(--accent)] text-black"
-                  : "bg-[var(--surface-overlay)] text-[var(--text-secondary)]"
+                  ? "bg-[#2563EB] text-white"
+                  : "bg-[#F8FAFC] text-[#94A3B8] border border-[#E2E8F0]"
               }`}
             >
               {done ? <CheckCircle2 className="size-3.5" /> : index + 1}
@@ -87,8 +87,8 @@ function RequestTimeline({ status }: { status: string }) {
             <span
               className={
                 done
-                  ? "font-semibold text-foreground"
-                  : "text-[var(--text-secondary)]"
+                  ? "font-semibold text-[#0F172A]"
+                  : "text-[#94A3B8]"
               }
             >
               {step.label}
@@ -124,7 +124,7 @@ function MessageComposer({ requestId }: { requestId: string }) {
   return (
     <div className="mt-4 space-y-2">
       {sendError && (
-        <p className="text-xs text-red-400 px-1">{sendError}</p>
+        <p className="text-xs text-red-600 px-1">{sendError}</p>
       )}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
         <label className="sr-only" htmlFor={`message-${requestId}`}>
@@ -136,12 +136,12 @@ function MessageComposer({ requestId }: { requestId: string }) {
           onChange={(event) => setBody(event.target.value)}
           placeholder="Ask a question or share an update..."
           maxLength={1000}
-          className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+          className="min-w-0 flex-1 rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
         />
         <button
           type="submit"
           disabled={isSending || !body.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
         </button>
@@ -156,19 +156,19 @@ function RequestCard({ req }: { req: any }) {
   const messages = req.communicationLogs || [];
 
   return (
-    <article className="space-y-5 rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-5 shadow-sm">
+    <article className="space-y-5 rounded-[24px] border border-[#E2E8F0] bg-white p-5 shadow-sm">
       {/* Floating detail link */}
       <div className="flex justify-end">
         <Link
           to={`/my-requests/${req.id}` as any}
-          className="text-xs font-bold text-[var(--accent)] hover:underline"
+          className="text-xs font-bold text-[#2563EB] hover:underline"
         >
           Open details →
         </Link>
       </div>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <div className="min-w-0">
-          <p className="text-sm font-medium leading-snug text-[var(--text-primary)] md:text-base">
+          <p className="text-sm font-medium leading-snug text-[#0F172A] md:text-base">
             {req.description}
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -188,22 +188,22 @@ function RequestCard({ req }: { req: any }) {
             </span>
           </div>
         </div>
-        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4 md:min-w-[260px]">
-          <div className="flex items-center gap-2 text-sm font-bold">
-            <CalendarClock className="size-4 text-[var(--accent)]" /> Booking
+        <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 md:min-w-[260px]">
+          <div className="flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+            <CalendarClock className="size-4 text-[#2563EB]" /> Booking
           </div>
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+          <p className="mt-2 text-sm text-[#475569]">
             {formatDate(appointment?.scheduledAt)}
           </p>
           {appointment?.status && (
-            <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+            <p className="mt-1 text-xs text-[#94A3B8]">
               Appointment status: {formatStatus(appointment.status)}
             </p>
           )}          {!appointment?.scheduledAt &&
             ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (
               <a
                 href={`/book/${req.id}`}
-                className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[var(--accent)] px-3 py-2 text-xs font-bold text-black hover:opacity-90 transition-opacity"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-3 py-2 text-xs font-bold text-white hover:bg-[#1D4ED8] transition-colors"
               >
                 📅 Book Appointment
               </a>
@@ -213,29 +213,29 @@ function RequestCard({ req }: { req: any }) {
       <RequestTimeline status={req.status} />
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold">
-            <ShieldCheck className="size-4 text-[var(--accent)]" /> Provider
+        <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+            <ShieldCheck className="size-4 text-[#2563EB]" /> Provider
           </div>
           {provider ? (
-            <div className="space-y-1 text-sm text-[var(--text-secondary)]">
-              <p className="font-semibold text-foreground">
+            <div className="space-y-1 text-sm text-[#475569]">
+              <p className="font-semibold text-[#0F172A]">
                 {provider.businessName}
               </p>
               {provider.phone && <p>{provider.phone}</p>}
               {provider.email && <p>{provider.email}</p>}
             </div>
           ) : (
-            <p className="text-sm text-[var(--text-secondary)]">
+            <p className="text-sm text-[#475569]">
               We are still matching your request with the right local provider.
             </p>
           )}
         </div>
-        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold">
-            <Clock3 className="size-4 text-[var(--accent)]" /> Request details
+        <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+            <Clock3 className="size-4 text-[#2563EB]" /> Request details
           </div>
-          <div className="space-y-1 text-sm text-[var(--text-secondary)]">
+          <div className="space-y-1 text-sm text-[#475569]">
             <p>Requested {new Date(req.createdAt).toLocaleDateString()}</p>
             {(req.city || req.postalCode) && (
               <p>{[req.city, req.postalCode].filter(Boolean).join(", ")}</p>
@@ -250,13 +250,13 @@ function RequestCard({ req }: { req: any }) {
         </div>
       </div>
 
-      <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
-        <div className="mb-3 flex items-center gap-2 text-sm font-bold">
-          <MessageSquareText className="size-4 text-[var(--accent)]" /> Messages
+      <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+        <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+          <MessageSquareText className="size-4 text-[#2563EB]" /> Messages
         </div>
         <div className="max-h-64 space-y-3 overflow-y-auto pr-1">
           {messages.length === 0 ? (
-            <p className="text-sm text-[var(--text-secondary)]">
+            <p className="text-sm text-[#475569]">
               No messages yet. Once a provider is assigned, you can coordinate
               here.
             </p>
@@ -273,8 +273,8 @@ function RequestCard({ req }: { req: any }) {
                   <div
                     className={`max-w-[85%] rounded-[18px] px-4 py-3 text-sm ${
                       fromCustomer
-                        ? "bg-[var(--accent)] text-black"
-                        : "bg-[var(--surface-raised)] text-foreground"
+                        ? "bg-[#2563EB] text-white"
+                        : "bg-[#F8FAFC] text-[#0F172A] border border-[#E2E8F0]"
                     }`}
                   >
                     <p className="font-semibold">
@@ -300,20 +300,20 @@ export default function MyRequestsPage() {
   const { data: requests, isLoading, error } = useQuery(getMyRequests);
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
+    <div className="mx-auto max-w-5xl space-y-6 p-6 bg-[#F8FAFC] min-h-screen">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-[#0F172A]">
             My Bookings & Repairs
           </h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+          <p className="mt-1 text-sm text-[#475569]">
             Track service request status, booking details, and messages in one
             place.
           </p>
         </div>
         <Link
           to="/request-service"
-          className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black"
+          className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
         >
           <Wrench className="size-4" /> Request Service
         </Link>
@@ -324,20 +324,20 @@ export default function MyRequestsPage() {
           {[0, 1].map((item) => (
             <div
               key={item}
-              className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-5"
+              className="rounded-[24px] border border-[#E2E8F0] bg-white p-5"
             >
-              <div className="h-5 w-1/2 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-6 h-16 animate-pulse rounded-[18px] bg-[var(--surface-overlay)]" />
+              <div className="h-5 w-1/2 animate-pulse rounded bg-[#F8FAFC]" />
+              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[#F8FAFC]" />
+              <div className="mt-6 h-16 animate-pulse rounded-[18px] bg-[#F8FAFC]" />
             </div>
           ))}
         </div>
       )}
 
       {!isLoading && error && (
-        <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-8">
-          <p className="text-lg font-semibold">Requests could not load</p>
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+        <div className="rounded-[24px] border border-[#E2E8F0] bg-white p-8">
+          <p className="text-lg font-semibold text-[#0F172A]">Requests could not load</p>
+          <p className="mt-2 text-sm text-[#475569]">
             Refresh the page and try again. If this keeps happening, contact
             TheHelper support with the email on your account.
           </p>
@@ -345,16 +345,16 @@ export default function MyRequestsPage() {
       )}
 
       {!isLoading && !error && !requests?.length && (
-        <div className="flex flex-col items-center space-y-3 rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-12 text-center">
-          <Wrench className="size-10 text-[var(--accent)]" />
-          <p className="text-lg font-semibold">No service requests yet</p>
-          <p className="text-sm text-[var(--text-tertiary)]">
+        <div className="flex flex-col items-center space-y-3 rounded-[24px] border border-[#E2E8F0] bg-white p-12 text-center">
+          <Wrench className="size-10 text-[#2563EB]" />
+          <p className="text-lg font-semibold text-[#0F172A]">No service requests yet</p>
+          <p className="text-sm text-[#94A3B8]">
             Submit your first request to start tracking booking updates and
             messages.
           </p>
           <Link
             to="/request-service"
-            className="mt-2 rounded-[22px] bg-[var(--accent)] px-6 py-2.5 text-sm font-bold text-black"
+            className="mt-2 rounded-[22px] bg-[#2563EB] px-6 py-2.5 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
           >
             Request a Service
           </Link>

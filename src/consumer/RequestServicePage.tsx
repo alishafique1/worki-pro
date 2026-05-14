@@ -93,30 +93,30 @@ const isValidPostal = (v: string) => v.replace(/\s+/g, '').length >= 6 && ACTIVE
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const inputCls =
-  'w-full p-4 rounded-[18px] border-2 border-[var(--border-default)] bg-[var(--surface-raised)] ' +
-  'text-foreground placeholder:text-[var(--text-secondary)] focus:border-[var(--accent)] focus:outline-none transition-colors';
+  'w-full p-4 rounded-[18px] border-2 border-[#E2E8F0] bg-white ' +
+  'text-foreground placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none transition-colors';
 
 const chipCls = (active: boolean) =>
   `px-4 py-2.5 rounded-full border-2 text-sm font-bold transition-all duration-150 active:scale-95 cursor-pointer ` +
   (active
-    ? 'border-[var(--accent)] bg-[var(--accent)]/15 text-foreground'
-    : 'border-[var(--border-default)] bg-[var(--surface-base)] text-[var(--text-secondary)] hover:border-[var(--accent)]/50');
+    ? 'border-[#2563EB] bg-[#EFF6FF] text-[#2563EB]'
+    : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-[#2563EB]/50');
 
 const ctaCls =
-  'w-full py-4 bg-[var(--accent)] text-black font-black rounded-[22px] mt-8 ' +
-  'hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed';
+  'w-full py-4 bg-[#2563EB] text-white font-black rounded-[22px] mt-8 ' +
+  'hover:bg-[#1D4ED8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed';
 
 const TOTAL_STEPS = 4;
 
 function ProgressBar({ step }: { step: number }) {
   return (
     <div className="mb-8">
-      <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">
+      <span className="text-xs font-bold text-[#475569] uppercase tracking-widest">
         Step {step} of {TOTAL_STEPS}
       </span>
-      <div className="h-1 bg-[var(--border-default)] rounded-full mt-2">
+      <div className="h-1 bg-[#E2E8F0] rounded-full mt-2">
         <div
-          className="h-1 bg-[var(--accent)] rounded-full transition-all duration-500"
+          className="h-1 bg-[#2563EB] rounded-full transition-all duration-500"
           style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
         />
       </div>
@@ -129,7 +129,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="mb-4 text-sm font-bold text-[var(--text-secondary)] hover:text-foreground transition-colors"
+      className="mb-4 text-sm font-bold text-[#475569] hover:text-foreground transition-colors"
     >
       ← Back
     </button>
@@ -290,7 +290,7 @@ export default function RequestServicePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--surface-base)] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
 
         {/* progress — only on data-entry steps */}
@@ -303,19 +303,19 @@ export default function RequestServicePage() {
           {step === 1 && (
             <div>
               <h1 className="text-3xl font-black text-foreground mb-1">What do you need help with?</h1>
-              <p className="text-sm text-[var(--text-secondary)] mb-8">Tap to get started.</p>
+              <p className="text-sm text-[#475569] mb-8">Tap to get started.</p>
               <div className="flex flex-col gap-3">
                 {SERVICE_CARDS.map(card => (
                   <button
                     key={card.slug}
                     type="button"
                     onClick={() => { set('serviceType', card.slug); setStep(2); }}
-                    className="w-full flex items-center gap-4 p-5 rounded-[24px] border-2 border-[var(--border-default)] bg-[var(--surface-base)] hover:border-[var(--accent)] hover:bg-[var(--accent)]/5 text-left transition-all duration-200 active:scale-[0.98]"
+                    className="w-full flex items-center gap-4 p-5 rounded-[24px] border-2 border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:bg-[#EFF6FF] text-left transition-all duration-200 active:scale-[0.98]"
                   >
                     <span className="text-4xl shrink-0">{card.icon}</span>
                     <div>
                       <p className="text-lg font-black text-foreground">{card.label}</p>
-                      <p className="text-sm text-[var(--text-secondary)]">{card.description}</p>
+                      <p className="text-sm text-[#475569]">{card.description}</p>
                     </div>
                   </button>
                 ))}
@@ -443,7 +443,7 @@ export default function RequestServicePage() {
 
               {/* Urgency — 3 inline chips */}
               <div className="mt-6">
-                <p className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-3">How soon?</p>
+                <p className="text-xs font-bold text-[#475569] uppercase tracking-widest mb-3">How soon?</p>
                 <div className="flex gap-2">
                   {URGENCY_CHIPS.map(opt => (
                     <button
@@ -469,12 +469,12 @@ export default function RequestServicePage() {
           {step === 3 && (
             <div>
               <h1 className="text-3xl font-black text-foreground mb-1">Where and how to reach you</h1>
-              <p className="text-sm text-[var(--text-secondary)] mb-8">A pro will text you within 15 minutes.</p>
+              <p className="text-sm text-[#475569] mb-8">A pro will text you within 15 minutes.</p>
 
               <div className="flex flex-col gap-4">
                 {/* Postal code */}
                 <div>
-                  <label className="block text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-2">
+                  <label className="block text-xs font-bold text-[#475569] uppercase tracking-widest mb-2">
                     Postal code
                   </label>
                   <input
@@ -487,10 +487,10 @@ export default function RequestServicePage() {
                     className={inputCls}
                   />
                   {postalOk && postalCity && (
-                    <p className="mt-2 text-sm text-[var(--accent)] font-bold">✓ We serve {postalCity}</p>
+                    <p className="mt-2 text-sm text-[#2563EB] font-bold">✓ We serve {postalCity}</p>
                   )}
                   {postalTooLong && (
-                    <div className="mt-3 p-4 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-overlay)]">
+                    <div className="mt-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]">
                       <p className="text-sm text-foreground font-bold mb-2">We're not in your area yet — expanding soon.</p>
                       {!notifyDone ? (
                         <form onSubmit={async e => {
@@ -517,18 +517,18 @@ export default function RequestServicePage() {
                             placeholder="your@email.com"
                             value={notifyEmail}
                             onChange={e => setNotifyEmail(e.target.value)}
-                            className="flex-1 p-3 rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-base)] text-foreground text-sm placeholder:text-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                            className="flex-1 p-3 rounded-[12px] border border-[#E2E8F0] bg-white text-foreground text-sm placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-colors"
                           />
                           <button
                             type="submit"
                             disabled={notifySubmitting}
-                            className="px-4 py-2 bg-[var(--accent)] text-black text-sm font-black rounded-[12px] hover:opacity-90 transition-all disabled:opacity-50"
+                            className="px-4 py-2 bg-[#2563EB] text-white text-sm font-black rounded-[12px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
                           >
                             {notifySubmitting ? '…' : 'Notify me'}
                           </button>
                         </form>
                       ) : (
-                        <p className="text-sm text-[var(--text-secondary)]">Got it — we'll let you know!</p>
+                        <p className="text-sm text-[#475569]">Got it — we'll let you know!</p>
                       )}
                     </div>
                   )}
@@ -536,7 +536,7 @@ export default function RequestServicePage() {
 
                 {/* Name */}
                 <div>
-                  <label className="block text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-2">
+                  <label className="block text-xs font-bold text-[#475569] uppercase tracking-widest mb-2">
                     First name
                   </label>
                   <input
@@ -550,7 +550,7 @@ export default function RequestServicePage() {
 
                 {/* Phone */}
                 <div>
-                  <label className="block text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-2">
+                  <label className="block text-xs font-bold text-[#475569] uppercase tracking-widest mb-2">
                     Mobile number
                   </label>
                   <input
@@ -564,16 +564,16 @@ export default function RequestServicePage() {
               </div>
 
               {/* CASL consent */}
-              <label className="mt-5 flex items-start gap-3 p-4 rounded-[18px] border-2 border-[var(--border-default)] bg-[var(--surface-overlay)] cursor-pointer">
+              <label className="mt-5 flex items-start gap-3 p-4 rounded-[18px] border-2 border-[#E2E8F0] bg-[#F8FAFC] cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.smsConsent}
                   onChange={e => set('smsConsent', e.target.checked)}
-                  className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--accent)]"
+                  className="mt-0.5 h-5 w-5 shrink-0 accent-[#2563EB]"
                 />
                 <span className="text-sm text-foreground">
                   I agree to receive text updates from Worki about this request.
-                  <span className="block text-xs text-[var(--text-secondary)] mt-1">Reply STOP anytime. Standard rates may apply.</span>
+                  <span className="block text-xs text-[#475569] mt-1">Reply STOP anytime. Standard rates may apply.</span>
                 </span>
               </label>
 
@@ -596,12 +596,12 @@ export default function RequestServicePage() {
           {step === 4 && (
             <div>
               <h1 className="text-3xl font-black text-foreground mb-1">Verify your number</h1>
-              <p className="text-sm text-[var(--text-secondary)] mb-8">
+              <p className="text-sm text-[#475569] mb-8">
                 We sent a 6-digit code to {form.phone}. Enter it below to confirm your request.
               </p>
 
               <div>
-                <label className="block text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-2">
+                <label className="block text-xs font-bold text-[#475569] uppercase tracking-widest mb-2">
                   Verification code
                 </label>
                 <input
@@ -629,7 +629,7 @@ export default function RequestServicePage() {
                 {otpVerifying ? 'Verifying…' : 'Confirm & submit request'}
               </button>
 
-              <p className="mt-4 text-center text-sm text-[var(--text-secondary)]">
+              <p className="mt-4 text-center text-sm text-[#475569]">
                 Didn't receive it?{' '}
                 <button
                   type="button"
@@ -646,26 +646,25 @@ export default function RequestServicePage() {
           {/* ── STEP 5: Confirmation ─────────────────────────────────────── */}
           {step === 5 && (
             <div className="text-center py-8">
-              <div className="mx-auto w-20 h-20 rounded-full bg-[var(--accent)]/10 border-2 border-[var(--accent)] flex items-center justify-center mb-6">
-                <span className="text-4xl font-black" style={{ color: 'var(--accent)' }}>✓</span>
+              <div className="mx-auto w-20 h-20 rounded-full bg-[#EFF6FF] border-2 border-[#2563EB] flex items-center justify-center mb-6">
+                <span className="text-4xl font-black text-[#2563EB]">✓</span>
               </div>
               <h1 className="text-3xl font-black text-foreground mb-3">Your request is in.</h1>
-              <p className="text-base text-[var(--text-secondary)] max-w-sm mx-auto mb-8">
+              <p className="text-base text-[#475569] max-w-sm mx-auto mb-8">
                 Matching you with a verified{' '}
                 {form.serviceType ? SERVICE_DISPLAY[form.serviceType as Exclude<ServiceSlug, ''>] : 'service'}{' '}
                 pro near {form.postalCode}. Expect a text within 15 minutes.
               </p>
 
-              <div className="h-px bg-[var(--border-default)] my-6" />
+              <div className="h-px bg-[#E2E8F0] my-6" />
 
-              <p className="text-xs text-[var(--text-secondary)] mb-4">
+              <p className="text-xs text-[#475569] mb-4">
                 You earn points when your job is completed. No extra steps.
               </p>
               <button
                 type="button"
                 onClick={() => navigate(user ? '/dashboard' : '/signup')}
-                className="text-sm font-bold hover:underline"
-                style={{ color: 'var(--accent)' }}
+                className="text-sm font-bold text-[#2563EB] hover:underline"
               >
                 {user ? 'Go to your dashboard →' : 'Create a free account →'}
               </button>

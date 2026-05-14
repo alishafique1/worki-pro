@@ -53,7 +53,7 @@ function ProviderMessageComposer({ requestId }: { requestId: string }) {
 
   return (
     <div className="mt-4 space-y-1.5">
-      {sendError && <p className="text-xs text-red-400">{sendError}</p>}
+      {sendError && <p className="text-xs text-red-600">{sendError}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
         <label className="sr-only" htmlFor={`provider-message-${requestId}`}>
           Message customer
@@ -64,12 +64,12 @@ function ProviderMessageComposer({ requestId }: { requestId: string }) {
           onChange={(event) => setBody(event.target.value)}
           placeholder="Send an update to the customer..."
           maxLength={1000}
-          className="min-w-0 flex-1 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-base)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+          className="min-w-0 flex-1 rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A] placeholder:text-[#94A3B8]"
         />
         <button
           type="submit"
           disabled={isSending || !body.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
         </button>
@@ -132,23 +132,23 @@ function AppointmentCard({ appt }: { appt: any }) {
   };
 
   return (
-    <article className="space-y-5 rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6 shadow-sm">
+    <article className="space-y-5 rounded-[24px] border border-[#E2E8F0] bg-white p-6 shadow-sm">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
         <div className="min-w-0">
           <div className="mb-3 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-[var(--surface-overlay)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
+            <span className="rounded-full bg-[#EFF6FF] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#2563EB] border border-[#BFDBFE]">
               {formatStatus(appt.status)}
             </span>
             {request?.urgency && (
-              <span className="rounded-full bg-[var(--surface-overlay)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
+              <span className="rounded-full bg-[#F8FAFC] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#475569] border border-[#E2E8F0]">
                 {request.urgency}
               </span>
             )}
           </div>
-          <h2 className="text-xl font-bold leading-snug">
+          <h2 className="text-xl font-bold leading-snug text-[#0F172A]">
             {request?.description || "Customer request"}
           </h2>
-          <div className="mt-3 grid gap-2 text-sm text-[var(--text-secondary)] sm:grid-cols-2">
+          <div className="mt-3 grid gap-2 text-sm text-[#475569] sm:grid-cols-2">
             <p className="flex items-center gap-2">
               <UserRound className="size-4" /> {request?.name || "Customer"}
             </p>
@@ -165,41 +165,41 @@ function AppointmentCard({ appt }: { appt: any }) {
             <button
               onClick={handleComplete}
               disabled={isCompleting}
-              className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#567a58] px-5 py-3 text-sm font-bold text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#22C55E] px-5 py-3 text-sm font-bold text-white hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CheckCircle2 className="size-4" /> {isCompleting ? 'Completing…' : 'Mark Completed'}
             </button>
-            {completeError && <p className="text-xs text-red-400 text-right">{completeError}</p>}
+            {completeError && <p className="text-xs text-red-600 text-right">{completeError}</p>}
           </div>
         )}
         {completed && (
-          <span className="px-4 py-2 rounded-full bg-[#567a58]/20 text-[#567a58] text-sm font-bold border border-[#567a58]/30">
+          <span className="px-4 py-2 rounded-full bg-[#F0FDF4] text-[#15803D] text-sm font-bold border border-green-200">
             ✓ Completed
           </span>
         )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
-          <div className="mb-4 flex items-center gap-2 text-sm font-bold">
-            <Clock3 className="size-4 text-[var(--accent)]" /> Booking controls
+        <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+          <div className="mb-4 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+            <Clock3 className="size-4 text-[#2563EB]" /> Booking controls
           </div>
           <div className="space-y-4">
-            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+            <label className="block text-sm font-semibold text-[#475569]">
               Appointment date and time
               <input
                 type="datetime-local"
                 value={scheduledAt}
                 onChange={(event) => setScheduledAt(event.target.value)}
-                className="mt-2 w-full rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+                className="mt-2 w-full rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A]"
               />
             </label>
-            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+            <label className="block text-sm font-semibold text-[#475569]">
               Repair status
               <select
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-                className="mt-2 w-full rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+                className="mt-2 w-full rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A]"
               >
                 <option value="PROPOSED">Proposed</option>
                 <option value="CONFIRMED">Confirmed</option>
@@ -208,40 +208,40 @@ function AppointmentCard({ appt }: { appt: any }) {
                 <option value="NO_SHOW">No show</option>
               </select>
             </label>
-            <label className="block text-sm font-semibold text-[var(--text-secondary)]">
+            <label className="block text-sm font-semibold text-[#475569]">
               Internal/provider notes
               <textarea
                 rows={3}
                 value={providerNotes}
                 onChange={(event) => setProviderNotes(event.target.value)}
-                className="mt-2 w-full resize-none rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
+                className="mt-2 w-full resize-none rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A] placeholder:text-[#94A3B8]"
                 placeholder="Parts needed, arrival window, access notes..."
               />
             </label>
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="w-full rounded-[18px] bg-[var(--accent)] px-5 py-3 text-sm font-bold text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSaving ? "Saving..." : "Save booking update"}
             </button>
             {saveStatus === 'success' && (
-              <p className="text-xs text-green-400 text-center">✓ Appointment updated</p>
+              <p className="text-xs text-[#15803D] text-center">✓ Appointment updated</p>
             )}
             {saveStatus === 'error' && saveError && (
-              <p className="text-xs text-red-400 text-center">{saveError}</p>
+              <p className="text-xs text-red-600 text-center">{saveError}</p>
             )}
           </div>
         </div>
 
-        <div className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-base)] p-4">
-          <div className="mb-3 flex items-center gap-2 text-sm font-bold">
-            <MessageSquareText className="size-4 text-[var(--accent)]" />{" "}
+        <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+          <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+            <MessageSquareText className="size-4 text-[#2563EB]" />{" "}
             Customer messages
           </div>
           <div className="max-h-80 space-y-3 overflow-y-auto pr-1">
             {messages.length === 0 ? (
-              <p className="text-sm text-[var(--text-secondary)]">
+              <p className="text-sm text-[#475569]">
                 No customer messages yet. Send the first update after
                 scheduling.
               </p>
@@ -258,15 +258,15 @@ function AppointmentCard({ appt }: { appt: any }) {
                     <div
                       className={`max-w-[85%] rounded-[18px] px-4 py-3 text-sm ${
                         fromProvider
-                          ? "bg-[var(--accent)] text-black"
-                          : "bg-[var(--surface-raised)] text-foreground"
+                          ? "bg-[#2563EB] text-white"
+                          : "bg-white border border-[#E2E8F0] text-[#0F172A]"
                       }`}
                     >
                       <p className="font-semibold">
                         {fromProvider ? "You" : message.from}
                       </p>
                       <p className="mt-1 leading-5">{message.body}</p>
-                      <p className="mt-2 text-[10px] opacity-70">
+                      <p className={`mt-2 text-[10px] opacity-70 ${fromProvider ? 'text-white' : 'text-[#475569]'}`}>
                         {new Date(message.createdAt).toLocaleString()}
                       </p>
                     </div>
@@ -287,13 +287,13 @@ export default function ProviderAppointmentsPage() {
   const { data: appts, isLoading, error } = useQuery(getProviderAppointments);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 p-8">
+    <div className="mx-auto max-w-6xl space-y-8 p-8 bg-[#F8FAFC] min-h-screen">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight">
+          <h1 className="text-4xl font-bold tracking-tight text-[#0F172A]">
             Bookings & Repairs
           </h1>
-          <p className="mt-2 text-[var(--text-secondary)]">
+          <p className="mt-2 text-[#475569]">
             Set appointment details, update repair status, and message customers
             for accepted work.
           </p>
@@ -301,13 +301,13 @@ export default function ProviderAppointmentsPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             to="/provider/dashboard"
-            className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-bold hover:border-[var(--accent)]"
+            className="rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors"
           >
             Dashboard
           </Link>
           <Link
             to="/provider/leads"
-            className="rounded-[18px] bg-[var(--accent)] px-4 py-2 text-sm font-bold text-black"
+            className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
           >
             View leads
           </Link>
@@ -319,20 +319,20 @@ export default function ProviderAppointmentsPage() {
           {[0, 1].map((item) => (
             <div
               key={item}
-              className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6"
+              className="rounded-[24px] border border-[#E2E8F0] bg-white p-6"
             >
-              <div className="h-5 w-1/2 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[var(--surface-overlay)]" />
-              <div className="mt-6 h-24 animate-pulse rounded-[18px] bg-[var(--surface-overlay)]" />
+              <div className="h-5 w-1/2 animate-pulse rounded bg-[#EFF6FF]" />
+              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[#EFF6FF]" />
+              <div className="mt-6 h-24 animate-pulse rounded-[18px] bg-[#EFF6FF]" />
             </div>
           ))}
         </div>
       )}
 
       {!isLoading && error && (
-        <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-8">
-          <p className="text-lg font-semibold">Appointments could not load</p>
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+        <div className="rounded-[24px] border border-[#E2E8F0] bg-white p-8">
+          <p className="text-lg font-semibold text-[#0F172A]">Appointments could not load</p>
+          <p className="mt-2 text-sm text-[#475569]">
             Refresh the page and try again before updating bookings or sending
             messages.
           </p>
@@ -340,15 +340,15 @@ export default function ProviderAppointmentsPage() {
       )}
 
       {!isLoading && !error && appts?.length === 0 && (
-        <div className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-10 text-center text-[var(--text-secondary)]">
-          <p className="font-semibold text-foreground">No appointments yet</p>
+        <div className="rounded-[24px] border border-[#E2E8F0] bg-white p-10 text-center text-[#475569]">
+          <p className="font-semibold text-[#0F172A]">No appointments yet</p>
           <p className="mt-2 text-sm">
             Accepted leads will appear here so you can add schedule details and
             customer updates.
           </p>
           <Link
             to="/provider/leads"
-            className="mt-4 inline-block text-sm font-bold text-[var(--accent)] hover:underline"
+            className="mt-4 inline-block text-sm font-bold text-[#2563EB] hover:underline"
           >
             Open lead inbox →
           </Link>

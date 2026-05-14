@@ -118,38 +118,38 @@ export default function OnboardingPage() {
   }
 
   const inputClass =
-    'w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] px-4 py-3 text-foreground placeholder:text-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent)] transition-colors';
-  const labelClass = 'block text-sm font-semibold text-[var(--text-secondary)] mb-1.5';
+    'w-full bg-white border border-[#E2E8F0] rounded-[14px] px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors';
+  const labelClass = 'block text-sm font-semibold text-[#475569] mb-1.5';
 
   return (
-    <div className="min-h-screen bg-[var(--surface-base)] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-[var(--accent)] rounded-full flex items-center justify-center font-black text-black text-sm">W</div>
-            <span className="text-xl font-black tracking-tight">Worki</span>
+            <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">W</div>
+            <span className="text-xl font-black tracking-tight text-[#0F172A]">Worki</span>
           </div>
-          <h2 className="text-2xl font-black tracking-tight">Set up your account</h2>
-          <p className="text-[var(--text-secondary)] text-sm mt-1">Step {step} of {totalSteps}</p>
+          <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Set up your account</h2>
+          <p className="text-[#475569] text-sm mt-1">Step {step} of {totalSteps}</p>
         </div>
 
         {/* Progress bar */}
-        <div className="h-1.5 bg-[var(--surface-raised)] rounded-full mb-8 overflow-hidden">
+        <div className="h-1.5 bg-[#E2E8F0] rounded-full mb-8 overflow-hidden">
           <div
-            className="h-full bg-[var(--accent)] transition-all duration-700 ease-out rounded-full"
+            className="h-full bg-[#2563EB] transition-all duration-700 ease-out rounded-full"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         {/* Card */}
-        <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-8 shadow-2xl">
+        <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 shadow-lg">
 
           {/* Step 1 — Role Selection */}
           {step === 1 && (
             <div className="animate-in fade-in slide-in-from-right-4 duration-300">
-              <h3 className="text-xl font-black mb-2">How will you use Worki?</h3>
-              <p className="text-[var(--text-secondary)] text-sm mb-6">Choose your role to get started.</p>
+              <h3 className="text-xl font-black mb-2 text-[#0F172A]">How will you use Worki?</h3>
+              <p className="text-[#475569] text-sm mb-6">Choose your role to get started.</p>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { role: 'CONSUMER' as Role, icon: '🏠', title: 'Homeowner', desc: 'I need home services' },
@@ -161,13 +161,13 @@ export default function OnboardingPage() {
                     onClick={() => updateForm('role', option.role)}
                     className={`border-2 rounded-[24px] p-8 cursor-pointer transition-all text-left ${
                       form.role === option.role
-                        ? 'border-[var(--accent)] bg-[var(--surface-raised)]'
-                        : 'border-[var(--border-default)] bg-[var(--surface-overlay)] hover:border-[var(--text-secondary)]'
+                        ? 'border-[#2563EB] bg-[#EFF6FF]'
+                        : 'border-[#E2E8F0] bg-white hover:border-[#94A3B8]'
                     }`}
                   >
                     <div className="text-3xl mb-3">{option.icon}</div>
-                    <p className="font-bold text-sm">{option.title}</p>
-                    <p className="text-xs text-[var(--text-secondary)] mt-1">{option.desc}</p>
+                    <p className="font-bold text-sm text-[#0F172A]">{option.title}</p>
+                    <p className="text-xs text-[#475569] mt-1">{option.desc}</p>
                   </button>
                 ))}
               </div>
@@ -178,8 +178,8 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="animate-in fade-in slide-in-from-right-4 duration-300 space-y-4">
               <div>
-                <h3 className="text-xl font-black mb-1">Your profile</h3>
-                <p className="text-[var(--text-secondary)] text-sm mb-5">Tell us a bit about yourself.</p>
+                <h3 className="text-xl font-black mb-1 text-[#0F172A]">Your profile</h3>
+                <p className="text-[#475569] text-sm mb-5">Tell us a bit about yourself.</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -226,11 +226,11 @@ export default function OnboardingPage() {
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="mt-0.5 accent-[var(--accent)]"
+                  className="mt-0.5 accent-[#2563EB]"
                   checked={form.smsConsent}
                   onChange={e => updateForm('smsConsent', e.target.checked)}
                 />
-                <span className="text-sm text-[var(--text-secondary)]">
+                <span className="text-sm text-[#475569]">
                   I agree to receive SMS updates about my service requests
                 </span>
               </label>
@@ -244,7 +244,7 @@ export default function OnboardingPage() {
                     value={form.referralCode}
                     onChange={e => updateForm('referralCode', e.target.value.toUpperCase())}
                   />
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">Have a friend's referral code? Enter it to earn 500 bonus points each.</p>
+                  <p className="text-xs text-[#475569] mt-1">Have a friend's referral code? Enter it to earn 500 bonus points each.</p>
                 </div>
               )}
             </div>
@@ -254,8 +254,8 @@ export default function OnboardingPage() {
           {step === 3 && form.role === 'PROVIDER' && (
             <div className="animate-in fade-in slide-in-from-right-4 duration-300 space-y-4">
               <div>
-                <h3 className="text-xl font-black mb-1">Business details</h3>
-                <p className="text-[var(--text-secondary)] text-sm mb-5">
+                <h3 className="text-xl font-black mb-1 text-[#0F172A]">Business details</h3>
+                <p className="text-[#475569] text-sm mb-5">
                   Your profile will be reviewed and approved by our team before you can receive leads.
                 </p>
               </div>
@@ -278,7 +278,7 @@ export default function OnboardingPage() {
                   value={form.serviceAreas}
                   onChange={e => updateForm('serviceAreas', e.target.value)}
                 />
-                <p className="text-xs text-[var(--text-secondary)] mt-1">Comma-separated postal codes or city names</p>
+                <p className="text-xs text-[#475569] mt-1">Comma-separated postal codes or city names</p>
               </div>
             </div>
           )}
@@ -296,7 +296,7 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="px-6 py-3 font-bold text-[var(--text-secondary)] hover:text-foreground transition-colors"
+                className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
               >
                 ← Back
               </button>
@@ -307,7 +307,7 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleNext}
               disabled={isSubmitting}
-              className="px-8 py-3 bg-[var(--accent)] text-black font-bold rounded-[22px] hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
             >
               {isSubmitting
                 ? 'Saving…'

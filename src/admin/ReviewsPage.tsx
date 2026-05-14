@@ -3,9 +3,9 @@ import { useQuery, useAction } from "wasp/client/operations";
 import { getAdminReviews, moderateReview } from "wasp/client/operations";
 
 const STATUS_BADGES: Record<string, string> = {
-  PUBLISHED: "bg-green-400/10 text-green-400 border-green-400/30",
-  PENDING: "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
-  REJECTED: "bg-red-400/10 text-red-400 border-red-400/30",
+  PUBLISHED: "bg-green-50 text-[#22C55E] border-green-200",
+  PENDING: "bg-[#FEF3C7] text-[#F59E0B] border-amber-200",
+  REJECTED: "bg-red-50 text-red-600 border-red-200",
 };
 
 import { useRoleGuard } from '../shared/useRoleGuard';
@@ -46,7 +46,7 @@ export default function AdminReviewsPage() {
         </div>
       )}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-black">Review Moderation</h1>
+        <h1 className="text-3xl font-black text-[#0F172A]">Review Moderation</h1>
         <div className="flex gap-2">
           {["ALL", "PENDING", "PUBLISHED", "REJECTED"].map((s) => (
             <button
@@ -54,8 +54,8 @@ export default function AdminReviewsPage() {
               onClick={() => setFilterStatus(s)}
               className={`px-4 py-2 rounded-[12px] text-sm font-bold border transition-all ${
                 filterStatus === s
-                  ? "bg-[var(--accent)] text-black border-transparent"
-                  : "border-[var(--border-default)] text-[var(--text-secondary)] hover:border-[var(--accent)]"
+                  ? "bg-[#2563EB] text-white border-transparent"
+                  : "border-[#E2E8F0] text-[#475569] hover:border-[#2563EB]"
               }`}
             >
               {s === "ALL" ? "All" : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -67,17 +67,17 @@ export default function AdminReviewsPage() {
       {isLoading && (
         <div className="space-y-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="animate-pulse h-24 bg-[var(--surface-raised)] rounded-[16px]" />
+            <div key={i} className="animate-pulse h-24 bg-[#F8FAFC] rounded-[16px]" />
           ))}
         </div>
       )}
 
       {error && (
-        <p className="text-red-400 text-sm">Failed to load reviews.</p>
+        <p className="text-red-600 text-sm">Failed to load reviews.</p>
       )}
 
       {!isLoading && !error && (!filtered || filtered.length === 0) && (
-        <p className="text-[var(--text-secondary)] text-sm py-8 text-center">
+        <p className="text-[#475569] text-sm py-8 text-center">
           No reviews found.
         </p>
       )}
@@ -86,7 +86,7 @@ export default function AdminReviewsPage() {
         {filtered?.map((review: any) => (
           <div
             key={review.id}
-            className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-raised)] p-6"
+            className="rounded-[18px] border border-[#E2E8F0] bg-white p-6"
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
@@ -95,7 +95,7 @@ export default function AdminReviewsPage() {
                     {[1, 2, 3, 4, 5].map((s) => (
                       <svg
                         key={s}
-                        className={`w-4 h-4 ${s <= review.rating ? "text-yellow-400" : "text-[var(--border-default)]"}`}
+                        className={`w-4 h-4 ${s <= review.rating ? "text-[#F59E0B]" : "text-[#E2E8F0]"}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -108,22 +108,22 @@ export default function AdminReviewsPage() {
                   >
                     {review.status}
                   </span>
-                  <span className="text-xs text-[var(--text-secondary)]">
+                  <span className="text-xs text-[#475569]">
                     {new Date(review.createdAt).toLocaleDateString("en-CA")}
                   </span>
                 </div>
 
-                <p className="text-xs text-[var(--text-secondary)] mb-1">
+                <p className="text-xs text-[#475569] mb-1">
                   Provider:{" "}
-                  <span className="font-bold text-foreground">
+                  <span className="font-bold text-[#0F172A]">
                     {review.provider?.businessName ?? review.providerId}
                   </span>
                 </p>
 
                 {review.title && (
-                  <p className="font-bold text-sm mb-1">{review.title}</p>
+                  <p className="font-bold text-sm mb-1 text-[#0F172A]">{review.title}</p>
                 )}
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p className="text-sm text-[#475569] leading-relaxed">
                   {review.body}
                 </p>
               </div>
@@ -134,7 +134,7 @@ export default function AdminReviewsPage() {
                   <button
                     onClick={() => handleModerate(review.id, "PUBLISHED")}
                     disabled={moderatingId === review.id}
-                    className="px-4 py-2 rounded-[12px] text-sm font-bold bg-green-400/10 text-green-400 border border-green-400/30 hover:bg-green-400/20 disabled:opacity-50 transition-all"
+                    className="px-4 py-2 rounded-[12px] text-sm font-bold bg-green-50 text-[#22C55E] border border-green-200 hover:bg-green-100 disabled:opacity-50 transition-all"
                   >
                     Publish
                   </button>
@@ -143,7 +143,7 @@ export default function AdminReviewsPage() {
                   <button
                     onClick={() => handleModerate(review.id, "REJECTED")}
                     disabled={moderatingId === review.id}
-                    className="px-4 py-2 rounded-[12px] text-sm font-bold bg-red-400/10 text-red-400 border border-red-400/30 hover:bg-red-400/20 disabled:opacity-50 transition-all"
+                    className="px-4 py-2 rounded-[12px] text-sm font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 disabled:opacity-50 transition-all"
                   >
                     Reject
                   </button>

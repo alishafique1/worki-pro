@@ -52,24 +52,24 @@ export default function ContactPage() {
     return (
       <div className="p-8 max-w-2xl mx-auto min-h-[80vh] flex flex-col justify-center">
         <div className="text-center space-y-6">
-          <div className="w-20 h-20 bg-green-500/20 rounded-full mx-auto flex items-center justify-center">
-            <span className="text-4xl">✓</span>
+          <div className="w-20 h-20 bg-green-50 rounded-full mx-auto flex items-center justify-center">
+            <span className="text-4xl text-[#22C55E]">✓</span>
           </div>
-          <h1 className="text-4xl font-black tracking-tight">Thanks, {formData.name.split(' ')[0]}!</h1>
-          <p className="text-lg text-[var(--text-secondary)]">
+          <h1 className="text-4xl font-black tracking-tight text-[#0F172A]">Thanks, {formData.name.split(' ')[0]}!</h1>
+          <p className="text-lg text-[#475569]">
             We've received your message and will be in touch within 24 hours.
             A confirmation has been sent to <strong>{formData.email}</strong>.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Link
               to="/"
-              className="px-8 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[22px] font-bold hover:border-[var(--accent)] transition-colors"
+              className="px-8 py-4 bg-white border border-[#E2E8F0] rounded-[22px] font-bold hover:border-[#2563EB] transition-colors text-[#0F172A]"
             >
               Back to Home
             </Link>
             <Link
               to="/discover"
-              className="px-8 py-4 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] hover:scale-105 transition-transform"
+              className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
             >
               Browse Service Pros
             </Link>
@@ -82,44 +82,44 @@ export default function ContactPage() {
   return (
     <div className="p-8 max-w-2xl mx-auto min-h-[80vh] flex flex-col justify-center">
       <div className="mb-12 flex flex-col items-center text-center">
-        <h1 className="text-5xl font-black tracking-tighter mb-4">Get in Touch</h1>
-        <p className="text-[var(--text-secondary)]">Tell us what you need — we'll match you with the right pro.</p>
+        <h1 className="text-5xl font-black tracking-tighter mb-4 text-[#0F172A]">Get in Touch</h1>
+        <p className="text-[#475569]">Tell us what you need — we'll match you with the right pro.</p>
       </div>
 
-      <div className="w-full bg-[var(--surface-overlay)] h-1.5 rounded-full mb-12 overflow-hidden max-w-md mx-auto">
+      <div className="w-full bg-[#E2E8F0] h-1.5 rounded-full mb-12 overflow-hidden max-w-md mx-auto">
         <div
-          className="h-full bg-[var(--accent)] transition-all duration-700 ease-out"
+          className="h-full bg-[#2563EB] transition-all duration-700 ease-out"
           style={{ width: `${(step / 2) * 100}%` }}
         />
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-[var(--surface-raised)] border border-[var(--border-default)] p-10 rounded-[32px] shadow-xl relative overflow-hidden"
+        className="bg-white border border-[#E2E8F0] p-10 rounded-[32px] shadow-xl relative overflow-hidden"
       >
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold">About you</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A]">About you</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Full Name *</label>
+                <label className="block text-sm text-[#475569] mb-2 font-medium">Full Name *</label>
                 <input
                   required
                   type="text"
                   placeholder="Amir Patel"
-                  className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Email Address *</label>
+                <label className="block text-sm text-[#475569] mb-2 font-medium">Email Address *</label>
                 <input
                   required
                   type="email"
                   placeholder="amir@example.com"
-                  className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -128,22 +128,22 @@ export default function ContactPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Phone Number</label>
+                <label className="block text-sm text-[#475569] mb-2 font-medium">Phone Number</label>
                 <input
                   type="tel"
                   placeholder="(289) 555-0100"
-                  className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Postal Code</label>
+                <label className="block text-sm text-[#475569] mb-2 font-medium">Postal Code</label>
                 <input
                   type="text"
                   placeholder="L9T 3Y5"
                   maxLength={7}
-                  className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
                   value={formData.postalCode}
                   onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                 />
@@ -154,12 +154,12 @@ export default function ContactPage() {
 
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold">What do you need help with?</h2>
+            <h2 className="text-2xl font-bold text-[#0F172A]">What do you need help with?</h2>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Service Type</label>
+              <label className="block text-sm text-[#475569] mb-2 font-medium">Service Type</label>
               <select
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors appearance-none cursor-pointer"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors appearance-none cursor-pointer"
                 value={formData.serviceType}
                 onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
               >
@@ -172,18 +172,18 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-[var(--text-secondary)] mb-2 font-medium">Message</label>
+              <label className="block text-sm text-[#475569] mb-2 font-medium">Message</label>
               <textarea
                 rows={5}
                 placeholder="Describe your project, issue, or what you're looking for..."
-                className="w-full bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-foreground focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors resize-none"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               />
             </div>
 
-            <div className="bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] p-4 text-sm text-[var(--text-secondary)]">
-              <strong className="text-foreground">No account needed.</strong> We'll follow up by email within 24 hours
+            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm text-[#475569]">
+              <strong className="text-[#0F172A]">No account needed.</strong> We'll follow up by email within 24 hours
               and match you with a vetted local pro.
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function ContactPage() {
             <button
               type="button"
               onClick={handlePrev}
-              className="flex-1 px-6 py-4 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[22px] font-bold hover:border-[var(--accent)] transition-colors"
+              className="flex-1 px-6 py-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[22px] font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors"
             >
               Back
             </button>
@@ -202,16 +202,16 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 px-6 py-4 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+            className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:hover:bg-[#2563EB]"
           >
             {isSubmitting ? 'Sending...' : step < 2 ? 'Continue' : 'Send Message'}
           </button>
         </div>
       </form>
 
-      <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
+      <p className="text-center text-sm text-[#475569] mt-6">
         Prefer to browse pros yourself?{' '}
-        <Link to="/discover" className="text-[var(--accent)] font-bold hover:underline">
+        <Link to="/discover" className="text-[#2563EB] font-bold hover:underline">
           Browse verified professionals
         </Link>
       </p>

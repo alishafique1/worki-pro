@@ -89,19 +89,19 @@ export default function ProviderServicesPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 max-w-4xl mx-auto space-y-6">
-        <div className="animate-pulse h-12 bg-[var(--surface-raised)] rounded-[14px] w-1/3" />
-        <div className="animate-pulse h-48 bg-[var(--surface-raised)] rounded-[24px]" />
-        <div className="animate-pulse h-32 bg-[var(--surface-raised)] rounded-[24px]" />
+      <div className="p-8 max-w-4xl mx-auto space-y-6 bg-[#F8FAFC] min-h-screen">
+        <div className="animate-pulse h-12 bg-[#EFF6FF] rounded-[14px] w-1/3" />
+        <div className="animate-pulse h-48 bg-[#EFF6FF] rounded-[24px]" />
+        <div className="animate-pulse h-32 bg-[#EFF6FF] rounded-[24px]" />
       </div>
     );
   }
 
   if (error || !profile) {
     return (
-      <div className="p-8 max-w-4xl mx-auto">
-        <div className="bg-[var(--surface-raised)] border border-red-500/30 rounded-[24px] p-8 text-center">
-          <p className="text-red-500 font-bold">Failed to load profile. Please try again later.</p>
+      <div className="p-8 max-w-4xl mx-auto bg-[#F8FAFC] min-h-screen">
+        <div className="bg-white border border-red-500/30 rounded-[24px] p-8 text-center">
+          <p className="text-red-600 font-bold">Failed to load profile. Please try again later.</p>
         </div>
       </div>
     );
@@ -112,23 +112,23 @@ export default function ProviderServicesPage() {
   categories.forEach(c => { categoryMap[c.serviceCategory.slug] = c.serviceCategory.name; });
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-8">
+    <div className="p-8 max-w-4xl mx-auto space-y-8 bg-[#F8FAFC] min-h-screen">
       {/* Header */}
       <div>
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Service Listings</h1>
-        <p className="text-[var(--text-secondary)] mt-2 text-lg">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0F172A]">Service Listings</h1>
+        <p className="text-[#475569] mt-2 text-lg">
           Showcase the specific services you offer — customers search by these.
         </p>
       </div>
 
       {/* Success / Error */}
       {successMsg && (
-        <div className="bg-green-500/10 border border-green-500/30 text-green-500 rounded-[14px] px-5 py-3 font-medium">
+        <div className="bg-[#F0FDF4] border border-green-200 text-[#15803D] rounded-[14px] px-5 py-3 font-medium">
           {successMsg}
         </div>
       )}
       {errorMsg && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-500 rounded-[14px] px-5 py-3 font-medium">
+        <div className="bg-red-500/10 border border-red-500/30 text-red-600 rounded-[14px] px-5 py-3 font-medium">
           {errorMsg}
         </div>
       )}
@@ -136,26 +136,26 @@ export default function ProviderServicesPage() {
       {/* Services List */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">
+          <h2 className="text-xl font-bold text-[#0F172A]">
             {existingServices.length} Service{existingServices.length !== 1 ? 's' : ''} Listed
           </h2>
           <button
             onClick={() => setShowAddForm(true)}
-            className="px-5 py-2.5 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity text-sm"
+            className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm"
           >
             + Add Service
           </button>
         </div>
 
         {existingServices.length === 0 && !showAddForm && (
-          <div className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-12 text-center">
-            <p className="text-[var(--text-secondary)] mb-4">No services listed yet.</p>
-            <p className="text-sm text-[var(--text-tertiary)]">Add services so customers can find you in search.</p>
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-12 text-center">
+            <p className="text-[#475569] mb-4">No services listed yet.</p>
+            <p className="text-sm text-[#94A3B8]">Add services so customers can find you in search.</p>
           </div>
         )}
 
         {existingServices.map((service, index) => (
-          <div key={service.id} className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-colors">
+          <div key={service.id} className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#2563EB] transition-colors">
             {editingIndex === index ? (
               <ServiceEditForm
                 service={service}
@@ -167,32 +167,32 @@ export default function ProviderServicesPage() {
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-bold text-lg">{service.name}</h3>
+                    <h3 className="font-bold text-lg text-[#0F172A]">{service.name}</h3>
                     {service.price && (
-                      <span className="px-3 py-0.5 bg-[var(--surface-overlay)] text-[var(--accent)] rounded-full text-sm font-bold">
+                      <span className="px-3 py-0.5 bg-[#EFF6FF] text-[#2563EB] rounded-full text-sm font-bold border border-[#BFDBFE]">
                         ${service.price.toFixed(2)}
                       </span>
                     )}
                     {service.categorySlug && categoryMap[service.categorySlug] && (
-                      <span className="px-3 py-0.5 bg-[var(--surface-base)] text-[var(--text-tertiary)] rounded-full text-xs font-medium">
+                      <span className="px-3 py-0.5 bg-[#F8FAFC] text-[#94A3B8] rounded-full text-xs font-medium border border-[#E2E8F0]">
                         {categoryMap[service.categorySlug]}
                       </span>
                     )}
                   </div>
                   {service.description && (
-                    <p className="text-[var(--text-secondary)] text-sm">{service.description}</p>
+                    <p className="text-[#475569] text-sm">{service.description}</p>
                   )}
                 </div>
                 <div className="flex gap-2 ml-4">
                   <button
                     onClick={() => setEditingIndex(index)}
-                    className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeleteService(index)}
-                    className="px-4 py-2 text-sm font-medium text-red-500/70 hover:text-red-500 transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-red-500/70 hover:text-red-600 transition-colors"
                   >
                     Remove
                   </button>
@@ -205,25 +205,25 @@ export default function ProviderServicesPage() {
 
       {/* Add Service Form */}
       {showAddForm && (
-        <div className="bg-[var(--surface-raised)] border-2 border-[var(--accent)] rounded-[24px] p-6 space-y-4">
-          <h3 className="font-bold text-lg">Add New Service</h3>
+        <div className="bg-white border-2 border-[#2563EB] rounded-[24px] p-6 space-y-4 shadow-sm">
+          <h3 className="font-bold text-lg text-[#0F172A]">Add New Service</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1.5">Service Name *</label>
+              <label className="block text-sm font-medium mb-1.5 text-[#475569]">Service Name *</label>
               <input
                 type="text"
                 value={newService.name}
                 onChange={e => setNewService(s => ({ ...s, name: e.target.value }))}
                 placeholder="e.g., AC Unit Repair"
-                className="w-full px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+                className="w-full px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Category *</label>
+              <label className="block text-sm font-medium mb-1.5 text-[#475569]">Category *</label>
               <select
                 value={newService.categorySlug}
                 onChange={e => setNewService(s => ({ ...s, categorySlug: e.target.value }))}
-                className="w-full px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+                className="w-full px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
               >
                 <option value="">Select category...</option>
                 {categories.map(c => (
@@ -234,7 +234,7 @@ export default function ProviderServicesPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1.5">Price (CAD, optional)</label>
+              <label className="block text-sm font-medium mb-1.5 text-[#475569]">Price (CAD, optional)</label>
               <input
                 type="number"
                 min="0"
@@ -242,31 +242,31 @@ export default function ProviderServicesPage() {
                 value={newService.price}
                 onChange={e => setNewService(s => ({ ...s, price: e.target.value }))}
                 placeholder="e.g., 89.99"
-                className="w-full px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+                className="w-full px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium mb-1.5">Description</label>
+              <label className="block text-sm font-medium mb-1.5 text-[#475569]">Description</label>
               <textarea
                 value={newService.description}
                 onChange={e => setNewService(s => ({ ...s, description: e.target.value }))}
                 placeholder="Brief description of what's included..."
                 rows={2}
-                className="w-full px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)] resize-none"
+                className="w-full px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 resize-none"
               />
             </div>
           </div>
           <div className="flex gap-3 justify-end">
             <button
               onClick={() => { setShowAddForm(false); setErrorMsg(null); }}
-              className="px-5 py-2.5 bg-[var(--surface-base)] border border-[var(--border-default)] text-[var(--text-primary)] font-medium rounded-[14px] hover:bg-[var(--surface-overlay)] transition-colors text-sm"
+              className="px-5 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] font-medium rounded-[14px] hover:border-[#2563EB] transition-colors text-sm"
             >
               Cancel
             </button>
             <button
               onClick={handleAddService}
               disabled={saving}
-              className="px-5 py-2.5 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity text-sm disabled:opacity-50"
+              className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Add Service'}
             </button>
@@ -298,7 +298,7 @@ function ServiceEditForm({ service, categoryMap, onSave, onCancel }: ServiceEdit
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+          className="px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
         />
         <input
           type="number"
@@ -307,12 +307,12 @@ function ServiceEditForm({ service, categoryMap, onSave, onCancel }: ServiceEdit
           value={price}
           onChange={e => setPrice(e.target.value)}
           placeholder="Price (CAD)"
-          className="px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+          className="px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
         />
         <select
           value={categorySlug}
           onChange={e => setCategorySlug(e.target.value)}
-          className="px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)]"
+          className="px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30"
         >
           <option value="">Select category...</option>
           {Object.entries(categoryMap).map(([slug, label]) => (
@@ -324,14 +324,14 @@ function ServiceEditForm({ service, categoryMap, onSave, onCancel }: ServiceEdit
           onChange={e => setDescription(e.target.value)}
           rows={2}
           placeholder="Description..."
-          className="px-4 py-3 bg-[var(--surface-base)] border border-[var(--border-default)] rounded-[14px] text-base focus:outline-none focus:border-[var(--accent)] resize-none"
+          className="px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] text-base text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 resize-none"
         />
       </div>
       <div className="flex gap-2 justify-end">
-        <button onClick={onCancel} className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]">Cancel</button>
+        <button onClick={onCancel} className="px-4 py-2 text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors">Cancel</button>
         <button
           onClick={() => onSave({ ...service, name, description, price: price ? parseFloat(price) : null, categorySlug })}
-          className="px-5 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[14px] hover:opacity-90 transition-opacity text-sm"
+          className="px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm"
         >
           Save Changes
         </button>

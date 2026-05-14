@@ -86,7 +86,7 @@ app OpenSaaS {
   },
 
   emailSender: {
-    provider: Dummy,
+    provider: Mailgun,
     defaultFrom: {
       name: "TheHelper",
       email: "hello@thehelper.ca"

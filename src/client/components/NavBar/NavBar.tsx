@@ -1,5 +1,5 @@
-import { LogIn, Menu } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Menu } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Link as ReactRouterLink } from "react-router";
 import { useAuth } from "wasp/client/auth";
 import { Link as WaspRouterLink, routes } from "wasp/client/router";
@@ -10,14 +10,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../client/components/ui/sheet";
-import { throttleWithTrailingInvocation } from "../../../shared/utils";
 import { UserDropdown } from "../../../user/UserDropdown";
 import { UserMenuItems } from "../../../user/UserMenuItems";
-import { useIsLandingPage } from "../../hooks/useIsLandingPage";
 import logo from "../../static/logo.webp";
 import { cn } from "../../utils";
-import DarkModeSwitcher from "../DarkModeSwitcher";
-import { Announcement } from "./Announcement";
 
 export interface NavigationItem {
   name: string;
@@ -29,228 +25,143 @@ export default function NavBar({
 }: {
   navigationItems: NavigationItem[];
 }) {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const isLandingPage = useIsLandingPage();
-
-  useEffect(() => {
-    const throttledHandler = throttleWithTrailingInvocation(() => {
-      setIsScrolled(window.scrollY > 0);
-    }, 50);
-
-    window.addEventListener("scroll", throttledHandler);
-
-    return () => {
-      window.removeEventListener("scroll", throttledHandler);
-      throttledHandler.cancel();
-    };
-  }, []);
-
   return (
-    <>
-      {isLandingPage && <Announcement />}
-      <header
-        className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
-          isScrolled && "top-4",
-        )}
+    <header className="sticky top-0 z-50 border-b border-[#E2E8F0] bg-white">
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8"
+        aria-label="Global"
       >
-        <div
-          className={cn("transition-all duration-300", {
-            "bg-background/90 border-border mx-4 rounded-full border pr-2 shadow-lg backdrop-blur-lg md:mx-20 lg:pr-0":
-              isScrolled,
-            "bg-background/80 border-border mx-0 border-b backdrop-blur-lg":
-              !isScrolled,
-          })}
+        {/* Logo */}
+        <WaspRouterLink
+          to={routes.LandingPageRoute.to}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <nav
-            className={cn(
-              "flex items-center justify-between transition-all duration-300",
-              {
-                "p-3 lg:px-6": isScrolled,
-                "p-6 lg:px-8": !isScrolled,
-              },
-            )}
-            aria-label="Global"
-          >
-            <div className="flex items-center gap-6">
-              <WaspRouterLink
-                to={routes.LandingPageRoute.to}
-                className="text-foreground hover:text-primary flex items-center transition-colors duration-300 ease-in-out"
-              >
-                <NavLogo isScrolled={isScrolled} />
-                <span
-                  className={cn(
-                    "text-foreground leading-6 font-semibold transition-all duration-300",
-                    {
-                      "ml-2 text-sm": !isScrolled,
-                      "ml-2 text-xs": isScrolled,
-                    },
-                  )}
-                >
-                  TheHelper
-                </span>
-              </WaspRouterLink>
+          <img src={logo} alt="The Helper" className="size-8" />
+          <span className="text-sm font-extrabold text-[#0F172A]">The Helper</span>
+        </WaspRouterLink>
 
-              <ul className="ml-4 hidden items-center gap-6 lg:flex">
-                {renderNavigationItems(navigationItems)}
-              </ul>
-            </div>
-            <NavBarMobileMenu
-              isScrolled={isScrolled}
-              navigationItems={navigationItems}
-            />
-            <NavBarDesktopUserDropdown isScrolled={isScrolled} />
-          </nav>
-        </div>
-      </header>
-    </>
+        {/* Desktop nav links */}
+        <ul className="hidden items-center gap-8 lg:flex">
+          {navigationItems.map((item) => (
+            <li key={item.name}>
+              <ReactRouterLink
+                to={item.to}
+                className="text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
+                target={item.to.startsWith("http") ? "_blank" : undefined}
+              >
+                {item.name}
+              </ReactRouterLink>
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop right side */}
+        <DesktopAuth />
+
+        {/* Mobile hamburger */}
+        <MobileMenu navigationItems={navigationItems} />
+      </nav>
+    </header>
   );
 }
 
-function NavBarDesktopUserDropdown({ isScrolled }: { isScrolled: boolean }) {
-  const { data: user, isLoading: isUserLoading } = useAuth();
+function DesktopAuth() {
+  const { data: user, isLoading } = useAuth();
 
   return (
-    <div className="hidden items-center justify-end gap-3 lg:flex lg:flex-1">
-      <ul className="flex items-center justify-center gap-2 sm:gap-4">
-        <DarkModeSwitcher />
-      </ul>
-      {isUserLoading ? null : !user ? (
-        <WaspRouterLink
-          to={routes.LoginRoute.to}
-          className={cn(
-            "ml-3 leading-6 font-semibold transition-all duration-300",
-            {
-              "text-sm": !isScrolled,
-              "text-xs": isScrolled,
-            },
-          )}
-        >
-          <div className="text-foreground hover:text-primary flex items-center transition-colors duration-300 ease-in-out">
-            Log in{" "}
-            <LogIn
-              size={isScrolled ? "1rem" : "1.1rem"}
-              className={cn("transition-all duration-300", {
-                "mt-[0.1rem] ml-1": !isScrolled,
-                "ml-1": isScrolled,
-              })}
-            />
-          </div>
-        </WaspRouterLink>
+    <div className="hidden items-center gap-4 lg:flex">
+      {isLoading ? null : !user ? (
+        <>
+          <WaspRouterLink
+            to={routes.LoginRoute.to}
+            className="text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
+          >
+            Log in
+          </WaspRouterLink>
+          <ReactRouterLink
+            to="/request-service"
+            className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
+          >
+            Find a Helper
+          </ReactRouterLink>
+        </>
       ) : (
-        <div className="ml-3">
-          <UserDropdown user={user} />
-        </div>
+        <UserDropdown user={user} />
       )}
     </div>
   );
 }
 
-function NavBarMobileMenu({
-  isScrolled,
+function MobileMenu({
   navigationItems,
 }: {
-  isScrolled: boolean;
   navigationItems: NavigationItem[];
 }) {
-  const { data: user, isLoading: isUserLoading } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: user, isLoading } = useAuth();
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex lg:hidden">
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <button
             type="button"
-            className={cn(
-              "text-muted-foreground hover:text-muted hover:bg-accent inline-flex items-center justify-center rounded-md transition-colors",
-            )}
+            className="inline-flex items-center justify-center rounded-md p-1.5 text-[#475569] transition-colors hover:bg-[#F8FAFC] hover:text-[#0F172A]"
           >
-            <span className="sr-only">Open main menu</span>
-            <Menu
-              className={cn("transition-all duration-300", {
-                "size-8 p-1": !isScrolled,
-                "size-6 p-0.5": isScrolled,
-              })}
-              aria-hidden="true"
-            />
+            <span className="sr-only">Open menu</span>
+            <Menu className="size-6" aria-hidden="true" />
           </button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+        <SheetContent side="right" className="w-[280px] sm:w-[360px]">
           <SheetHeader>
-            <SheetTitle className="flex items-center">
-              <WaspRouterLink to={routes.LandingPageRoute.to}>
-                <span className="sr-only">TheHelper</span>
-                <NavLogo isScrolled={false} />
+            <SheetTitle className="flex items-center gap-2">
+              <WaspRouterLink to={routes.LandingPageRoute.to} onClick={() => setOpen(false)}>
+                <img src={logo} alt="The Helper" className="size-8" />
               </WaspRouterLink>
+              <span className="text-sm font-extrabold text-[#0F172A]">The Helper</span>
             </SheetTitle>
           </SheetHeader>
-          <div className="mt-6 flow-root">
-            <div className="divide-border -my-6 divide-y">
-              <ul className="space-y-2 py-6">
-                {renderNavigationItems(navigationItems, setMobileMenuOpen)}
+
+          <div className="mt-6 flex flex-col gap-1">
+            {navigationItems.map((item) => (
+              <ReactRouterLink
+                key={item.name}
+                to={item.to}
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC] hover:text-[#2563EB]"
+                onClick={() => setOpen(false)}
+                target={item.to.startsWith("http") ? "_blank" : undefined}
+              >
+                {item.name}
+              </ReactRouterLink>
+            ))}
+          </div>
+
+          <div className="mt-6 border-t border-[#E2E8F0] pt-6">
+            {isLoading ? null : !user ? (
+              <div className="flex flex-col gap-3">
+                <WaspRouterLink
+                  to={routes.LoginRoute.to}
+                  className="text-center text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
+                  onClick={() => setOpen(false)}
+                >
+                  Log in
+                </WaspRouterLink>
+                <ReactRouterLink
+                  to="/request-service"
+                  className="rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
+                  onClick={() => setOpen(false)}
+                >
+                  Find a Helper
+                </ReactRouterLink>
+              </div>
+            ) : (
+              <ul className="space-y-1">
+                <UserMenuItems user={user} onItemClick={() => setOpen(false)} />
               </ul>
-              <div className="py-6">
-                {isUserLoading ? null : !user ? (
-                  <WaspRouterLink to={routes.LoginRoute.to}>
-                    <div className="text-foreground hover:text-primary flex items-center justify-end transition-colors duration-300 ease-in-out">
-                      Log in <LogIn size="1.1rem" className="ml-1" />
-                    </div>
-                  </WaspRouterLink>
-                ) : (
-                  <ul className="space-y-2">
-                    <UserMenuItems
-                      user={user}
-                      onItemClick={() => setMobileMenuOpen(false)}
-                    />
-                  </ul>
-                )}
-              </div>
-              <div className="py-6">
-                <DarkModeSwitcher />
-              </div>
-            </div>
+            )}
           </div>
         </SheetContent>
       </Sheet>
     </div>
   );
 }
-
-function renderNavigationItems(
-  navigationItems: NavigationItem[],
-  setMobileMenuOpen?: Dispatch<SetStateAction<boolean>>,
-) {
-  const menuStyles = cn({
-    "block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors":
-      !!setMobileMenuOpen,
-    "text-sm font-normal leading-6 text-foreground duration-300 ease-in-out hover:text-primary transition-colors":
-      !setMobileMenuOpen,
-  });
-
-  return navigationItems.map((item) => {
-    return (
-      <li key={item.name}>
-        <ReactRouterLink
-          to={item.to}
-          className={menuStyles}
-          onClick={setMobileMenuOpen && (() => setMobileMenuOpen(false))}
-          target={item.to.startsWith("http") ? "_blank" : undefined}
-        >
-          {item.name}
-        </ReactRouterLink>
-      </li>
-    );
-  });
-}
-
-const NavLogo = ({ isScrolled }: { isScrolled: boolean }) => (
-  <img
-    className={cn("transition-all duration-500", {
-      "size-8": !isScrolled,
-      "size-7": isScrolled,
-    })}
-    src={logo}
-    alt="TheHelper"
-  />
-);

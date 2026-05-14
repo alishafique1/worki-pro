@@ -108,8 +108,8 @@ export default function ListingsPage() {
     <div className="p-8 max-w-7xl mx-auto min-h-[80vh]">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-5xl font-black tracking-tighter mb-3">Service Listings</h1>
-        <p className="text-[var(--text-secondary)] text-lg">
+        <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Service Listings</h1>
+        <p className="text-[#475569] text-lg">
           Browse every service offered by verified pros in the GTA.
         </p>
       </div>
@@ -118,7 +118,7 @@ export default function ListingsPage() {
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <div className="relative flex-1">
           <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]"
             fill="none" stroke="currentColor" viewBox="0 0 24 24"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -128,14 +128,14 @@ export default function ListingsPage() {
             placeholder="Search for a service..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors"
+            className="w-full pl-12 pr-4 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors"
           />
         </div>
 
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-5 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors cursor-pointer min-w-[200px]"
+          className="px-5 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors cursor-pointer min-w-[200px]"
         >
           <option value="">All Categories</option>
           {categories?.map((cat) => (
@@ -146,7 +146,7 @@ export default function ListingsPage() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="px-5 py-4 bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[20px] text-base focus:outline-none focus:border-[var(--accent)] transition-colors cursor-pointer min-w-[160px]"
+          className="px-5 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors cursor-pointer min-w-[160px]"
         >
           <option value="name-asc">Name A–Z</option>
           <option value="price-asc">Price ↑</option>
@@ -157,7 +157,7 @@ export default function ListingsPage() {
 
       {/* Results count */}
       <div className="mb-6">
-        <p className="text-sm text-[var(--text-secondary)]">
+        <p className="text-sm text-[#475569]">
           {isLoading
             ? 'Loading...'
             : `${listings.length} service${listings.length !== 1 ? 's' : ''} found${
@@ -172,22 +172,22 @@ export default function ListingsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="animate-pulse bg-[var(--surface-raised)] rounded-[24px] h-52 border border-[var(--border-default)]" />
+            <div key={i} className="animate-pulse bg-white rounded-[24px] h-52 border border-[#E2E8F0]" />
           ))}
         </div>
       ) : listings.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-20 h-20 bg-[var(--surface-raised)] rounded-full mx-auto mb-6 flex items-center justify-center">
+          <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
             <span className="text-3xl opacity-50">🛠️</span>
           </div>
-          <h3 className="text-xl font-bold mb-2">No listings found</h3>
-          <p className="text-[var(--text-secondary)]">
+          <h3 className="text-xl font-bold mb-2 text-[#0F172A]">No listings found</h3>
+          <p className="text-[#475569]">
             {searchQuery ? 'Try a different search term.' : 'Try a different category filter.'}
           </p>
           {(searchQuery || selectedCategory) && (
             <button
               onClick={() => { setSearchQuery(''); setSelectedCategory(''); }}
-              className="mt-4 px-5 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-sm"
+              className="mt-4 px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm hover:bg-[#1D4ED8] transition-colors"
             >
               Clear filters
             </button>
@@ -200,35 +200,35 @@ export default function ListingsPage() {
             return (
               <div
                 key={key}
-                className="bg-[var(--surface-raised)] border border-[var(--border-default)] rounded-[24px] p-6 hover:border-[var(--accent)] transition-all duration-300 flex flex-col"
+                className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#BFDBFE] transition-all duration-300 flex flex-col"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center">
                     <span className="text-lg">🔧</span>
                   </div>
                   {entry.minPrice !== null && (
-                    <span className="px-3 py-1 bg-[var(--accent)] text-[#000] rounded-full text-sm font-bold">
+                    <span className="px-3 py-1 bg-[#2563EB] text-white rounded-full text-sm font-bold">
                       ${entry.minPrice.toFixed(2)}
                       {entry.providerCount > 1 ? '+' : ''}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-lg font-bold mb-1">{entry.service.name}</h3>
+                <h3 className="text-lg font-bold mb-1 text-[#0F172A]">{entry.service.name}</h3>
                 {entry.service.description && (
-                  <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-2 flex-grow">
+                  <p className="text-[#475569] text-sm mb-4 line-clamp-2 flex-grow">
                     {entry.service.description}
                   </p>
                 )}
 
-                <div className="mt-auto pt-4 border-t border-[var(--border-default)]">
+                <div className="mt-auto pt-4 border-t border-[#E2E8F0]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs text-[var(--text-tertiary)]">
+                    <span className="text-xs text-[#94A3B8]">
                       {entry.providerCount} pro{entry.providerCount !== 1 ? 's' : ''} offering
                     </span>
                     <Link
                       to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-                      className="px-4 py-2 bg-[var(--accent)] text-[#000] font-bold rounded-[16px] text-xs hover:opacity-90 transition-opacity"
+                      className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors"
                     >
                       Find Pros
                     </Link>
@@ -241,16 +241,16 @@ export default function ListingsPage() {
                         <Link
                           key={pro.id}
                           to={`/pro/${pro.id}`}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--surface-overlay)] rounded-full text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] hover:bg-[var(--accent)]/10 transition-colors"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-xs text-[#475569] hover:text-[#2563EB] hover:bg-[#EFF6FF] hover:border-[#BFDBFE] transition-colors"
                         >
                           <span className="font-semibold">{pro.businessName}</span>
                           {pro.ratingInternal && (
-                            <span className="text-[var(--accent)]">★ {pro.ratingInternal.toFixed(1)}</span>
+                            <span className="text-[#F59E0B]">★ {pro.ratingInternal.toFixed(1)}</span>
                           )}
                         </Link>
                       ))}
                       {entry.providers.length > 3 && (
-                        <span className="text-xs text-[var(--text-tertiary)] px-1">
+                        <span className="text-xs text-[#94A3B8] px-1">
                           +{entry.providers.length - 3} more
                         </span>
                       )}
@@ -264,8 +264,8 @@ export default function ListingsPage() {
       )}
 
       {/* Category quick-links */}
-      <div className="mt-12 pt-8 border-t border-[var(--border-default)]">
-        <h2 className="text-lg font-bold mb-4">Browse by Category</h2>
+      <div className="mt-12 pt-8 border-t border-[#E2E8F0]">
+        <h2 className="text-lg font-bold mb-4 text-[#0F172A]">Browse by Category</h2>
         <div className="flex flex-wrap gap-3">
           {categories?.map((cat) => (
             <button
@@ -276,8 +276,8 @@ export default function ListingsPage() {
               }}
               className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-colors ${
                 selectedCategory === cat.slug
-                  ? 'bg-[var(--accent)] text-[#000] border-[var(--accent)]'
-                  : 'bg-[var(--surface-raised)] border-[var(--border-default)] hover:border-[var(--accent)]'
+                  ? 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]'
+                  : 'bg-white border-[#E2E8F0] hover:border-[#2563EB] text-[#475569]'
               }`}
             >
               {cat.name}
@@ -287,14 +287,14 @@ export default function ListingsPage() {
       </div>
 
       {/* CTA */}
-      <div className="mt-12 pt-8 border-t border-[var(--border-default)] text-center">
-        <h2 className="text-xl font-bold mb-3">Can&apos;t find what you need?</h2>
-        <p className="text-[var(--text-secondary)] mb-6">
+      <div className="mt-12 pt-8 border-t border-[#E2E8F0] text-center">
+        <h2 className="text-xl font-bold mb-3 text-[#0F172A]">Can&apos;t find what you need?</h2>
+        <p className="text-[#475569] mb-6">
           Submit a service request and Worki will match you with the right pro.
         </p>
         <Link
           to="/request-service"
-          className="px-8 py-4 bg-[var(--accent)] text-[#000] font-bold rounded-[22px] hover:opacity-90 transition-opacity inline-block"
+          className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors inline-block"
         >
           Submit a Request
         </Link>
