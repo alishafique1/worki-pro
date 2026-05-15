@@ -1,0 +1,90 @@
+[     284ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[     384ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[     384ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[     438ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[    1429ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[    1429ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[    3470ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[    3471ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[    7510ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[    7511ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:3000/node_modules/.vite/deps/axios.js?v=6c941d56:1881:19) @ http://localhost:3000/node_modules/.vite/deps/@tanstack_react-query.js?v=6c941d56:947
+[    7512ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   51550ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/email/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   51550ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/email/login:0
+[   52348ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[   52475ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   52475ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   52510ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   53522ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   53523ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   55562ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   55562ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   59600ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   59601ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:3000/node_modules/.vite/deps/axios.js?v=6c941d56:1881:19) @ http://localhost:3000/node_modules/.vite/deps/@tanstack_react-query.js?v=6c941d56:947
+[   59601ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   84731ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/email/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   84732ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/email/login:0
+[   86644ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/email/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   86644ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/email/login:0
+[   90299ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[   90416ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   90417ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   90433ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   90951ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[   91050ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   91050ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   91086ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   92095ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   92095ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   94160ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   94160ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   94968ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[   95043ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   95044ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   95107ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   96086ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   96087ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   97478ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/email/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   97478ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/email/login:0
+[   98123ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   98123ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   98922ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[   98999ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[   98999ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[   99060ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[  100037ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  100037ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  101180ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/email/login' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  101180ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/email/login:0
+[  102075ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  102076ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  103502ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[  103579ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  103579ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  103641ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[  104647ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  104648ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  106695ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  106695ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  110736ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  110736ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:3000/node_modules/.vite/deps/axios.js?v=6c941d56:1881:19) @ http://localhost:3000/node_modules/.vite/deps/@tanstack_react-query.js?v=6c941d56:947
+[  110737ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  130874ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[  130959ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  130959ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  131027ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[  132006ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  132006ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  134065ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/login:0
+[  134066ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[  135978ms] [ERROR] WebSocket connection to 'ws://localhost:3000/?token=lq2ygZpOIVH3' failed:  @ http://localhost:3000/@vite/client:744
+[  135979ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3000/@vite/client:864
+[  138091ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:3000/node_modules/.vite/deps/axios.js?v=6c941d56:1881:19) @ http://localhost:3000/node_modules/.vite/deps/@tanstack_react-query.js?v=6c941d56:947
+[  138091ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3100/auth/me:0
+[  152370ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[  152421ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3100/auth/me:0
+[  152508ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0

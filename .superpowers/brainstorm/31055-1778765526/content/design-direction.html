@@ -1,0 +1,136 @@
+<h2>Which design direction feels right for TheHelper.ca?</h2>
+<p class="subtitle">All three keep your stack (Wasp + React + Tailwind). Pick the vibe that fits the brand you want to build.</p>
+
+<div class="cards">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0F172A; padding:20px; font-family:'Inter',sans-serif; border-radius:8px 8px 0 0; min-height:240px;">
+      <!-- Mini hero mockup -->
+      <div style="background:#1E293B; border-radius:8px; padding:16px; margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <div style="width:28px;height:28px;background:#2563EB;border-radius:6px;"></div>
+          <span style="color:#F1F5F9;font-size:12px;font-weight:600;">TheHelper</span>
+          <div style="margin-left:auto;display:flex;gap:10px;">
+            <span style="color:#94A3B8;font-size:10px;">Services</span>
+            <span style="color:#94A3B8;font-size:10px;">Providers</span>
+            <div style="background:#2563EB;color:white;font-size:10px;padding:3px 10px;border-radius:20px;">Get Help</div>
+          </div>
+        </div>
+        <div style="color:#F8FAFC;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:6px;">Trusted local pros.<br/>One request away.</div>
+        <div style="color:#94A3B8;font-size:10px;margin-bottom:12px;">HVAC · Plumbing · Electrical · Handyman</div>
+        <div style="background:#1E3A8A;border-radius:8px;padding:10px;display:flex;gap:8px;align-items:center;">
+          <div style="background:#2563EB;border-radius:6px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;">
+            <span style="color:white;font-size:10px;">📍</span>
+          </div>
+          <span style="color:#CBD5E1;font-size:10px;">Enter postal code or city...</span>
+          <div style="margin-left:auto;background:#2563EB;color:white;font-size:9px;padding:4px 10px;border-radius:6px;">Search</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <div style="flex:1;background:#1E3A8A;border-radius:6px;padding:8px;text-align:center;">
+          <div style="color:#60A5FA;font-size:16px;font-weight:700;">2,400+</div>
+          <div style="color:#94A3B8;font-size:8px;">Verified Pros</div>
+        </div>
+        <div style="flex:1;background:#1E3A8A;border-radius:6px;padding:8px;text-align:center;">
+          <div style="color:#60A5FA;font-size:16px;font-weight:700;">4.9★</div>
+          <div style="color:#94A3B8;font-size:8px;">Avg Rating</div>
+        </div>
+        <div style="flex:1;background:#1E3A8A;border-radius:6px;padding:8px;text-align:center;">
+          <div style="color:#60A5FA;font-size:16px;font-weight:700;">GTA</div>
+          <div style="color:#94A3B8;font-size:8px;">Coverage</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Dark Navy / Blue (Bark-style)</h3>
+      <p>Deep navy + electric blue. Premium SaaS feel. Like Bark.com or Linear. Strong trust signals, high contrast, professional. Ideal if you want <strong>confidence &amp; authority</strong>.</p>
+      <div class="pros-cons" style="margin-top:8px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Instantly trustworthy</li><li>Tech-forward</li><li>Stands out in local services</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Heavier feel on mobile</li><li>More work to implement</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#F8FAFC; padding:20px; font-family:'Inter',sans-serif; border-radius:8px 8px 0 0; min-height:240px; border-bottom:1px solid #E2E8F0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <div style="width:28px;height:28px;background:#2563EB;border-radius:6px;"></div>
+        <span style="color:#0F172A;font-size:12px;font-weight:700;">TheHelper</span>
+        <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+          <span style="color:#64748B;font-size:10px;">Services</span>
+          <span style="color:#64748B;font-size:10px;">How it works</span>
+          <div style="background:#2563EB;color:white;font-size:10px;padding:3px 12px;border-radius:6px;">Get started</div>
+        </div>
+      </div>
+      <div style="color:#0F172A;font-size:22px;font-weight:800;line-height:1.15;margin-bottom:8px;">Find verified home<br/>pros near you.</div>
+      <div style="color:#64748B;font-size:10px;margin-bottom:14px;">GTA's most trusted home service marketplace</div>
+      <div style="background:white;border:1px solid #E2E8F0;border-radius:10px;padding:10px;display:flex;gap:8px;align-items:center;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <span style="color:#64748B;font-size:10px;">🔍 What do you need help with?</span>
+        <div style="margin-left:auto;background:#2563EB;color:white;font-size:9px;padding:4px 12px;border-radius:6px;">Request →</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+        <span style="background:#EFF6FF;color:#2563EB;font-size:9px;padding:3px 8px;border-radius:20px;border:1px solid #BFDBFE;">HVAC</span>
+        <span style="background:#EFF6FF;color:#2563EB;font-size:9px;padding:3px 8px;border-radius:20px;border:1px solid #BFDBFE;">Plumbing</span>
+        <span style="background:#EFF6FF;color:#2563EB;font-size:9px;padding:3px 8px;border-radius:20px;border:1px solid #BFDBFE;">Electrical</span>
+        <span style="background:#EFF6FF;color:#2563EB;font-size:9px;padding:3px 8px;border-radius:20px;border:1px solid #BFDBFE;">Handyman</span>
+        <span style="background:#EFF6FF;color:#2563EB;font-size:9px;padding:3px 8px;border-radius:20px;border:1px solid #BFDBFE;">Smart Home</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Clean White / Blue (Thumbtack-style) ⭐ Recommended</h3>
+      <p>Light background, deep blue primary, slate text. Like Thumbtack or Notion. Approachable, fast, and very easy on mobile. Fits both consumers and providers naturally.</p>
+      <div class="pros-cons" style="margin-top:8px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Mobile-first friendly</li><li>Feels modern &amp; clean</li><li>Easy to extend</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More "generic SaaS"</li><li>Needs strong typography</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 50%,#0F172A 100%); padding:20px; font-family:'Inter',sans-serif; border-radius:8px 8px 0 0; min-height:240px; position:relative; overflow:hidden;">
+      <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(37,99,235,0.15);border-radius:50%;filter:blur(30px);"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;position:relative;">
+        <div style="width:28px;height:28px;background:linear-gradient(135deg,#2563EB,#06B6D4);border-radius:6px;"></div>
+        <span style="color:#F1F5F9;font-size:12px;font-weight:700;">TheHelper</span>
+        <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+          <span style="color:#94A3B8;font-size:10px;">Services</span>
+          <div style="background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-size:10px;padding:3px 12px;border-radius:6px;">Get Help</div>
+        </div>
+      </div>
+      <div style="color:#F8FAFC;font-size:22px;font-weight:800;line-height:1.15;margin-bottom:6px;position:relative;">Home help,<br/><span style="background:linear-gradient(90deg,#60A5FA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">done right.</span></div>
+      <div style="color:#94A3B8;font-size:10px;margin-bottom:14px;">Verified local pros across the GTA</div>
+      <div style="background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px;display:flex;gap:8px;align-items:center;">
+        <span style="color:#CBD5E1;font-size:10px;">📍 Enter your postal code...</span>
+        <div style="margin-left:auto;background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-size:9px;padding:4px 12px;border-radius:6px;">Search</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px;text-align:center;">
+          <div style="color:#60A5FA;font-size:13px;font-weight:700;">✓</div>
+          <div style="color:#94A3B8;font-size:8px;">Verified</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px;text-align:center;">
+          <div style="color:#60A5FA;font-size:13px;font-weight:700;">⚡</div>
+          <div style="color:#94A3B8;font-size:8px;">Fast match</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px;text-align:center;">
+          <div style="color:#60A5FA;font-size:13px;font-weight:700;">🇨🇦</div>
+          <div style="color:#94A3B8;font-size:8px;">Canada</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Dark Gradient / Glassmorphism (Premium startup)</h3>
+      <p>Dark gradient + glass card effects + cyan accent. Like a Series-A AI startup. Very dramatic and modern. Best if you want to feel <strong>tech-forward &amp; premium</strong> above all else.</p>
+      <div class="pros-cons" style="margin-top:8px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Most visually striking</li><li>Premium / VC-funded feel</li><li>Memorable</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Harder to read on mobile</li><li>Glass effects = performance cost</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px;text-align:center;">Click a card to select. You can also tell me in the terminal if you want a hybrid.</p>

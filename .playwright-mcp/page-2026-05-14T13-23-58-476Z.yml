@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - generic [ref=e9]: W
+            - generic [ref=e10]: Worki
+          - generic [ref=e11]:
+            - heading "Your home. Handled." [level=1] [ref=e12]:
+              - text: Your home.
+              - text: Handled.
+            - paragraph [ref=e13]: Connect with verified local pros, earn rewards, and manage every job in one place.
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - generic [ref=e16]: 🔧
+            - generic [ref=e17]:
+              - paragraph [ref=e18]: Verified Pros
+              - paragraph [ref=e19]: Every provider is background-checked and insured
+          - generic [ref=e20]:
+            - generic [ref=e21]: 🏆
+            - generic [ref=e22]:
+              - paragraph [ref=e23]: Earn Rewards
+              - paragraph [ref=e24]: Get points for every completed service
+          - generic [ref=e25]:
+            - generic [ref=e26]: ⚡
+            - generic [ref=e27]:
+              - paragraph [ref=e28]: Fast Matching
+              - paragraph [ref=e29]: We find the right pro for your job in minutes
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - heading "Log in to your account" [level=2] [ref=e34]
+          - generic [ref=e35]: Invalid credentials
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]: E-mail
+              - textbox [ref=e39]: consumer.test@worki.ai
+            - generic [ref=e40]:
+              - generic [ref=e41]: Password
+              - textbox [ref=e42]: password123
+            - button "Log in" [ref=e44] [cursor=pointer]
+        - generic [ref=e45]:
+          - paragraph [ref=e46]:
+            - text: Don't have an account?
+            - link "Sign up free" [ref=e47] [cursor=pointer]:
+              - /url: /signup
+          - paragraph [ref=e48]:
+            - link "Forgot password?" [ref=e49] [cursor=pointer]:
+              - /url: /request-password-reset
+    - region "Notifications (F8)":
+      - list
+  - img

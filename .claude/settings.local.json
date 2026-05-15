@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wasp --help)",
+      "Bash(curl -s http://localhost:3000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3001 -o /dev/null -w \"%{http_code}\")",
+      "Bash(wasp start *)",
+      "Bash(echo \"wasp start PID: $!\")",
+      "Bash(curl -s http://localhost:3000 -o /dev/null -w \"Frontend port 3000: %{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:3001 -o /dev/null -w \"Backend port 3001: %{http_code}\\\\n\")",
+      "Bash(psql *)",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "Bash(pkill -f \"wasp start\")",
+      "Bash(pkill -f \"nodemon\")",
+      "Bash(pkill -f \"bundle-and-start\")",
+      "Bash(echo \"PID: $!\")",
+      "Bash(node --enable-source-maps -r dotenv/config bundle/server.js)",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "Skill(superpowers:brainstorming)",
+      "Bash(bash scripts/start-server.sh --project-dir /Users/alishafique/Code/worki-pro)",
+      "Skill(superpowers:dispatching-parallel-agents)",
+      "Bash(grep -v \"^#\\\\|^$\")",
+      "Bash(awk '{print $3}')",
+      "Bash(tailscale status *)",
+      "Bash(/usr/local/bin/tailscale status *)",
+      "Bash(/Applications/Tailscale.app/Contents/MacOS/Tailscale status *)",
+      "Bash(wasp build *)"
+    ]
+  }
+}

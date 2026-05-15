@@ -1,0 +1,13 @@
+[     245ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/node_modules/.vite/deps/react-dom_client.js?v=6c941d56:20102
+[     373ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3001/login:0
+[     373ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[     398ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3001/login:0
+[    1370ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3001/@vite/client:864
+[    1422ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3001/login:0
+[    1423ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[    3460ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3001/login:0
+[    3461ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0
+[    7501ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:3100/auth/me' from origin 'http://localhost:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3001/login:0
+[    7501ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:3001/node_modules/.vite/deps/axios.js?v=6c941d56:1881:19) @ http://localhost:3001/node_modules/.vite/deps/@tanstack_react-query.js?v=6c941d56:947
+[    7502ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3100/auth/me:0

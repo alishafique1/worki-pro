@@ -1,0 +1,164 @@
+<h2>How should "Request Help Today!" open?</h2>
+<p class="subtitle">Three interaction patterns — all show categories + type-to-search. Pick the feel that fits.</p>
+
+<div class="cards">
+
+  <!-- Option A: Modal Overlay -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#F8FAFC; padding:0; border-radius:8px 8px 0 0; font-family:'Inter',sans-serif; min-height:300px; position:relative; overflow:hidden;">
+      <!-- Dimmed background -->
+      <div style="background:#0F172A; opacity:0.5; position:absolute; inset:0; border-radius:8px 8px 0 0;"></div>
+      <!-- Hero behind -->
+      <div style="position:absolute; inset:0; padding:14px; display:flex; align-items:flex-start; justify-content:center;">
+        <div style="color:white; font-size:14px; font-weight:800; margin-top:10px; opacity:0.4;">Your home. Handled right.</div>
+      </div>
+      <!-- Modal -->
+      <div style="position:relative; z-index:2; margin:20px 12px 0; background:white; border-radius:16px; padding:16px; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="font-size:11px; font-weight:700; color:#0F172A; margin-bottom:10px;">What do you need help with?</div>
+        <!-- Search input -->
+        <div style="background:#F8FAFC; border:1.5px solid #2563EB; border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="font-size:11px; color:#94A3B8;">🔍 Search any service...</span>
+        </div>
+        <!-- Category grid -->
+        <div style="font-size:8px; font-weight:600; color:#94A3B8; letter-spacing:0.06em; margin-bottom:6px;">POPULAR CATEGORIES</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px;">
+          <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:8px; padding:8px; text-align:center;">
+            <div style="font-size:16px;">❄️</div>
+            <div style="font-size:8px; font-weight:600; color:#1E40AF;">HVAC</div>
+          </div>
+          <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:8px; padding:8px; text-align:center;">
+            <div style="font-size:16px;">🔧</div>
+            <div style="font-size:8px; font-weight:600; color:#1E40AF;">Handyman</div>
+          </div>
+          <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:8px; padding:8px; text-align:center;">
+            <div style="font-size:16px;">💧</div>
+            <div style="font-size:8px; font-weight:600; color:#1E40AF;">Plumbing</div>
+          </div>
+          <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:8px; padding:8px; text-align:center;">
+            <div style="font-size:16px;">⚡</div>
+            <div style="font-size:8px; font-weight:600; color:#1E40AF;">Electrical</div>
+          </div>
+          <div style="background:#F1F5F9; border:1.5px solid #E2E8F0; border-radius:8px; padding:8px; text-align:center; opacity:0.6;">
+            <div style="font-size:16px;">🎉</div>
+            <div style="font-size:8px; font-weight:600; color:#64748B;">Events <span style="font-size:6px; background:#E2E8F0; padding:1px 4px; border-radius:4px;">Soon</span></div>
+          </div>
+          <div style="background:#F1F5F9; border:1.5px solid #E2E8F0; border-radius:8px; padding:8px; text-align:center; opacity:0.6;">
+            <div style="font-size:16px;">🏠</div>
+            <div style="font-size:8px; font-weight:600; color:#64748B;">More <span style="font-size:6px; background:#E2E8F0; padding:1px 4px; border-radius:4px;">Soon</span></div>
+          </div>
+        </div>
+        <div style="font-size:8px; color:#94A3B8; text-align:center;">Don't see your service? Type above to search all categories.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Full modal overlay ⭐ Recommended</h3>
+      <p>Click "Request Help Today!" → a modal opens over the page, dimming the background. Shows a search bar + category grid. "Coming soon" slots for future categories keep the vision visible. Clean, focused, mobile-friendly.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Inline expand -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#F8FAFC; padding:16px; border-radius:8px 8px 0 0; font-family:'Inter',sans-serif; min-height:300px; border-bottom:1px solid #E2E8F0;">
+      <!-- Hero stays visible -->
+      <div style="text-align:center; margin-bottom:12px;">
+        <div style="font-size:16px; font-weight:900; color:#0F172A; line-height:1.2;">Your home.<br/>Handled right.</div>
+        <div style="font-size:8px; color:#64748B; margin-top:4px;">Verified local pros across the GTA.</div>
+      </div>
+      <!-- Expanded search (after click) -->
+      <div style="background:white; border-radius:14px; padding:14px; box-shadow:0 8px 32px rgba(37,99,235,0.12); border:1.5px solid #BFDBFE;">
+        <div style="background:#F8FAFC; border:1.5px solid #2563EB; border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:6px; margin-bottom:10px;">
+          <span style="font-size:10px; color:#0F172A;">🔍</span>
+          <span style="font-size:9px; color:#94A3B8; flex:1;">e.g. "AC not cooling", "leaky faucet"...</span>
+        </div>
+        <!-- Suggested services row -->
+        <div style="font-size:7px; font-weight:600; color:#94A3B8; letter-spacing:0.06em; margin-bottom:6px;">CATEGORIES</div>
+        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px;">
+          <span style="background:#EFF6FF; color:#1E40AF; font-size:8px; padding:5px 10px; border-radius:8px; border:1px solid #BFDBFE; font-weight:600;">❄️ HVAC</span>
+          <span style="background:#EFF6FF; color:#1E40AF; font-size:8px; padding:5px 10px; border-radius:8px; border:1px solid #BFDBFE; font-weight:600;">🔧 Handyman</span>
+          <span style="background:#EFF6FF; color:#1E40AF; font-size:8px; padding:5px 10px; border-radius:8px; border:1px solid #BFDBFE; font-weight:600;">💧 Plumbing</span>
+          <span style="background:#EFF6FF; color:#1E40AF; font-size:8px; padding:5px 10px; border-radius:8px; border:1px solid #BFDBFE; font-weight:600;">⚡ Electrical</span>
+          <span style="background:#F1F5F9; color:#94A3B8; font-size:8px; padding:5px 10px; border-radius:8px; border:1px solid #E2E8F0; font-weight:600;">+ More coming</span>
+        </div>
+        <!-- Typed results preview -->
+        <div style="font-size:7px; font-weight:600; color:#94A3B8; letter-spacing:0.06em; margin-bottom:5px;">POPULAR SERVICES</div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div style="display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; background:#F8FAFC;">
+            <span style="font-size:10px;">❄️</span>
+            <div>
+              <div style="font-size:8px; font-weight:600; color:#0F172A;">AC tune-up / maintenance</div>
+              <div style="font-size:7px; color:#64748B;">HVAC</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; background:#F8FAFC;">
+            <span style="font-size:10px;">🔧</span>
+            <div>
+              <div style="font-size:8px; font-weight:600; color:#0F172A;">Furniture assembly</div>
+              <div style="font-size:7px; color:#64748B;">Handyman</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Inline expansion (hero stays visible)</h3>
+      <p>Click "Request Help Today!" → the button transforms into an expanded search panel right on the page. Hero headline stays visible above. Feels fast and native — no context switch. Category pills + popular services show immediately.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Full page step (multi-step) -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#F8FAFC; padding:16px; border-radius:8px 8px 0 0; font-family:'Inter',sans-serif; min-height:300px; border-bottom:1px solid #E2E8F0;">
+      <div style="background:white; border-radius:14px; padding:16px; box-shadow:0 4px 20px rgba(0,0,0,0.07); height:100%;">
+        <!-- Step indicator -->
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:14px;">
+          <div style="width:20px; height:20px; background:#2563EB; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:8px; font-weight:700;">1</div>
+          <div style="flex:1; height:2px; background:#E2E8F0; border-radius:2px;"></div>
+          <div style="width:20px; height:20px; background:#E2E8F0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:8px; font-weight:700;">2</div>
+          <div style="flex:1; height:2px; background:#E2E8F0; border-radius:2px;"></div>
+          <div style="width:20px; height:20px; background:#E2E8F0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:8px; font-weight:700;">3</div>
+        </div>
+        <div style="font-size:11px; font-weight:800; color:#0F172A; margin-bottom:4px;">What type of help do you need?</div>
+        <div style="font-size:8px; color:#64748B; margin-bottom:12px;">Select a category to get started</div>
+        <!-- Category grid -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+          <div style="background:#EFF6FF; border:2px solid #2563EB; border-radius:10px; padding:10px; display:flex; align-items:center; gap:8px;">
+            <div style="font-size:18px;">❄️</div>
+            <div>
+              <div style="font-size:9px; font-weight:700; color:#1E40AF;">HVAC</div>
+              <div style="font-size:7px; color:#3B82F6;">Heating & cooling</div>
+            </div>
+          </div>
+          <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:10px; padding:10px; display:flex; align-items:center; gap:8px;">
+            <div style="font-size:18px;">🔧</div>
+            <div>
+              <div style="font-size:9px; font-weight:700; color:#0F172A;">Handyman</div>
+              <div style="font-size:7px; color:#64748B;">Repairs & assembly</div>
+            </div>
+          </div>
+          <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:10px; padding:10px; display:flex; align-items:center; gap:8px;">
+            <div style="font-size:18px;">💧</div>
+            <div>
+              <div style="font-size:9px; font-weight:700; color:#0F172A;">Plumbing</div>
+              <div style="font-size:7px; color:#64748B;">Leaks & fixtures</div>
+            </div>
+          </div>
+          <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:10px; padding:10px; display:flex; align-items:center; gap:8px;">
+            <div style="font-size:18px;">⚡</div>
+            <div>
+              <div style="font-size:9px; font-weight:700; color:#0F172A;">Electrical</div>
+              <div style="font-size:7px; color:#64748B;">Panels & outlets</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:8px; color:#94A3B8;">🎉 Events &amp; more coming soon</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Step wizard (category first, always)</h3>
+      <p>Click "Request Help Today!" → goes to a multi-step wizard starting with category selection. Clear visual grid of categories. Once selected, advances to the existing request form. Best for mobile — no ambiguity. Scales perfectly as you add categories.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px;text-align:center;">These can also be combined — e.g. A (modal) with C's step-by-step flow inside it.</p>

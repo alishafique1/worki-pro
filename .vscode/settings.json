@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^node -v && npm -v && \\(command -v wasp \\|\\| true\\) && npm install && \\(\\[ -f \\.env\\.client \\] \\|\\| \\[ ! -f \\.env\\.client\\.example \\] \\|\\| cp \\.env\\.client\\.example \\.env\\.client\\) && ls -a \\.env\\.client \\.env\\.server$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - banner [ref=e50]:
+        - navigation "Global" [ref=e52]:
+          - generic [ref=e53]:
+            - link "TheHelper TheHelper" [ref=e54] [cursor=pointer]:
+              - /url: /
+              - img "TheHelper" [ref=e55]
+              - generic [ref=e56]: TheHelper
+            - list [ref=e57]:
+              - listitem [ref=e58]:
+                - link "Discover Pros" [ref=e59] [cursor=pointer]:
+                  - /url: /discover
+              - listitem [ref=e60]:
+                - link "Services" [ref=e61] [cursor=pointer]:
+                  - /url: /services
+              - listitem [ref=e62]:
+                - link "Listings" [ref=e63] [cursor=pointer]:
+                  - /url: /listings
+              - listitem [ref=e64]:
+                - link "My Requests" [ref=e65] [cursor=pointer]:
+                  - /url: /my-requests
+              - listitem [ref=e66]:
+                - link "Analytics" [ref=e67] [cursor=pointer]:
+                  - /url: /analytics
+              - listitem [ref=e68]:
+                - link "Rewards" [ref=e69] [cursor=pointer]:
+                  - /url: /rewards
+              - listitem [ref=e70]:
+                - link "Referral" [ref=e71] [cursor=pointer]:
+                  - /url: /referral
+              - listitem [ref=e72]:
+                - link "Help" [ref=e73] [cursor=pointer]:
+                  - /url: /help
+              - listitem [ref=e74]:
+                - link "Request Service" [ref=e75] [cursor=pointer]:
+                  - /url: /request-service
+          - generic [ref=e76]:
+            - list [ref=e77]:
+              - generic [ref=e79] [cursor=pointer]:
+                - checkbox [ref=e80]
+                - generic [ref=e81]:
+                  - img [ref=e83]
+                  - img [ref=e90]
+            - button "consumer.test@worki.ai" [ref=e93]:
+              - generic [ref=e94]: consumer.test@worki.ai
+              - img [ref=e95]
+              - img [ref=e98]
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - heading "Welcome back" [level=1] [ref=e103]
+            - paragraph [ref=e104]: Track service requests, bookings, messages, and rewards from here.
+          - link "+ Request New Service" [ref=e105] [cursor=pointer]:
+            - /url: /request-service
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - heading "Requests & Bookings" [level=2] [ref=e109]
+              - link "View all requests →" [ref=e110] [cursor=pointer]:
+                - /url: /my-requests
+            - generic [ref=e111]:
+              - generic [ref=e113]: +
+              - heading "No active requests" [level=3] [ref=e114]
+              - paragraph [ref=e115]: Submit a service request when you need help. You can track booking updates and messages here after it is created.
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - heading "Rewards" [level=2] [ref=e118]
+              - link "View rewards →" [ref=e119] [cursor=pointer]:
+                - /url: /rewards
+            - generic [ref=e120]:
+              - paragraph [ref=e122]: Available points
+              - generic [ref=e123]: "0"
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - paragraph [ref=e126]: Current Tier
+                  - paragraph [ref=e127]: NEW HOMEOWNER
+                - link "View History →" [ref=e128] [cursor=pointer]:
+                  - /url: /rewards
+    - region "Notifications (F8)":
+      - list
+  - img
