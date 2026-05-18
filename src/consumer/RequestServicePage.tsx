@@ -109,16 +109,34 @@ const ctaCls =
 const TOTAL_STEPS = 4;
 
 function ProgressBar({ step }: { step: number }) {
+  const stepLabels = ['Service', 'Details', 'Contact', 'Verify'];
   return (
     <div className="mb-8">
-      <span className="text-xs font-bold text-[#475569] uppercase tracking-widest">
-        Step {step} of {TOTAL_STEPS}
-      </span>
-      <div className="h-1 bg-[#E2E8F0] rounded-full mt-2">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-bold text-[#475569] uppercase tracking-widest">
+          Step {step} of {TOTAL_STEPS}
+        </span>
+        <span className="text-xs font-semibold text-[#2563EB]">
+          {stepLabels[step - 1]}
+        </span>
+      </div>
+      <div className="h-1.5 bg-[#E2E8F0] rounded-full">
         <div
-          className="h-1 bg-[#2563EB] rounded-full transition-all duration-500"
+          className="h-1.5 bg-[#2563EB] rounded-full transition-all duration-500"
           style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
         />
+      </div>
+      {/* Trust signal */}
+      <div className="mt-3 flex items-center gap-4 text-xs text-[#475569]">
+        <span className="flex items-center gap-1">
+          <span className="text-[#22C55E]">✓</span> 100% Free
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-[#22C55E]">✓</span> Verified Pros
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-[#22C55E]">✓</span> Same-Day Available
+        </span>
       </div>
     </div>
   );
@@ -213,17 +231,17 @@ export default function RequestServicePage() {
   // ── submission ────────────────────────────────────────────────────────────
   const buildDescription = () => {
     if (form.serviceType === 'hvac')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(' — ');
+      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
     if (form.serviceType === 'handyman')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(' — ');
+      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
     if (form.serviceType === 'appliance-repair')
       return `${form.applianceType}${form.description.trim() ? `: ${form.description.trim()}` : ''}`;
     if (form.serviceType === 'plumbing')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(' — ');
+      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
     if (form.serviceType === 'electrical')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(' — ');
+      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
     if (form.serviceType === 'smart-home')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(' — ');
+      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
     return form.description.trim();
   };
 
@@ -302,8 +320,9 @@ export default function RequestServicePage() {
           {/* ── STEP 1: Category ─────────────────────────────────────────── */}
           {step === 1 && (
             <div>
-              <h1 className="text-3xl font-black text-foreground mb-1">What do you need help with?</h1>
-              <p className="text-sm text-[#475569] mb-8">Tap to get started.</p>
+              <h1 className="text-3xl font-black text-foreground mb-1">Get Free Quotes in 2 Minutes</h1>
+              <p className="text-sm text-[#475569] mb-2">Select a service to get matched with verified local pros.</p>
+              <p className="text-xs text-[#22C55E] font-semibold mb-6">Join 500+ GTA homeowners who trust The Helper</p>
               <div className="flex flex-col gap-3">
                 {SERVICE_CARDS.map(card => (
                   <button
@@ -460,16 +479,22 @@ export default function RequestServicePage() {
               </div>
 
               <button type="button" onClick={() => setStep(3)} disabled={!step2Valid} className={ctaCls}>
-                Continue →
+                Continue to Get Matched
               </button>
+
+              {/* Value prop reminder */}
+              <p className="mt-4 text-center text-xs text-[#475569]">
+                Most homeowners get matched within 15 minutes
+              </p>
             </div>
           )}
 
           {/* ── STEP 3: Location + Contact ────────────────────────────────── */}
           {step === 3 && (
             <div>
-              <h1 className="text-3xl font-black text-foreground mb-1">Where and how to reach you</h1>
-              <p className="text-sm text-[#475569] mb-8">A pro will text you within 15 minutes.</p>
+              <h1 className="text-3xl font-black text-foreground mb-1">Almost there!</h1>
+              <p className="text-sm text-[#475569] mb-2">A verified pro will text you within 15 minutes.</p>
+              <p className="text-xs text-[#22C55E] font-semibold mb-6">100% free for homeowners. No credit card required.</p>
 
               <div className="flex flex-col gap-4">
                 {/* Postal code */}
@@ -491,7 +516,7 @@ export default function RequestServicePage() {
                   )}
                   {postalTooLong && (
                     <div className="mt-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]">
-                      <p className="text-sm text-foreground font-bold mb-2">We're not in your area yet — expanding soon.</p>
+                      <p className="text-sm text-foreground font-bold mb-2">We're not in your area yet, but we're expanding soon.</p>
                       {!notifyDone ? (
                         <form onSubmit={async e => {
                           e.preventDefault();
@@ -528,7 +553,7 @@ export default function RequestServicePage() {
                           </button>
                         </form>
                       ) : (
-                        <p className="text-sm text-[#475569]">Got it — we'll let you know!</p>
+                        <p className="text-sm text-[#475569]">Got it, we'll let you know!</p>
                       )}
                     </div>
                   )}
@@ -587,8 +612,15 @@ export default function RequestServicePage() {
                 disabled={!step3Valid || otpSending}
                 className={ctaCls}
               >
-                {otpSending ? 'Sending code…' : 'Verify my number →'}
+                {otpSending ? 'Sending code…' : 'Get Free Quotes Now'}
               </button>
+
+              {/* Urgency/trust reminder */}
+              <div className="mt-4 flex items-center justify-center gap-4 text-xs text-[#475569]">
+                <span>Same-day service available</span>
+                <span className="text-[#E2E8F0]">|</span>
+                <span>No spam, ever</span>
+              </div>
             </div>
           )}
 
@@ -626,7 +658,7 @@ export default function RequestServicePage() {
                 disabled={otpCode.length < 6 || otpVerifying}
                 className={ctaCls}
               >
-                {otpVerifying ? 'Verifying…' : 'Confirm & submit request'}
+                {otpVerifying ? 'Submitting...' : 'Get My Free Quotes'}
               </button>
 
               <p className="mt-4 text-center text-sm text-[#475569]">
@@ -646,27 +678,57 @@ export default function RequestServicePage() {
           {/* ── STEP 5: Confirmation ─────────────────────────────────────── */}
           {step === 5 && (
             <div className="text-center py-8">
-              <div className="mx-auto w-20 h-20 rounded-full bg-[#EFF6FF] border-2 border-[#2563EB] flex items-center justify-center mb-6">
-                <span className="text-4xl font-black text-[#2563EB]">✓</span>
+              <div className="mx-auto w-20 h-20 rounded-full bg-[#DCFCE7] border-2 border-[#22C55E] flex items-center justify-center mb-6">
+                <span className="text-4xl font-black text-[#22C55E]">✓</span>
               </div>
-              <h1 className="text-3xl font-black text-foreground mb-3">Your request is in.</h1>
-              <p className="text-base text-[#475569] max-w-sm mx-auto mb-8">
-                Matching you with a verified{' '}
+              <h1 className="text-3xl font-black text-foreground mb-3">You're All Set!</h1>
+              <p className="text-base text-[#475569] max-w-sm mx-auto mb-4">
+                A verified{' '}
                 {form.serviceType ? SERVICE_DISPLAY[form.serviceType as Exclude<ServiceSlug, ''>] : 'service'}{' '}
-                pro near {form.postalCode}. Expect a text within 15 minutes.
+                pro will text you within <strong className="text-[#0F172A]">15 minutes</strong>.
               </p>
 
-              <div className="h-px bg-[#E2E8F0] my-6" />
+              {/* What happens next */}
+              <div className="bg-[#F8FAFC] rounded-[18px] border border-[#E2E8F0] p-5 mb-6 text-left">
+                <p className="text-xs font-bold text-[#475569] uppercase tracking-widest mb-3">What happens next</p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-bold flex items-center justify-center">1</span>
+                    <p className="text-sm text-[#475569]">A verified pro reviews your request</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-bold flex items-center justify-center">2</span>
+                    <p className="text-sm text-[#475569]">They text you to confirm details and schedule</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-bold flex items-center justify-center">3</span>
+                    <p className="text-sm text-[#475569]">Book your appointment (same-day available)</p>
+                  </div>
+                </div>
+              </div>
 
-              <p className="text-xs text-[#475569] mb-4">
-                You earn points when your job is completed. No extra steps.
-              </p>
+              {/* Rewards teaser */}
+              <div className="bg-[#FEF3C7] rounded-[18px] border border-[#FDE68A] p-4 mb-6">
+                <p className="text-sm font-bold text-[#92400E] mb-1">You're earning rewards!</p>
+                <p className="text-xs text-[#92400E]">
+                  Earn up to <strong>$60 back</strong> on your first completed job. Create an account to track your points.
+                </p>
+              </div>
+
               <button
                 type="button"
                 onClick={() => navigate(user ? '/dashboard' : '/signup')}
-                className="text-sm font-bold text-[#2563EB] hover:underline"
+                className="w-full py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
               >
-                {user ? 'Go to your dashboard →' : 'Create a free account →'}
+                {user ? 'Track Your Request' : 'Create Free Account & Track Rewards'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="mt-3 text-sm font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
+              >
+                Back to Home
               </button>
             </div>
           )}

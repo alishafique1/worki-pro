@@ -8,15 +8,31 @@ export default function RequestSuccessPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-[#F8FAFC]">
       <div className="max-w-md bg-white p-12 rounded-[40px] border border-[#E2E8F0] shadow-2xl">
-        <div className="w-20 h-20 bg-green-50 rounded-full mx-auto mb-8 flex items-center justify-center">
+        <div className="w-20 h-20 bg-[#DCFCE7] rounded-full mx-auto mb-8 flex items-center justify-center border-2 border-[#22C55E]">
           <svg className="w-10 h-10 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-4xl font-black tracking-tighter mb-4 text-[#0F172A]">Request Received!</h1>
-        <p className="text-[#475569] mb-10 leading-relaxed">
-          We've received your service request. Our concierge team is already working on matching you with the perfect pro.
+        <h1 className="text-4xl font-black tracking-tighter mb-4 text-[#0F172A]">You're All Set!</h1>
+        <p className="text-[#475569] mb-4 leading-relaxed">
+          A verified local pro will text you within <strong className="text-[#0F172A]">15 minutes</strong>.
         </p>
+
+        {/* What happens next */}
+        <div className="bg-[#F8FAFC] rounded-[18px] border border-[#E2E8F0] p-4 mb-6 text-left">
+          <p className="text-xs font-bold text-[#475569] uppercase tracking-widest mb-3">What happens next</p>
+          <div className="space-y-2 text-sm text-[#475569]">
+            <div className="flex items-center gap-2">
+              <span className="text-[#22C55E]">1.</span> Pro reviews your request
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#22C55E]">2.</span> They text you to confirm details
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#22C55E]">3.</span> Book your appointment (same-day available)
+            </div>
+          </div>
+        </div>
 
         <div className="bg-[#EFF6FF] border border-[#BFDBFE] p-6 rounded-3xl mb-10 text-left">
           <h3 className="font-bold text-[#2563EB] mb-3">Your rewards are now pending</h3>
@@ -36,14 +52,14 @@ export default function RequestSuccessPage() {
               to={`/book/${requestId}`}
               className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] transition-colors"
             >
-              Book Your Appointment
+              Schedule Your Appointment Now
             </Link>
           )}
           <Link
             to="/signup"
             className={`px-8 py-4 font-black rounded-2xl transition-colors ${requestId ? 'border border-[#E2E8F0] text-[#0F172A] hover:bg-[#F8FAFC]' : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8]'}`}
           >
-            Create Account & Earn Points
+            Create Free Account & Track Rewards
           </Link>
           <Link
             to="/"

@@ -147,20 +147,20 @@ export function Hero() {
           {/* CTAs */}
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button href="/request-service">
-              Request Help Today! <ArrowRight className="size-4" />
+              Get Free Quotes <ArrowRight className="size-4" />
             </Button>
             <Button href="/providers/apply" variant="secondary">
-              Become a Provider
+              Join as a Pro
             </Button>
           </div>
 
           {/* Trust micro-row */}
           <div className="mt-6 grid grid-cols-2 gap-2 text-sm text-[#475569]">
             {[
-              "Licensed & insured pros",
-              "Verified pros only",
-              "Matched to your job",
-              "Free to request",
+              "100% Free for Homeowners",
+              "Verified Local Pros",
+              "Same-Day Available",
+              "500+ GTA Homeowners",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#DCFCE7] text-[#22C55E]">
@@ -241,7 +241,7 @@ export function MarketplaceMockup() {
               <span className="text-sm">What service do you need?</span>
             </div>
             <button className="rounded-[22px] bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
-              Start request
+              Get Free Quotes
             </button>
           </div>
         </div>
@@ -277,25 +277,75 @@ export function CategoryCard({
   name,
   description,
   href,
+  imageUrl,
+  comingSoon,
 }: {
   icon: React.ReactNode;
   name: string;
   description: string;
   href: string;
+  imageUrl?: string;
+  comingSoon?: boolean;
 }) {
   return (
-    <Link to={href}>
-      <article className="group rounded-[19px] border border-[#E2E8F0] bg-white p-4 shadow-[0_4px_16px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex size-11 items-center justify-center rounded-[14px] bg-[#EFF6FF] text-[#2563EB] transition duration-200 group-hover:scale-110 group-hover:bg-[#DBEAFE]">
-            {icon}
+    <Link to={comingSoon ? "/request-service" : href}>
+      <article className="group relative h-full overflow-hidden rounded-[19px] border border-[#E2E8F0] bg-white shadow-[0_4px_16px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]">
+        {/* Image section */}
+        {imageUrl && (
+          <div className="relative h-36 w-full overflow-hidden bg-[#F8FAFC]">
+            <img
+              src={imageUrl}
+              alt={name}
+              loading="lazy"
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            {/* Icon badge */}
+            <div className="absolute bottom-3 left-3 flex size-10 items-center justify-center rounded-xl bg-white/95 text-[#2563EB] shadow-md backdrop-blur-sm">
+              {icon}
+            </div>
+            {/* Coming soon badge */}
+            {comingSoon && (
+              <div className="absolute right-3 top-3 rounded-full bg-[#FEF3C7] px-2.5 py-1 text-[10px] font-semibold text-[#92400E]">
+                Coming Soon
+              </div>
+            )}
           </div>
-          <ArrowRight className="size-4 text-[#BFDBFE] transition duration-200 group-hover:translate-x-1 group-hover:text-[#2563EB]" />
+        )}
+        {/* Content section */}
+        <div className="p-4">
+          {!imageUrl && (
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex size-11 items-center justify-center rounded-[14px] bg-[#EFF6FF] text-[#2563EB] transition duration-200 group-hover:scale-110 group-hover:bg-[#DBEAFE]">
+                {icon}
+              </div>
+              <ArrowRight className="size-4 text-[#BFDBFE] transition duration-200 group-hover:translate-x-1 group-hover:text-[#2563EB]" />
+            </div>
+          )}
+          <div className={cn("flex items-start justify-between gap-2", imageUrl ? "" : "mt-4")}>
+            <h3 className="text-base font-semibold text-[#0F172A]">{name}</h3>
+            {imageUrl && (
+              <ArrowRight className="mt-0.5 size-4 shrink-0 text-[#BFDBFE] transition duration-200 group-hover:translate-x-1 group-hover:text-[#2563EB]" />
+            )}
+          </div>
+          <p className="mt-1.5 text-sm leading-6 text-[#475569]">{description}</p>
         </div>
-        <h3 className="mt-4 text-base font-semibold text-[#0F172A]">{name}</h3>
-        <p className="mt-2 text-sm leading-6 text-[#475569]">{description}</p>
       </article>
     </Link>
+  );
+}
+
+export function CategoryCardSkeleton() {
+  return (
+    <div className="animate-pulse overflow-hidden rounded-[19px] border border-[#E2E8F0] bg-white">
+      <div className="h-36 w-full bg-[#E2E8F0]" />
+      <div className="p-4">
+        <div className="h-5 w-24 rounded bg-[#E2E8F0]" />
+        <div className="mt-2 h-4 w-full rounded bg-[#E2E8F0]" />
+        <div className="mt-1 h-4 w-3/4 rounded bg-[#E2E8F0]" />
+      </div>
+    </div>
   );
 }
 
@@ -421,26 +471,26 @@ export function CTASection() {
           <div className="relative">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white">
               <Zap className="size-4" />
-              Takes less than 30 seconds
+              Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Ready to get help — and earn rewards?
+              Get matched with a verified pro today
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              Join GTA homeowners who trust The Helper to get things done right.
+              Join 500+ GTA homeowners who trust The Helper. 100% free to use — earn $60+ back on your first job.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 to="/request-service"
                 className="inline-flex items-center justify-center gap-2 rounded-[23px] bg-white px-5 py-3 text-sm font-semibold text-[#2563EB] shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition duration-200 hover:bg-blue-50"
               >
-                Request Help Today! <ArrowRight className="size-4" />
+                Get Free Quotes Now <ArrowRight className="size-4" />
               </Link>
               <Link
                 to="/providers/apply"
                 className="inline-flex items-center justify-center gap-2 rounded-[23px] border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-white/20"
               >
-                Become a Provider
+                Join as a Pro
               </Link>
             </div>
           </div>

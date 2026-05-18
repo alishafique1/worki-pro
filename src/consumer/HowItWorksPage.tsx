@@ -30,34 +30,34 @@ const STEPS = [
   {
     num: '01',
     icon: <Search className="size-5" />,
-    title: 'Describe your job',
-    desc: 'Use the service request form to explain what happened, where you are, and when you need help.',
+    title: 'Submit your request',
+    desc: 'Takes under 2 minutes. Tell us what you need, where you are, and when works for you. 100% free.',
   },
   {
     num: '02',
     icon: <BadgeCheck className="size-5" />,
-    title: 'Submit the request',
-    desc: 'Add your location, urgency level, preferred schedule, and contact details — all in one place.',
+    title: 'Get matched fast',
+    desc: 'We connect you with a verified local pro — typically within 15 minutes. Same-day service available.',
   },
   {
     num: '03',
-    icon: <ClipboardList className="size-5" />,
-    title: 'We route it forward',
-    desc: 'TheHelper captures the structured details and passes them to the coordination workflow.',
+    icon: <CalendarCheck className="size-5" />,
+    title: 'Book your appointment',
+    desc: 'The pro texts you to confirm details and schedule. Pick a time that works for you.',
   },
   {
     num: '04',
-    icon: <CalendarCheck className="size-5" />,
-    title: 'Follow up in your account',
-    desc: 'Track your request status, appointment details, and messages from your dashboard.',
+    icon: <ClipboardList className="size-5" />,
+    title: 'Job done. Get rewarded.',
+    desc: 'Earn up to $60 back on your first job. Track everything from your dashboard.',
   },
 ];
 
 const TRUST_POINTS = [
-  { icon: <ShieldCheck className="size-5" />, title: 'Vetted providers', desc: 'Provider profiles include business details, service categories, and service areas.' },
-  { icon: <ClipboardList className="size-5" />, title: 'Structured intake', desc: 'The form captures the right details before any request is sent.' },
-  { icon: <MessageSquareText className="size-5" />, title: 'Clear updates', desc: 'Messages, booking details, and status changes stay connected to the job.' },
-  { icon: <MapPin className="size-5" />, title: 'Local-first rollout', desc: 'Coverage expands by city and category based on verified provider supply.' },
+  { icon: <ShieldCheck className="size-5" />, title: 'Verified local pros', desc: 'Every pro is vetted before joining — credentials, insurance, and reviews verified.' },
+  { icon: <Clock3 className="size-5" />, title: 'Fast matching', desc: 'Most homeowners get matched within 15 minutes. Same-day service available.' },
+  { icon: <MessageSquareText className="size-5" />, title: '100% free for homeowners', desc: 'No platform fees, no credit card required. You only pay the pro for the work.' },
+  { icon: <MapPin className="size-5" />, title: 'Local GTA coverage', desc: 'Serving Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton.' },
 ];
 
 export default function HowItWorksPage() {
@@ -87,21 +87,32 @@ export default function HowItWorksPage() {
         <section className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[#2563EB] mb-4">How TheHelper works</p>
           <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6 text-[#0F172A]">
-            One form. Better home service requests.
+            Submit. Match. Book. Done.
           </h1>
           <p className="text-xl text-[#475569] leading-relaxed">
-            TheHelper replaces scattered calls and texts with a structured service request flow —
-            so homeowners describe the job clearly and providers get what they need to help.
+            Get connected to a verified local pro in under 15 minutes — 100% free for homeowners.
+            No more calling around or waiting for callbacks.
           </p>
+
+          {/* Trust badges */}
+          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-[#475569]">
+            {['100% Free for Homeowners', 'Verified Local Pros', 'Same-Day Available', '500+ GTA Homeowners'].map((item) => (
+              <span key={item} className="flex items-center gap-1.5">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                {item}
+              </span>
+            ))}
+          </div>
+
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/request-service"
               className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
             >
-              Submit a Request
+              Get Free Quotes Now
             </Link>
             <Link
-              to="/providers"
+              to="/providers/apply"
               className="px-8 py-4 bg-white border border-[#E2E8F0] font-bold rounded-[22px] hover:border-[#2563EB] transition-colors text-[#0F172A]"
             >
               Join as a Pro
@@ -206,13 +217,14 @@ export default function HowItWorksPage() {
 
         {/* CTA */}
         <section className="text-center">
-          <h2 className="text-4xl font-black tracking-tight mb-4 text-[#0F172A]">Ready to submit a request?</h2>
-          <p className="text-[#475569] mb-8">It takes about 2 minutes to fill out the service request form.</p>
+          <h2 className="text-4xl font-black tracking-tight mb-4 text-[#0F172A]">Ready to get matched?</h2>
+          <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free — no credit card required.</p>
+          <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to $60 back on your first completed job</p>
           <Link
             to="/request-service"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
           >
-            Request Service <ArrowRight className="size-5" />
+            Get Free Quotes Now <ArrowRight className="size-5" />
           </Link>
         </section>
 
