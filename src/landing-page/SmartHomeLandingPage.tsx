@@ -1,6 +1,65 @@
 import React from 'react';
-import { Link } from 'react-router';
 import PageSeo from './components/PageSeo';
+import {
+  CategoryHero,
+  ProviderShowcase,
+  CTASection,
+  Container,
+  FAQAccordion,
+} from './marketplace/components';
+
+const smartHomeServices = [
+  {
+    title: 'Smart Security',
+    description: 'Smart locks, video doorbells, cameras, and full security system setup.',
+    icon: '🔒',
+    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=80',
+  },
+  {
+    title: 'Home Automation',
+    description: 'Smart hubs, voice control integration, and full home automation.',
+    icon: '🎮',
+    image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800&q=80',
+  },
+  {
+    title: 'AV & Connectivity',
+    description: 'TV mounting, surround sound, structured wiring, and Wi-Fi optimization.',
+    icon: '📡',
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&q=80',
+  },
+];
+
+const trustSignals = [
+  { label: 'Certified Installers', icon: '📱' },
+  { label: 'All Major Brands', icon: '🏷️' },
+  { label: 'Managed Setup', icon: '⚙️' },
+];
+
+const smartHomeProviders = [
+  { name: 'Derek Kim', specialty: 'Smart Home Expert', rating: 5.0, jobCount: 78 },
+  { name: 'Ryan Walsh', specialty: 'Security Systems', rating: 4.9, jobCount: 92 },
+  { name: 'Anil Sharma', specialty: 'Home Automation', rating: 4.8, jobCount: 65 },
+  { name: 'Jason Lee', specialty: 'AV Installation', rating: 4.9, jobCount: 134 },
+];
+
+const smartHomeFaqs = [
+  {
+    question: 'What smart home brands do you work with?',
+    answer: 'Our installers work with all major ecosystems including Google Home, Amazon Alexa, Apple HomeKit, Ring, Nest, Ecobee, Lutron, Sonos, and more.',
+  },
+  {
+    question: 'Can you help me choose the right smart home setup?',
+    answer: 'Absolutely! Our techs can assess your home and recommend the best combination of devices for your needs and budget during the consultation.',
+  },
+  {
+    question: 'Do you handle the wiring for smart home devices?',
+    answer: 'Yes, our installers handle both wireless setup and hardwired installations. For complex electrical work, we coordinate with licensed electricians.',
+  },
+  {
+    question: 'How long does a typical smart home installation take?',
+    answer: 'Simple setups (thermostat, doorbell, a few lights) take 1-2 hours. Full home automation projects may take a full day or multiple visits.',
+  },
+];
 
 export default function SmartHomeLandingPage() {
   return (
@@ -12,59 +71,40 @@ export default function SmartHomeLandingPage() {
         ogDescription="Book certified smart home pros in Milton, Oakville & the GTA. Smart security, home automation, and AV setup — vetted installers, managed end-to-end."
         canonicalPath="/smart-home"
       />
-    <div className="min-h-screen bg-[#F8FAFC]">
-      <main className="pt-20 pb-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6">
-            Smart Home Experts in GTA
-          </div>
-          <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl text-[#0F172A]">
-            Your Home, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Smarter.</span>
-          </h1>
-          <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
-            From smart locks to full home automation, our vetted techs handle installation and setup. We match, schedule, and follow up — you just enjoy the upgrade and earn rewards on every completed job.
-          </p>
+      <div className="min-h-screen bg-[#F8FAFC]">
+        <CategoryHero
+          badge="Smart Home Experts in GTA"
+          title="Your Home, Smarter."
+          highlightedWord="Smarter."
+          description="From smart locks to full home automation, our vetted techs handle installation and setup. We match, schedule, and follow up — you just enjoy the upgrade and earn rewards on every completed job."
+          ctaText="Request Smart Home Quote"
+          ctaLink="/request-service?category=smart-home"
+          trustNote="Certified smart home installers. You earn points on every completed job."
+          trustSignals={trustSignals}
+          services={smartHomeServices}
+          heroImage="https://images.unsplash.com/photo-1558002038-1055907df827?w=1200&q=80"
+          heroImageAlt="Smart home installer configuring thermostat"
+        />
 
-          <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <Link
-              to="/request-service?service=smart-home"
-              className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
-            >
-              Request Smart Home Quote
-            </Link>
-          </div>
-          <p className="text-sm text-[#475569] mb-16">🎁 Plus earn cashback on every job booked</p>
+        <ProviderShowcase
+          title="Meet Your Local Smart Home Pros"
+          subtitle="Certified installers ready to upgrade your home with the latest smart technology."
+          providers={smartHomeProviders}
+        />
 
-          {/* Trust Signals */}
-          <div className="flex flex-wrap justify-center gap-12 mb-24">
-            {[
-              { label: 'Certified Installers', icon: '📱' },
-              { label: 'All Major Brands', icon: '🏷️' },
-              { label: 'Managed Setup', icon: '⚙️' }
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center gap-2">
-                <div className="text-3xl">{stat.icon}</div>
-                <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+        <section className="py-20">
+          <Container>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl font-bold text-center text-[#0F172A] mb-8">
+                Frequently Asked Questions
+              </h2>
+              <FAQAccordion faqs={smartHomeFaqs} />
+            </div>
+          </Container>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-            {[
-              { title: 'Smart Security', desc: 'Smart locks, video doorbells, cameras, and full security system setup.', icon: '🔒' },
-              { title: 'Home Automation', desc: 'Smart hubs, voice control integration, and full home automation.', icon: '🎮' },
-              { title: 'AV & Connectivity', desc: 'TV mounting, surround sound, structured wiring, and Wi-Fi optimization.', icon: '📡' }
-            ].map((service) => (
-              <div key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                <div className="text-4xl mb-6">{service.icon}</div>
-                <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
-                <p className="text-[#475569] leading-relaxed">{service.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    </div>
+        <CTASection />
+      </div>
     </>
   );
 }
