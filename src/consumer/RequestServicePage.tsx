@@ -187,6 +187,47 @@ function BackButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+// ── Qualifier radio button group ────────────────────────────────────────────
+function QualifierQuestion({
+  label,
+  options,
+  value,
+  onChange,
+  isOptional = false,
+}: {
+  label: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+  isOptional?: boolean;
+}) {
+  return (
+    <div className="mb-6">
+      <p className="text-sm font-bold text-[#0F172A] mb-3">
+        {label}
+        {isOptional && <span className="font-normal text-[#475569] ml-1">(optional)</span>}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {options.map(opt => (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onChange(opt)}
+            className={
+              'px-4 py-3 rounded-[14px] border-2 text-sm font-bold transition-all duration-150 active:scale-95 cursor-pointer min-w-[80px] ' +
+              (value === opt
+                ? 'border-[#2563EB] bg-[#EFF6FF] text-[#2563EB]'
+                : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-[#2563EB]/50')
+            }
+          >
+            {opt}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── main component ────────────────────────────────────────────────────────────
 export default function RequestServicePage() {
   const navigate = useNavigate();
@@ -275,18 +316,27 @@ export default function RequestServicePage() {
 
   // ── submission ────────────────────────────────────────────────────────────
   const buildDescription = () => {
+    // Build qualifier context from Q1/Q2 answers
+    const qualifierParts: string[] = [];
+    if (form.qualifierQ1) qualifierParts.push(form.qualifierQ1);
+    if (form.qualifierQ2 && form.qualifierQ2 !== 'Not sure') qualifierParts.push(form.qualifierQ2);
+    const qualifierContext = qualifierParts.length > 0 ? `[${qualifierParts.join(' | ')}]` : '';
+
     if (form.serviceType === 'hvac')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
+      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
     if (form.serviceType === 'handyman')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
-    if (form.serviceType === 'appliance-repair')
-      return `${form.applianceType}${form.description.trim() ? `: ${form.description.trim()}` : ''}`;
+      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
+    if (form.serviceType === 'appliance-repair') {
+      // Q1 is the appliance type, Q2 is brand
+      const brandPart = form.qualifierQ2 && form.qualifierQ2 !== 'Not sure' ? ` (${form.qualifierQ2})` : '';
+      return `${form.qualifierQ1}${brandPart}${form.description.trim() ? ': ' + form.description.trim() : ''}`;
+    }
     if (form.serviceType === 'plumbing')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
+      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
     if (form.serviceType === 'electrical')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
+      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
     if (form.serviceType === 'smart-home')
-      return [form.hvacIssue, form.description.trim()].filter(Boolean).join(': ');
+      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
     return form.description.trim();
   };
 
@@ -373,7 +423,17 @@ export default function RequestServicePage() {
                   <button
                     key={card.slug}
                     type="button"
-                    onClick={() => { set('serviceType', card.slug); setStep(2); }}
+                    onClick={() => {
+                      setForm(prev => ({
+                        ...prev,
+                        serviceType: card.slug,
+                        qualifierQ1: '',
+                        qualifierQ2: '',
+                        hvacIssue: '',
+                        applianceType: '',
+                      }));
+                      setStep(2);
+                    }}
                     className="w-full flex items-center gap-4 p-5 rounded-[24px] border-2 border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:bg-[#EFF6FF] text-left transition-all duration-200 active:scale-[0.98]"
                   >
                     <span className="text-4xl shrink-0">{card.icon}</span>
@@ -391,137 +451,165 @@ export default function RequestServicePage() {
           {step === 2 && (
             <div>
               <h1 className="text-3xl font-black text-foreground mb-6">
-                {form.serviceType === 'hvac'            ? "What's the issue?"
-                : form.serviceType === 'handyman'       ? 'What needs fixing?'
-                : form.serviceType === 'appliance-repair' ? 'Which appliance?'
-                : form.serviceType === 'plumbing'       ? "What's the problem?"
-                : form.serviceType === 'electrical'     ? "What needs attention?"
-                : form.serviceType === 'smart-home'     ? "What would you like set up?"
+                {form.serviceType === 'hvac'            ? "Tell us about your HVAC needs"
+                : form.serviceType === 'handyman'       ? 'Tell us about the job'
+                : form.serviceType === 'appliance-repair' ? 'Tell us about your appliance'
+                : form.serviceType === 'plumbing'       ? "Tell us about the plumbing issue"
+                : form.serviceType === 'electrical'     ? "Tell us about the electrical work"
+                : form.serviceType === 'smart-home'     ? "Tell us about your smart home needs"
                 : "Tell us more"}
               </h1>
 
+              {/* Qualifier Questions - shown for all categories */}
+              {form.serviceType && QUALIFIER_QUESTIONS[form.serviceType] && (
+                <>
+                  <QualifierQuestion
+                    label={QUALIFIER_QUESTIONS[form.serviceType].q1.label}
+                    options={QUALIFIER_QUESTIONS[form.serviceType].q1.options}
+                    value={form.qualifierQ1}
+                    onChange={v => set('qualifierQ1', v)}
+                  />
+                  {/* Show Q2 after Q1 is answered (except for appliance-repair where it's always shown) */}
+                  {(form.qualifierQ1 || form.serviceType === 'appliance-repair') && (
+                    <QualifierQuestion
+                      label={QUALIFIER_QUESTIONS[form.serviceType].q2.label}
+                      options={QUALIFIER_QUESTIONS[form.serviceType].q2.options}
+                      value={form.qualifierQ2}
+                      onChange={v => set('qualifierQ2', v)}
+                      isOptional={form.serviceType === 'appliance-repair'}
+                    />
+                  )}
+                </>
+              )}
+
+              {/* Category-specific detail chips - shown after qualifiers are answered */}
               {/* HVAC — compact chips */}
-              {form.serviceType === 'hvac' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {HVAC_CHIPS.map(issue => (
-                    <button
-                      key={issue}
-                      type="button"
-                      onClick={() => set('hvacIssue', issue)}
-                      className={chipCls(form.hvacIssue === issue)}
-                    >
-                      {issue}
-                    </button>
-                  ))}
-                </div>
+              {form.serviceType === 'hvac' && qualifiersValid && (
+                <>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">What best describes the issue?</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {HVAC_CHIPS.map(issue => (
+                      <button
+                        key={issue}
+                        type="button"
+                        onClick={() => set('hvacIssue', issue)}
+                        className={chipCls(form.hvacIssue === issue)}
+                      >
+                        {issue}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
 
               {/* Handyman — compact chips */}
-              {form.serviceType === 'handyman' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {HANDYMAN_CHIPS.map(task => (
-                    <button
-                      key={task}
-                      type="button"
-                      onClick={() => set('hvacIssue', task)}
-                      className={chipCls(form.hvacIssue === task)}
-                    >
-                      {task}
-                    </button>
-                  ))}
-                </div>
+              {form.serviceType === 'handyman' && qualifiersValid && (
+                <>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">What needs to be done?</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {HANDYMAN_CHIPS.map(task => (
+                      <button
+                        key={task}
+                        type="button"
+                        onClick={() => set('hvacIssue', task)}
+                        className={chipCls(form.hvacIssue === task)}
+                      >
+                        {task}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
 
-              {/* Appliance — compact chips */}
-              {form.serviceType === 'appliance-repair' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {APPLIANCE_CHIPS.map(t => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => set('applianceType', t)}
-                      className={chipCls(form.applianceType === t)}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {/* Appliance — Q1 now captures appliance type, so no separate chips needed */}
 
               {/* Plumbing chips */}
-              {form.serviceType === 'plumbing' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {PLUMBING_CHIPS.map(issue => (
-                    <button
-                      key={issue}
-                      type="button"
-                      onClick={() => set('hvacIssue', issue)}
-                      className={chipCls(form.hvacIssue === issue)}
-                    >
-                      {issue}
-                    </button>
-                  ))}
-                </div>
+              {form.serviceType === 'plumbing' && qualifiersValid && (
+                <>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">What best describes the problem?</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {PLUMBING_CHIPS.map(issue => (
+                      <button
+                        key={issue}
+                        type="button"
+                        onClick={() => set('hvacIssue', issue)}
+                        className={chipCls(form.hvacIssue === issue)}
+                      >
+                        {issue}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
 
               {/* Electrical chips */}
-              {form.serviceType === 'electrical' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {ELECTRICAL_CHIPS.map(issue => (
-                    <button
-                      key={issue}
-                      type="button"
-                      onClick={() => set('hvacIssue', issue)}
-                      className={chipCls(form.hvacIssue === issue)}
-                    >
-                      {issue}
-                    </button>
-                  ))}
-                </div>
+              {form.serviceType === 'electrical' && qualifiersValid && (
+                <>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">What needs attention?</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {ELECTRICAL_CHIPS.map(issue => (
+                      <button
+                        key={issue}
+                        type="button"
+                        onClick={() => set('hvacIssue', issue)}
+                        className={chipCls(form.hvacIssue === issue)}
+                      >
+                        {issue}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
 
               {/* Smart Home chips */}
-              {form.serviceType === 'smart-home' && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {SMART_HOME_CHIPS.map(issue => (
-                    <button
-                      key={issue}
-                      type="button"
-                      onClick={() => set('hvacIssue', issue)}
-                      className={chipCls(form.hvacIssue === issue)}
-                    >
-                      {issue}
-                    </button>
-                  ))}
-                </div>
+              {form.serviceType === 'smart-home' && qualifiersValid && (
+                <>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">What would you like set up?</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {SMART_HOME_CHIPS.map(issue => (
+                      <button
+                        key={issue}
+                        type="button"
+                        onClick={() => set('hvacIssue', issue)}
+                        className={chipCls(form.hvacIssue === issue)}
+                      >
+                        {issue}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
 
-              {/* Optional details textarea — always shown, never required */}
-              <textarea
-                placeholder="Anything else to add? (optional)"
-                value={form.description}
-                onChange={e => set('description', e.target.value)}
-                rows={3}
-                className={inputCls + ' resize-none'}
-              />
+              {/* Optional details textarea — shown after qualifiers are answered */}
+              {qualifiersValid && (
+                <textarea
+                  placeholder="Anything else to add? (optional)"
+                  value={form.description}
+                  onChange={e => set('description', e.target.value)}
+                  rows={3}
+                  className={inputCls + ' resize-none'}
+                />
+              )}
 
-              {/* Urgency — 3 inline chips */}
-              <div className="mt-6">
-                <p className="text-xs font-bold text-[#475569] uppercase tracking-widest mb-3">How soon?</p>
-                <div className="flex gap-2">
-                  {URGENCY_CHIPS.map(opt => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => setUrgency(opt.value)}
-                      className={chipCls(form.urgency === opt.value) + ' flex-1 flex flex-col items-center py-3 px-2'}
-                    >
-                      <span className="text-xl mb-0.5">{opt.icon}</span>
-                      <span className="text-xs">{opt.label}</span>
-                    </button>
-                  ))}
+              {/* Urgency — 3 inline chips — shown after qualifiers */}
+              {qualifiersValid && (
+                <div className="mt-6">
+                  <p className="text-xs font-bold text-[#475569] uppercase tracking-widest mb-3">How soon?</p>
+                  <div className="flex gap-2">
+                    {URGENCY_CHIPS.map(opt => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setUrgency(opt.value)}
+                        className={chipCls(form.urgency === opt.value) + ' flex-1 flex flex-col items-center py-3 px-2'}
+                      >
+                        <span className="text-xl mb-0.5">{opt.icon}</span>
+                        <span className="text-xs">{opt.label}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <button type="button" onClick={() => setStep(3)} disabled={!step2Valid} className={ctaCls}>
                 Continue to Get Matched
