@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Wrench,
 } from "lucide-react";
+import { AddToCalendarDropdown } from "../client/components/AddToCalendarDropdown";
 
 const statusColor = (s: string) => {
   if (["COMPLETED", "REWARD_APPROVED"].includes(s))
@@ -199,15 +200,30 @@ function RequestCard({ req }: { req: any }) {
             <p className="mt-1 text-xs text-[#94A3B8]">
               Appointment status: {formatStatus(appointment.status)}
             </p>
-          )}          {!appointment?.scheduledAt &&
+          )}
+          {appointment?.scheduledAt && ['CONFIRMED', 'BOOKED', 'RESCHEDULED'].includes(appointment.status) && (
+            <div className="mt-3">
+              <AddToCalendarDropdown
+                event={{
+                  title: `${req.serviceCategory?.name || 'Service'} Appointment - The Helper`,
+                  description: `${req.description}${provider ? `\n\nProvider: ${provider.businessName}${provider.phone ? `\nPhone: ${provider.phone}` : ''}` : ''}`,
+                  startTime: new Date(appointment.scheduledAt),
+                  endTime: new Date(new Date(appointment.scheduledAt).getTime() + 60 * 60 * 1000),
+                  location: [req.city, req.postalCode].filter(Boolean).join(', ') || undefined,
+                }}
+              />
+            </div>
+          )}
+          {!appointment?.scheduledAt &&
             ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (
               <a
                 href={`/book/${req.id}`}
                 className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-3 py-2 text-xs font-bold text-white hover:bg-[#1D4ED8] transition-colors"
               >
-                📅 Book Appointment
+                Book Appointment
               </a>
-            )}        </div>
+            )}
+        </div>
       </div>
 
       <RequestTimeline status={req.status} />

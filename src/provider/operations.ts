@@ -64,6 +64,7 @@ export const getProviderAppointments: GetProviderAppointments<
         include: {
           communicationLogs: { orderBy: { createdAt: "asc" } },
           assignedProvider: true,
+          serviceCategory: true,
         },
       },
     },

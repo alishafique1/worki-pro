@@ -1,12 +1,69 @@
 import crypto from 'crypto';
 import type { CalcomWebhook } from 'wasp/server/api';
 import { emailSender } from 'wasp/server/email';
+import { generateICS } from '../utils/calendar';
 
 const formatBookingTime = (isoDate: string) =>
   new Intl.DateTimeFormat('en-CA', {
     dateStyle: 'full',
     timeStyle: 'short',
   }).format(new Date(isoDate));
+
+/**
+ * Send an email with an ICS attachment via Mailgun API.
+ * Falls back to emailSender.send() if Mailgun credentials are unavailable.
+ */
+async function sendEmailWithAttachment({
+  to,
+  subject,
+  text,
+  html,
+  icsContent,
+  icsFilename,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  icsContent?: string;
+  icsFilename?: string;
+}): Promise<void> {
+  const mailgunApiKey = process.env.MAILGUN_API_KEY;
+  const mailgunDomain = process.env.MAILGUN_DOMAIN;
+
+  // If we have ICS content and Mailgun credentials, send directly via Mailgun API
+  if (icsContent && mailgunApiKey && mailgunDomain) {
+    const formData = new FormData();
+    formData.append('from', 'TheHelper <hello@thehelper.ca>');
+    formData.append('to', to);
+    formData.append('subject', subject);
+    formData.append('text', text);
+    formData.append('html', html);
+
+    // Create blob for ICS attachment
+    const icsBlob = new Blob([icsContent], { type: 'text/calendar' });
+    formData.append('attachment', icsBlob, icsFilename || 'appointment.ics');
+
+    const response = await fetch(
+      `https://api.mailgun.net/v3/${mailgunDomain}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${Buffer.from(`api:${mailgunApiKey}`).toString('base64')}`,
+        },
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Mailgun API error: ${response.status} ${errorText}`);
+    }
+  } else {
+    // Fall back to standard Wasp emailSender (without attachment)
+    await emailSender.send({ to, subject, text, html });
+  }
+}
 
 const sendBookingEmails = async ({
   consumerEmail,
@@ -16,6 +73,8 @@ const sendBookingEmails = async ({
   providerPhone,
   serviceLabel,
   appointmentTime,
+  appointmentEndTime,
+  location,
   actionLabel,
 }: {
   consumerEmail?: string | null;
@@ -25,12 +84,49 @@ const sendBookingEmails = async ({
   providerPhone?: string | null;
   serviceLabel: string;
   appointmentTime: string;
+  appointmentEndTime?: string;
+  location?: string;
   actionLabel: 'booked' | 'rescheduled' | 'cancelled';
 }) => {
   const formattedTime = formatBookingTime(appointmentTime);
+  const startTime = new Date(appointmentTime);
+  // Default to 1 hour appointment if no end time provided
+  const endTime = appointmentEndTime
+    ? new Date(appointmentEndTime)
+    : new Date(startTime.getTime() + 60 * 60 * 1000);
+
+  // Generate ICS content for non-cancelled appointments
+  let consumerICS: string | undefined;
+  let providerICS: string | undefined;
+
+  if (actionLabel !== 'cancelled') {
+    if (consumerEmail) {
+      consumerICS = generateICS({
+        title: `${serviceLabel} Appointment - The Helper`,
+        description: `Your ${serviceLabel} appointment${providerName ? ` with ${providerName}` : ''}${providerPhone ? `. Contact: ${providerPhone}` : ''}. Booked via The Helper (thehelper.ca)`,
+        startTime,
+        endTime,
+        location,
+        organizerEmail: 'hello@thehelper.ca',
+        attendeeEmail: consumerEmail,
+      });
+    }
+
+    if (providerEmail) {
+      providerICS = generateICS({
+        title: `${serviceLabel} - ${consumerName || 'Customer'}`,
+        description: `Service appointment for ${consumerName || 'customer'}. ${serviceLabel} job via The Helper (thehelper.ca)`,
+        startTime,
+        endTime,
+        location,
+        organizerEmail: 'hello@thehelper.ca',
+        attendeeEmail: providerEmail,
+      });
+    }
+  }
 
   if (consumerEmail) {
-    await emailSender.send({
+    await sendEmailWithAttachment({
       to: consumerEmail,
       subject: `Your The Helper appointment is ${actionLabel}`,
       text:
@@ -40,12 +136,14 @@ const sendBookingEmails = async ({
       html:
         actionLabel === 'cancelled'
           ? `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment has been cancelled.</p><p>If you want, reply to this email and The Helper will help you rebook.</p>`
-          : `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment is <strong>${actionLabel}</strong> for <strong>${formattedTime}</strong>${providerName ? ` with <strong>${providerName}</strong>` : ''}${providerPhone ? ` (${providerPhone})` : ''}.</p><p>We will keep you updated if anything changes.</p>`,
+          : `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment is <strong>${actionLabel}</strong> for <strong>${formattedTime}</strong>${providerName ? ` with <strong>${providerName}</strong>` : ''}${providerPhone ? ` (${providerPhone})` : ''}.</p><p>We will keep you updated if anything changes.</p><p style="margin-top: 16px;">An .ics calendar file is attached to this email. Open it to add this appointment to your calendar.</p>`,
+      icsContent: consumerICS,
+      icsFilename: 'the-helper-appointment.ics',
     });
   }
 
   if (providerEmail) {
-    await emailSender.send({
+    await sendEmailWithAttachment({
       to: providerEmail,
       subject: `The Helper appointment ${actionLabel}`,
       text:
@@ -55,7 +153,9 @@ const sendBookingEmails = async ({
       html:
         actionLabel === 'cancelled'
           ? `<p>A <strong>${serviceLabel}</strong> appointment was cancelled.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p>`
-          : `<p>A <strong>${serviceLabel}</strong> appointment was ${actionLabel} for <strong>${formattedTime}</strong>.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p>`,
+          : `<p>A <strong>${serviceLabel}</strong> appointment was ${actionLabel} for <strong>${formattedTime}</strong>.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p><p style="margin-top: 16px;">An .ics calendar file is attached. Open it to add this appointment to your calendar.</p>`,
+      icsContent: providerICS,
+      icsFilename: 'the-helper-appointment.ics',
     });
   }
 };
@@ -156,6 +256,8 @@ export const calcomWebhook: CalcomWebhook = async (req, res, context) => {
                 providerPhone: provider?.phone,
                 serviceLabel: payload.title ?? 'service',
                 appointmentTime: payload.startTime,
+                appointmentEndTime: payload.endTime,
+                location: serviceRequest.address || serviceRequest.city || undefined,
                 actionLabel: 'booked',
               });
 
@@ -192,6 +294,8 @@ export const calcomWebhook: CalcomWebhook = async (req, res, context) => {
             providerPhone: appointment.provider.phone,
             serviceLabel: payload.title ?? 'service',
             appointmentTime: payload.startTime,
+            appointmentEndTime: payload.endTime,
+            location: appointment.serviceRequest.address || appointment.serviceRequest.city || undefined,
             actionLabel: 'rescheduled',
           });
         }
