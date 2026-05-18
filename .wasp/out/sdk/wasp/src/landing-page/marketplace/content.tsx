@@ -11,6 +11,11 @@ import {
   Flame,
   Globe,
   Hammer,
+  Home,
+  KeyRound,
+  Layers,
+  Leaf,
+  Bell,
   MapPin,
   Megaphone,
   MessageSquareText,
@@ -56,7 +61,7 @@ export const painPoints = [
 ];
 
 function BellIcon() {
-  return <MessageSquareText className="size-5" />;
+  return <Bell className="size-5" />;
 }
 
 export const solutionSteps = [

@@ -1943,7 +1943,7 @@
             "file",
             "sdk/wasp/src/consumer/MyRequestsPage.tsx"
         ],
-        "71b3632b83ce6caacff31785675589f2140d72a2f17d46f12a18971d0a65b0a1"
+        "f7feaf9541ef036fe3864b2d204c90687286b524b1c345bf965f566405943f07"
     ],
     [
         [
@@ -2097,7 +2097,7 @@
             "file",
             "sdk/wasp/src/consumer/operations.ts"
         ],
-        "9086c70e19e452abf5bc39acb520669d5665ca467c9b0788ce4e15a960e75d2c"
+        "c214bfe1b5a6931c0cc1ebd6e3f54d59d51b82d46e6795493f15497913259f33"
     ],
     [
         [
@@ -2153,7 +2153,7 @@
             "file",
             "sdk/wasp/src/landing-page/AreaLandingPage.tsx"
         ],
-        "9ef78c986e1696d003e6ccf67abaf9b60d4d2c2d5b622225d7c4a380315c5a43"
+        "2f80132a828fafdd620d7aa0abd7e925f94c9017b149ec7babff5275746d360c"
     ],
     [
         [
@@ -2356,7 +2356,7 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
-        "2c490d0c5eeef72dd21b45b6d0ddafbdef069d0d73a01adc4420827b7cdd5534"
+        "9ea0e2bf922b6762ff72a207ae16285f4e9a8fff0ba4497d55226ccbfc27d5a2"
     ],
     [
         [
@@ -2510,7 +2510,7 @@
             "file",
             "sdk/wasp/src/provider/DashboardPage.tsx"
         ],
-        "ae4f6f883da5d7932d26fdc289f9c6eac455e0bf133107ef0da4101d7a9c5539"
+        "ae5cfb52cc553e3d5f20cc194a2d9e623260f70d3fd9f221caf3bf8a34ad307e"
     ],
     [
         [
@@ -2524,7 +2524,7 @@
             "file",
             "sdk/wasp/src/provider/LeadsPage.tsx"
         ],
-        "ee46d499db34e2d03224e55eaddd614ab4ac325da59b2323cb144e7d32fe71c6"
+        "c98c75754d9d270e2418612754d33dae48c0d718c43192e814738c6ec779551e"
     ],
     [
         [
@@ -2580,7 +2580,7 @@
             "file",
             "sdk/wasp/src/server/scripts/dbSeeds.ts"
         ],
-        "429ef5f4ad98408f9778e34358034ba9b3662b0adec5d8365bd8e4d74f266f1c"
+        "47832462058317a06a565ee2dca3b366e6be087572daf6abc019dfabe02172d9"
     ],
     [
         [

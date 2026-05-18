@@ -193,6 +193,45 @@ export const submitServiceRequest: SubmitServiceRequest<
   },
   ServiceRequest
 > = async (args, context) => {
+  // ── Input validation ─────────────────────────────────────────────────────
+  const trimmedName = args.name?.trim();
+  if (!trimmedName) throw new HttpError(400, 'Name is required.');
+  if (trimmedName.length > 100) throw new HttpError(400, 'Name must be 100 characters or fewer.');
+
+  const trimmedDescription = args.description?.trim();
+  if (!trimmedDescription) throw new HttpError(400, 'Please describe the work needed.');
+  if (trimmedDescription.length > 2000) throw new HttpError(400, 'Description must be 2,000 characters or fewer.');
+
+  if (args.email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(args.email.trim())) {
+      throw new HttpError(400, 'Please enter a valid email address.');
+    }
+  }
+
+  if (args.phone) {
+    const phoneDigits = args.phone.replace(/\D/g, '');
+    if (phoneDigits.length > 0 && (phoneDigits.length < 10 || phoneDigits.length > 15)) {
+      throw new HttpError(400, 'Phone number must be 10–15 digits.');
+    }
+  }
+
+  // Rate limiting: max 5 service requests per email per hour
+  if (args.email) {
+    const recentCount = await context.entities.ServiceRequest.count({
+      where: {
+        email: args.email.trim().toLowerCase(),
+        createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+      },
+    });
+    if (recentCount >= 5) {
+      throw new HttpError(429, 'Too many requests submitted. Please wait before trying again.');
+    }
+  }
+
+  // Strip HTML tags from description to prevent stored XSS
+  const sanitizedDescription = trimmedDescription.replace(/<[^>]*>/g, '').trim();
+
   let serviceCategoryId: string | undefined = undefined;
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({
@@ -212,11 +251,11 @@ export const submitServiceRequest: SubmitServiceRequest<
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
       consumerId: context.user?.id || undefined,
-      name: args.name,
-      email: args.email,
+      name: trimmedName,
+      email: args.email ? args.email.trim().toLowerCase() : undefined,
       phone: args.phone || '',
       postalCode: args.postalCode,
-      description: args.description,
+      description: sanitizedDescription,
       urgency: args.urgency,
       estimatedSchedule: args.estimatedSchedule,
       preferredTime: args.preferredTime,
@@ -258,12 +297,12 @@ export const submitServiceRequest: SubmitServiceRequest<
   sendLeadToGHL(
     {
       serviceRequestId: newRequest.id,
-      name: args.name,
+      name: trimmedName,
       phone: args.phone || '',
-      email: args.email || undefined,
+      email: args.email ? args.email.trim().toLowerCase() : undefined,
       postalCode: args.postalCode,
       serviceType: args.serviceType,
-      description: args.description,
+      description: sanitizedDescription,
       urgency: args.urgency,
       source: "WEBSITE",
     },
@@ -556,14 +595,38 @@ export const submitLead: SubmitLead<{
   message?: string;
   source?: string;
 }, Lead> = async ({ name, email, phone, postalCode, serviceType, message, source }, context) => {
+  // ── Input validation ─────────────────────────────────────────────────────
+  if (!name?.trim()) throw new HttpError(400, 'Name is required.');
+  if (!email?.trim()) throw new HttpError(400, 'Email is required.');
+  const leadEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!leadEmailRegex.test(email.trim())) throw new HttpError(400, 'Please enter a valid email address.');
+  if (phone) {
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length > 0 && (phoneDigits.length < 10 || phoneDigits.length > 15)) {
+      throw new HttpError(400, 'Phone number must be 10–15 digits.');
+    }
+  }
+  const sanitizedLeadMessage = message ? message.replace(/<[^>]*>/g, '').trim() : undefined;
+
+  // Rate limiting: max 3 submissions per email per hour
+  const recentLeads = await context.entities.Lead.count({
+    where: {
+      email: email.trim().toLowerCase(),
+      createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+    },
+  });
+  if (recentLeads >= 3) {
+    throw new HttpError(429, 'Too many submissions. Please wait before trying again.');
+  }
+
   const lead = await context.entities.Lead.create({
     data: {
-      name,
-      email,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
       phone: phone || null,
       postalCode: postalCode || null,
       serviceType: serviceType || null,
-      message: message || null,
+      message: sanitizedLeadMessage || null,
       source: source || 'WEBSITE',
       status: 'NEW',
     },
@@ -572,12 +635,12 @@ export const submitLead: SubmitLead<{
   sendLeadToGHL(
     {
       serviceRequestId: lead.id,
-      name,
+      name: name.trim(),
       phone: phone || '',
-      email,
+      email: email.trim().toLowerCase(),
       postalCode: postalCode || '',
       serviceType: serviceType || '',
-      description: message || '',
+      description: sanitizedLeadMessage || '',
       urgency: 'STANDARD',
       source: source || 'WEBSITE',
     },

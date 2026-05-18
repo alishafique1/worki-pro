@@ -1,4 +1,4 @@
-import { BadgeCheck, Bot, CalendarCheck, Car, Clapperboard, ClipboardList, Clock3, Code, Flame, Globe, Hammer, MapPin, Megaphone, MessageSquareText, Plus, Search, ShieldCheck, ShowerHead, UtensilsCrossed, Wifi, } from "lucide-react";
+import { BadgeCheck, Bot, CalendarCheck, Car, Clapperboard, ClipboardList, Clock3, Code, Flame, Globe, Hammer, Bell, MapPin, Megaphone, MessageSquareText, Plus, Search, ShieldCheck, ShowerHead, UtensilsCrossed, Wifi, } from "lucide-react";
 export const painPoints = [
     {
         icon: <Clock3 className="size-5"/>,
@@ -32,7 +32,7 @@ export const painPoints = [
     },
 ];
 function BellIcon() {
-    return <MessageSquareText className="size-5"/>;
+    return <Bell className="size-5"/>;
 }
 export const solutionSteps = [
     {

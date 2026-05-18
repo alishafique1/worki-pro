@@ -68,7 +68,7 @@ export default function ProviderDashboardPage() {
       {!profileLoading && verificationStatus && verificationStatus !== 'VERIFIED' && (<div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${verificationStatus === 'REJECTED'
                 ? 'bg-red-500/10 border-red-400/30 text-red-600'
                 : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'}`}>
-          <span className="mt-0.5">{verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-500"/> : <Clock className="size-5 text-[#2563EB]"/>}</span>
+          <span role="img" aria-label={verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'} className="mt-0.5">{verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-500"/> : <Clock className="size-5 text-[#2563EB]"/>}</span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'}
@@ -127,7 +127,7 @@ export default function ProviderDashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
             <h2 className="text-2xl font-bold flex items-center gap-3 text-[#0F172A]">
-              <div className="size-9 flex items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB]">
+              <div role="img" aria-label="My Service Listings" className="size-9 flex items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB]">
                 <Package className="size-5"/>
               </div>
               My Service Listings
