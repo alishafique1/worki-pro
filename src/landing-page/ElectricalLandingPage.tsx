@@ -1,6 +1,65 @@
 import React from 'react';
-import { Link } from 'react-router';
 import PageSeo from './components/PageSeo';
+import {
+  CategoryHero,
+  ProviderShowcase,
+  CTASection,
+  Container,
+  FAQAccordion,
+} from './marketplace/components';
+
+const electricalServices = [
+  {
+    title: 'Repairs & Outlets',
+    description: 'Outlet replacements, circuit troubleshooting, and panel breaker fixes.',
+    icon: '🔌',
+    image: '/images/categories/electrical/repairs.webp',
+  },
+  {
+    title: 'Lighting',
+    description: 'Pot light installation, fixture upgrades, and smart lighting setup.',
+    icon: '💡',
+    image: '/images/categories/electrical/lighting.webp',
+  },
+  {
+    title: 'Panel & Upgrades',
+    description: 'Electrical panel upgrades, EV charger installation, and rewiring.',
+    icon: '🔋',
+    image: '/images/categories/electrical/panel.webp',
+  },
+];
+
+const trustSignals = [
+  { label: 'Licensed Electricians', icon: '⚡' },
+  { label: 'ESA Compliant', icon: '🛡️' },
+  { label: 'Managed Scheduling', icon: '📅' },
+];
+
+const electricalProviders = [
+  { name: 'Sarah Liu', specialty: 'Master Electrician', rating: 5.0, jobCount: 89 },
+  { name: 'Kevin O\'Brien', specialty: 'Panel Specialist', rating: 4.9, jobCount: 134 },
+  { name: 'Raj Patel', specialty: 'EV Charger Pro', rating: 4.8, jobCount: 67 },
+  { name: 'Chris Taylor', specialty: 'Lighting Expert', rating: 4.9, jobCount: 156 },
+];
+
+const electricalFaqs = [
+  {
+    question: 'Are your electricians ESA certified?',
+    answer: 'Yes, all electricians on The Helper are licensed and ESA (Electrical Safety Authority) compliant. Work is done to Ontario code standards.',
+  },
+  {
+    question: 'Can you install an EV charger at my home?',
+    answer: 'Absolutely! Our electricians specialize in Level 2 EV charger installations. We handle the panel assessment, installation, and any required permits.',
+  },
+  {
+    question: 'How much does a panel upgrade cost?',
+    answer: 'Panel upgrades typically range from $1,500-$3,500 depending on your home and requirements. Your matched electrician will provide a detailed quote.',
+  },
+  {
+    question: 'Do you handle pot light installations?',
+    answer: 'Yes! Pot light installation is one of our most popular services. Whether it\'s 4 lights or 40, our electricians handle the full job including drywall patching.',
+  },
+];
 
 export default function ElectricalLandingPage() {
   return (
@@ -12,59 +71,40 @@ export default function ElectricalLandingPage() {
         ogDescription="Find trusted electricians in Milton, Oakville & the GTA. Panel upgrades, EV charger installs, pot lights, and electrical repairs — all managed end-to-end."
         canonicalPath="/services/electrical"
       />
-    <div className="min-h-screen bg-[#F8FAFC]">
-      <main className="pt-20 pb-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6">
-            Expert Electrical in GTA
-          </div>
-          <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl text-[#0F172A]">
-            Safe, Expert <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Electrical</span> Work.
-          </h1>
-          <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
-            Licensed electricians for everything from outlet repairs to panel upgrades. We vet every pro and manage the whole process so you don't have to — and earn rewards on every completed job.
-          </p>
+      <div className="min-h-screen bg-[#F8FAFC]">
+        <CategoryHero
+          badge="Expert Electrical in GTA"
+          title="Safe, Expert Electrical Work."
+          highlightedWord="Electrical"
+          description="Licensed electricians for everything from outlet repairs to panel upgrades. We vet every pro and manage the whole process so you don't have to — and earn rewards on every completed job."
+          ctaText="Request Electrical Quote"
+          ctaLink="/request-service?category=electrical"
+          trustNote="ESA-certified electricians. You earn points on every completed job."
+          trustSignals={trustSignals}
+          services={electricalServices}
+          heroImage="/images/categories/electrical/hero.webp"
+          heroImageAlt="Licensed electrician working on modern electrical panel"
+        />
 
-          <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <Link
-              to="/request-service?service=electrical"
-              className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
-            >
-              Request Electrical Quote
-            </Link>
-          </div>
-          <p className="text-sm text-[#475569] mb-16">🎁 Plus earn cashback on every job booked</p>
+        <ProviderShowcase
+          title="Meet Your Local Electrical Pros"
+          subtitle="ESA-certified electricians ready for repairs, upgrades, and installations."
+          providers={electricalProviders}
+        />
 
-          {/* Trust Signals */}
-          <div className="flex flex-wrap justify-center gap-12 mb-24">
-            {[
-              { label: 'Licensed Electricians', icon: '⚡' },
-              { label: 'ESA Compliant', icon: '🛡️' },
-              { label: 'Managed Scheduling', icon: '📅' }
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center gap-2">
-                <div className="text-3xl">{stat.icon}</div>
-                <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+        <section className="py-20">
+          <Container>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl font-bold text-center text-[#0F172A] mb-8">
+                Frequently Asked Questions
+              </h2>
+              <FAQAccordion faqs={electricalFaqs} />
+            </div>
+          </Container>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-            {[
-              { title: 'Repairs & Outlets', desc: 'Outlet replacements, circuit troubleshooting, and panel breaker fixes.', icon: '🔌' },
-              { title: 'Lighting', desc: 'Pot light installation, fixture upgrades, and smart lighting setup.', icon: '💡' },
-              { title: 'Panel & Upgrades', desc: 'Electrical panel upgrades, EV charger installation, and rewiring.', icon: '🔋' }
-            ].map((service) => (
-              <div key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                <div className="text-4xl mb-6">{service.icon}</div>
-                <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
-                <p className="text-[#475569] leading-relaxed">{service.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    </div>
+        <CTASection />
+      </div>
     </>
   );
 }

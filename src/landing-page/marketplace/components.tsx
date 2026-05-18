@@ -650,12 +650,16 @@ export function CategoryHero({
           {/* Hero Image (when provided) */}
           {heroImage && (
             <div className="relative mt-8 lg:mt-0">
-              <div className="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.15)] border border-[#E2E8F0]">
+              <div className="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.15)] border border-[#E2E8F0] bg-[#EFF6FF]">
                 <img
                   src={heroImage}
                   alt={heroImageAlt || badge}
                   className="w-full h-auto object-cover aspect-[4/3]"
                   loading="eager"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/images/categories/placeholder.svg';
+                  }}
                 />
                 {/* Gradient overlay for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/20 to-transparent" />
