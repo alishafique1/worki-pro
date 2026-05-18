@@ -10,7 +10,7 @@ export default function HandymanLandingPage() {
         description="Trusted handyman pros for mounting, furniture assembly, drywall, and home repairs in Oakville, Burlington & Milton. Verified, insured, and background-checked."
         ogTitle="Handyman Services in GTA | TheHelper"
         ogDescription="Book background-checked handyman pros in Oakville, Burlington & the GTA. TV mounting, furniture assembly, painting, and home repairs — matched and managed for you."
-        canonicalPath="/services/handyman"
+        canonicalPath="/handyman"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

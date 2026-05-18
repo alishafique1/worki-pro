@@ -10,7 +10,7 @@ export default function ElectricalLandingPage() {
         description="ESA-compliant electricians for panel upgrades, outlet repairs, and EV charger installs in Milton, Oakville & Burlington. Vetted, insured, and 5% cashback on every job."
         ogTitle="Licensed Electricians in GTA | TheHelper"
         ogDescription="Find trusted electricians in Milton, Oakville & the GTA. Panel upgrades, EV charger installs, pot lights, and electrical repairs — all managed end-to-end."
-        canonicalPath="/services/electrical"
+        canonicalPath="/electrical"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

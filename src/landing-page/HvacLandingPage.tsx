@@ -10,7 +10,7 @@ export default function HvacLandingPage() {
         description="Licensed TSSA HVAC contractors for heating, cooling, and air quality in Oakville, Burlington & Milton. Fast response, verified pros, and a matching process that gets you the right tech."
         ogTitle="HVAC Repair & Tune-Up in GTA | TheHelper"
         ogDescription="Find trusted HVAC pros in Milton, Oakville & the GTA. Furnace repair, AC installations, and air quality services — all managed end-to-end."
-        canonicalPath="/services/hvac"
+        canonicalPath="/hvac"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

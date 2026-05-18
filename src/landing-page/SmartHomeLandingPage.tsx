@@ -10,7 +10,7 @@ export default function SmartHomeLandingPage() {
         description="Certified smart home installers in Milton, Oakville & the GTA. Smart locks, cameras, thermostats, and full home automation — matched and managed. Earn 5% cashback."
         ogTitle="Smart Home Installation & Automation in GTA | TheHelper"
         ogDescription="Book certified smart home pros in Milton, Oakville & the GTA. Smart security, home automation, and AV setup — vetted installers, managed end-to-end."
-        canonicalPath="/services/smart-home"
+        canonicalPath="/smart-home"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

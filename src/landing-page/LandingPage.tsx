@@ -17,7 +17,7 @@ import {
   StepCard,
   TrustBadge,
 } from "./marketplace/components";
-import { categories } from "./marketplace/content";
+import { liveCategories } from "./marketplace/content";
 
 // ── Inline search panel ──────────────────────────────────────────────────────
 
@@ -46,8 +46,8 @@ function SearchPanel() {
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
             Browse Categories
           </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {categories.map((cat) => (
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {liveCategories.map((cat) => (
               <Link key={cat.name} to={cat.href ?? "/request-service"}>
                 <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
                   <span className="text-[#2563EB]">{cat.icon}</span>
@@ -263,11 +263,11 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="WHAT WE HELP WITH"
-              title="Every service. One platform."
-              description="Starting with home services — expanding into events, vendors, and local help as The Helper grows."
+              title="Home services made easy."
+              description="Choose a category to describe your job and get matched with a verified local pro."
             />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {categories.map((category) => (
+              {liveCategories.map((category) => (
                 <CategoryCard
                   key={category.name}
                   icon={category.icon}
@@ -276,6 +276,15 @@ export default function LandingPage() {
                   href={category.href ?? "/request-service"}
                 />
               ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition"
+              >
+                More services coming soon
+                <ArrowRight className="size-4" />
+              </Link>
             </div>
           </Container>
         </section>

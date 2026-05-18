@@ -10,7 +10,7 @@ export default function PlumbingLandingPage() {
         description="Licensed plumbers for leak repair, drain cleaning, and fixture installs in Oakville, Burlington & Mississauga. Emergency plumbing available. Earn 5% cashback on every job."
         ogTitle="Licensed Plumbers in GTA | TheHelper"
         ogDescription="Trusted plumbers in Oakville, Burlington & the GTA. Emergency plumbing, drain cleaning, and fixture installs — vetted, insured, and managed end-to-end."
-        canonicalPath="/services/plumbing"
+        canonicalPath="/plumbing"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

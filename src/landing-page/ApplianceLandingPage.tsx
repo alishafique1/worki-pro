@@ -10,7 +10,7 @@ export default function ApplianceLandingPage() {
         description="Same-day appliance repair in Mississauga, Brampton & the GTA. Certified techs for fridges, washers, ovens, and dishwashers — all brands covered. Verified and insured pros."
         ogTitle="Same-Day Appliance Repair in GTA | TheHelper"
         ogDescription="Book certified appliance repair techs in Mississauga, Brampton & the GTA. Fridges, washers, dryers, ovens — all brands, managed end-to-end."
-        canonicalPath="/services/appliance-repair"
+        canonicalPath="/appliance-repair"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">
