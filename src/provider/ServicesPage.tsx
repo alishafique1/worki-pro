@@ -117,7 +117,7 @@ export default function ProviderServicesPage() {
       <div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0F172A]">Service Listings</h1>
         <p className="text-[#475569] mt-2 text-lg">
-          Showcase the specific services you offer — customers search by these.
+          Showcase the specific services you offer. Customers search by these.
         </p>
       </div>
 

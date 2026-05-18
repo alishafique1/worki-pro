@@ -6,11 +6,12 @@ export default function ProviderLandingPage() {
   return (
     <>
       <PageSeo
-        title="Join TheHelper as a Home Service Pro in GTA | Apply Today"
-        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington & the GTA. No bidding wars — just vetted homeowners ready to book."
-        ogTitle="Become a TheHelper Home Service Provider | GTA"
-        ogDescription="Partner with TheHelper to get qualified home service leads in Milton, Oakville & Burlington. Licensed HVAC, plumbing, electrical, and handyman pros welcome."
+        title="Join The Helper as a Home Service Pro | Get Leads in GTA"
+        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington and the GTA. No bidding wars - just vetted homeowners ready to book. HVAC, plumbing, electrical, and handyman pros welcome."
+        ogTitle="Become a The Helper Service Provider | GTA"
+        ogDescription="Partner with The Helper to get qualified home service leads in Milton, Oakville & Burlington. Licensed HVAC, plumbing, electrical, and handyman pros welcome."
         canonicalPath="/providers"
+        keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pt-20 pb-32">

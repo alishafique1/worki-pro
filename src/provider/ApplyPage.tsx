@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAction } from 'wasp/client/operations';
 import { submitProviderApplication } from 'wasp/client/operations';
+import PageSeo from '../landing-page/components/PageSeo';
 
 const serviceCategoryOptions = [
   { slug: 'hvac', label: 'HVAC' },
@@ -83,9 +84,16 @@ export default function ProviderApplyPage() {
   }
 
   return (
+    <>
+      <PageSeo
+        title="Apply as a Service Pro | Join The Helper Network"
+        description="Apply to join The Helper network of verified home service professionals. HVAC, plumbing, electrical, handyman, and more in Milton, Oakville, Burlington."
+        canonicalPath="/providers/apply"
+        keywords="join contractor network, become service provider, HVAC contractor apply, plumber apply GTA"
+      />
     <div className="min-h-screen bg-[#F8FAFC] py-20 px-6">
       <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Join the <span className="text-[#2563EB]">Worki</span> Network</h1>
+        <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Join the <span className="text-[#2563EB]">The Helper</span> Network</h1>
         <p className="text-[#475569] mb-12">
           Fill out the form below to start your application. We are currently accepting HVAC and Handyman pros in the GTA.
         </p>
@@ -209,5 +217,6 @@ export default function ProviderApplyPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

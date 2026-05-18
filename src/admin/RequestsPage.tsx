@@ -121,7 +121,7 @@ export default function AdminRequestsPage() {
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${URGENCY_STYLES[req.urgency] ?? URGENCY_STYLES.STANDARD}`}>
                           {req.urgency}
                         </span>
-                      ) : <span className="text-[#475569]">—</span>}
+                      ) : <span className="text-[#475569]">-</span>}
                     </td>
                     <td className="py-3 pr-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -152,7 +152,7 @@ export default function AdminRequestsPage() {
                               onChange={e => setSelectedProviderId(prev => ({ ...prev, [req.id]: e.target.value }))}
                               className="text-sm rounded-md bg-white border border-[#E2E8F0] text-[#0F172A] px-2 py-1 outline-none focus:border-[#2563EB]"
                             >
-                              <option value="">— Unassigned —</option>
+                              <option value="">Unassigned</option>
                               {approvedProviders.map((p: any) => (
                                 <option key={p.id} value={p.id}>{p.businessName}</option>
                               ))}

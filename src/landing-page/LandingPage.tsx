@@ -6,7 +6,7 @@ import {
   Hammer,
   ShowerHead,
 } from "lucide-react";
-import PageSeo from "./components/PageSeo";
+import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import {
   Button,
   CategoryCard,
@@ -17,7 +17,7 @@ import {
   StepCard,
   TrustBadge,
 } from "./marketplace/components";
-import { liveCategories } from "./marketplace/content";
+import { categories } from "./marketplace/content";
 
 // ── Inline search panel ──────────────────────────────────────────────────────
 
@@ -46,8 +46,8 @@ function SearchPanel() {
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
             Browse Categories
           </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {liveCategories.map((cat) => (
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {categories.map((cat) => (
               <Link key={cat.name} to={cat.href ?? "/request-service"}>
                 <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
                   <span className="text-[#2563EB]">{cat.icon}</span>
@@ -91,16 +91,16 @@ function SearchPanel() {
 
 const rewardTiers = [
   { emoji: "🏠", label: "New Homeowner", range: "0 – 499 pts", note: "Start earning from your first booking" },
-  { emoji: "⭐", label: "Active Homeowner", range: "500 – 1,999 pts", note: "Keep going — your next job unlocks more" },
-  { emoji: "🔧", label: "Smart Maintainer", range: "2,000 – 4,999 pts", note: "You're a regular — thank you" },
-  { emoji: "🏆", label: "Home Rewards Pro", range: "5,000+ pts", note: "Top tier — maximum rewards every time" },
+  { emoji: "⭐", label: "Active Homeowner", range: "500 - 1,999 pts", note: "Keep going, your next job unlocks more" },
+  { emoji: "🔧", label: "Smart Maintainer", range: "2,000 - 4,999 pts", note: "You're a regular, thank you" },
+  { emoji: "🏆", label: "Home Rewards Pro", range: "5,000+ pts", note: "Top tier with maximum rewards every time" },
 ];
 
 // ── Trust pillars ────────────────────────────────────────────────────────────
 
 const trustPillars = [
   { emoji: "🛡️", title: "Verified providers", body: "Credentials, insurance, and service areas reviewed before approval." },
-  { emoji: "⭐", title: "Real reviews", body: "Ratings from verified completed jobs — no fake reviews, ever." },
+  { emoji: "⭐", title: "Real reviews", body: "Ratings from verified completed jobs. No fake reviews, ever." },
   { emoji: "💬", title: "Secure messaging", body: "All communication stays connected to the job, in one place." },
   { emoji: "🇨🇦", title: "Canadian owned", body: "Built for Canadian homeowners. GTA-first, growing city by city." },
 ];
@@ -133,67 +133,82 @@ export default function LandingPage() {
   return (
     <>
       <PageSeo
-        title="The Helper — Home Services & Rewards | GTA"
-        description="Verified local pros for HVAC, plumbing, electrical, handyman, and more. Get matched, book, and earn rewards — serving Milton, Oakville & Burlington."
+        title="The Helper | Home Services in Milton, Oakville & Burlington"
+        description="Find verified HVAC, plumbing, electrical, handyman & smart home pros in the GTA. Get matched with local experts, book appointments, and earn rewards on every job. Serving Milton, Oakville & Burlington."
+        ogTitle="The Helper | Home Services Marketplace in GTA"
+        ogDescription="Connect with vetted local pros for HVAC, plumbing, electrical, handyman & more. Serving Milton, Oakville & Burlington homeowners."
         canonicalPath="/"
+        keywords="home services GTA, HVAC Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair services, verified contractors Toronto"
+        structuredData={createLocalBusinessSchema({
+          name: 'The Helper Home Services',
+          description: 'Home services marketplace connecting GTA homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.',
+          areaServed: ['Milton', 'Oakville', 'Burlington', 'Mississauga', 'Brampton'],
+          serviceType: ['HVAC Repair', 'Plumbing Services', 'Electrical Services', 'Handyman Services', 'Appliance Repair', 'Smart Home Installation'],
+        })}
       />
       <main className="min-h-screen bg-[#F8FAFC] font-sans">
 
         {/* ── Section 1: Hero ──────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-white pt-12 pb-16 sm:pt-16 sm:pb-20">
+        <section className="relative overflow-hidden bg-white pt-10 pb-14 sm:pt-14 sm:pb-20">
           {/* Subtle blue bloom */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -right-32 top-0 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.06),transparent_65%)]" />
             <div className="absolute left-0 bottom-0 h-[300px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.04),transparent_65%)]" />
           </div>
 
-          <Container className="relative grid items-start gap-12 lg:grid-cols-2 lg:items-center">
+          <Container className="relative grid items-start gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left column */}
             <div>
               {/* Location badge */}
               <span className="inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-1.5 text-xs font-semibold text-[#2563EB]">
                 <span className="size-2 rounded-full bg-[#22C55E] inline-block" />
-                Now serving GTA — Milton · Oakville · Burlington
+                Now serving GTA: Milton, Oakville, Burlington
               </span>
 
-              {/* H1 */}
-              <h1 className="mt-5 text-[42px] font-bold leading-tight text-[#0F172A] sm:text-5xl lg:text-6xl">
-                Get help with{" "}
-                <em className="text-[#2563EB] not-italic">anything.</em>
+              {/* H1 - Conversion focused headline */}
+              <h1 className="mt-5 text-[38px] font-bold leading-[1.1] text-[#0F172A] sm:text-5xl lg:text-[56px]">
+                One call.{" "}
+                <span className="text-[#2563EB]">Verified pros.</span>{" "}
+                <span className="whitespace-nowrap">Same day.</span>
               </h1>
 
               {/* Subhead */}
-              <p className="mt-4 max-w-xl text-base leading-7 text-[#475569] sm:text-lg">
-                Verified local pros for your home, events, and more — matched, booked, and tracked in one place.
+              <p className="mt-4 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
+                Stop calling around. Submit one request, get matched with a verified local pro in minutes, and book same-day service.
               </p>
 
               {/* Amber reward pill */}
               <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-4 py-2 text-sm font-medium text-[#92400E]">
-                🏆 The only platform where you get rewarded for getting things done at home.
+                Earn $60+ cash back on your first completed job
               </div>
 
               {/* CTAs */}
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  to="/request-service"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+                >
+                  Get Free Quotes Now
+                  <ArrowRight className="size-4" />
+                </Link>
                 <button
                   onClick={() => setShowSearch((v) => !v)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+                  className="inline-flex items-center justify-center gap-1 rounded-full border border-[#E2E8F0] bg-white px-6 py-3.5 text-sm font-semibold text-[#475569] transition duration-150 hover:border-[#BFDBFE] hover:text-[#2563EB]"
                 >
-                  Find a Helper
-                  <ArrowRight className="size-4" />
+                  Browse services
                 </button>
-                <a
-                  href="#how-it-works"
-                  className="inline-flex items-center justify-center gap-1 rounded-full border border-[#E2E8F0] bg-white px-6 py-3 text-sm font-semibold text-[#475569] transition duration-150 hover:border-[#BFDBFE] hover:text-[#2563EB]"
-                >
-                  See how it works →
-                </a>
               </div>
 
               {/* Trust micro-row */}
-              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#475569]">
-                {["Verified pros", "GTA coverage", "4.9★ avg rating", "🇨🇦 Canadian owned"].map((item) => (
-                  <span key={item} className="flex items-center gap-1.5">
-                    <span className="text-[#22C55E] font-bold">✓</span>
+              <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-[#475569]">
+                {[
+                  "100% Free for Homeowners",
+                  "Verified & Insured Pros",
+                  "Same-Day Service",
+                  "4.9 Average Rating",
+                ].map((item) => (
+                  <span key={item} className="flex items-center gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#DCFCE7] text-[#22C55E] text-xs font-bold">✓</span>
                     {item}
                   </span>
                 ))}
@@ -206,10 +221,10 @@ export default function LandingPage() {
             {/* Right column — Live Activity Card */}
             <div className="relative">
               {/* Floating notification */}
-              <div className="absolute -top-4 left-0 z-10 animate-bounce sm:-top-5 sm:left-4">
-                <div className="flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-medium text-[#475569] shadow-lg">
-                  <span className="text-base">👤</span>
-                  Sarah just earned $5! · AC repair submitted · Milton, ON
+              <div className="absolute -top-3 left-0 z-10 sm:-top-4 sm:left-4">
+                <div className="flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-medium text-[#475569] shadow-lg animate-[bounce_3s_ease-in-out_infinite]">
+                  <span className="flex size-6 items-center justify-center rounded-full bg-[#DCFCE7] text-sm">✓</span>
+                  Sarah just earned $5! · AC repair · Milton
                 </div>
               </div>
 
@@ -229,21 +244,21 @@ export default function LandingPage() {
                   <div className="flex items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-3">
                     <div>
                       <p className="text-sm font-medium text-[#0F172A]">HVAC Repair</p>
-                      <p className="text-xs text-[#94A3B8]">Milton, ON · Matched in 12 min</p>
+                      <p className="text-xs text-[#94A3B8]">Milton · Matched in 12 min</p>
                     </div>
-                    <span className="rounded-full bg-[#DCFCE7] px-2.5 py-1 text-[11px] font-semibold text-[#16A34A]">Done ✓</span>
+                    <span className="rounded-full bg-[#DCFCE7] px-2.5 py-1 text-[11px] font-semibold text-[#16A34A]">Done</span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-3">
                     <div>
                       <p className="text-sm font-medium text-[#0F172A]">Plumbing</p>
-                      <p className="text-xs text-[#94A3B8]">Oakville, ON · Matched in 8 min</p>
+                      <p className="text-xs text-[#94A3B8]">Oakville · Matched in 8 min</p>
                     </div>
                     <span className="rounded-full bg-[#EFF6FF] px-2.5 py-1 text-[11px] font-semibold text-[#2563EB]">Active</span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-3">
                     <div>
                       <p className="text-sm font-medium text-[#0F172A]">Handyman</p>
-                      <p className="text-xs text-[#94A3B8]">Burlington, ON · Just submitted</p>
+                      <p className="text-xs text-[#94A3B8]">Burlington · Just now</p>
                     </div>
                     <span className="rounded-full bg-[#FEF3C7] px-2.5 py-1 text-[11px] font-semibold text-[#92400E]">New</span>
                   </div>
@@ -251,7 +266,7 @@ export default function LandingPage() {
 
                 {/* Bottom amber callout */}
                 <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#FDE68A] bg-[#FEF3C7] px-4 py-3 text-sm font-medium text-[#92400E]">
-                  🎁 James earned $50 this month from job completions
+                  James earned $50 this month from completed jobs
                 </div>
               </div>
             </div>
@@ -263,27 +278,45 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="WHAT WE HELP WITH"
-              title="Home services made easy."
-              description="Choose a category to describe your job and get matched with a verified local pro."
+              title="Every service. One platform."
+              description="HVAC, plumbing, electrical, handyman, and more. All from verified local pros."
             />
+            {/* Featured services - first 6 with images */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {liveCategories.map((category) => (
+              {categories.filter(c => c.live).map((category) => (
                 <CategoryCard
                   key={category.name}
                   icon={category.icon}
                   name={category.name}
                   description={category.description}
                   href={category.href ?? "/request-service"}
+                  imageUrl={category.imageUrl}
                 />
               ))}
             </div>
+            {/* Coming soon services */}
+            <div className="mt-8">
+              <p className="mb-4 text-sm font-semibold text-[#94A3B8] uppercase tracking-wider">Coming Soon</p>
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                {categories.filter(c => c.comingSoon).slice(0, 6).map((category) => (
+                  <Link
+                    key={category.name}
+                    to="/request-service"
+                    className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]"
+                  >
+                    <span className="text-[#2563EB]">{category.icon}</span>
+                    <span className="text-sm font-medium text-[#475569]">{category.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            {/* CTA */}
             <div className="mt-8 text-center">
               <Link
-                to="/services"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition"
+                to="/request-service"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:underline"
               >
-                More services coming soon
-                <ArrowRight className="size-4" />
+                View all services <ArrowRight className="size-4" />
               </Link>
             </div>
           </Container>
@@ -294,29 +327,38 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="HOW IT WORKS"
-              title="From request to done — fast."
+              title="Submit. Match. Book. Done."
+              description="Get connected to a verified local pro in under 15 minutes. 100% free for homeowners."
             />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <StepCard
                 step="01"
-                title="Describe the job"
-                description="Tell us what you need, where you are, and when you're available."
+                title="Submit your request"
+                description="Takes under 2 minutes. 100% free, no credit card required."
               />
               <StepCard
                 step="02"
-                title="Get matched"
-                description="We surface the right verified pro for your category and location."
+                title="Get matched fast"
+                description="A verified local pro responds, typically within 15 minutes."
               />
               <StepCard
                 step="03"
-                title="Confirm & book"
-                description="Schedule the appointment and track everything from your dashboard."
+                title="Book same-day or later"
+                description="Pick a time that works. Urgent? Same-day service available."
               />
               <StepCard
                 step="04"
-                title="Job done. Earn rewards."
-                description="Rate your pro — and earn points toward your next service. 🏆"
+                title="Job done. Get rewarded."
+                description="Earn $60+ back on your first completed job. No extra steps."
               />
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                to="/request-service"
+                className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8]"
+              >
+                Get Started Now <ArrowRight className="size-4" />
+              </Link>
             </div>
           </Container>
         </section>
@@ -336,7 +378,7 @@ export default function LandingPage() {
                   platform where you get rewarded for getting things done.
                 </h2>
                 <p className="mt-4 text-base leading-7 text-[#BFDBFE]">
-                  Every completed job earns you real cash back — redeemable as gift cards. The more you use The Helper, the more you save.
+                  Every completed job earns you real cash back, redeemable as gift cards. The more you use The Helper, the more you save.
                 </p>
                 <Link
                   to="/how-rewards-work"
@@ -366,7 +408,7 @@ export default function LandingPage() {
 
                 {/* Referral callout */}
                 <div className="mt-2 flex items-center gap-2 rounded-xl border border-[#FDE68A]/40 bg-[#FEF3C7]/10 px-5 py-3 text-sm font-medium text-[#FCD34D]">
-                  🎁 Refer a friend — both of you earn $5 when they submit their first request.
+                  🎁 Refer a friend. Both of you earn $5 when they submit their first request.
                 </div>
 
                 {/* Earning summary */}
@@ -453,7 +495,7 @@ export default function LandingPage() {
                   Are you a local pro? Join The Helper network.
                 </h3>
                 <p className="mt-3 text-base text-[#475569]">
-                  Get matched with qualified leads in your service area. Manage bookings, messages, and reviews — all in one place.
+                  Get matched with qualified leads in your service area. Manage bookings, messages, and reviews, all in one place.
                 </p>
                 <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {["6 service categories", "GTA coverage", "Free to apply"].map((stat) => (

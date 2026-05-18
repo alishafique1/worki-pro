@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FAQAccordion } from '../landing-page/marketplace/components';
 import { Container } from '../landing-page/marketplace/components';
+import PageSeo, { createFaqSchema } from '../landing-page/components/PageSeo';
 import {
   MessageSquare,
   BookOpen,
@@ -18,7 +19,7 @@ const consumerFaqs = [
   {
     question: 'How do I request a service?',
     answer:
-      'Click "Request Service" from your dashboard or the navigation. Fill in the details — category, urgency, property info, and description — and submit. A matching provider will be notified.',
+      'Click "Request Service" from your dashboard or the navigation. Fill in the details (category, urgency, property info, and description) and submit. A matching provider will be notified.',
   },
   {
     question: 'How long does it take to get matched with a pro?',
@@ -48,7 +49,7 @@ const consumerFaqs = [
   {
     question: 'How do I earn and use my referral code?',
     answer:
-      'Go to the Referral page to find your unique code. Share it with friends — when they complete their first service, you both earn reward points automatically.',
+      'Go to the Referral page to find your unique code. Share it with friends. When they complete their first service, you both earn reward points automatically.',
   },
   {
     question: 'Can I message my provider?',
@@ -113,6 +114,13 @@ const trustItems = [
 
 export default function HelpPage() {
   return (
+    <>
+      <PageSeo
+        title="Help Centre | The Helper"
+        description="Get help with The Helper home services marketplace. Find answers to FAQs about service requests, appointments, rewards, and more."
+        canonicalPath="/help"
+        structuredData={createFaqSchema(consumerFaqs)}
+      />
     <div className="min-h-[80vh] bg-[#F8FAFC]">
       {/* Hero */}
       <div className="bg-white border-b border-[#E2E8F0]">
@@ -120,7 +128,7 @@ export default function HelpPage() {
           <div className="py-14 max-w-2xl">
             <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Help Centre</h1>
             <p className="text-[#475569] text-lg">
-              Everything you need to know about using TheHelper — from submitting your first request to redeeming rewards.
+              Everything you need to know about using TheHelper, from submitting your first request to redeeming rewards.
             </p>
           </div>
         </Container>
@@ -202,5 +210,6 @@ export default function HelpPage() {
         </div>
       </Container>
     </div>
+    </>
   );
 }

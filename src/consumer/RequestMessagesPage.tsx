@@ -99,7 +99,7 @@ export default function RequestMessagesPage() {
       <div className="flex-1 rounded-[18px] border border-[#E2E8F0] bg-white overflow-y-auto p-6 space-y-4 mb-4 max-h-[60vh] shadow-sm">
         {messages.length === 0 && (
           <p className="text-center text-[#94A3B8] text-sm py-8">
-            No messages yet — start the conversation below.
+            No messages yet. Start the conversation below.
           </p>
         )}
 

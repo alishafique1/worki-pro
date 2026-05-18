@@ -96,7 +96,7 @@ export default function AnalyticsPage() {
       {/* Monthly points trend */}
       {stats.monthlyPoints.length > 0 && (
         <div className="bg-white rounded-[20px] border border-[#E2E8F0] p-6 space-y-5 shadow-sm">
-          <h2 className="text-xl font-bold text-[#0F172A]">Points Trend — Last 6 Months</h2>
+          <h2 className="text-xl font-bold text-[#0F172A]">Points Trend: Last 6 Months</h2>
           <div className="space-y-3">
             {stats.monthlyPoints.map((m) => (
               <div key={m.month} className="grid grid-cols-[80px_1fr_1fr] items-center gap-4">

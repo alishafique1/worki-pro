@@ -135,7 +135,7 @@ export default function ServiceAreaLandingPage() {
               {serviceLabel} in {areaName}
             </h1>
             <p className="text-[#475569] mt-1">
-              Find verified, insured {serviceLabel.toLowerCase()} pros near you — matched in minutes.
+              Find verified, insured {serviceLabel.toLowerCase()} pros near you, matched in minutes.
             </p>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function ServiceAreaLandingPage() {
             to={`/request-service?service=${serviceSlug}`}
             className="inline-block px-7 py-4 bg-[#2563EB] text-white font-black rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-base"
           >
-            Get quotes — it's free
+            Get quotes (it's free)
           </Link>
           <Link
             to="/discover"
@@ -181,7 +181,7 @@ export default function ServiceAreaLandingPage() {
                 {[
                   "Describe your job in 30 seconds",
                   "Get matched with verified local pros",
-                  "Compare quotes — no obligation",
+                  "Compare quotes with no obligation",
                   "Book & earn reward points",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[#475569]">

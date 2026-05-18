@@ -45,7 +45,7 @@ export default function DashboardPage() {
           to="/request-service"
           className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm"
         >
-          + Request New Service
+          + Get Free Quotes
         </Link>
       </div>
 
@@ -159,7 +159,7 @@ export default function DashboardPage() {
                         to={`/book/${req.id}`}
                         className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
                       >
-                        📅 Book Appointment
+                        Schedule Now (Same-Day Available)
                       </Link>
                     )}
                 </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router";
 import { ArrowRight, CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
-import PageSeo from "../components/PageSeo";
+import PageSeo, { createServiceSchema, createFaqSchema, createBreadcrumbSchema } from "../components/PageSeo";
 import { categoryPages } from "./categoryData";
 
 // ── Layout helpers ────────────────────────────────────────────────────────────
@@ -112,6 +112,23 @@ export default function ServiceCategoryPage() {
         title={category.seo.title}
         description={category.seo.description}
         canonicalPath={`/services/${category.slug}`}
+        keywords={`${category.name.toLowerCase()} Milton, ${category.name.toLowerCase()} Oakville, ${category.name.toLowerCase()} Burlington, ${category.name.toLowerCase()} services GTA`}
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            createServiceSchema({
+              name: `${category.name} Services`,
+              description: category.description,
+              areaServed: ['Milton', 'Oakville', 'Burlington'],
+              url: `https://thehelper.ca/services/${category.slug}`,
+            }),
+            createFaqSchema(category.faqs),
+            createBreadcrumbSchema([
+              { name: 'Home', url: 'https://thehelper.ca' },
+              { name: category.name, url: `https://thehelper.ca/services/${category.slug}` },
+            ]),
+          ],
+        }}
       />
 
       <main className="min-h-screen bg-[#F8FAFC] font-sans">
@@ -201,7 +218,7 @@ export default function ServiceCategoryPage() {
                 HOW IT WORKS
               </p>
               <h2 className="text-2xl font-bold text-[#0F172A] sm:text-3xl">
-                From request to done — fast.
+                From request to done, fast.
               </h2>
             </div>
 
@@ -219,7 +236,7 @@ export default function ServiceCategoryPage() {
               <HowItWorksStep
                 number="03"
                 title="Job done"
-                description="Confirm the appointment, track updates, and rate your pro — all in one place."
+                description="Confirm the appointment, track updates, and rate your pro, all in one place."
               />
             </div>
           </Container>

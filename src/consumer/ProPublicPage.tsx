@@ -282,7 +282,7 @@ export default function ProPublicPage() {
             </div>
           ) : (
             <p className="text-[#475569] text-sm">
-              No reviews yet — be the first to book this pro.
+              No reviews yet. Be the first to book this pro.
             </p>
           )}
         </div>

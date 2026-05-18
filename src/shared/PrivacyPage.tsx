@@ -1,7 +1,14 @@
 import React from 'react';
+import PageSeo from '../landing-page/components/PageSeo';
 
 export default function PrivacyPage() {
   return (
+    <>
+      <PageSeo
+        title="Privacy Policy | The Helper"
+        description="Read The Helper privacy policy. Learn how we collect, use, and protect your personal information when using our home services marketplace."
+        canonicalPath="/privacy"
+      />
     <div className="bg-[#F8FAFC] text-[#0F172A] min-h-screen py-20 px-6">
       <div className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl p-10 shadow-sm">
         <h1 className="text-4xl font-black mb-2 text-[#0F172A]">Privacy Policy</h1>
@@ -19,7 +26,7 @@ export default function PrivacyPage() {
         </ul>
         <p>
           We also collect usage data including your IP address, browser type, pages visited,
-          and timestamps — collected automatically through our hosting and analytics infrastructure.
+          and timestamps, collected automatically through our hosting and analytics infrastructure.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">2. How We Use Your Information</h2>
@@ -40,8 +47,8 @@ export default function PrivacyPage() {
         </p>
         <ul>
           <li>
-            <strong>Service Providers:</strong> Your request details — including name, contact
-            information, postal code, and job description — are shared with vetted Providers in
+            <strong>Service Providers:</strong> Your request details (including name, contact
+            information, postal code, and job description) are shared with vetted Providers in
             your service area so they can respond to your request.
           </li>
           <li>
@@ -129,9 +136,10 @@ export default function PrivacyPage() {
         </p>
 
         <p className="mt-16 text-sm text-[#94A3B8]">
-          TheHelper Home Services Inc. — Milton, Ontario, Canada.
+          The Helper Home Services Inc. | Milton, Ontario, Canada.
         </p>
       </div>
     </div>
+    </>
   );
 }

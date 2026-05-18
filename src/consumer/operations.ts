@@ -275,7 +275,11 @@ type ProviderWithCategories = {
   verificationStatus: string;
   serviceAreas: string[];
   servicesJson: string | null;
+  bio: string | null;
+  profilePhotoUrl: string | null;
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
+  completedJobsCount: number;
+  reviewCount: number;
 };
 
 export const getProviders: GetProviders<
@@ -308,6 +312,14 @@ export const getProviders: GetProviders<
       categories: {
         include: { serviceCategory: true },
       },
+      appointments: {
+        where: { status: "COMPLETED" },
+        select: { id: true },
+      },
+      reviews: {
+        where: { status: "PUBLISHED" },
+        select: { id: true },
+      },
     },
     orderBy: { ratingInternal: "desc" },
   });
@@ -323,7 +335,21 @@ export const getProviders: GetProviders<
     );
   }
 
-  return providers;
+  // Map to include counts
+  return providers.map((provider) => ({
+    id: provider.id,
+    businessName: provider.businessName,
+    contactName: provider.contactName,
+    ratingInternal: provider.ratingInternal,
+    verificationStatus: provider.verificationStatus,
+    serviceAreas: provider.serviceAreas,
+    servicesJson: provider.servicesJson,
+    bio: provider.bio,
+    profilePhotoUrl: provider.profilePhotoUrl,
+    categories: provider.categories,
+    completedJobsCount: provider.appointments?.length ?? 0,
+    reviewCount: provider.reviews?.length ?? 0,
+  }));
 };
 
 export const sendCustomerMessage: SendCustomerMessage<

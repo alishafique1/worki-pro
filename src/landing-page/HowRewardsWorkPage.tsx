@@ -1,21 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router';
-import PageSeo from './components/PageSeo';
+import PageSeo, { createFaqSchema } from './components/PageSeo';
+
+const rewardsFaqs = [
+  {
+    question: 'How do I earn rewards with The Helper?',
+    answer: 'You earn rewards at three stages: $5 when you submit a service request, $5 when your appointment is booked, and up to $50 bonus on your first completed job. After your first job, you earn 5% cashback on every completed service.',
+  },
+  {
+    question: 'How do I redeem my rewards?',
+    answer: 'Once your balance reaches $100 (10,000 points), you can redeem for Amazon gift cards, Starbucks cards, or credits toward your next The Helper booking. Redemptions are processed within 24 hours.',
+  },
+  {
+    question: 'Do rewards expire?',
+    answer: 'No, your earned rewards never expire. You can accumulate points over time and redeem whenever you reach the $100 minimum threshold.',
+  },
+  {
+    question: 'Can I earn rewards on every job?',
+    answer: 'Yes, after your first completed job, you earn 5% cashback on every subsequent completed service. A $200 plumbing job earns $10 back, a $500 HVAC service earns $25 back.',
+  },
+];
 
 const FIRST_JOB_TIERS = [
   {
     step: '01',
-    title: 'Submit a Request — Earn $5',
+    title: 'Submit a Request: Earn $5',
     points: '500 pts',
     dollar: '$5',
     color: 'text-[#2563EB]',
     bg: 'bg-[#EFF6FF] border-[#BFDBFE]',
     icon: '📋',
-    desc: 'Fill out our 60-second concierge form describing what you need. The moment your request is submitted, 500 points ($5) are added to your wallet. No appointment needed — just asking counts.',
+    desc: 'Fill out our 60-second concierge form describing what you need. The moment your request is submitted, 500 points ($5) are added to your wallet. No appointment needed, just asking counts.',
   },
   {
     step: '02',
-    title: 'Get Booked — Earn Another $5',
+    title: 'Get Booked: Earn Another $5',
     points: '500 pts',
     dollar: '$5',
     color: 'text-[#F59E0B]',
@@ -25,7 +44,7 @@ const FIRST_JOB_TIERS = [
   },
   {
     step: '03',
-    title: 'First Job Done — Earn $50 Bonus',
+    title: 'First Job Done: Earn $50 Bonus',
     points: '5,000 pts',
     dollar: '$50',
     color: 'text-[#22C55E]',
@@ -39,11 +58,13 @@ export default function HowRewardsWorkPage() {
   return (
     <>
       <PageSeo
-        title="How TheHelper Rewards Work — Earn 5% Cashback on Home Services"
-        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack TheHelper rewards on top of your credit card points. Cash out at $100."
-        ogTitle="Earn 5% Cashback on Home Services | TheHelper Rewards"
-        ogDescription="TheHelper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job — HVAC, plumbing, electrical & more in the GTA."
+        title="The Helper Rewards | Earn 5% Cashback on Home Services in GTA"
+        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack The Helper rewards on top of your credit card points. Redeem for Amazon, Starbucks, or service credits."
+        ogTitle="Earn 5% Cashback on Home Services | The Helper Rewards"
+        ogDescription="The Helper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job - HVAC, plumbing, electrical and more in the GTA."
         canonicalPath="/how-rewards-work"
+        keywords="home services rewards, cashback home repair, earn rewards HVAC, plumbing rewards, home service loyalty program"
+        structuredData={createFaqSchema(rewardsFaqs)}
       />
     <div className='min-h-screen bg-[#F8FAFC]'>
       <main className='max-w-5xl mx-auto px-6 lg:px-8 pt-24 pb-32'>
@@ -57,7 +78,7 @@ export default function HowRewardsWorkPage() {
             Double the Rewards<br /><span className='text-[#2563EB]'>On Every Job.</span>
           </h1>
           <p className='text-xl text-[#475569] max-w-2xl mx-auto'>
-            Your Visa or Amex already gives you points when you pay — TheHelper stacks <strong className='text-[#0F172A]'>cashback on top of that</strong>.
+            Your Visa or Amex already gives you points when you pay. TheHelper stacks <strong className='text-[#0F172A]'>cashback on top of that</strong>.
             Earn <strong className='text-[#0F172A]'>$60 back on your first job</strong>, then <strong className='text-[#0F172A]'>5% cashback</strong> on every job after.
             Double the rewards for home services you were always going to pay for.
             <br /><span className='text-sm mt-2 inline-block'>Cash out at $100. 100 pts = $1. Simple.</span>
@@ -105,10 +126,10 @@ export default function HowRewardsWorkPage() {
               <div className='text-4xl'>💳</div>
             </div>
             <div className='flex-1'>
-              <h2 className='text-2xl font-black mb-3 text-[#0F172A]'>Ongoing 5% Cashback — On Every Job</h2>
+              <h2 className='text-2xl font-black mb-3 text-[#0F172A]'>Ongoing 5% Cashback on Every Job</h2>
               <p className='text-[#475569] leading-relaxed'>
                 After your first job, every completed booking earns you 5% of the job value in TheHelper points.
-                A $200 plumbing job? That's $10 back. A $500 HVAC tune-up? $25 back. It adds up fast — and never expires.
+                A $200 plumbing job? That's $10 back. A $500 HVAC tune-up? $25 back. It adds up fast and never expires.
               </p>
             </div>
             <div className='shrink-0'>
@@ -163,7 +184,7 @@ export default function HowRewardsWorkPage() {
             to='/request-service'
             className='inline-block px-14 py-6 bg-[#2563EB] text-white font-black rounded-[30px] text-xl hover:bg-[#1D4ED8] transition-colors hover:scale-105'
           >
-            Start Earning — Request a Service
+            Start Earning: Request a Service
           </Link>
           <p className='mt-4 text-sm text-[#475569]'>No account required to get started.</p>
         </div>

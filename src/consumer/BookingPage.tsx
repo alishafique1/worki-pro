@@ -91,7 +91,7 @@ export default function BookingPage() {
     ? {
         name: request.name,
         email: request.email,
-        notes: `Service: ${serviceName} — ${request.description ?? ''}`,
+        notes: `Service: ${serviceName}. ${request.description ?? ''}`,
       }
     : undefined;
 

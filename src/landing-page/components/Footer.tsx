@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="col-span-1 md:col-span-1">
           <Link to="/" className="text-2xl font-black text-white">Worki</Link>
           <p className="mt-4 text-[#94A3B8] text-sm">
-            Expert home services, managed for you — plus real cashback on every job. Serving the GTA.
+            Expert home services, managed for you. Plus real cashback on every job. Serving the GTA.
           </p>
         </div>
 

@@ -89,7 +89,7 @@ export default function ProviderLeadsPage() {
         <div>
           <h1 className="text-4xl font-black tracking-tight">Lead Feed</h1>
           <p className="mt-2 text-[#475569]">
-            Verified service requests near your area — claim a lead to reveal customer contact details.
+            Verified service requests near your area. Claim a lead to reveal customer contact details.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
