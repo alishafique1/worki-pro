@@ -13,19 +13,19 @@ const applianceServices = [
     title: 'Kitchen',
     description: 'Expert repair for refrigerators, dishwashers, ovens, and stoves.',
     icon: '🍳',
-    image: '/images/categories/appliance-repair/kitchen.webp',
+    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
   },
   {
     title: 'Laundry',
     description: 'Washer and dryer repair for all major brands and models.',
     icon: '👕',
-    image: '/images/categories/appliance-repair/laundry.webp',
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&q=80',
   },
   {
     title: 'Maintenance',
     description: 'Preventative checkups to keep your appliances running efficiently.',
     icon: '🛡️',
-    image: '/images/categories/appliance-repair/maintenance.webp',
+    image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function ApplianceLandingPage() {
           trustNote="Certified appliance techs, all brands covered. You earn points on every completed job."
           trustSignals={trustSignals}
           services={applianceServices}
-          heroImage="/images/categories/appliance-repair/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=1200&q=80"
           heroImageAlt="Appliance repair technician diagnosing refrigerator"
         />
 

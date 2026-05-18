@@ -13,19 +13,19 @@ const electricalServices = [
     title: 'Repairs & Outlets',
     description: 'Outlet replacements, circuit troubleshooting, and panel breaker fixes.',
     icon: '🔌',
-    image: '/images/categories/electrical/repairs.webp',
+    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&q=80',
   },
   {
     title: 'Lighting',
     description: 'Pot light installation, fixture upgrades, and smart lighting setup.',
     icon: '💡',
-    image: '/images/categories/electrical/lighting.webp',
+    image: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&q=80',
   },
   {
     title: 'Panel & Upgrades',
     description: 'Electrical panel upgrades, EV charger installation, and rewiring.',
     icon: '🔋',
-    image: '/images/categories/electrical/panel.webp',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function ElectricalLandingPage() {
           trustNote="ESA-certified electricians. You earn points on every completed job."
           trustSignals={trustSignals}
           services={electricalServices}
-          heroImage="/images/categories/electrical/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80"
           heroImageAlt="Licensed electrician working on modern electrical panel"
         />
 

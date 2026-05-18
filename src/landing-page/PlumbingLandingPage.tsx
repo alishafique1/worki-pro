@@ -13,19 +13,19 @@ const plumbingServices = [
     title: 'Leak Repair',
     description: 'Faucets, pipes, and fixtures repaired fast before water damage sets in.',
     icon: '🚿',
-    image: '/images/categories/plumbing/leak-repair.webp',
+    image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&q=80',
   },
   {
     title: 'Drain Cleaning',
     description: 'Professional drain clearing for kitchen, bathroom, and main line blockages.',
     icon: '🌀',
-    image: '/images/categories/plumbing/drain-cleaning.webp',
+    image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&q=80',
   },
   {
     title: 'Installations',
     description: 'Toilets, sinks, water heaters, and full bathroom rough-ins.',
     icon: '🏠',
-    image: '/images/categories/plumbing/installations.webp',
+    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function PlumbingLandingPage() {
           trustNote="Licensed plumbers, emergency-ready. You earn points on every completed job."
           trustSignals={trustSignals}
           services={plumbingServices}
-          heroImage="/images/categories/plumbing/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
           heroImageAlt="Professional plumber installing modern faucet in kitchen"
         />
 

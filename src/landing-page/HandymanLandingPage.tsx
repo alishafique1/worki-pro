@@ -13,19 +13,19 @@ const handymanServices = [
     title: 'Mounting',
     description: 'Expert mounting for TVs, shelves, mirrors, and artwork on any wall type.',
     icon: '🖼️',
-    image: '/images/categories/handyman/mounting.webp',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
   },
   {
     title: 'Repairs',
     description: 'Drywall patching, leaky faucet fixes, and general home maintenance.',
     icon: '🔧',
-    image: '/images/categories/handyman/repairs.webp',
+    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=80',
   },
   {
     title: 'Assembly',
     description: 'Professional furniture assembly for IKEA, Wayfair, and other major brands.',
     icon: '📦',
-    image: '/images/categories/handyman/assembly.webp',
+    image: 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function HandymanLandingPage() {
           trustNote="Verified handyman pros in Oakville, Burlington & Milton. You earn points on every completed job."
           trustSignals={trustSignals}
           services={handymanServices}
-          heroImage="/images/categories/handyman/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=1200&q=80"
           heroImageAlt="Handyman mounting TV on living room wall"
         />
 

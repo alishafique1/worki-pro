@@ -13,19 +13,19 @@ const smartHomeServices = [
     title: 'Smart Security',
     description: 'Smart locks, video doorbells, cameras, and full security system setup.',
     icon: '🔒',
-    image: '/images/categories/smart-home/security.webp',
+    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=80',
   },
   {
     title: 'Home Automation',
     description: 'Smart hubs, voice control integration, and full home automation.',
     icon: '🎮',
-    image: '/images/categories/smart-home/automation.webp',
+    image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800&q=80',
   },
   {
     title: 'AV & Connectivity',
     description: 'TV mounting, surround sound, structured wiring, and Wi-Fi optimization.',
     icon: '📡',
-    image: '/images/categories/smart-home/av.webp',
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function SmartHomeLandingPage() {
           trustNote="Certified smart home installers. You earn points on every completed job."
           trustSignals={trustSignals}
           services={smartHomeServices}
-          heroImage="/images/categories/smart-home/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1558002038-1055907df827?w=1200&q=80"
           heroImageAlt="Smart home installer configuring thermostat"
         />
 

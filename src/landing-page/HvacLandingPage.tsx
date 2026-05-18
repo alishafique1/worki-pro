@@ -13,19 +13,19 @@ const hvacServices = [
     title: 'Heating',
     description: 'Furnace repair, maintenance, and new high-efficiency installations.',
     icon: '🔥',
-    image: '/images/categories/hvac/heating.webp',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80',
   },
   {
     title: 'Cooling',
     description: 'Stay cool with expert AC repair and modern cooling solutions.',
     icon: '❄️',
-    image: '/images/categories/hvac/cooling.webp',
+    image: 'https://images.unsplash.com/photo-1631545308370-89c9ff8bdab1?w=800&q=80',
   },
   {
     title: 'Air Quality',
     description: 'Humidifiers, air purifiers, and duct cleaning for a healthy home.',
     icon: '💨',
-    image: '/images/categories/hvac/air-quality.webp',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
   },
 ];
 
@@ -82,7 +82,7 @@ export default function HvacLandingPage() {
           trustNote="Licensed TSSA contractors. You earn points when your job is done."
           trustSignals={trustSignals}
           services={hvacServices}
-          heroImage="/images/categories/hvac/hero.webp"
+          heroImage="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80"
           heroImageAlt="Professional HVAC technician servicing a modern furnace"
         />
 
