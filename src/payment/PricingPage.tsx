@@ -35,7 +35,7 @@ export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
   [PaymentPlanId.Hobby]: {
     name: prettyPaymentPlanName(PaymentPlanId.Hobby),
     price: "$0",
-    description: "Free forever — submit requests and browse pros at no cost",
+    description: "Free forever. Submit requests and browse pros at no cost",
     features: [
       "Post unlimited service requests",
       "Browse verified pro profiles",
@@ -48,7 +48,7 @@ export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
     price: "$9.99/mo",
     description: "Maximum visibility and speed for homeowners who use Worki regularly",
     features: [
-      "Priority request visibility — pros respond faster",
+      "Priority request visibility so pros respond faster",
       "Enhanced support with dedicated concierge",
       "First access to new service categories",
       "Everything in Free",
@@ -57,7 +57,7 @@ export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
   [PaymentPlanId.Credits10]: {
     name: prettyPaymentPlanName(PaymentPlanId.Credits10),
     price: "$9.99",
-    description: "One-time credit bundle — for single urgent jobs or one-off needs",
+    description: "One-time credit bundle for single urgent jobs or one-off needs",
     features: ["10 credits added instantly", "Credits never expire", "Applied automatically at checkout"],
   },
 };

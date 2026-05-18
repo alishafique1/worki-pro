@@ -328,18 +328,18 @@ export default function LandingPage() {
             <SectionHeader
               eyebrow="HOW IT WORKS"
               title="Submit. Match. Book. Done."
-              description="Get connected to a verified local pro in under 15 minutes — 100% free for homeowners."
+              description="Get connected to a verified local pro in under 15 minutes. 100% free for homeowners."
             />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <StepCard
                 step="01"
                 title="Submit your request"
-                description="Takes under 2 minutes. 100% free — no credit card required."
+                description="Takes under 2 minutes. 100% free, no credit card required."
               />
               <StepCard
                 step="02"
                 title="Get matched fast"
-                description="A verified local pro responds — typically within 15 minutes."
+                description="A verified local pro responds, typically within 15 minutes."
               />
               <StepCard
                 step="03"

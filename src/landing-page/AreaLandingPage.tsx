@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router';
-import PageSeo from './components/PageSeo';
+import PageSeo, { createLocalBusinessSchema } from './components/PageSeo';
 
 interface AreaData {
   name: string;
@@ -128,11 +128,18 @@ export default function AreaLandingPage() {
   return (
     <>
       <PageSeo
-        title={`Home Services in ${area.name}, ${area.region} | TheHelper`}
-        description={`${area.tagline}. Vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}. Earn 5% cashback on every job.`}
-        ogTitle={`Home Services in ${area.name} | TheHelper`}
-        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more, matched, scheduled, and followed up for you.`}
+        title={`Home Services in ${area.name}, ON | HVAC, Plumber, Electrician | The Helper`}
+        description={`Find vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}, ${area.region}. Licensed, insured contractors. Get matched and book today.`}
+        ogTitle={`Home Services in ${area.name} | The Helper`}
+        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more - matched, scheduled, and followed up for you.`}
         canonicalPath={`/areas/${areaSlug}`}
+        keywords={`home services ${area.name}, HVAC ${area.name}, plumber ${area.name}, electrician ${area.name}, handyman ${area.name}, appliance repair ${area.name}`}
+        structuredData={createLocalBusinessSchema({
+          name: `The Helper - ${area.name}`,
+          description: `Home services marketplace connecting ${area.name} homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.`,
+          areaServed: [area.name, ...area.nearby],
+          serviceType: ['HVAC Repair', 'Plumbing Services', 'Electrical Services', 'Handyman Services', 'Appliance Repair', 'Smart Home Installation'],
+        })}
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       {/* ── Hero ── */}

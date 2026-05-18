@@ -37,7 +37,7 @@ const STEPS = [
     num: '02',
     icon: <BadgeCheck className="size-5" />,
     title: 'Get matched fast',
-    desc: 'We connect you with a verified local pro — typically within 15 minutes. Same-day service available.',
+    desc: 'We connect you with a verified local pro, typically within 15 minutes. Same-day service available.',
   },
   {
     num: '03',
@@ -54,7 +54,7 @@ const STEPS = [
 ];
 
 const TRUST_POINTS = [
-  { icon: <ShieldCheck className="size-5" />, title: 'Verified local pros', desc: 'Every pro is vetted before joining — credentials, insurance, and reviews verified.' },
+  { icon: <ShieldCheck className="size-5" />, title: 'Verified local pros', desc: 'Every pro is vetted before joining. Credentials, insurance, and reviews verified.' },
   { icon: <Clock3 className="size-5" />, title: 'Fast matching', desc: 'Most homeowners get matched within 15 minutes. Same-day service available.' },
   { icon: <MessageSquareText className="size-5" />, title: '100% free for homeowners', desc: 'No platform fees, no credit card required. You only pay the pro for the work.' },
   { icon: <MapPin className="size-5" />, title: 'Local GTA coverage', desc: 'Serving Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton.' },
@@ -90,7 +90,7 @@ export default function HowItWorksPage() {
             Submit. Match. Book. Done.
           </h1>
           <p className="text-xl text-[#475569] leading-relaxed">
-            Get connected to a verified local pro in under 15 minutes — 100% free for homeowners.
+            Get connected to a verified local pro in under 15 minutes. 100% free for homeowners.
             No more calling around or waiting for callbacks.
           </p>
 
@@ -218,7 +218,7 @@ export default function HowItWorksPage() {
         {/* CTA */}
         <section className="text-center">
           <h2 className="text-4xl font-black tracking-tight mb-4 text-[#0F172A]">Ready to get matched?</h2>
-          <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free — no credit card required.</p>
+          <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free, no credit card required.</p>
           <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to $60 back on your first completed job</p>
           <Link
             to="/request-service"

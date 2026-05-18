@@ -159,7 +159,7 @@ export default function DashboardPage() {
                         to={`/book/${req.id}`}
                         className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
                       >
-                        Schedule Now — Same-Day Available
+                        Schedule Now (Same-Day Available)
                       </Link>
                     )}
                 </div>
