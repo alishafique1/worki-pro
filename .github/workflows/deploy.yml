@@ -1,0 +1,116 @@
+name: Deploy to Hostinger VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  build:
+    name: Build Wasp App
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Wasp CLI
+        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh
+
+      - name: Add Wasp to PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Build Wasp app
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          wasp build
+
+      - name: Create deployment archive
+        run: |
+          cd .wasp/out
+          tar -czf ../../deploy.tar.gz server/ web-app/ db/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-package
+          path: deploy.tar.gz
+          retention-days: 1
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-package
+
+      - name: Deploy to Hostinger VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "deploy.tar.gz"
+          target: "/opt/thehelper/"
+
+      - name: Run deployment commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/thehelper
+
+            # Backup current deployment
+            if [ -d "server" ]; then
+              mv server server.backup.$(date +%Y%m%d%H%M%S) 2>/dev/null || true
+              mv web-app web-app.backup.$(date +%Y%m%d%H%M%S) 2>/dev/null || true
+            fi
+
+            # Extract new deployment
+            tar -xzf deploy.tar.gz
+            rm deploy.tar.gz
+
+            # Install server dependencies
+            cd server
+            npm install --production
+
+            # Run database migrations
+            cd ../db
+            DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma migrate deploy
+
+            # Restart the app via PM2
+            pm2 restart thehelper-api || pm2 start npm --name "thehelper-api" -- start
+
+            # Clean up old backups (keep last 3)
+            cd /opt/thehelper
+            ls -dt server.backup.* 2>/dev/null | tail -n +4 | xargs rm -rf 2>/dev/null || true
+            ls -dt web-app.backup.* 2>/dev/null | tail -n +4 | xargs rm -rf 2>/dev/null || true
+
+            echo "Deployment complete!"
+
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            sleep 5
+            curl -f http://localhost:3001/health || echo "Health check endpoint not configured"
+            pm2 status thehelper-api
