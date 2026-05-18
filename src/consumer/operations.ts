@@ -171,8 +171,8 @@ export const POINTS = {
 export const submitServiceRequest: SubmitServiceRequest<
   {
     name: string;
-    email?: string;
-    phone: string;
+    email: string;
+    phone?: string;
     postalCode: string;
     description: string;
     urgency: "EMERGENCY" | "STANDARD" | "PLANNED";
@@ -205,8 +205,8 @@ export const submitServiceRequest: SubmitServiceRequest<
     data: {
       consumerId: context.user?.id || undefined,
       name: args.name,
-      email: args.email || undefined,
-      phone: args.phone,
+      email: args.email,
+      phone: args.phone || '',
       postalCode: args.postalCode,
       description: args.description,
       urgency: args.urgency,
@@ -251,7 +251,7 @@ export const submitServiceRequest: SubmitServiceRequest<
     {
       serviceRequestId: newRequest.id,
       name: args.name,
-      phone: args.phone,
+      phone: args.phone || '',
       email: args.email || undefined,
       postalCode: args.postalCode,
       serviceType: args.serviceType,

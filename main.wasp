@@ -185,6 +185,17 @@ action completeOnboarding {
   entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest, Referral]
 }
 
+// Passwordless OTP auth — public endpoints (no Wasp session required)
+api requestOtp {
+  fn: import { requestOtp } from "@src/auth/otpApi",
+  httpRoute: (POST, "/api/auth/request-otp")
+}
+
+api verifyOtp {
+  fn: import { verifyOtp } from "@src/auth/otpApi",
+  httpRoute: (POST, "/api/auth/verify-otp")
+}
+
 //#region Consumer
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
 page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage" }

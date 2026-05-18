@@ -4,7 +4,24 @@ import { useNavigate } from 'react-router';
 import { useAuth } from 'wasp/client/auth';
 import { ACTIVE_PREFIXES, getCityForPrefix } from '../shared/geoConfig';
 
-type ServiceSlug = 'hvac' | 'handyman' | 'appliance-repair' | 'plumbing' | 'electrical' | 'smart-home' | '';
+// Service categories grouped by type — mirrors DB seed hierarchy
+type ServiceDef = { slug: string; label: string; icon: string; description: string }
+
+const SERVICE_CARDS: ServiceDef[] = [
+  { slug: 'hvac',            label: 'HVAC',            icon: '❄️', description: 'Heating, cooling, and air quality' },
+  { slug: 'handyman',        label: 'Handyman',        icon: '🛠️', description: 'Repairs, mounting, and installations' },
+  { slug: 'appliance-repair',label: 'Appliance Repair',icon: '🔧', description: 'Fridges, washers, dryers, and more' },
+  { slug: 'plumbing',        label: 'Plumbing',        icon: '🚿', description: 'Leaks, drains, toilets, and pipes' },
+  { slug: 'electrical',      label: 'Electrical',      icon: '⚡', description: 'Wiring, outlets, panels, and lighting' },
+  { slug: 'smart-home',      label: 'Smart Home',      icon: '🏠', description: 'Cameras, thermostats, and automation' },
+  { slug: 'event-decorating',label: 'Events & Celebrations', icon: '🎉', description: 'Decorators, caterers, photographers, DJs' },
+  { slug: 'painting',        label: 'Painting',        icon: '🎨', description: 'Interior and exterior painting' },
+  { slug: 'cleaning',        label: 'House Cleaning',  icon: '🧹', description: 'Regular, deep clean, move-in/out' },
+  { slug: 'landscaping',     label: 'Lawn Care',       icon: '🌱', description: 'Mowing, edging, and seasonal cleanup' },
+  { slug: 'junk-removal',    label: 'Junk Removal',    icon: '🗑️', description: 'Furniture, appliances, and cleanouts' },
+];
+
+type ServiceSlug = string;
 type Urgency = 'EMERGENCY' | 'STANDARD' | 'PLANNED';
 
 // ── Qualifier Questions ────────────────────────────────────────────────────────
@@ -13,7 +30,7 @@ interface QualifierConfig {
   q2: { label: string; options: string[] };
 }
 
-const QUALIFIER_QUESTIONS: Record<Exclude<ServiceSlug, ''>, QualifierConfig> = {
+const QUALIFIER_QUESTIONS: Partial<Record<string, QualifierConfig>> = {
   'hvac': {
     q1: { label: 'Is this a repair or maintenance?', options: ['Repair', 'Maintenance'] },
     q2: { label: 'What type of system?', options: ['Furnace', 'AC', 'Both'] },
@@ -40,13 +57,10 @@ const QUALIFIER_QUESTIONS: Record<Exclude<ServiceSlug, ''>, QualifierConfig> = {
   },
 };
 
-const SERVICE_CARDS = [
-  { slug: 'hvac' as const,              label: 'HVAC',            icon: '❄️', description: 'Heating, cooling, and air quality' },
-  { slug: 'handyman' as const,          label: 'Handyman',        icon: '🔨', description: 'Repairs, mounting, and installations' },
-  { slug: 'appliance-repair' as const,  label: 'Appliance Repair',icon: '🔧', description: 'Fridges, washers, dryers, and more' },
-  { slug: 'plumbing' as const,          label: 'Plumbing',        icon: '🚿', description: 'Leaks, drains, toilets, and pipes' },
-  { slug: 'electrical' as const,        label: 'Electrical',      icon: '⚡', description: 'Wiring, outlets, panels, and lighting' },
-  { slug: 'smart-home' as const,        label: 'Smart Home',      icon: '🏠', description: 'Cameras, thermostats, and automation' },
+const MATCHING_STEPS = [
+  'We review the request details.',
+  'We route it to relevant local providers.',
+  'You get the next step by phone or email.',
 ];
 
 const HVAC_CHIPS = [
@@ -112,7 +126,7 @@ const SCHEDULE_MAP: Record<Urgency, string> = {
   PLANNED:   'FLEXIBLE',
 };
 
-const SERVICE_DISPLAY: Record<Exclude<ServiceSlug, ''>, string> = {
+const SERVICE_DISPLAY: Record<string, string> = {
   'hvac':            'HVAC',
   'handyman':        'handyman',
   'appliance-repair':'appliance repair',
@@ -127,7 +141,7 @@ const isValidPostal = (v: string) => v.replace(/\s+/g, '').length >= 6 && ACTIVE
 // ── shared style atoms ────────────────────────────────────────────────────────
 const inputCls =
   'w-full p-4 rounded-[18px] border-2 border-[#E2E8F0] bg-white ' +
-  'text-foreground placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none transition-colors';
+  'text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none transition-colors';
 
 const chipCls = (active: boolean) =>
   `px-4 py-2.5 rounded-full border-2 text-sm font-bold transition-all duration-150 active:scale-95 cursor-pointer ` +
@@ -814,11 +828,11 @@ export default function RequestServicePage() {
               <div className="mx-auto w-20 h-20 rounded-full bg-[#DCFCE7] border-2 border-[#22C55E] flex items-center justify-center mb-6">
                 <span className="text-4xl font-black text-[#22C55E]">✓</span>
               </div>
-              <h1 className="text-3xl font-black text-foreground mb-3">You're All Set!</h1>
-              <p className="text-base text-[#475569] max-w-sm mx-auto mb-4">
-                A verified{' '}
-                {form.serviceType ? SERVICE_DISPLAY[form.serviceType as Exclude<ServiceSlug, ''>] : 'service'}{' '}
-                pro will text you within <strong className="text-[#0F172A]">15 minutes</strong>.
+              <h1 className="text-3xl font-black text-foreground mb-3">Your request is in.</h1>
+              <p className="text-base text-[#475569] max-w-sm mx-auto mb-8">
+                Matching you with a verified{' '}
+                {form.serviceType ? (SERVICE_DISPLAY[form.serviceType] ?? form.serviceType) : 'service'}{' '}
+                pro near {form.postalCode}. Expect a text within 15 minutes.
               </p>
 
               {/* What happens next */}
