@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAction } from 'wasp/client/operations';
 import { submitProviderApplication } from 'wasp/client/operations';
+import PageSeo from '../landing-page/components/PageSeo';
 
 const serviceCategoryOptions = [
   { slug: 'hvac', label: 'HVAC' },
