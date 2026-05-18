@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router";
 import { ArrowRight, CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
-import PageSeo from "../components/PageSeo";
+import PageSeo, { createServiceSchema, createFaqSchema, createBreadcrumbSchema } from "../components/PageSeo";
 import { categoryPages } from "./categoryData";
 
 // ── Layout helpers ────────────────────────────────────────────────────────────
