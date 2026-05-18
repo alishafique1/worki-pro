@@ -83,7 +83,7 @@ export default function ContactPage() {
     <div className="p-8 max-w-2xl mx-auto min-h-[80vh] flex flex-col justify-center">
       <div className="mb-12 flex flex-col items-center text-center">
         <h1 className="text-5xl font-black tracking-tighter mb-4 text-[#0F172A]">Get in Touch</h1>
-        <p className="text-[#475569]">Tell us what you need — we'll match you with the right pro.</p>
+        <p className="text-[#475569]">Tell us what you need and we'll match you with the right pro.</p>
       </div>
 
       <div className="w-full bg-[#E2E8F0] h-1.5 rounded-full mb-12 overflow-hidden max-w-md mx-auto">

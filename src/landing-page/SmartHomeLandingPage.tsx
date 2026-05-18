@@ -7,9 +7,9 @@ export default function SmartHomeLandingPage() {
     <>
       <PageSeo
         title="Smart Home Installation in GTA | TheHelper"
-        description="Certified smart home installers in Milton, Oakville & the GTA. Smart locks, cameras, thermostats, and full home automation — matched and managed. Earn 5% cashback."
+        description="Certified smart home installers in Milton, Oakville and the GTA. Smart locks, cameras, thermostats, and full home automation, matched and managed. Earn 5% cashback."
         ogTitle="Smart Home Installation & Automation in GTA | TheHelper"
-        ogDescription="Book certified smart home pros in Milton, Oakville & the GTA. Smart security, home automation, and AV setup — vetted installers, managed end-to-end."
+        ogDescription="Book certified smart home pros in Milton, Oakville and the GTA. Smart security, home automation, and AV setup. Vetted installers, managed end-to-end."
         canonicalPath="/services/smart-home"
       />
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -22,7 +22,7 @@ export default function SmartHomeLandingPage() {
             Your Home, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Smarter.</span>
           </h1>
           <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
-            From smart locks to full home automation, our vetted techs handle installation and setup. We match, schedule, and follow up — you just enjoy the upgrade and earn rewards on every completed job.
+            From smart locks to full home automation, our vetted techs handle installation and setup. We match, schedule, and follow up so you can enjoy the upgrade and earn rewards on every completed job.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">

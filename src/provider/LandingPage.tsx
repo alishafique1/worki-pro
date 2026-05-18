@@ -7,7 +7,7 @@ export default function ProviderLandingPage() {
     <>
       <PageSeo
         title="Join TheHelper as a Home Service Pro in GTA | Apply Today"
-        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington & the GTA. No bidding wars — just vetted homeowners ready to book."
+        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington and the GTA. No bidding wars, just vetted homeowners ready to book."
         ogTitle="Become a TheHelper Home Service Provider | GTA"
         ogDescription="Partner with TheHelper to get qualified home service leads in Milton, Oakville & Burlington. Licensed HVAC, plumbing, electrical, and handyman pros welcome."
         canonicalPath="/providers"

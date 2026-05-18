@@ -16,8 +16,8 @@ export default function TermsPage() {
 
         <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">2. Acceptance of Terms</h2>
         <p>
-          By accessing or using the TheHelper platform — including submitting a service request,
-          creating an account, or accessing any provider features — you agree to be bound
+          By accessing or using the TheHelper platform, including submitting a service request,
+          creating an account, or accessing any provider features, you agree to be bound
           by these Terms of Service. If you do not agree, do not use the platform.
         </p>
 
@@ -53,8 +53,8 @@ export default function TermsPage() {
         <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">6. Provider Relationships</h2>
         <p>
           Providers on TheHelper are independent businesses. TheHelper does not employ Providers or
-          their staff. Any engagement between you and a Provider — including scheduling,
-          pricing, scope of work, and payment — is solely between you and the Provider.
+          their staff. Any engagement between you and a Provider, including scheduling,
+          pricing, scope of work, and payment, is solely between you and the Provider.
           TheHelper is not responsible for any disputes, damages, or claims arising from a
           Provider's services.
         </p>
@@ -101,7 +101,7 @@ export default function TermsPage() {
         </p>
 
         <p className="mt-16 text-sm text-[#94A3B8]">
-          TheHelper Home Services Inc. — Milton, Ontario, Canada.
+          TheHelper Home Services Inc. | Milton, Ontario, Canada.
         </p>
       </div>
     </div>

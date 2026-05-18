@@ -80,7 +80,7 @@ export default function RewardsPage() {
     setSubmitting(true);
     try {
       await redeemPointsAction({ points: effectivePoints, giftCardEmail: email });
-      setSuccess(`Successfully redeemed $${ptsToDollars(effectivePoints)} — check your email!`);
+      setSuccess(`Successfully redeemed $${ptsToDollars(effectivePoints)}. Check your email!`);
       setEmail('');
       setCustomPoints('');
       setSelectedPoints(500);

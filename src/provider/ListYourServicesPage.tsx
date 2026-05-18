@@ -14,12 +14,12 @@ const BENEFITS = [
   {
     icon: '💰',
     title: '5% Cashback on Every Job',
-    desc: "Worki's rewards program means customers earn points on every booking — giving you a competitive edge over providers who don't.",
+    desc: "Worki's rewards program means customers earn points on every booking, giving you a competitive edge over providers who don't.",
   },
   {
     icon: '✅',
     title: 'Background-Checked & Verified',
-    desc: 'Every pro on Worki is verified. Customers see your licence, insurance, and reviews — trust that converts to bookings.',
+    desc: 'Every pro on Worki is verified. Customers see your licence, insurance, and reviews, building trust that converts to bookings.',
   },
   {
     icon: '📱',
@@ -29,9 +29,9 @@ const BENEFITS = [
 ];
 
 const STEPS = [
-  { n: '1', title: 'Submit your info', desc: 'Fill out the 60-second form — name, business, service categories, and contact details.' },
+  { n: '1', title: 'Submit your info', desc: 'Fill out the 60-second form with your name, business, service categories, and contact details.' },
   { n: '2', title: 'We review your application', desc: "Our team checks your licence, insurance, and reviews. Usually takes under 24 hours." },
-  { n: '3', title: 'Start receiving leads', desc: "Once approved, your profile goes live. Customers in your area will find you — no commission on leads." },
+  { n: '3', title: 'Start receiving leads', desc: "Once approved, your profile goes live. Customers in your area will find you, and there's no commission on leads." },
 ];
 
 export default function ListYourServicesPage() {
@@ -133,7 +133,7 @@ export default function ListYourServicesPage() {
             <span className="text-[#2563EB]">Grow Your Business.</span>
           </h1>
           <p className="text-xl text-[#475569] max-w-2xl mx-auto">
-            Join 200+ GTA pros already on Worki. No commission on leads — you pay a flat monthly rate and keep 100% of every job you book.
+            Join 200+ GTA pros already on Worki. No commission on leads. You pay a flat monthly rate and keep 100% of every job you book.
           </p>
         </div>
 

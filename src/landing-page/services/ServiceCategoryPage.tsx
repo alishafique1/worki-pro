@@ -201,7 +201,7 @@ export default function ServiceCategoryPage() {
                 HOW IT WORKS
               </p>
               <h2 className="text-2xl font-bold text-[#0F172A] sm:text-3xl">
-                From request to done — fast.
+                From request to done, fast.
               </h2>
             </div>
 
@@ -219,7 +219,7 @@ export default function ServiceCategoryPage() {
               <HowItWorksStep
                 number="03"
                 title="Job done"
-                description="Confirm the appointment, track updates, and rate your pro — all in one place."
+                description="Confirm the appointment, track updates, and rate your pro, all in one place."
               />
             </div>
           </Container>

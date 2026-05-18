@@ -18,7 +18,7 @@ const consumerFaqs = [
   {
     question: 'How do I request a service?',
     answer:
-      'Click "Request Service" from your dashboard or the navigation. Fill in the details — category, urgency, property info, and description — and submit. A matching provider will be notified.',
+      'Click "Request Service" from your dashboard or the navigation. Fill in the details (category, urgency, property info, and description) and submit. A matching provider will be notified.',
   },
   {
     question: 'How long does it take to get matched with a pro?',
@@ -48,7 +48,7 @@ const consumerFaqs = [
   {
     question: 'How do I earn and use my referral code?',
     answer:
-      'Go to the Referral page to find your unique code. Share it with friends — when they complete their first service, you both earn reward points automatically.',
+      'Go to the Referral page to find your unique code. Share it with friends. When they complete their first service, you both earn reward points automatically.',
   },
   {
     question: 'Can I message my provider?',
@@ -120,7 +120,7 @@ export default function HelpPage() {
           <div className="py-14 max-w-2xl">
             <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Help Centre</h1>
             <p className="text-[#475569] text-lg">
-              Everything you need to know about using TheHelper — from submitting your first request to redeeming rewards.
+              Everything you need to know about using TheHelper, from submitting your first request to redeeming rewards.
             </p>
           </div>
         </Container>

@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         </ul>
         <p>
           We also collect usage data including your IP address, browser type, pages visited,
-          and timestamps — collected automatically through our hosting and analytics infrastructure.
+          and timestamps, collected automatically through our hosting and analytics infrastructure.
         </p>
 
         <h2 className="text-2xl font-bold mt-10 mb-3 text-[#0F172A]">2. How We Use Your Information</h2>
@@ -40,8 +40,8 @@ export default function PrivacyPage() {
         </p>
         <ul>
           <li>
-            <strong>Service Providers:</strong> Your request details — including name, contact
-            information, postal code, and job description — are shared with vetted Providers in
+            <strong>Service Providers:</strong> Your request details (including name, contact
+            information, postal code, and job description) are shared with vetted Providers in
             your service area so they can respond to your request.
           </li>
           <li>
@@ -129,7 +129,7 @@ export default function PrivacyPage() {
         </p>
 
         <p className="mt-16 text-sm text-[#94A3B8]">
-          TheHelper Home Services Inc. — Milton, Ontario, Canada.
+          TheHelper Home Services Inc. | Milton, Ontario, Canada.
         </p>
       </div>
     </div>

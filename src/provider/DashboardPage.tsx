@@ -125,7 +125,7 @@ export default function ProviderDashboardPage() {
                 : (() => {
                     const services = safeParseServices((profile as any)?.servicesJson);
                     return services.length === 0
-                      ? 'No services listed yet — add your first listing so customers can find you.'
+                      ? 'No services listed yet. Add your first listing so customers can find you.'
                       : `${services.length} service${services.length !== 1 ? 's' : ''} listed`;
                   })()}
             </p>

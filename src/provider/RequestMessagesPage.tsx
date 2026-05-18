@@ -108,7 +108,7 @@ export default function ProviderRequestMessagesPage() {
       <div className="flex-1 rounded-[18px] border border-[#E2E8F0] bg-white overflow-y-auto p-6 space-y-4 mb-4 max-h-[60vh]">
         {messages.length === 0 && (
           <p className="text-center text-[#475569] text-sm py-8">
-            No messages yet — introduce yourself below.
+            No messages yet. Introduce yourself below.
           </p>
         )}
 

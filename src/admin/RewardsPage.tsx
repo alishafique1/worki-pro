@@ -72,7 +72,7 @@ export default function AdminRewardsPage() {
                   </td>
                   <td className="py-3 text-[#0F172A]">{reward.type}</td>
                   <td className="py-3 font-bold text-[#2563EB]">{reward.points}</td>
-                  <td className="py-3 text-[#475569]">{reward.reason || '—'}</td>
+                  <td className="py-3 text-[#475569]">{reward.reason || '-'}</td>
                   <td className="py-3 text-[#0F172A]">{reward.status}</td>
                   <td className="py-3 space-y-1">
                     {approvedIds.has(reward.id) ? (

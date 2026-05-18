@@ -88,7 +88,7 @@ const HOW_IT_WORKS = [
   },
   {
     step: '03',
-    title: 'Job done — we follow up',
+    title: 'Job done, we follow up',
     desc: 'Your pro arrives on time. We check in after the job to ensure you are 100% satisfied.',
     icon: '✅',
   },
@@ -131,7 +131,7 @@ export default function AreaLandingPage() {
         title={`Home Services in ${area.name}, ${area.region} | TheHelper`}
         description={`${area.tagline}. Vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}. Earn 5% cashback on every job.`}
         ogTitle={`Home Services in ${area.name} | TheHelper`}
-        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman & more — matched, scheduled, and followed up for you.`}
+        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more, matched, scheduled, and followed up for you.`}
         canonicalPath={`/areas/${areaSlug}`}
       />
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -150,7 +150,7 @@ export default function AreaLandingPage() {
           </h1>
 
           <p className="text-xl text-[#475569] max-w-2xl mb-10">
-            {area.tagline}. Expert, vetted pros matched to your job — scheduling, coordination, and follow-up all handled for you.
+            {area.tagline}. Expert, vetted pros matched to your job. Scheduling, coordination, and follow-up all handled for you.
           </p>
 
           <Link
@@ -225,7 +225,7 @@ export default function AreaLandingPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black tracking-tighter mb-3 text-[#0F172A]">Every Pro is Verified</h2>
-            <p className="text-[#475569]">Your home is in safe hands — always.</p>
+            <p className="text-[#475569]">Your home is in safe hands, always.</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -288,7 +288,7 @@ export default function AreaLandingPage() {
                 to="/request-service"
                 className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
               >
-                Get Started — It's Free →
+                Get Started (It's Free) →
               </Link>
               <p className="mt-4 text-xs text-[#94A3B8]">🎁 Plus earn cashback on every job booked</p>
             </div>

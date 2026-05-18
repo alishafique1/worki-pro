@@ -22,7 +22,7 @@ export default function ReferralPage() {
 
       <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-6 space-y-4">
         <p className="text-[#475569]">
-          Earn $5 for every friend you refer — they earn $5 too. <span className="text-[#2563EB] font-semibold">500 reward points ($5)</span> credited after their first completed service.
+          Earn $5 for every friend you refer, and they earn $5 too. <span className="text-[#2563EB] font-semibold">500 reward points ($5)</span> credited after their first completed service.
         </p>
         {isLoading ? (
           <div className="h-12 bg-[#F8FAFC] rounded-[12px] animate-pulse" />
@@ -40,8 +40,8 @@ export default function ReferralPage() {
         {referral?.referredUserId && (
           <p className="text-sm text-[#2563EB] font-semibold">
             {referral.status === 'REWARDED'
-              ? '🎉 Your referral is complete — you both earned 500 points!'
-              : '⏳ Friend signed up — points will land when their first service is complete.'}
+              ? '🎉 Your referral is complete. You both earned 500 points!'
+              : '⏳ Friend signed up. Points will land when their first service is complete.'}
           </p>
         )}
       </div>

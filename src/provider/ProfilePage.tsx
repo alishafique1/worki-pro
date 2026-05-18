@@ -143,7 +143,7 @@ export default function ProviderProfilePage() {
   const field = (label: string, value: string | undefined | null) => (
     <div>
       <p className="text-sm text-[#475569] mb-1">{label}</p>
-      <p className="font-medium text-[#0F172A]">{value || '—'}</p>
+      <p className="font-medium text-[#0F172A]">{value || '-'}</p>
     </div>
   );
 

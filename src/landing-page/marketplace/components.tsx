@@ -477,7 +477,7 @@ export function CTASection() {
               Get matched with a verified pro today
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              Join 500+ GTA homeowners who trust The Helper. 100% free to use — earn $60+ back on your first job.
+              Join 500+ GTA homeowners who trust The Helper. 100% free to use. Earn $60+ back on your first job.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
