@@ -81,9 +81,9 @@ export default function BookingPage() {
 
   // Determine cal.com link: provider's link > TheHelper default
   const providerCalUsername = request?.assignedProvider?.calComUsername;
-  const defaultCalLink = import.meta.env.VITE_CALCOM_DEFAULT_LINK || 'worki/consultation';
+  const defaultCalLink = import.meta.env.VITE_CALCOM_DEFAULT_LINK || 'thehelper/consultation';
   const calLink = providerCalUsername
-    ? `${providerCalUsername}/worki-service`
+    ? `${providerCalUsername}/thehelper-service`
     : defaultCalLink;
 
   const serviceName = (request as any)?.serviceCategory?.name ?? 'General';

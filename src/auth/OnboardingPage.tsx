@@ -127,8 +127,8 @@ export default function OnboardingPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">W</div>
-            <span className="text-xl font-black tracking-tight text-[#0F172A]">Worki</span>
+            <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">H</div>
+            <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
           </div>
           <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Set up your account</h2>
           <p className="text-[#475569] text-sm mt-1">Step {step} of {totalSteps}</p>
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
           {/* Step 1 — Role Selection */}
           {step === 1 && (
             <div className="animate-in fade-in slide-in-from-right-4 duration-300">
-              <h3 className="text-xl font-black mb-2 text-[#0F172A]">How will you use Worki?</h3>
+              <h3 className="text-xl font-black mb-2 text-[#0F172A]">How will you use The Helper?</h3>
               <p className="text-[#475569] text-sm mb-6">Choose your role to get started.</p>
               <div className="grid grid-cols-2 gap-4">
                 {[

@@ -211,7 +211,7 @@ export default function ProviderProfilePage() {
                   rel="noopener noreferrer"
                   className="font-medium text-[#2563EB] hover:underline"
                 >
-                  worki.pro/pro-public/{(profile as any).slug}
+                  thehelper.ca/pro-public/{(profile as any).slug}
                 </a>
               </div>
             )}
@@ -339,7 +339,7 @@ export default function ProviderProfilePage() {
               />
               {formData.slug && (
                 <p className="text-xs text-[#2563EB] mt-1">
-                  worki.pro/pro-public/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
+                  thehelper.ca/pro-public/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
                 </p>
               )}
             </div>

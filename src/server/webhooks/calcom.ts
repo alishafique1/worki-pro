@@ -32,14 +32,14 @@ const sendBookingEmails = async ({
   if (consumerEmail) {
     await emailSender.send({
       to: consumerEmail,
-      subject: `Your Worki appointment is ${actionLabel}`,
+      subject: `Your The Helper appointment is ${actionLabel}`,
       text:
         actionLabel === 'cancelled'
           ? `Your ${serviceLabel} appointment has been cancelled. Our team will help you rebook if needed.`
           : `Your ${serviceLabel} appointment is ${actionLabel} for ${formattedTime}${providerName ? ` with ${providerName}` : ''}${providerPhone ? ` (${providerPhone})` : ''}.`,
       html:
         actionLabel === 'cancelled'
-          ? `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment has been cancelled.</p><p>If you want, reply to this email and Worki will help you rebook.</p>`
+          ? `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment has been cancelled.</p><p>If you want, reply to this email and The Helper will help you rebook.</p>`
           : `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment is <strong>${actionLabel}</strong> for <strong>${formattedTime}</strong>${providerName ? ` with <strong>${providerName}</strong>` : ''}${providerPhone ? ` (${providerPhone})` : ''}.</p><p>We will keep you updated if anything changes.</p>`,
     });
   }
@@ -47,7 +47,7 @@ const sendBookingEmails = async ({
   if (providerEmail) {
     await emailSender.send({
       to: providerEmail,
-      subject: `Worki appointment ${actionLabel}`,
+      subject: `The Helper appointment ${actionLabel}`,
       text:
         actionLabel === 'cancelled'
           ? `A ${serviceLabel} appointment was cancelled.${consumerName ? ` Customer: ${consumerName}.` : ''}`
@@ -61,7 +61,7 @@ const sendBookingEmails = async ({
 };
 
 /**
- * Cal.com webhook handler — receives booking events and syncs them to Worki.
+ * Cal.com webhook handler — receives booking events and syncs them to The Helper.
  *
  * Set up in cal.com: Settings → Webhooks → Add webhook
  *   URL: https://your-domain.com/calcom-webhook

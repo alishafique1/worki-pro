@@ -1,23 +1,23 @@
 import type { GhlWebhook } from 'wasp/server/api';
 
 /**
- * GoHighLevel → Worki inbound webhook
+ * GoHighLevel → The Helper inbound webhook
  *
  * GHL fires this when a contact's status changes in the pipeline.
  *
  * Expected payload from GHL:
  * {
  *   event: string,              // e.g. 'conversation.qualified', 'appointment.booked'
- *   requestId: string,          // Worki ServiceRequest.id — stored as custom field in GHL
+ *   requestId: string,          // The Helper ServiceRequest.id — stored as custom field in GHL
  *   ghlContactId?: string,
  *   status?: string,            // optional override status string
- *   providerId?: string,        // Worki Provider.id if a pro is assigned
+ *   providerId?: string,        // The Helper Provider.id if a pro is assigned
  *   appointmentTime?: string,   // ISO datetime
  *   notes?: string,
  *   secret?: string,            // must match GHL_WEBHOOK_SECRET env var
  * }
  *
- * GHL pipeline stage → Worki RequestStatus mapping:
+ * GHL pipeline stage → The Helper RequestStatus mapping:
  *   conversation.started    → SMS_STARTED
  *   conversation.qualifying → QUALIFYING
  *   conversation.qualified  → QUALIFIED
@@ -34,7 +34,7 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
     return res.status(401).json({ error: 'Webhook secret is required in production' });
   }
 
-  const headerSecret = req.headers['x-worki-secret'];
+  const headerSecret = req.headers['x-thehelper-secret'];
   const bodySecret = (req.body as { secret?: string })?.secret;
   if (secret && headerSecret !== secret && bodySecret !== secret) {
     return res.status(401).json({ error: 'Invalid webhook secret' });
@@ -114,7 +114,7 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
       channel: 'SMS',
       direction: 'INBOUND',
       from: ghlContactId ?? 'ghl-system',
-      to: 'worki-system',
+      to: 'thehelper-system',
       body: notes ?? `GHL event: ${event}`,
       status: newStatus ?? event,
       rawPayload: req.body,

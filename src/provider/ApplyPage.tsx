@@ -181,7 +181,7 @@ export default function ProviderApplyPage() {
                 className="w-full bg-white border border-[#E2E8F0] rounded-2xl p-4 text-lg text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
                 placeholder="e.g. elitehvac"
               />
-              <p className="mt-2 text-sm text-[#94A3B8]">Optional, but recommended. This lets Worki send customers straight to your cal.com page.</p>
+              <p className="mt-2 text-sm text-[#94A3B8]">Optional, but recommended. This lets The Helper send customers straight to your cal.com page.</p>
             </div>
             <fieldset>
               <legend className="block text-sm font-bold mb-3 uppercase tracking-widest text-[#475569]">Service Categories</legend>

@@ -34,9 +34,9 @@ export async function sendLeadToGHL(
       phone: normalizePhone(payload.phone),
       email: payload.email,
       postalCode: payload.postalCode,
-      tags: ['worki-lead', payload.serviceType ?? 'general', payload.urgency.toLowerCase()],
+      tags: ['thehelper-lead', payload.serviceType ?? 'general', payload.urgency.toLowerCase()],
       customFields: {
-        worki_request_id: payload.serviceRequestId,
+        thehelper_request_id: payload.serviceRequestId,
         service_type: payload.serviceType ?? 'general',
         description: payload.description,
         urgency: payload.urgency,
@@ -51,7 +51,7 @@ export async function sendLeadToGHL(
   try {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (process.env.GHL_WEBHOOK_SECRET) {
-      headers['x-worki-secret'] = process.env.GHL_WEBHOOK_SECRET;
+      headers['x-thehelper-secret'] = process.env.GHL_WEBHOOK_SECRET;
     }
 
     const res = await fetch(webhookUrl, {

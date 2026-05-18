@@ -4,7 +4,7 @@ import { type User } from "wasp/entities";
 import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/utils";
 
 const LEGACY_TEST_PASSWORD = "Password123!";
-const QA_TEST_PASSWORD = "WorkiTest123";
+const QA_TEST_PASSWORD = "HelperQA123";
 const TEST_PASSWORD = "HelperTest123";
 
 async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, password: string) {
@@ -44,32 +44,182 @@ async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, pass
 // ─── Default Service Categories ────────────────────────────────────────────
 export const DEFAULT_VENDOR_CATEGORIES = [
   // Live on marketplace
-  { name: "HVAC", slug: "hvac", description: "Heating, ventilation, and air conditioning repairs, tune-ups, and installs" },
-  { name: "Plumbing", slug: "plumbing", description: "Pipes, drains, water heaters, toilets, and fixture repairs" },
-  { name: "Electrical", slug: "electrical", description: "Wiring, panels, outlets, lighting, and safety inspections" },
-  { name: "Handyman", slug: "handyman", description: "General home repairs, mounting, assembly, and maintenance" },
-  { name: "Appliance Repair", slug: "appliance-repair", description: "Washer, dryer, fridge, stove, dishwasher — diagnosis and repair" },
-  { name: "Smart Home", slug: "smart-home", description: "Smart thermostats, cameras, locks, sensors, and home automation" },
+  {
+    name: "HVAC",
+    slug: "hvac",
+    description: "Heating, ventilation, and air conditioning repairs, tune-ups, and installs",
+    icon: "AirVent",
+    imageUrl: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Plumbing",
+    slug: "plumbing",
+    description: "Pipes, drains, water heaters, toilets, and fixture repairs",
+    icon: "ShowerHead",
+    imageUrl: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Electrical",
+    slug: "electrical",
+    description: "Wiring, panels, outlets, lighting, and safety inspections",
+    icon: "PlugZap",
+    imageUrl: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Handyman",
+    slug: "handyman",
+    description: "General home repairs, mounting, assembly, and maintenance",
+    icon: "Hammer",
+    imageUrl: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Appliance Repair",
+    slug: "appliance-repair",
+    description: "Washer, dryer, fridge, stove, dishwasher — diagnosis and repair",
+    icon: "WashingMachine",
+    imageUrl: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Smart Home",
+    slug: "smart-home",
+    description: "Smart thermostats, cameras, locks, sensors, and home automation",
+    icon: "Wifi",
+    imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=600&fit=crop",
+  },
   // Coming soon — accepting provider applications
-  { name: "Cleaning", slug: "cleaning", description: "Regular, deep clean, move-in/out, post-construction, and Airbnb cleans" },
-  { name: "Painting", slug: "painting", description: "Interior and exterior painting, drywall prep, colour consultation" },
-  { name: "Flooring", slug: "flooring", description: "Hardwood, tile, laminate, vinyl plank, carpet — supply and install" },
-  { name: "Roofing", slug: "roofing", description: "Shingle repair, full replacement, flat roofs, eavestroughs, and inspections" },
-  { name: "Landscaping", slug: "landscaping", description: "Lawn care, garden beds, interlocking, irrigation, and seasonal cleanup" },
-  { name: "Snow Removal", slug: "snow-removal", description: "Driveway and walkway clearing, salting, and seasonal contracts" },
-  { name: "Tree Services", slug: "tree-services", description: "Trimming, removal, stump grinding, and emergency tree work" },
-  { name: "Pest Control", slug: "pest-control", description: "Rodent, insect, and wildlife removal — inspection and treatment" },
-  { name: "Locksmith", slug: "locksmith", description: "Lock changes, emergency entry, rekeying, and deadbolt installation" },
-  { name: "Window Cleaning", slug: "window-cleaning", description: "Interior and exterior window washing, screens, sills, and tracks" },
-  { name: "Moving", slug: "moving", description: "Local moves, packing, furniture assembly, piano moving, and junk removal" },
-  { name: "Garage Door", slug: "garage-door", description: "Spring repair, opener install, panel replacement, and seasonal tune-up" },
-  { name: "Junk Removal", slug: "junk-removal", description: "Furniture, appliances, renovation debris, and estate cleanouts" },
-  { name: "Waterproofing", slug: "waterproofing", description: "Basement waterproofing, sump pump install, foundation crack repair" },
-  { name: "Renovation", slug: "renovation", description: "Kitchen, bathroom, basement, and general home renovation" },
-  { name: "Home Inspection", slug: "home-inspection", description: "Pre-purchase and annual home inspection with detailed report" },
-  { name: "Fence & Gate", slug: "fence-gate", description: "Wood, vinyl, chain-link, and aluminum fence install and repair" },
-  { name: "Pool & Spa", slug: "pool-spa", description: "Opening, closing, cleaning, equipment repair, and winterization" },
-  { name: "Events", slug: "events", description: "Event setup, furniture rentals, tents, AV, and cleanup services" },
+  {
+    name: "Cleaning",
+    slug: "cleaning",
+    description: "Regular, deep clean, move-in/out, post-construction, and Airbnb cleans",
+    icon: "Sparkles",
+    imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Painting",
+    slug: "painting",
+    description: "Interior and exterior painting, drywall prep, colour consultation",
+    icon: "Brush",
+    imageUrl: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Flooring",
+    slug: "flooring",
+    description: "Hardwood, tile, laminate, vinyl plank, carpet — supply and install",
+    icon: "Layers",
+    imageUrl: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Roofing",
+    slug: "roofing",
+    description: "Shingle repair, full replacement, flat roofs, eavestroughs, and inspections",
+    icon: "Home",
+    imageUrl: "https://images.unsplash.com/photo-1632759145351-1d592919f522?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Landscaping",
+    slug: "landscaping",
+    description: "Lawn care, garden beds, interlocking, irrigation, and seasonal cleanup",
+    icon: "Leaf",
+    imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Snow Removal",
+    slug: "snow-removal",
+    description: "Driveway and walkway clearing, salting, and seasonal contracts",
+    icon: "Wind",
+    imageUrl: "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Tree Services",
+    slug: "tree-services",
+    description: "Trimming, removal, stump grinding, and emergency tree work",
+    icon: "TreePine",
+    imageUrl: "https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Pest Control",
+    slug: "pest-control",
+    description: "Rodent, insect, and wildlife removal — inspection and treatment",
+    icon: "Bug",
+    imageUrl: "https://images.unsplash.com/photo-1611786081316-dde64e33ca43?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Locksmith",
+    slug: "locksmith",
+    description: "Lock changes, emergency entry, rekeying, and deadbolt installation",
+    icon: "KeyRound",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Window Cleaning",
+    slug: "window-cleaning",
+    description: "Interior and exterior window washing, screens, sills, and tracks",
+    icon: "Droplets",
+    imageUrl: "https://images.unsplash.com/photo-1596394723269-b2cbca4e6313?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Moving",
+    slug: "moving",
+    description: "Local moves, packing, furniture assembly, piano moving, and junk removal",
+    icon: "MoveRight",
+    imageUrl: "https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Garage Door",
+    slug: "garage-door",
+    description: "Spring repair, opener install, panel replacement, and seasonal tune-up",
+    icon: "Package",
+    imageUrl: "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Junk Removal",
+    slug: "junk-removal",
+    description: "Furniture, appliances, renovation debris, and estate cleanouts",
+    icon: "Trash2",
+    imageUrl: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Waterproofing",
+    slug: "waterproofing",
+    description: "Basement waterproofing, sump pump install, foundation crack repair",
+    icon: "ShieldCheck",
+    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Renovation",
+    slug: "renovation",
+    description: "Kitchen, bathroom, basement, and general home renovation",
+    icon: "Hammer",
+    imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Home Inspection",
+    slug: "home-inspection",
+    description: "Pre-purchase and annual home inspection with detailed report",
+    icon: "ClipboardList",
+    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Fence & Gate",
+    slug: "fence-gate",
+    description: "Wood, vinyl, chain-link, and aluminum fence install and repair",
+    icon: "Fence",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Pool & Spa",
+    slug: "pool-spa",
+    description: "Opening, closing, cleaning, equipment repair, and winterization",
+    icon: "Waves",
+    imageUrl: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Events",
+    slug: "events",
+    description: "Event setup, furniture rentals, tents, AV, and cleanup services",
+    icon: "PartyPopper",
+    imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop",
+  },
 ];
 
 export async function seedVendorCategories(prisma: PrismaClient) {
@@ -77,11 +227,16 @@ export async function seedVendorCategories(prisma: PrismaClient) {
   for (const cat of DEFAULT_VENDOR_CATEGORIES) {
     await prisma.serviceCategory.upsert({
       where: { slug: cat.slug },
-      update: {},
+      update: {
+        icon: cat.icon,
+        imageUrl: cat.imageUrl,
+      },
       create: {
         name: cat.name,
         slug: cat.slug,
         description: cat.description,
+        icon: cat.icon,
+        imageUrl: cat.imageUrl,
         active: true,
       },
     });
@@ -90,7 +245,7 @@ export async function seedVendorCategories(prisma: PrismaClient) {
 }
 
 export async function seedMockUsers(prisma: PrismaClient) {
-  console.log("Seeding Worki Sample Data...");
+  console.log("Seeding The Helper Sample Data...");
 
   // ─── GTA Service Areas ─────────────────────────────────────────────────────
   const GTA_SERVICE_AREAS = ["L9T", "L6J", "L7R", "Milton", "Oakville", "Burlington"];
@@ -509,7 +664,7 @@ export async function seedMockUsers(prisma: PrismaClient) {
   }
   await ensureEmailAuthIdentity(prisma, "consumer.test@worki.ai", QA_TEST_PASSWORD);
 
-  // Legacy reward account for test@worki.ai
+  // Legacy reward account for legacy test user
   const rewardAcct = await prisma.rewardAccount.findUnique({ where: { consumerId: consumer.id } });
   if (!rewardAcct) {
     await prisma.rewardAccount.create({

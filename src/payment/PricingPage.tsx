@@ -46,7 +46,7 @@ export const paymentPlanCards: Record<PaymentPlanId, PaymentPlanCard> = {
   [PaymentPlanId.Pro]: {
     name: prettyPaymentPlanName(PaymentPlanId.Pro),
     price: "$9.99/mo",
-    description: "Maximum visibility and speed for homeowners who use Worki regularly",
+    description: "Maximum visibility and speed for homeowners who use The Helper regularly",
     features: [
       "Priority request visibility so pros respond faster",
       "Enhanced support with dedicated concierge",

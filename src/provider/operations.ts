@@ -304,8 +304,8 @@ export const submitProviderApplication: SubmitProviderApplication<
     emailSender.send({
       to: adminEmail,
       subject: `New provider application: ${businessName}`,
-      text: `A new provider application was submitted.\n\nBusiness: ${businessName}\nContact: ${contactName}\nPhone: ${phone}\nEmail: ${email}\nAreas: ${serviceAreas.join(', ')}\n\nReview: https://worki.ai/admin/providers`,
-      html: `<p>A new provider application was submitted.</p><ul><li><strong>Business:</strong> ${businessName}</li><li><strong>Contact:</strong> ${contactName}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${email}</li><li><strong>Areas:</strong> ${serviceAreas.join(', ')}</li></ul><p><a href="https://worki.ai/admin/providers">Review in admin →</a></p>`,
+      text: `A new provider application was submitted.\n\nBusiness: ${businessName}\nContact: ${contactName}\nPhone: ${phone}\nEmail: ${email}\nAreas: ${serviceAreas.join(', ')}\n\nReview: https://thehelper.ca/admin/providers`,
+      html: `<p>A new provider application was submitted.</p><ul><li><strong>Business:</strong> ${businessName}</li><li><strong>Contact:</strong> ${contactName}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${email}</li><li><strong>Areas:</strong> ${serviceAreas.join(', ')}</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
     }).catch(() => {/* non-blocking */});
   }
 

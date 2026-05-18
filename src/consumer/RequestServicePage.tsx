@@ -730,7 +730,7 @@ export default function RequestServicePage() {
                   className="mt-0.5 h-5 w-5 shrink-0 accent-[#2563EB]"
                 />
                 <span className="text-sm text-foreground">
-                  I agree to receive text updates from Worki about this request.
+                  I agree to receive text updates from The Helper about this request.
                   <span className="block text-xs text-[#475569] mt-1">Reply STOP anytime. Standard rates may apply.</span>
                 </span>
               </label>
