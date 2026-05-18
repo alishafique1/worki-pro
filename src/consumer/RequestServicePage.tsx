@@ -7,6 +7,39 @@ import { ACTIVE_PREFIXES, getCityForPrefix } from '../shared/geoConfig';
 type ServiceSlug = 'hvac' | 'handyman' | 'appliance-repair' | 'plumbing' | 'electrical' | 'smart-home' | '';
 type Urgency = 'EMERGENCY' | 'STANDARD' | 'PLANNED';
 
+// ── Qualifier Questions ────────────────────────────────────────────────────────
+interface QualifierConfig {
+  q1: { label: string; options: string[] };
+  q2: { label: string; options: string[] };
+}
+
+const QUALIFIER_QUESTIONS: Record<Exclude<ServiceSlug, ''>, QualifierConfig> = {
+  'hvac': {
+    q1: { label: 'Is this a repair or maintenance?', options: ['Repair', 'Maintenance'] },
+    q2: { label: 'What type of system?', options: ['Furnace', 'AC', 'Both'] },
+  },
+  'plumbing': {
+    q1: { label: 'Is water actively leaking?', options: ['Yes, leaking now', 'No active leak'] },
+    q2: { label: 'Where is the issue?', options: ['Kitchen', 'Bathroom', 'Basement', 'Outside'] },
+  },
+  'electrical': {
+    q1: { label: 'What type of work?', options: ['Outage / not working', 'New install'] },
+    q2: { label: 'Which area?', options: ['Whole home', 'Single room', 'Outdoor'] },
+  },
+  'appliance-repair': {
+    q1: { label: 'Which appliance?', options: ['Fridge', 'Washer', 'Dryer', 'Dishwasher', 'Oven', 'Other'] },
+    q2: { label: 'Brand (optional)', options: ['Samsung', 'LG', 'Whirlpool', 'GE', 'Other', 'Not sure'] },
+  },
+  'handyman': {
+    q1: { label: 'What type of work?', options: ['Repair', 'Install / mount', 'Assembly', 'Other'] },
+    q2: { label: 'How soon do you need this done?', options: ['Same-day', 'This week', 'Flexible'] },
+  },
+  'smart-home': {
+    q1: { label: 'Install or troubleshoot?', options: ['New install', 'Troubleshoot existing'] },
+    q2: { label: 'What type of device?', options: ['Thermostat', 'Camera / doorbell', 'Locks', 'Lighting', 'Wi-Fi', 'Other'] },
+  },
+};
+
 const SERVICE_CARDS = [
   { slug: 'hvac' as const,              label: 'HVAC',            icon: '❄️', description: 'Heating, cooling, and air quality' },
   { slug: 'handyman' as const,          label: 'Handyman',        icon: '🔨', description: 'Repairs, mounting, and installations' },
@@ -197,6 +230,8 @@ export default function RequestServicePage() {
     serviceType:   '' as ServiceSlug,
     hvacIssue:     '',
     applianceType: '',
+    qualifierQ1:   '',
+    qualifierQ2:   '',
     description:   '',
     urgency:       'STANDARD' as Urgency,
     postalCode:    '',
