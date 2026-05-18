@@ -1,6 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router';
-import PageSeo from './components/PageSeo';
+import PageSeo, { createFaqSchema } from './components/PageSeo';
+
+const rewardsFaqs = [
+  {
+    question: 'How do I earn rewards with The Helper?',
+    answer: 'You earn rewards at three stages: $5 when you submit a service request, $5 when your appointment is booked, and up to $50 bonus on your first completed job. After your first job, you earn 5% cashback on every completed service.',
+  },
+  {
+    question: 'How do I redeem my rewards?',
+    answer: 'Once your balance reaches $100 (10,000 points), you can redeem for Amazon gift cards, Starbucks cards, or credits toward your next The Helper booking. Redemptions are processed within 24 hours.',
+  },
+  {
+    question: 'Do rewards expire?',
+    answer: 'No, your earned rewards never expire. You can accumulate points over time and redeem whenever you reach the $100 minimum threshold.',
+  },
+  {
+    question: 'Can I earn rewards on every job?',
+    answer: 'Yes, after your first completed job, you earn 5% cashback on every subsequent completed service. A $200 plumbing job earns $10 back, a $500 HVAC service earns $25 back.',
+  },
+];
 
 const FIRST_JOB_TIERS = [
   {
@@ -39,11 +58,13 @@ export default function HowRewardsWorkPage() {
   return (
     <>
       <PageSeo
-        title="How TheHelper Rewards Work | Earn 5% Cashback on Home Services"
-        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack TheHelper rewards on top of your credit card points. Cash out at $100."
-        ogTitle="Earn 5% Cashback on Home Services | TheHelper Rewards"
-        ogDescription="TheHelper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job: HVAC, plumbing, electrical and more in the GTA."
+        title="The Helper Rewards | Earn 5% Cashback on Home Services in GTA"
+        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack The Helper rewards on top of your credit card points. Redeem for Amazon, Starbucks, or service credits."
+        ogTitle="Earn 5% Cashback on Home Services | The Helper Rewards"
+        ogDescription="The Helper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job - HVAC, plumbing, electrical and more in the GTA."
         canonicalPath="/how-rewards-work"
+        keywords="home services rewards, cashback home repair, earn rewards HVAC, plumbing rewards, home service loyalty program"
+        structuredData={createFaqSchema(rewardsFaqs)}
       />
     <div className='min-h-screen bg-[#F8FAFC]'>
       <main className='max-w-5xl mx-auto px-6 lg:px-8 pt-24 pb-32'>
