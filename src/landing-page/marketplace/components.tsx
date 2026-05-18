@@ -604,3 +604,307 @@ export const marketplaceIcons = {
   Search,
   ShieldCheck,
 };
+
+// Enhanced Category Hero with Image Support
+export type ServiceItem = {
+  title: string;
+  description: string;
+  icon: string;
+  image?: string;
+};
+
+export type TrustSignal = {
+  label: string;
+  icon: string;
+};
+
+export type CategoryHeroProps = {
+  badge: string;
+  title: string;
+  highlightedWord: string;
+  description: string;
+  ctaText: string;
+  ctaLink: string;
+  trustNote?: string;
+  trustSignals: TrustSignal[];
+  services: ServiceItem[];
+  heroImage?: string;
+  heroImageAlt?: string;
+};
+
+export function CategoryHero({
+  badge,
+  title,
+  highlightedWord,
+  description,
+  ctaText,
+  ctaLink,
+  trustNote,
+  trustSignals,
+  services,
+  heroImage,
+  heroImageAlt,
+}: CategoryHeroProps) {
+  const titleParts = title.split(highlightedWord);
+
+  return (
+    <main className="pt-20 pb-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Hero Section - Split Layout when image provided */}
+        <div className={cn(
+          "flex flex-col items-center text-center",
+          heroImage && "lg:grid lg:grid-cols-2 lg:gap-12 lg:text-left lg:items-start"
+        )}>
+          {/* Text Content */}
+          <div className={cn(heroImage && "lg:py-8")}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6">
+              {badge}
+            </div>
+
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl text-[#0F172A]">
+              {titleParts[0]}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">
+                {highlightedWord}
+              </span>
+              {titleParts[1]}
+            </h1>
+
+            <p className="text-xl text-[#475569] max-w-2xl mb-10">
+              {description}
+            </p>
+
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4">
+              <Link
+                to={ctaLink}
+                className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_4px_16px_rgba(37,99,235,0.35)]"
+              >
+                {ctaText}
+              </Link>
+            </div>
+
+            {trustNote && (
+              <p className="text-sm text-[#475569] mt-2 mb-10">{trustNote}</p>
+            )}
+
+            {/* Trust Signals */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-8 mb-8 lg:mb-0">
+              {trustSignals.map((signal) => (
+                <div key={signal.label} className="flex flex-col items-center lg:items-start gap-2">
+                  <div className="text-2xl">{signal.icon}</div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-[#475569]">{signal.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero Image (when provided) */}
+          {heroImage && (
+            <div className="relative mt-8 lg:mt-0">
+              <div className="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.15)] border border-[#E2E8F0] bg-[#EFF6FF]">
+                <img
+                  src={heroImage}
+                  alt={heroImageAlt || badge}
+                  className="w-full h-auto object-cover aspect-[4/3]"
+                  loading="eager"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/images/categories/placeholder.svg';
+                  }}
+                />
+                {/* Gradient overlay for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/20 to-transparent" />
+              </div>
+
+              {/* Floating trust badge */}
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl px-4 py-3 shadow-lg border border-[#E2E8F0] hidden lg:flex items-center gap-3">
+                <div className="size-10 rounded-full bg-[#DCFCE7] flex items-center justify-center">
+                  <Check className="size-5 text-[#22C55E]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[#0F172A]">Verified Pro</p>
+                  <p className="text-xs text-[#475569]">Licensed & Insured</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Service Cards Grid */}
+        <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-8 w-full", heroImage ? "mt-20" : "mt-16")}>
+          {services.map((service) => (
+            <ServiceCardWithImage
+              key={service.title}
+              title={service.title}
+              description={service.description}
+              icon={service.icon}
+              image={service.image}
+            />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function ServiceCardWithImage({
+  title,
+  description,
+  icon,
+  image,
+}: ServiceItem) {
+  return (
+    <div className="group relative p-8 bg-white rounded-[32px] border border-[#E2E8F0] hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      {/* Background image (if provided) */}
+      {image && (
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+          <img
+            src={image}
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+
+      <div className="relative">
+        <div className="text-4xl mb-6 transition-transform duration-300 group-hover:scale-110">{icon}</div>
+        <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{title}</h3>
+        <p className="text-[#475569] leading-relaxed">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+// Provider Showcase Component for displaying verified pros
+export type ProviderProfile = {
+  name: string;
+  specialty: string;
+  rating: number;
+  jobCount: number;
+  avatar?: string;
+};
+
+export function ProviderShowcase({
+  title,
+  subtitle,
+  providers,
+}: {
+  title: string;
+  subtitle?: string;
+  providers: ProviderProfile[];
+}) {
+  return (
+    <section className="py-20 bg-[#F8FAFC]">
+      <Container>
+        <SectionHeader
+          eyebrow="Trusted Professionals"
+          title={title}
+          description={subtitle}
+        />
+
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {providers.map((provider) => (
+            <div
+              key={provider.name}
+              className="bg-white rounded-2xl p-6 border border-[#E2E8F0] text-center hover:-translate-y-1 transition-transform duration-200"
+            >
+              <div className="size-20 mx-auto mb-4 rounded-full bg-[#EFF6FF] flex items-center justify-center overflow-hidden border-2 border-[#BFDBFE]">
+                {provider.avatar ? (
+                  <img
+                    src={provider.avatar}
+                    alt={provider.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-2xl font-bold text-[#2563EB]">
+                    {provider.name.split(' ').map(n => n[0]).join('')}
+                  </span>
+                )}
+              </div>
+              <h4 className="font-bold text-[#0F172A]">{provider.name}</h4>
+              <p className="text-sm text-[#475569] mb-2">{provider.specialty}</p>
+              <div className="flex items-center justify-center gap-1 text-sm">
+                <span className="text-[#F59E0B]">★</span>
+                <span className="font-semibold text-[#0F172A]">{provider.rating.toFixed(1)}</span>
+              </div>
+              <p className="text-xs text-[#94A3B8] mt-1">{provider.jobCount} jobs completed</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// Before/After Gallery Component
+export type BeforeAfterItem = {
+  beforeImage: string;
+  afterImage: string;
+  title: string;
+  testimonial?: string;
+  author?: string;
+  location?: string;
+};
+
+export function BeforeAfterGallery({
+  title,
+  items,
+}: {
+  title: string;
+  items: BeforeAfterItem[];
+}) {
+  return (
+    <section className="py-20">
+      <Container>
+        <SectionHeader
+          eyebrow="Real Results"
+          title={title}
+        />
+
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {items.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-3xl border border-[#E2E8F0] overflow-hidden shadow-[0_4px_16px_rgba(15,23,42,0.06)]"
+            >
+              <div className="grid grid-cols-2">
+                <div className="relative">
+                  <img
+                    src={item.beforeImage}
+                    alt={`Before: ${item.title}`}
+                    className="w-full h-48 object-cover"
+                  />
+                  <span className="absolute bottom-2 left-2 bg-[#0F172A]/80 text-white text-xs font-bold px-2 py-1 rounded">
+                    Before
+                  </span>
+                </div>
+                <div className="relative">
+                  <img
+                    src={item.afterImage}
+                    alt={`After: ${item.title}`}
+                    className="w-full h-48 object-cover"
+                  />
+                  <span className="absolute bottom-2 left-2 bg-[#22C55E] text-white text-xs font-bold px-2 py-1 rounded">
+                    After
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <h4 className="font-bold text-[#0F172A] mb-2">{item.title}</h4>
+                {item.testimonial && (
+                  <p className="text-[#475569] text-sm italic">"{item.testimonial}"</p>
+                )}
+                {item.author && (
+                  <p className="text-xs text-[#94A3B8] mt-2">
+                    — {item.author}{item.location && `, ${item.location}`}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
