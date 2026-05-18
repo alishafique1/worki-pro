@@ -9,8 +9,7 @@ const MessageButton = () => {
         to={routes.AdminMessagesRoute.to}
       >
         <span className="z-1 bg-meta-1 absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full">
-          {/* TODO: only animate if there are new messages */}
-          <span className="-z-1 bg-meta-1 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+          <span className="-z-1 bg-meta-1 absolute inline-flex h-full w-full rounded-full opacity-75"></span>
         </span>
         <MessageCircleMore className="size-5" />
       </WaspRouterLink>
