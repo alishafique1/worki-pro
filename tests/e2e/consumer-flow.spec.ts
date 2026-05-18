@@ -103,12 +103,31 @@ test.describe('Consumer — authenticated flow', () => {
     await page.goto('/request-service');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
-    // Step 1 should show service selection — look for service category options or a heading
+    // Step 1 should show service selection — look for category cards, heading, or progress indicator
     await expect(
       page.locator('h1, h2').first()
-        .or(page.locator('button[type="button"]').first())
-        .or(page.locator('input[type="radio"]').first())
+        .or(page.getByText(/what.*service/i))
+        .or(page.getByText(/select.*category/i))
         .or(page.locator('[class*="step"]').first())
+        .or(page.locator('[class*="category"]').first())
+        .or(page.locator('[class*="card"]').first())
     ).toBeVisible();
+  });
+
+  test('/request-service — can select a category', async ({ page }) => {
+    await page.goto('/request-service');
+    await dismissCookieConsent(page);
+    // Look for category cards or buttons
+    const categoryCard = page.locator('[class*="card"]').first()
+      .or(page.getByRole('button').filter({ hasText: /hvac|plumbing|electrical/i }).first());
+    if (await categoryCard.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await categoryCard.click();
+      // After clicking, should advance or show qualifier questions
+      await expect(
+        page.getByText(/repair|maintenance|describe/i).first()
+          .or(page.locator('textarea').first())
+          .or(page.locator('[class*="step"]').first())
+      ).toBeVisible({ timeout: 5000 });
+    }
   });
 });

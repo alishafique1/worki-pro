@@ -587,7 +587,7 @@ page AdminUsersPage {
   component: import AdminUsers from "@src/admin/dashboards/users/UsersDashboardPage"
 }
 
-// Worki Admin Extensions
+// The Helper Admin Extensions
 route AdminRequestsRoute { path: "/admin/requests", to: AdminRequestsPage }
 page AdminRequestsPage { component: import AdminRequestsPage from "@src/admin/RequestsPage", authRequired: true }
 

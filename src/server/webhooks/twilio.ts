@@ -39,7 +39,7 @@ export const handleTwilioSms: TwilioWebhook = async (req, res, context) => {
   // 2. Identify if they are replying "YES" to a lead dispatch
   // 3. Update ServiceRequest status or create CommunicationLog
   
-  res.status(200).send('<Response><Message>Thanks for your reply. Worki has recorded your response.</Message></Response>');
+  res.status(200).send('<Response><Message>Thanks for your reply. The Helper has recorded your response.</Message></Response>');
 };
 
 function getRequestUrl(req: {

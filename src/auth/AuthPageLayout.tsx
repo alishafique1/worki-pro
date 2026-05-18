@@ -7,8 +7,8 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
       <div className="hidden lg:flex lg:w-1/2 bg-[#0F172A] flex-col justify-between p-12 text-white">
         <div>
           <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-lg">W</div>
-            <span className="text-2xl font-black tracking-tight">Worki</span>
+            <div className="w-10 h-10 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-lg">H</div>
+            <span className="text-2xl font-black tracking-tight">The Helper</span>
           </div>
           <div>
             <h1 className="text-5xl font-black tracking-tight leading-tight mb-6">Your home.<br/>Handled right.</h1>

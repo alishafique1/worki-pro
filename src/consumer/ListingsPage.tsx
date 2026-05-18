@@ -290,7 +290,7 @@ export default function ListingsPage() {
       <div className="mt-12 pt-8 border-t border-[#E2E8F0] text-center">
         <h2 className="text-xl font-bold mb-3 text-[#0F172A]">Can&apos;t find what you need?</h2>
         <p className="text-[#475569] mb-6">
-          Submit a service request and Worki will match you with the right pro.
+          Submit a service request and The Helper will match you with the right pro.
         </p>
         <Link
           to="/request-service"

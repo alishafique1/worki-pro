@@ -17,6 +17,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { AddToCalendarDropdown } from "../client/components/AddToCalendarDropdown";
 
 const formatStatus = (s: string) =>
   s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -159,6 +160,19 @@ function AppointmentCard({ appt }: { appt: any }) {
                 : "Pending scheduling"}
             </p>
           </div>
+          {appt.scheduledAt && ['CONFIRMED', 'RESCHEDULED', 'PROPOSED'].includes(appt.status) && (
+            <div className="mt-3">
+              <AddToCalendarDropdown
+                event={{
+                  title: `${request?.serviceCategory?.name || 'Service'} - ${request?.name || 'Customer'}`,
+                  description: `${request?.description || 'Service appointment'}\n\nCustomer: ${request?.name || 'N/A'}${request?.phone ? `\nPhone: ${request.phone}` : ''}\n\nBooked via The Helper`,
+                  startTime: new Date(appt.scheduledAt),
+                  endTime: new Date(new Date(appt.scheduledAt).getTime() + 60 * 60 * 1000),
+                  location: [request?.city, request?.postalCode].filter(Boolean).join(', ') || undefined,
+                }}
+              />
+            </div>
+          )}
         </div>
         {!completed && (
           <div className="flex flex-col items-end gap-1.5">

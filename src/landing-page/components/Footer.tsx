@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-[#0F172A] border-t border-[#1E293B] py-16 px-6 mt-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="col-span-1 md:col-span-1">
-          <Link to="/" className="text-2xl font-black text-white">Worki</Link>
+          <Link to="/" className="text-2xl font-black text-white">The Helper</Link>
           <p className="mt-4 text-[#94A3B8] text-sm">
             Expert home services, managed for you. Plus real cashback on every job. Serving the GTA.
           </p>
@@ -54,7 +54,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[#1E293B] flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#475569]">
-        <p>© 2026 Worki Home Services. All rights reserved.</p>
+        <p>© 2026 The Helper Inc. All rights reserved.</p>
         <p>Built for Milton, Oakville, and Burlington homeowners.</p>
       </div>
     </footer>

@@ -4,7 +4,7 @@ import { type User } from "wasp/entities";
 import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/utils";
 
 const LEGACY_TEST_PASSWORD = "Password123!";
-const QA_TEST_PASSWORD = "WorkiTest123";
+const QA_TEST_PASSWORD = "HelperQA123";
 const TEST_PASSWORD = "HelperTest123";
 
 async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, password: string) {
@@ -41,161 +41,207 @@ async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, pass
   });
 }
 
-// ─── Category Hierarchy ────────────────────────────────────────────────────
-// Parent categories define the top-level "type of help" sections.
-// Each child carries its parent's slug for association.
-// imageUrl: Unsplash photo (1280×720, auto format, q=80)
-
-type ParentCat = {
-  name: string; slug: string; description: string;
-  icon: string; imageUrl: string; sortOrder: number;
-  children: ChildCat[];
-};
-
-type ChildCat = {
-  name: string; slug: string; description: string;
-  icon: string; imageUrl: string; sortOrder: number;
-};
-
-export const CATEGORY_TREE: ParentCat[] = [
+// ─── Default Service Categories ────────────────────────────────────────────
+export const DEFAULT_VENDOR_CATEGORIES = [
+  // Live on marketplace
   {
-    name: "Repair & Maintenance",
-    slug: "repair-maintenance",
-    description: "Fix it fast. Keep your home running safely and efficiently.",
-    icon: "🔧",
-    imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1280&q=80&auto=format",
-    sortOrder: 1,
-    children: [
-      { name: "HVAC", slug: "hvac", description: "Heating, cooling, furnaces, and air quality.", icon: "❄️", imageUrl: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Plumbing", slug: "plumbing", description: "Leaks, drains, water heaters, and fixtures.", icon: "🚿", imageUrl: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Electrical", slug: "electrical", description: "Outlets, panels, EV chargers, and safety.", icon: "⚡", imageUrl: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "Appliance Repair", slug: "appliance-repair", description: "Fridges, washers, dryers, stoves, dishwashers.", icon: "🔨", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 4 },
-      { name: "Roofing", slug: "roofing", description: "Roof inspections, repairs, and replacements.", icon: "🏠", imageUrl: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?w=1280&q=80&auto=format", sortOrder: 5 },
-      { name: "Locksmith", slug: "locksmith", description: "Lock installation, re-keying, and emergency entry.", icon: "🔑", imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1280&q=80&auto=format", sortOrder: 6 },
-      { name: "Handyman", slug: "handyman", description: "General repairs, mounting, assembly, and odd jobs.", icon: "🛠️", imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1280&q=80&auto=format", sortOrder: 7 },
-    ],
+    name: "HVAC",
+    slug: "hvac",
+    description: "Heating, ventilation, and air conditioning repairs, tune-ups, and installs",
+    icon: "AirVent",
+    imageUrl: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop",
   },
   {
-    name: "Cleaning & Upkeep",
-    slug: "cleaning-upkeep",
-    description: "A clean home, handled. Regular or one-time, inside and out.",
-    icon: "✨",
-    imageUrl: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=1280&q=80&auto=format",
-    sortOrder: 2,
-    children: [
-      { name: "House Cleaning", slug: "cleaning", description: "Regular, deep clean, move-in/move-out services.", icon: "🧹", imageUrl: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Window Cleaning", slug: "window-cleaning", description: "Interior and exterior window washing.", icon: "🪟", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Carpet Cleaning", slug: "carpet-cleaning", description: "Steam cleaning, stain removal, and odour treatment.", icon: "🛋️", imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "Pressure Washing", slug: "pressure-washing", description: "Driveways, decks, siding, and fences.", icon: "💦", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 4 },
-    ],
+    name: "Plumbing",
+    slug: "plumbing",
+    description: "Pipes, drains, water heaters, toilets, and fixture repairs",
+    icon: "ShowerHead",
+    imageUrl: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&h=600&fit=crop",
   },
   {
-    name: "Outdoor & Landscaping",
-    slug: "outdoor-landscaping",
-    description: "Curb appeal and outdoor living — all season long.",
-    icon: "🌿",
-    imageUrl: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1280&q=80&auto=format",
-    sortOrder: 3,
-    children: [
-      { name: "Lawn Care", slug: "landscaping", description: "Mowing, edging, fertilizing, and seasonal cleanup.", icon: "🌱", imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Snow Removal", slug: "snow-removal", description: "Driveways, walkways, and salting services.", icon: "❄️", imageUrl: "https://images.unsplash.com/photo-1547754980-3df97fed72a8?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Tree Services", slug: "tree-services", description: "Trimming, removal, stump grinding, and emergency.", icon: "🌳", imageUrl: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "Pest Control", slug: "pest-control", description: "Rodent, insect, and wildlife removal and prevention.", icon: "🐛", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 4 },
-      { name: "Irrigation & Sprinklers", slug: "irrigation", description: "System installation, startup, winterization.", icon: "💧", imageUrl: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1280&q=80&auto=format", sortOrder: 5 },
-    ],
+    name: "Electrical",
+    slug: "electrical",
+    description: "Wiring, panels, outlets, lighting, and safety inspections",
+    icon: "PlugZap",
+    imageUrl: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop",
   },
   {
-    name: "Renovation & Improvement",
-    slug: "renovation-improvement",
-    description: "Transform your space. Kitchens, bathrooms, basements, and beyond.",
-    icon: "🏗️",
-    imageUrl: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1280&q=80&auto=format",
-    sortOrder: 4,
-    children: [
-      { name: "Painting", slug: "painting", description: "Interior and exterior painting, colour consultation.", icon: "🎨", imageUrl: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Flooring", slug: "flooring", description: "Hardwood, tile, laminate, vinyl, and carpet installation.", icon: "🪵", imageUrl: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Kitchen Remodeling", slug: "kitchen-remodeling", description: "Cabinets, countertops, backsplash, and full renos.", icon: "🍳", imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "Bathroom Remodeling", slug: "bathroom-remodeling", description: "Vanities, tiling, fixtures, and full bathroom renos.", icon: "🛁", imageUrl: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1280&q=80&auto=format", sortOrder: 4 },
-      { name: "Basement Finishing", slug: "basement-finishing", description: "Framing, drywall, flooring, and egress windows.", icon: "🏠", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 5 },
-      { name: "Deck & Fence", slug: "deck-fence", description: "New builds, repairs, staining, and waterproofing.", icon: "🪜", imageUrl: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1280&q=80&auto=format", sortOrder: 6 },
-    ],
+    name: "Handyman",
+    slug: "handyman",
+    description: "General home repairs, mounting, assembly, and maintenance",
+    icon: "Hammer",
+    imageUrl: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800&h=600&fit=crop",
   },
   {
-    name: "Smart Home & Security",
-    slug: "smart-home-security",
-    description: "Automate, secure, and future-proof your home.",
-    icon: "📱",
-    imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?w=1280&q=80&auto=format",
-    sortOrder: 5,
-    children: [
-      { name: "Smart Home Setup", slug: "smart-home", description: "Thermostats, speakers, lighting, and automation.", icon: "🏠", imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Security Cameras", slug: "security-cameras", description: "Indoor/outdoor cameras, NVR, and monitoring setup.", icon: "📹", imageUrl: "https://images.unsplash.com/photo-1557597774-9d475d5a53d5?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "EV Charger Installation", slug: "ev-charger", description: "Level 2 home charger installation and permits.", icon: "⚡", imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "Home Theatre", slug: "home-theatre", description: "TV mounting, surround sound, and media room setup.", icon: "📺", imageUrl: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1280&q=80&auto=format", sortOrder: 4 },
-    ],
+    name: "Appliance Repair",
+    slug: "appliance-repair",
+    description: "Washer, dryer, fridge, stove, dishwasher — diagnosis and repair",
+    icon: "WashingMachine",
+    imageUrl: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&h=600&fit=crop",
   },
   {
-    name: "Moving & Storage",
-    slug: "moving-storage",
-    description: "Moving day, made easier. Local moves, junk removal, and packing.",
-    icon: "📦",
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format",
-    sortOrder: 6,
-    children: [
-      { name: "Local Moving", slug: "local-moving", description: "Full-service local moves with truck and crew.", icon: "🚛", imageUrl: "https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Junk Removal", slug: "junk-removal", description: "Furniture, appliances, yard waste, and full cleanouts.", icon: "🗑️", imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Furniture Assembly", slug: "furniture-assembly", description: "IKEA, flatpack, and any home furniture.", icon: "🪑", imageUrl: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1280&q=80&auto=format", sortOrder: 3 },
-    ],
+    name: "Smart Home",
+    slug: "smart-home",
+    description: "Smart thermostats, cameras, locks, sensors, and home automation",
+    icon: "Wifi",
+    imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=600&fit=crop",
+  },
+  // Coming soon — accepting provider applications
+  {
+    name: "Cleaning",
+    slug: "cleaning",
+    description: "Regular, deep clean, move-in/out, post-construction, and Airbnb cleans",
+    icon: "Sparkles",
+    imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop",
   },
   {
-    name: "Events & Celebrations",
-    slug: "events-celebrations",
-    description: "Make any occasion unforgettable. Decorators, caterers, entertainment, and event vendors across the GTA.",
-    icon: "🎉",
-    imageUrl: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1280&q=80&auto=format",
-    sortOrder: 7,
-    children: [
-      { name: "Event Decorating", slug: "event-decorating", description: "Balloons, florals, backdrops, and full venue styling.", icon: "🎊", imageUrl: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Catering & Food Stalls", slug: "catering", description: "Full catering, food trucks, dessert tables, and bar service.", icon: "🍽️", imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Photography & Video", slug: "photography", description: "Event photographers, videographers, and photo booths.", icon: "📸", imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "DJ & Entertainment", slug: "entertainment-dj", description: "DJs, live bands, MCs, kids entertainers, and performers.", icon: "🎵", imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1280&q=80&auto=format", sortOrder: 4 },
-      { name: "Party Rentals", slug: "party-rentals", description: "Tents, tables, chairs, linens, bounce houses, and more.", icon: "⛺", imageUrl: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1280&q=80&auto=format", sortOrder: 5 },
-      { name: "Floral Arrangements", slug: "floral", description: "Wedding flowers, centrepieces, bouquets, and fresh arrangements.", icon: "💐", imageUrl: "https://images.unsplash.com/photo-1487530811015-780df8fddc50?w=1280&q=80&auto=format", sortOrder: 6 },
-      { name: "Venue Booking", slug: "venue-booking", description: "Halls, banquet spaces, gardens, and unique event venues.", icon: "🏛️", imageUrl: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&q=80&auto=format", sortOrder: 7 },
-    ],
+    name: "Painting",
+    slug: "painting",
+    description: "Interior and exterior painting, drywall prep, colour consultation",
+    icon: "Brush",
+    imageUrl: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Flooring",
+    slug: "flooring",
+    description: "Hardwood, tile, laminate, vinyl plank, carpet — supply and install",
+    icon: "Layers",
+    imageUrl: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Roofing",
+    slug: "roofing",
+    description: "Shingle repair, full replacement, flat roofs, eavestroughs, and inspections",
+    icon: "Home",
+    imageUrl: "https://images.unsplash.com/photo-1632759145351-1d592919f522?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Landscaping",
+    slug: "landscaping",
+    description: "Lawn care, garden beds, interlocking, irrigation, and seasonal cleanup",
+    icon: "Leaf",
+    imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Snow Removal",
+    slug: "snow-removal",
+    description: "Driveway and walkway clearing, salting, and seasonal contracts",
+    icon: "Wind",
+    imageUrl: "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Tree Services",
+    slug: "tree-services",
+    description: "Trimming, removal, stump grinding, and emergency tree work",
+    icon: "TreePine",
+    imageUrl: "https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Pest Control",
+    slug: "pest-control",
+    description: "Rodent, insect, and wildlife removal — inspection and treatment",
+    icon: "Bug",
+    imageUrl: "https://images.unsplash.com/photo-1611786081316-dde64e33ca43?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Locksmith",
+    slug: "locksmith",
+    description: "Lock changes, emergency entry, rekeying, and deadbolt installation",
+    icon: "KeyRound",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Window Cleaning",
+    slug: "window-cleaning",
+    description: "Interior and exterior window washing, screens, sills, and tracks",
+    icon: "Droplets",
+    imageUrl: "https://images.unsplash.com/photo-1596394723269-b2cbca4e6313?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Moving",
+    slug: "moving",
+    description: "Local moves, packing, furniture assembly, piano moving, and junk removal",
+    icon: "MoveRight",
+    imageUrl: "https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Garage Door",
+    slug: "garage-door",
+    description: "Spring repair, opener install, panel replacement, and seasonal tune-up",
+    icon: "Package",
+    imageUrl: "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Junk Removal",
+    slug: "junk-removal",
+    description: "Furniture, appliances, renovation debris, and estate cleanouts",
+    icon: "Trash2",
+    imageUrl: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Waterproofing",
+    slug: "waterproofing",
+    description: "Basement waterproofing, sump pump install, foundation crack repair",
+    icon: "ShieldCheck",
+    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Renovation",
+    slug: "renovation",
+    description: "Kitchen, bathroom, basement, and general home renovation",
+    icon: "Hammer",
+    imageUrl: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Home Inspection",
+    slug: "home-inspection",
+    description: "Pre-purchase and annual home inspection with detailed report",
+    icon: "ClipboardList",
+    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Fence & Gate",
+    slug: "fence-gate",
+    description: "Wood, vinyl, chain-link, and aluminum fence install and repair",
+    icon: "Fence",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Pool & Spa",
+    slug: "pool-spa",
+    description: "Opening, closing, cleaning, equipment repair, and winterization",
+    icon: "Waves",
+    imageUrl: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Events",
+    slug: "events",
+    description: "Event setup, furniture rentals, tents, AV, and cleanup services",
+    icon: "PartyPopper",
+    imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop",
   },
 ];
 
-// Flat list derived from tree (legacy compat + quick lookup)
-export const DEFAULT_VENDOR_CATEGORIES = CATEGORY_TREE.flatMap(p =>
-  p.children.map(c => ({ name: c.name, slug: c.slug, description: c.description }))
-);
-
 export async function seedVendorCategories(prisma: PrismaClient) {
-  console.log("Seeding vendor service categories (hierarchical)...");
-  let total = 0;
-
-  for (const parent of CATEGORY_TREE) {
-    // Upsert parent
-    const parentRecord = await prisma.serviceCategory.upsert({
-      where: { slug: parent.slug },
-      update: { name: parent.name, description: parent.description, icon: parent.icon, imageUrl: parent.imageUrl, sortOrder: parent.sortOrder, active: true },
-      create: { name: parent.name, slug: parent.slug, description: parent.description, icon: parent.icon, imageUrl: parent.imageUrl, sortOrder: parent.sortOrder, active: true },
+  console.log("Seeding vendor service categories...");
+  for (const cat of DEFAULT_VENDOR_CATEGORIES) {
+    await prisma.serviceCategory.upsert({
+      where: { slug: cat.slug },
+      update: {
+        icon: cat.icon,
+        imageUrl: cat.imageUrl,
+      },
+      create: {
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description,
+        icon: cat.icon,
+        imageUrl: cat.imageUrl,
+        active: true,
+      },
     });
-    total++;
-
-    // Upsert children linked to parent
-    for (const child of parent.children) {
-      await prisma.serviceCategory.upsert({
-        where: { slug: child.slug },
-        update: { name: child.name, description: child.description, icon: child.icon, imageUrl: child.imageUrl, sortOrder: child.sortOrder, parentCategoryId: parentRecord.id, active: true },
-        create: { name: child.name, slug: child.slug, description: child.description, icon: child.icon, imageUrl: child.imageUrl, sortOrder: child.sortOrder, parentCategoryId: parentRecord.id, active: true },
-      });
-      total++;
-    }
   }
-
-  console.log(`Seeded ${total} categories (${CATEGORY_TREE.length} parents, ${total - CATEGORY_TREE.length} sub-categories).`);
+  console.log(`Seeded ${DEFAULT_VENDOR_CATEGORIES.length} vendor categories.`);
 }
 
 export async function seedMockUsers(prisma: PrismaClient) {
@@ -618,7 +664,7 @@ export async function seedMockUsers(prisma: PrismaClient) {
   }
   await ensureEmailAuthIdentity(prisma, "consumer.test@worki.ai", QA_TEST_PASSWORD);
 
-  // Legacy reward account for test@worki.ai
+  // Legacy reward account for legacy test user
   const rewardAcct = await prisma.rewardAccount.findUnique({ where: { consumerId: consumer.id } });
   if (!rewardAcct) {
     await prisma.rewardAccount.create({

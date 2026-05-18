@@ -1,123 +1,78 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAction, submitServiceRequest, sendOtp, verifyOtp, submitLead } from 'wasp/client/operations';
-import { useNavigate } from 'react-router';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useAction, useQuery, submitServiceRequest, sendOtp, verifyOtp, submitLead, getServiceCategories } from 'wasp/client/operations';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useAuth } from 'wasp/client/auth';
 import { ACTIVE_PREFIXES, getCityForPrefix } from '../shared/geoConfig';
+import { CATEGORY_QUALIFIERS, getQualifiersForCategory, LIVE_CATEGORY_SLUGS } from './categoryQualifiers';
+import {
+  AirVent,
+  Hammer,
+  WashingMachine,
+  ShowerHead,
+  PlugZap,
+  Wifi,
+  Sparkles,
+  Brush,
+  Layers,
+  Home,
+  Leaf,
+  Wind,
+  TreePine,
+  Bug,
+  KeyRound,
+  Droplets,
+  MoveRight,
+  Package,
+  Trash2,
+  ShieldCheck,
+  ClipboardList,
+  Fence,
+  Waves,
+  PartyPopper,
+  Loader2,
+  type LucideIcon,
+} from 'lucide-react';
 
-// Service categories grouped by type — mirrors DB seed hierarchy
-type ServiceDef = { slug: string; label: string; icon: string; description: string }
-
-const SERVICE_CARDS: ServiceDef[] = [
-  { slug: 'hvac',            label: 'HVAC',            icon: '❄️', description: 'Heating, cooling, and air quality' },
-  { slug: 'handyman',        label: 'Handyman',        icon: '🛠️', description: 'Repairs, mounting, and installations' },
-  { slug: 'appliance-repair',label: 'Appliance Repair',icon: '🔧', description: 'Fridges, washers, dryers, and more' },
-  { slug: 'plumbing',        label: 'Plumbing',        icon: '🚿', description: 'Leaks, drains, toilets, and pipes' },
-  { slug: 'electrical',      label: 'Electrical',      icon: '⚡', description: 'Wiring, outlets, panels, and lighting' },
-  { slug: 'smart-home',      label: 'Smart Home',      icon: '🏠', description: 'Cameras, thermostats, and automation' },
-  { slug: 'event-decorating',label: 'Events & Celebrations', icon: '🎉', description: 'Decorators, caterers, photographers, DJs' },
-  { slug: 'painting',        label: 'Painting',        icon: '🎨', description: 'Interior and exterior painting' },
-  { slug: 'cleaning',        label: 'House Cleaning',  icon: '🧹', description: 'Regular, deep clean, move-in/out' },
-  { slug: 'landscaping',     label: 'Lawn Care',       icon: '🌱', description: 'Mowing, edging, and seasonal cleanup' },
-  { slug: 'junk-removal',    label: 'Junk Removal',    icon: '🗑️', description: 'Furniture, appliances, and cleanouts' },
-];
-
-type ServiceSlug = string;
 type Urgency = 'EMERGENCY' | 'STANDARD' | 'PLANNED';
 
-// ── Qualifier Questions ────────────────────────────────────────────────────────
-interface QualifierConfig {
-  q1: { label: string; options: string[] };
-  q2: { label: string; options: string[] };
-}
-
-const QUALIFIER_QUESTIONS: Partial<Record<string, QualifierConfig>> = {
-  'hvac': {
-    q1: { label: 'Is this a repair or maintenance?', options: ['Repair', 'Maintenance'] },
-    q2: { label: 'What type of system?', options: ['Furnace', 'AC', 'Both'] },
-  },
-  'plumbing': {
-    q1: { label: 'Is water actively leaking?', options: ['Yes, leaking now', 'No active leak'] },
-    q2: { label: 'Where is the issue?', options: ['Kitchen', 'Bathroom', 'Basement', 'Outside'] },
-  },
-  'electrical': {
-    q1: { label: 'What type of work?', options: ['Outage / not working', 'New install'] },
-    q2: { label: 'Which area?', options: ['Whole home', 'Single room', 'Outdoor'] },
-  },
-  'appliance-repair': {
-    q1: { label: 'Which appliance?', options: ['Fridge', 'Washer', 'Dryer', 'Dishwasher', 'Oven', 'Other'] },
-    q2: { label: 'Brand (optional)', options: ['Samsung', 'LG', 'Whirlpool', 'GE', 'Other', 'Not sure'] },
-  },
-  'handyman': {
-    q1: { label: 'What type of work?', options: ['Repair', 'Install / mount', 'Assembly', 'Other'] },
-    q2: { label: 'How soon do you need this done?', options: ['Same-day', 'This week', 'Flexible'] },
-  },
-  'smart-home': {
-    q1: { label: 'Install or troubleshoot?', options: ['New install', 'Troubleshoot existing'] },
-    q2: { label: 'What type of device?', options: ['Thermostat', 'Camera / doorbell', 'Locks', 'Lighting', 'Wi-Fi', 'Other'] },
-  },
+// ── Icon mapping from DB icon names to Lucide components ────────────────────
+const ICON_MAP: Record<string, LucideIcon> = {
+  AirVent,
+  Hammer,
+  WashingMachine,
+  ShowerHead,
+  PlugZap,
+  Wifi,
+  Sparkles,
+  Brush,
+  Layers,
+  Home,
+  Leaf,
+  Wind,
+  TreePine,
+  Bug,
+  KeyRound,
+  Droplets,
+  MoveRight,
+  Package,
+  Trash2,
+  ShieldCheck,
+  ClipboardList,
+  Fence,
+  Waves,
+  PartyPopper,
 };
 
-const MATCHING_STEPS = [
-  'We review the request details.',
-  'We route it to relevant local providers.',
-  'You get the next step by phone or email.',
-];
-
-const HVAC_CHIPS = [
-  'Not heating / cooling',
-  'Strange noise or smell',
-  'Annual tune-up',
-  'System replacement',
-  'Something else',
-];
-
-const APPLIANCE_CHIPS = ['Fridge', 'Washer', 'Dryer', 'Dishwasher', 'Oven', 'Other'];
-
-const HANDYMAN_CHIPS = [
-  'TV mounting',
-  'Furniture assembly',
-  'Drywall repair',
-  'Door / lock',
-  'Painting',
-  'Shelving',
-  'Caulking / sealing',
-  'Something else',
-];
-
-const PLUMBING_CHIPS = [
-  'Leaky faucet',
-  'Clogged drain',
-  'Running toilet',
-  'Pipe burst / leak',
-  'Water heater',
-  'Low water pressure',
-  'Something else',
-];
-
-const ELECTRICAL_CHIPS = [
-  'Outlet not working',
-  'Tripping breaker',
-  'Light fixture install',
-  'Panel upgrade',
-  'EV charger install',
-  'Smoke detector',
-  'Something else',
-];
-
-const SMART_HOME_CHIPS = [
-  'Smart thermostat',
-  'Security cameras',
-  'Smart doorbell',
-  'Smart locks',
-  'Wi-Fi / networking',
-  'Smart lighting',
-  'Something else',
-];
+function CategoryIcon({ iconName, className = '' }: { iconName?: string | null; className?: string }) {
+  if (!iconName) return <Home className={className} />;
+  const IconComponent = ICON_MAP[iconName] || Home;
+  return <IconComponent className={className} />;
+}
 
 const URGENCY_CHIPS: { value: Urgency; icon: string; label: string }[] = [
-  { value: 'EMERGENCY', icon: '🚨', label: 'Urgent' },
-  { value: 'STANDARD',  icon: '📅', label: 'This week' },
-  { value: 'PLANNED',   icon: '🗓️', label: 'Flexible' },
+  { value: 'EMERGENCY', icon: '!', label: 'Urgent' },
+  { value: 'STANDARD',  icon: '-', label: 'This week' },
+  { value: 'PLANNED',   icon: '+', label: 'Flexible' },
 ];
 
 const SCHEDULE_MAP: Record<Urgency, string> = {
@@ -126,22 +81,13 @@ const SCHEDULE_MAP: Record<Urgency, string> = {
   PLANNED:   'FLEXIBLE',
 };
 
-const SERVICE_DISPLAY: Record<string, string> = {
-  'hvac':            'HVAC',
-  'handyman':        'handyman',
-  'appliance-repair':'appliance repair',
-  'plumbing':        'plumbing',
-  'electrical':      'electrical',
-  'smart-home':      'smart home',
-};
-
 const getPrefix   = (v: string) => v.replace(/\s+/g, '').toUpperCase().slice(0, 3);
 const isValidPostal = (v: string) => v.replace(/\s+/g, '').length >= 6 && ACTIVE_PREFIXES.has(getPrefix(v));
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const inputCls =
   'w-full p-4 rounded-[18px] border-2 border-[#E2E8F0] bg-white ' +
-  'text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none transition-colors';
+  'text-foreground placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none transition-colors';
 
 const chipCls = (active: boolean) =>
   `px-4 py-2.5 rounded-full border-2 text-sm font-bold transition-all duration-150 active:scale-95 cursor-pointer ` +
@@ -176,13 +122,13 @@ function ProgressBar({ step }: { step: number }) {
       {/* Trust signal */}
       <div className="mt-3 flex items-center gap-4 text-xs text-[#475569]">
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">✓</span> 100% Free
+          <span className="text-[#22C55E]">-</span> 100% Free
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">✓</span> Verified Pros
+          <span className="text-[#22C55E]">-</span> Verified Pros
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">✓</span> Same-Day Available
+          <span className="text-[#22C55E]">-</span> Same-Day Available
         </span>
       </div>
     </div>
@@ -196,7 +142,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       className="mb-4 text-sm font-bold text-[#475569] hover:text-foreground transition-colors"
     >
-      ← Back
+      Back
     </button>
   );
 }
@@ -245,9 +191,26 @@ function QualifierQuestion({
 // ── main component ────────────────────────────────────────────────────────────
 export default function RequestServicePage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { data: user } = useAuth();
   const submitRequest = useAction(submitServiceRequest);
   const submitLeadFn = useAction(submitLead);
+
+  // Fetch service categories from DB
+  const { data: categories, isLoading: categoriesLoading } = useQuery(getServiceCategories);
+
+  // Filter to get only parent (top-level) categories that are live
+  const parentCategories = useMemo(() => {
+    if (!categories) return [];
+    return categories
+      .filter(c => !c.parentCategoryId && LIVE_CATEGORY_SLUGS.includes(c.slug))
+      .sort((a, b) => {
+        // Sort by the order in LIVE_CATEGORY_SLUGS
+        const aIdx = LIVE_CATEGORY_SLUGS.indexOf(a.slug);
+        const bIdx = LIVE_CATEGORY_SLUGS.indexOf(b.slug);
+        return aIdx - bIdx;
+      });
+  }, [categories]);
 
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -267,7 +230,7 @@ export default function RequestServicePage() {
   const nameRef   = useRef<HTMLInputElement>(null);
   const phoneRef  = useRef<HTMLInputElement>(null);
 
-  // When step 3 renders, give the browser 100 ms to autofill then sync DOM → state
+  // When step 3 renders, give the browser 100 ms to autofill then sync DOM > state
   useEffect(() => {
     if (step !== 3) return;
     const timer = setTimeout(() => {
@@ -282,9 +245,8 @@ export default function RequestServicePage() {
   }, [step]);
 
   const [form, setForm] = useState({
-    serviceType:   '' as ServiceSlug,
-    hvacIssue:     '',
-    applianceType: '',
+    serviceType:   '',
+    detailChip:    '',
     qualifierQ1:   '',
     qualifierQ2:   '',
     description:   '',
@@ -296,32 +258,57 @@ export default function RequestServicePage() {
     estimatedSchedule: 'THIS_WEEK',
   });
 
+  // Pre-select category from URL param ?category=hvac
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && parentCategories.length > 0) {
+      const matchedCategory = parentCategories.find(c => c.slug === categoryParam);
+      if (matchedCategory) {
+        setForm(prev => ({
+          ...prev,
+          serviceType: matchedCategory.slug,
+          qualifierQ1: '',
+          qualifierQ2: '',
+          detailChip: '',
+        }));
+        setStep(2);
+      }
+    }
+  }, [searchParams, parentCategories]);
+
   const set = <K extends keyof typeof form>(k: K, v: typeof form[K]) =>
     setForm(prev => ({ ...prev, [k]: v }));
 
   const setUrgency = (u: Urgency) =>
     setForm(prev => ({ ...prev, urgency: u, estimatedSchedule: SCHEDULE_MAP[u] }));
 
-  // ── validation ────────────────────────────────────────────────────────────
-  // Q1 is always required, Q2 is optional for appliance-repair (brand)
-  const qualifiersValid = (() => {
-    if (!form.serviceType) return false;
-    const q1Valid = form.qualifierQ1 !== '';
-    // For appliance-repair, Q2 (brand) is optional
-    const q2Valid = form.serviceType === 'appliance-repair' || form.qualifierQ2 !== '';
-    return q1Valid && q2Valid;
-  })();
+  // Get current category and its qualifiers
+  const currentCategory = useMemo(() => {
+    return parentCategories.find(c => c.slug === form.serviceType);
+  }, [parentCategories, form.serviceType]);
 
-  const step2Valid = (() => {
+  const qualifierConfig = useMemo(() => {
+    if (!form.serviceType) return null;
+    return getQualifiersForCategory(form.serviceType);
+  }, [form.serviceType]);
+
+  // ── validation ────────────────────────────────────────────────────────────
+  const qualifiersValid = useMemo(() => {
+    if (!form.serviceType || !qualifierConfig) return false;
+    const q1Valid = form.qualifierQ1 !== '';
+    // Q2 is optional if marked as such in the config
+    const q2Valid = !qualifierConfig.q2 || qualifierConfig.q2.isOptional || form.qualifierQ2 !== '';
+    return q1Valid && q2Valid;
+  }, [form.serviceType, form.qualifierQ1, form.qualifierQ2, qualifierConfig]);
+
+  const step2Valid = useMemo(() => {
     if (!qualifiersValid) return false;
-    if (form.serviceType === 'hvac')             return form.hvacIssue !== '';
-    if (form.serviceType === 'handyman')         return form.hvacIssue !== '';
-    if (form.serviceType === 'appliance-repair') return true; // Q1 already captures appliance
-    if (form.serviceType === 'plumbing')         return form.hvacIssue !== '';
-    if (form.serviceType === 'electrical')       return form.hvacIssue !== '';
-    if (form.serviceType === 'smart-home')       return form.hvacIssue !== '';
-    return false;
-  })();
+    // For categories with detail chips, require one to be selected (unless appliance-repair where Q1 captures it)
+    if (qualifierConfig?.detailChips && form.serviceType !== 'appliance-repair') {
+      return form.detailChip !== '';
+    }
+    return true;
+  }, [qualifiersValid, qualifierConfig, form.detailChip, form.serviceType]);
 
   const postalOk       = isValidPostal(form.postalCode);
   const postalTooLong  = form.postalCode.replace(/\s+/g, '').length >= 6 && !postalOk;
@@ -336,25 +323,16 @@ export default function RequestServicePage() {
     if (form.qualifierQ2 && form.qualifierQ2 !== 'Not sure') qualifierParts.push(form.qualifierQ2);
     const qualifierContext = qualifierParts.length > 0 ? `[${qualifierParts.join(' | ')}]` : '';
 
-    if (form.serviceType === 'hvac')
-      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
-    if (form.serviceType === 'handyman')
-      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
     if (form.serviceType === 'appliance-repair') {
       // Q1 is the appliance type, Q2 is brand
       const brandPart = form.qualifierQ2 && form.qualifierQ2 !== 'Not sure' ? ` (${form.qualifierQ2})` : '';
       return `${form.qualifierQ1}${brandPart}${form.description.trim() ? ': ' + form.description.trim() : ''}`;
     }
-    if (form.serviceType === 'plumbing')
-      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
-    if (form.serviceType === 'electrical')
-      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
-    if (form.serviceType === 'smart-home')
-      return [qualifierContext, form.hvacIssue, form.description.trim()].filter(Boolean).join(' - ');
-    return form.description.trim();
+
+    return [qualifierContext, form.detailChip, form.description.trim()].filter(Boolean).join(' - ');
   };
 
-  // Step 3 → 4: send OTP, go to verification step
+  // Step 3 > 4: send OTP, go to verification step
   const handleSendOtp = async () => {
     setOtpSending(true);
     setSubmitError(null);
@@ -416,6 +394,18 @@ export default function RequestServicePage() {
     }
   };
 
+  // Loading state while categories fetch
+  if (categoriesLoading) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4 py-12">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="size-8 text-[#2563EB] animate-spin" />
+          <p className="text-sm text-[#475569]">Loading services...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
@@ -433,27 +423,28 @@ export default function RequestServicePage() {
               <p className="text-sm text-[#475569] mb-2">Select a service to get matched with verified local pros.</p>
               <p className="text-xs text-[#22C55E] font-semibold mb-6">Join 500+ GTA homeowners who trust The Helper</p>
               <div className="flex flex-col gap-3">
-                {SERVICE_CARDS.map(card => (
+                {parentCategories.map(category => (
                   <button
-                    key={card.slug}
+                    key={category.id}
                     type="button"
                     onClick={() => {
                       setForm(prev => ({
                         ...prev,
-                        serviceType: card.slug,
+                        serviceType: category.slug,
                         qualifierQ1: '',
                         qualifierQ2: '',
-                        hvacIssue: '',
-                        applianceType: '',
+                        detailChip: '',
                       }));
                       setStep(2);
                     }}
                     className="w-full flex items-center gap-4 p-5 rounded-[24px] border-2 border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:bg-[#EFF6FF] text-left transition-all duration-200 active:scale-[0.98]"
                   >
-                    <span className="text-4xl shrink-0">{card.icon}</span>
-                    <div>
-                      <p className="text-lg font-black text-foreground">{card.label}</p>
-                      <p className="text-sm text-[#475569]">{card.description}</p>
+                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-[#EFF6FF] flex items-center justify-center">
+                      <CategoryIcon iconName={category.icon} className="size-7 text-[#2563EB]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-lg font-black text-foreground">{category.name}</p>
+                      <p className="text-sm text-[#475569] truncate">{category.description}</p>
                     </div>
                   </button>
                 ))}
@@ -462,132 +453,50 @@ export default function RequestServicePage() {
           )}
 
           {/* ── STEP 2: Job details ──────────────────────────────────────── */}
-          {step === 2 && (
+          {step === 2 && currentCategory && (
             <div>
               <h1 className="text-3xl font-black text-foreground mb-6">
-                {form.serviceType === 'hvac'            ? "Tell us about your HVAC needs"
-                : form.serviceType === 'handyman'       ? 'Tell us about the job'
-                : form.serviceType === 'appliance-repair' ? 'Tell us about your appliance'
-                : form.serviceType === 'plumbing'       ? "Tell us about the plumbing issue"
-                : form.serviceType === 'electrical'     ? "Tell us about the electrical work"
-                : form.serviceType === 'smart-home'     ? "Tell us about your smart home needs"
-                : "Tell us more"}
+                Tell us about your {currentCategory.name.toLowerCase()} needs
               </h1>
 
               {/* Qualifier Questions - shown for all categories */}
-              {form.serviceType && QUALIFIER_QUESTIONS[form.serviceType] && (
+              {qualifierConfig && (
                 <>
                   <QualifierQuestion
-                    label={QUALIFIER_QUESTIONS[form.serviceType].q1.label}
-                    options={QUALIFIER_QUESTIONS[form.serviceType].q1.options}
+                    label={qualifierConfig.q1.label}
+                    options={qualifierConfig.q1.options}
                     value={form.qualifierQ1}
                     onChange={v => set('qualifierQ1', v)}
+                    isOptional={qualifierConfig.q1.isOptional}
                   />
-                  {/* Show Q2 after Q1 is answered (except for appliance-repair where it's always shown) */}
-                  {(form.qualifierQ1 || form.serviceType === 'appliance-repair') && (
+                  {/* Show Q2 after Q1 is answered (or always for appliance-repair) */}
+                  {qualifierConfig.q2 && (form.qualifierQ1 || form.serviceType === 'appliance-repair') && (
                     <QualifierQuestion
-                      label={QUALIFIER_QUESTIONS[form.serviceType].q2.label}
-                      options={QUALIFIER_QUESTIONS[form.serviceType].q2.options}
+                      label={qualifierConfig.q2.label}
+                      options={qualifierConfig.q2.options}
                       value={form.qualifierQ2}
                       onChange={v => set('qualifierQ2', v)}
-                      isOptional={form.serviceType === 'appliance-repair'}
+                      isOptional={qualifierConfig.q2.isOptional}
                     />
                   )}
                 </>
               )}
 
               {/* Category-specific detail chips - shown after qualifiers are answered */}
-              {/* HVAC — compact chips */}
-              {form.serviceType === 'hvac' && qualifiersValid && (
+              {qualifierConfig?.detailChips && qualifiersValid && form.serviceType !== 'appliance-repair' && (
                 <>
-                  <p className="text-sm font-bold text-[#0F172A] mb-3">What best describes the issue?</p>
+                  <p className="text-sm font-bold text-[#0F172A] mb-3">
+                    {qualifierConfig.detailChipsLabel || 'What best describes the issue?'}
+                  </p>
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {HVAC_CHIPS.map(issue => (
+                    {qualifierConfig.detailChips.map(chip => (
                       <button
-                        key={issue}
+                        key={chip}
                         type="button"
-                        onClick={() => set('hvacIssue', issue)}
-                        className={chipCls(form.hvacIssue === issue)}
+                        onClick={() => set('detailChip', chip)}
+                        className={chipCls(form.detailChip === chip)}
                       >
-                        {issue}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Handyman — compact chips */}
-              {form.serviceType === 'handyman' && qualifiersValid && (
-                <>
-                  <p className="text-sm font-bold text-[#0F172A] mb-3">What needs to be done?</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {HANDYMAN_CHIPS.map(task => (
-                      <button
-                        key={task}
-                        type="button"
-                        onClick={() => set('hvacIssue', task)}
-                        className={chipCls(form.hvacIssue === task)}
-                      >
-                        {task}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Appliance — Q1 now captures appliance type, so no separate chips needed */}
-
-              {/* Plumbing chips */}
-              {form.serviceType === 'plumbing' && qualifiersValid && (
-                <>
-                  <p className="text-sm font-bold text-[#0F172A] mb-3">What best describes the problem?</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {PLUMBING_CHIPS.map(issue => (
-                      <button
-                        key={issue}
-                        type="button"
-                        onClick={() => set('hvacIssue', issue)}
-                        className={chipCls(form.hvacIssue === issue)}
-                      >
-                        {issue}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Electrical chips */}
-              {form.serviceType === 'electrical' && qualifiersValid && (
-                <>
-                  <p className="text-sm font-bold text-[#0F172A] mb-3">What needs attention?</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {ELECTRICAL_CHIPS.map(issue => (
-                      <button
-                        key={issue}
-                        type="button"
-                        onClick={() => set('hvacIssue', issue)}
-                        className={chipCls(form.hvacIssue === issue)}
-                      >
-                        {issue}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Smart Home chips */}
-              {form.serviceType === 'smart-home' && qualifiersValid && (
-                <>
-                  <p className="text-sm font-bold text-[#0F172A] mb-3">What would you like set up?</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {SMART_HOME_CHIPS.map(issue => (
-                      <button
-                        key={issue}
-                        type="button"
-                        onClick={() => set('hvacIssue', issue)}
-                        className={chipCls(form.hvacIssue === issue)}
-                      >
-                        {issue}
+                        {chip}
                       </button>
                     ))}
                   </div>
@@ -617,7 +526,7 @@ export default function RequestServicePage() {
                         onClick={() => setUrgency(opt.value)}
                         className={chipCls(form.urgency === opt.value) + ' flex-1 flex flex-col items-center py-3 px-2'}
                       >
-                        <span className="text-xl mb-0.5">{opt.icon}</span>
+                        <span className="text-xl mb-0.5 font-bold">{opt.icon}</span>
                         <span className="text-xs">{opt.label}</span>
                       </button>
                     ))}
@@ -659,7 +568,7 @@ export default function RequestServicePage() {
                     className={inputCls}
                   />
                   {postalOk && postalCity && (
-                    <p className="mt-2 text-sm text-[#2563EB] font-bold">✓ We serve {postalCity}</p>
+                    <p className="mt-2 text-sm text-[#2563EB] font-bold">We serve {postalCity}</p>
                   )}
                   {postalTooLong && (
                     <div className="mt-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]">
@@ -696,7 +605,7 @@ export default function RequestServicePage() {
                             disabled={notifySubmitting}
                             className="px-4 py-2 bg-[#2563EB] text-white text-sm font-black rounded-[12px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
                           >
-                            {notifySubmitting ? '…' : 'Notify me'}
+                            {notifySubmitting ? '...' : 'Notify me'}
                           </button>
                         </form>
                       ) : (
@@ -744,7 +653,7 @@ export default function RequestServicePage() {
                   className="mt-0.5 h-5 w-5 shrink-0 accent-[#2563EB]"
                 />
                 <span className="text-sm text-foreground">
-                  I agree to receive text updates from Worki about this request.
+                  I agree to receive text updates from The Helper about this request.
                   <span className="block text-xs text-[#475569] mt-1">Reply STOP anytime. Standard rates may apply.</span>
                 </span>
               </label>
@@ -759,7 +668,7 @@ export default function RequestServicePage() {
                 disabled={!step3Valid || otpSending}
                 className={ctaCls}
               >
-                {otpSending ? 'Sending code…' : 'Get Free Quotes Now'}
+                {otpSending ? 'Sending code...' : 'Get Free Quotes Now'}
               </button>
 
               {/* Urgency/trust reminder */}
@@ -826,13 +735,13 @@ export default function RequestServicePage() {
           {step === 5 && (
             <div className="text-center py-8">
               <div className="mx-auto w-20 h-20 rounded-full bg-[#DCFCE7] border-2 border-[#22C55E] flex items-center justify-center mb-6">
-                <span className="text-4xl font-black text-[#22C55E]">✓</span>
+                <span className="text-4xl font-black text-[#22C55E]">!</span>
               </div>
-              <h1 className="text-3xl font-black text-foreground mb-3">Your request is in.</h1>
-              <p className="text-base text-[#475569] max-w-sm mx-auto mb-8">
-                Matching you with a verified{' '}
-                {form.serviceType ? (SERVICE_DISPLAY[form.serviceType] ?? form.serviceType) : 'service'}{' '}
-                pro near {form.postalCode}. Expect a text within 15 minutes.
+              <h1 className="text-3xl font-black text-foreground mb-3">You're All Set!</h1>
+              <p className="text-base text-[#475569] max-w-sm mx-auto mb-4">
+                A verified{' '}
+                {currentCategory ? currentCategory.name.toLowerCase() : 'service'}{' '}
+                pro will text you within <strong className="text-[#0F172A]">15 minutes</strong>.
               </p>
 
               {/* What happens next */}

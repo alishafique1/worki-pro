@@ -43,6 +43,12 @@ export const getServiceCategories: GetServiceCategories<
   return context.entities.ServiceCategory.findMany({
     where: { active: true },
     orderBy: { name: "asc" },
+    include: {
+      children: {
+        where: { active: true },
+        orderBy: { name: "asc" },
+      },
+    },
   });
 };
 
@@ -392,7 +398,7 @@ export const sendCustomerMessage: SendCustomerMessage<
         serviceRequest.email ||
         serviceRequest.name ||
         "Customer",
-      to: serviceRequest.assignedProvider?.businessName || "Worki coordination",
+      to: serviceRequest.assignedProvider?.businessName || "The Helper coordination",
       body: trimmedBody,
       status: "SENT",
     },

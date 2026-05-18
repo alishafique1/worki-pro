@@ -14,12 +14,12 @@ const BENEFITS = [
   {
     icon: '💰',
     title: '5% Cashback on Every Job',
-    desc: "Worki's rewards program means customers earn points on every booking, giving you a competitive edge over providers who don't.",
+    desc: "The Helper's rewards program means customers earn points on every booking, giving you a competitive edge over providers who don't.",
   },
   {
     icon: '✅',
     title: 'Background-Checked & Verified',
-    desc: 'Every pro on Worki is verified. Customers see your licence, insurance, and reviews, building trust that converts to bookings.',
+    desc: 'Every pro on The Helper is verified. Customers see your licence, insurance, and reviews, building trust that converts to bookings.',
   },
   {
     icon: '📱',
@@ -133,7 +133,7 @@ export default function ListYourServicesPage() {
             <span className="text-[#2563EB]">Grow Your Business.</span>
           </h1>
           <p className="text-xl text-[#475569] max-w-2xl mx-auto">
-            Join 200+ GTA pros already on Worki. No commission on leads. You pay a flat monthly rate and keep 100% of every job you book.
+            Join 200+ GTA pros already on The Helper. No commission on leads. You pay a flat monthly rate and keep 100% of every job you book.
           </p>
         </div>
 
@@ -312,7 +312,7 @@ export default function ListYourServicesPage() {
           </div>
 
           <p className="text-center text-sm text-[#475569] mt-6">
-            Already a Worki pro?{' '}
+            Already a The Helper pro?{' '}
             <Link to="/provider/dashboard" className="text-[#2563EB] font-bold hover:underline">
               Go to Dashboard
             </Link>

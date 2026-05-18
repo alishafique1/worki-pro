@@ -157,9 +157,8 @@ model ServiceCategory {
   name             String
   slug             String            @unique
   description      String?
-  icon             String?
-  imageUrl         String?
-  sortOrder        Int               @default(0)
+  icon             String?           // Lucide icon name, e.g. "AirVent"
+  imageUrl         String?           // Unsplash hero image URL
   active           Boolean           @default(true)
   parentCategoryId String?
   parent           ServiceCategory?  @relation("SubCategories", fields: [parentCategoryId], references: [id])
@@ -645,17 +644,4 @@ model OtpVerification {
   createdAt  DateTime  @default(now())
 
   @@index([phone, createdAt])
-}
-
-// ─── Email OTP (passwordless auth codes) ──────────────────────────────────
-
-model OtpCode {
-  id        String   @id @default(cuid())
-  email     String
-  code      String
-  expiresAt DateTime
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  @@index([email])
 }
