@@ -28,13 +28,16 @@ test.describe('Public pages', () => {
     await expect(page).not.toHaveURL(/\/login/);
     // Should have at least one heading
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    // CTA button or link referencing getting help / finding a helper
+    // CTA button or link referencing getting help / quotes / finding a helper
     await expect(
       page
-        .getByRole('button', { name: /find a helper/i })
+        .getByRole('button', { name: /get free quotes/i })
+        .or(page.getByRole('link', { name: /get free quotes/i }))
+        .or(page.getByRole('button', { name: /find a helper/i }))
         .or(page.getByRole('link', { name: /find a helper/i }))
         .or(page.getByRole('button', { name: /get started/i }))
         .or(page.getByRole('link', { name: /get started/i }))
+        .or(page.getByRole('link', { name: /get matched/i }))
         .first()
     ).toBeVisible();
   });
@@ -191,5 +194,36 @@ test.describe('Public pages', () => {
     await gotoAndDismiss(page, '/services');
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
+  });
+
+  test('/services/hvac — dynamic category page loads', async ({ page }) => {
+    await gotoAndDismiss(page, '/services/hvac');
+    await expect(page).not.toHaveURL(/\/login/);
+    await expect(page.locator('h1, h2').first()).toBeVisible();
+    await expect(page.getByText(/hvac/i).first()).toBeVisible();
+  });
+
+  test('/services/plumbing — dynamic category page loads', async ({ page }) => {
+    await gotoAndDismiss(page, '/services/plumbing');
+    await expect(page).not.toHaveURL(/\/login/);
+    await expect(page.locator('h1, h2').first()).toBeVisible();
+  });
+
+  test('footer shows The Helper branding', async ({ page }) => {
+    await gotoAndDismiss(page, '/');
+    await expect(
+      page.getByText(/the helper/i).first()
+        .or(page.getByText(/thehelper/i).first())
+    ).toBeVisible();
+  });
+
+  test('area pages have local content', async ({ page }) => {
+    await gotoAndDismiss(page, '/areas/milton');
+    // Should have local stats or testimonials
+    await expect(
+      page.getByText(/homeowner/i).first()
+        .or(page.getByText(/neighbour/i).first())
+        .or(page.getByText(/local/i).first())
+    ).toBeVisible();
   });
 });
