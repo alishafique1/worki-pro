@@ -157,6 +157,8 @@ model ServiceCategory {
   name             String
   slug             String            @unique
   description      String?
+  icon             String?           // Lucide icon name, e.g. "AirVent"
+  imageUrl         String?           // Unsplash hero image URL
   active           Boolean           @default(true)
   parentCategoryId String?
   parent           ServiceCategory?  @relation("SubCategories", fields: [parentCategoryId], references: [id])
