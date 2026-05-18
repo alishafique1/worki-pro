@@ -274,15 +274,61 @@ export default function AreaLandingPage() {
     );
   }
 
+  // Generate unique meta content based on area
+  const getMetaContent = () => {
+    const baseServices = 'HVAC, Plumber, Electrician, Handyman';
+
+    if (areaSlug === 'milton') {
+      return {
+        title: `Milton Home Services | ${baseServices} | New Builds & Established Homes | The Helper`,
+        description: `Serving ${area.localContent?.stats.homeownersServed || '850+'} Milton homeowners. Vetted HVAC, plumbing, electrical & handyman pros for new builds in Boyne, Scott, Willmott and established homes near Main Street. Same-day service available.`,
+        ogTitle: `Home Services in Milton, ON | Fast-Growing Community, Reliable Pros`,
+        ogDescription: `From new construction in Scott to century homes on Main Street - The Helper matches Milton homeowners with verified local contractors. ${area.localContent?.stats.satisfactionRate || '97%'} satisfaction rate.`,
+        keywords: `Milton home services, Milton HVAC, Milton plumber, Milton electrician, Milton handyman, Boyne home services, Scott neighbourhood contractor, Milton new build services, Main Street Milton repairs`,
+      };
+    }
+
+    if (areaSlug === 'oakville') {
+      return {
+        title: `Oakville Home Services | ${baseServices} | Premium Homes, Expert Pros | The Helper`,
+        description: `Trusted by ${area.localContent?.stats.homeownersServed || '1,200+'} Oakville homeowners. Vetted pros for waterfront estates in Bronte, heritage homes in Old Oakville, and modern builds in North Oakville. ${area.localContent?.stats.satisfactionRate || '98%'} satisfaction.`,
+        ogTitle: `Home Services in Oakville, ON | Quality Craftsmen for Quality Homes`,
+        ogDescription: `Oakville's established neighbourhoods deserve expert care. The Helper connects you with ${area.localContent?.stats.localPros || '60+'} verified local pros who understand heritage and premium homes.`,
+        keywords: `Oakville home services, Oakville HVAC, Oakville plumber, Oakville electrician, Oakville handyman, Old Oakville contractor, Bronte home services, Glen Abbey repairs, heritage home specialist Oakville`,
+      };
+    }
+
+    if (areaSlug === 'burlington') {
+      return {
+        title: `Burlington Home Services | ${baseServices} | Waterfront to Escarpment | The Helper`,
+        description: `Serving ${area.localContent?.stats.homeownersServed || '1,050+'} Burlington homeowners. Expert HVAC, plumbing, electrical & handyman pros for Aldershot bungalows, downtown condos, and Tyandaga family homes. ${area.localContent?.stats.avgResponseTime || '11 min'} avg response.`,
+        ogTitle: `Home Services in Burlington, ON | Diverse Housing, Adaptable Pros`,
+        ogDescription: `From lakeside condos to Escarpment-area homes - Burlington's diverse housing needs pros who adapt. ${area.localContent?.stats.localPros || '55+'} verified contractors ready to help.`,
+        keywords: `Burlington home services, Burlington HVAC, Burlington plumber, Burlington electrician, Burlington handyman, Aldershot home services, Downtown Burlington contractor, Tyandaga repairs, Burlington condo services`,
+      };
+    }
+
+    // Default for other areas
+    return {
+      title: `Home Services in ${area.name}, ON | ${baseServices} | The Helper`,
+      description: `Find vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}, ${area.region}. Licensed, insured contractors. Get matched and book today.`,
+      ogTitle: `Home Services in ${area.name} | The Helper`,
+      ogDescription: `Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more - matched, scheduled, and followed up for you.`,
+      keywords: `home services ${area.name}, HVAC ${area.name}, plumber ${area.name}, electrician ${area.name}, handyman ${area.name}, appliance repair ${area.name}`,
+    };
+  };
+
+  const metaContent = getMetaContent();
+
   return (
     <>
       <PageSeo
-        title={`Home Services in ${area.name}, ON | HVAC, Plumber, Electrician | The Helper`}
-        description={`Find vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}, ${area.region}. Licensed, insured contractors. Get matched and book today.`}
-        ogTitle={`Home Services in ${area.name} | The Helper`}
-        ogDescription={`Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more - matched, scheduled, and followed up for you.`}
+        title={metaContent.title}
+        description={metaContent.description}
+        ogTitle={metaContent.ogTitle}
+        ogDescription={metaContent.ogDescription}
         canonicalPath={`/areas/${areaSlug}`}
-        keywords={`home services ${area.name}, HVAC ${area.name}, plumber ${area.name}, electrician ${area.name}, handyman ${area.name}, appliance repair ${area.name}`}
+        keywords={metaContent.keywords}
         structuredData={createLocalBusinessSchema({
           name: `The Helper - ${area.name}`,
           description: `Home services marketplace connecting ${area.name} homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.`,
