@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FAQAccordion } from '../landing-page/marketplace/components';
 import { Container } from '../landing-page/marketplace/components';
+import PageSeo, { createFaqSchema } from '../landing-page/components/PageSeo';
 import {
   MessageSquare,
   BookOpen,
@@ -113,6 +114,13 @@ const trustItems = [
 
 export default function HelpPage() {
   return (
+    <>
+      <PageSeo
+        title="Help Centre | The Helper"
+        description="Get help with The Helper home services marketplace. Find answers to FAQs about service requests, appointments, rewards, and more."
+        canonicalPath="/help"
+        structuredData={createFaqSchema(consumerFaqs)}
+      />
     <div className="min-h-[80vh] bg-[#F8FAFC]">
       {/* Hero */}
       <div className="bg-white border-b border-[#E2E8F0]">
@@ -202,5 +210,6 @@ export default function HelpPage() {
         </div>
       </Container>
     </div>
+    </>
   );
 }

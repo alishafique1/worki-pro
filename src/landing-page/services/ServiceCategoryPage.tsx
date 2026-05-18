@@ -112,6 +112,23 @@ export default function ServiceCategoryPage() {
         title={category.seo.title}
         description={category.seo.description}
         canonicalPath={`/services/${category.slug}`}
+        keywords={`${category.name.toLowerCase()} Milton, ${category.name.toLowerCase()} Oakville, ${category.name.toLowerCase()} Burlington, ${category.name.toLowerCase()} services GTA`}
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            createServiceSchema({
+              name: `${category.name} Services`,
+              description: category.description,
+              areaServed: ['Milton', 'Oakville', 'Burlington'],
+              url: `https://thehelper.ca/services/${category.slug}`,
+            }),
+            createFaqSchema(category.faqs),
+            createBreadcrumbSchema([
+              { name: 'Home', url: 'https://thehelper.ca' },
+              { name: category.name, url: `https://thehelper.ca/services/${category.slug}` },
+            ]),
+          ],
+        }}
       />
 
       <main className="min-h-screen bg-[#F8FAFC] font-sans">

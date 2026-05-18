@@ -1,7 +1,14 @@
 import React from 'react';
+import PageSeo from '../landing-page/components/PageSeo';
 
 export default function TermsPage() {
   return (
+    <>
+      <PageSeo
+        title="Terms of Service | The Helper"
+        description="Read The Helper terms of service. Learn about our home services marketplace policies, user responsibilities, and service provider guidelines."
+        canonicalPath="/terms"
+      />
     <div className="bg-[#F8FAFC] text-[#0F172A] min-h-screen py-20 px-6">
       <div className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl p-10 shadow-sm">
         <h1 className="text-4xl font-black mb-2 text-[#0F172A]">Terms of Service</h1>
@@ -101,9 +108,10 @@ export default function TermsPage() {
         </p>
 
         <p className="mt-16 text-sm text-[#94A3B8]">
-          TheHelper Home Services Inc. | Milton, Ontario, Canada.
+          The Helper Home Services Inc. | Milton, Ontario, Canada.
         </p>
       </div>
     </div>
+    </>
   );
 }
