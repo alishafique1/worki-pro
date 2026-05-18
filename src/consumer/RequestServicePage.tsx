@@ -248,10 +248,20 @@ export default function RequestServicePage() {
     setForm(prev => ({ ...prev, urgency: u, estimatedSchedule: SCHEDULE_MAP[u] }));
 
   // ── validation ────────────────────────────────────────────────────────────
+  // Q1 is always required, Q2 is optional for appliance-repair (brand)
+  const qualifiersValid = (() => {
+    if (!form.serviceType) return false;
+    const q1Valid = form.qualifierQ1 !== '';
+    // For appliance-repair, Q2 (brand) is optional
+    const q2Valid = form.serviceType === 'appliance-repair' || form.qualifierQ2 !== '';
+    return q1Valid && q2Valid;
+  })();
+
   const step2Valid = (() => {
+    if (!qualifiersValid) return false;
     if (form.serviceType === 'hvac')             return form.hvacIssue !== '';
     if (form.serviceType === 'handyman')         return form.hvacIssue !== '';
-    if (form.serviceType === 'appliance-repair') return form.applianceType !== '';
+    if (form.serviceType === 'appliance-repair') return true; // Q1 already captures appliance
     if (form.serviceType === 'plumbing')         return form.hvacIssue !== '';
     if (form.serviceType === 'electrical')       return form.hvacIssue !== '';
     if (form.serviceType === 'smart-home')       return form.hvacIssue !== '';
