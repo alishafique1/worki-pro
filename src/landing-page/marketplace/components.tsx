@@ -126,7 +126,7 @@ export function Hero() {
           {/* Location badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#2563EB]">
             <span className="size-2 rounded-full bg-[#22C55E]" />
-            Now serving GTA — Milton · Oakville · Burlington
+            Now serving GTA: Milton, Oakville, Burlington
           </div>
 
           <h1 className="font-display mt-6 max-w-2xl text-balance text-[42px] font-bold leading-[1.05] text-[#0F172A] sm:text-5xl lg:text-6xl">
@@ -135,7 +135,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-[#475569] sm:text-lg">
-            Connect with verified local pros for HVAC, plumbing, electrical, handyman work, and more — right in your neighbourhood.
+            Connect with verified local pros for HVAC, plumbing, electrical, handyman work, and more, right in your neighbourhood.
           </p>
 
           {/* Reward pill */}

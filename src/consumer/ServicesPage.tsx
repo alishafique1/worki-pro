@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
+import { categoryImages } from '../landing-page/marketplace/content';
 
 type ServiceListing = {
   id: string;
@@ -144,7 +145,17 @@ export default function ServicesPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="animate-pulse bg-white rounded-[24px] h-44 border border-[#E2E8F0]" />
+            <div key={i} className="animate-pulse overflow-hidden rounded-[24px] border border-[#E2E8F0] bg-white">
+              <div className="h-32 bg-[#E2E8F0]" />
+              <div className="p-6">
+                <div className="h-5 w-24 rounded bg-[#E2E8F0]" />
+                <div className="mt-3 h-4 w-full rounded bg-[#E2E8F0]" />
+                <div className="mt-2 h-4 w-3/4 rounded bg-[#E2E8F0]" />
+                <div className="mt-4 pt-4 border-t border-[#E2E8F0]">
+                  <div className="h-8 w-24 rounded-full bg-[#E2E8F0]" />
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       ) : servicesList.length === 0 ? (
@@ -157,44 +168,69 @@ export default function ServicesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicesList.map((entry) => (
-            <div
-              key={`${entry.service.name}-${entry.service.categorySlug}`}
-              className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#BFDBFE] transition-all duration-300 flex flex-col"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center">
-                  <span className="text-lg">🔧</span>
-                </div>
-                {entry.service.price && (
-                  <span className="px-3 py-1 bg-[#2563EB] text-white rounded-full text-sm font-bold">
-                    ${entry.service.price.toFixed(2)}
-                  </span>
+          {servicesList.map((entry) => {
+            const imageUrl = categoryImages[entry.service.categorySlug];
+            return (
+              <div
+                key={`${entry.service.name}-${entry.service.categorySlug}`}
+                className="bg-white border border-[#E2E8F0] rounded-[24px] overflow-hidden hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)] transition-all duration-300 flex flex-col group"
+              >
+                {/* Image header */}
+                {imageUrl && (
+                  <div className="relative h-32 w-full overflow-hidden bg-[#F8FAFC]">
+                    <img
+                      src={imageUrl}
+                      alt={entry.service.categorySlug}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    {entry.service.price && (
+                      <span className="absolute top-3 right-3 px-3 py-1 bg-[#2563EB] text-white rounded-full text-sm font-bold shadow">
+                        ${entry.service.price.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
                 )}
-              </div>
 
-              <h3 className="text-lg font-bold mb-1 text-[#0F172A]">{entry.service.name}</h3>
-              {entry.service.description && (
-                <p className="text-[#475569] text-sm mb-4 line-clamp-2">
-                  {entry.service.description}
-                </p>
-              )}
+                <div className="p-6 flex flex-col flex-1">
+                  {!imageUrl && (
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center">
+                        <span className="text-lg">🔧</span>
+                      </div>
+                      {entry.service.price && (
+                        <span className="px-3 py-1 bg-[#2563EB] text-white rounded-full text-sm font-bold">
+                          ${entry.service.price.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                  )}
 
-              <div className="mt-auto pt-4 border-t border-[#E2E8F0]">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#94A3B8]">
-                    {entry.providerCount} pro{entry.providerCount !== 1 ? 's' : ''} offering
-                  </span>
-                  <Link
-                    to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-                    className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors"
-                  >
-                    Find Pros
-                  </Link>
+                  <h3 className="text-lg font-bold mb-1 text-[#0F172A]">{entry.service.name}</h3>
+                  {entry.service.description && (
+                    <p className="text-[#475569] text-sm mb-4 line-clamp-2">
+                      {entry.service.description}
+                    </p>
+                  )}
+
+                  <div className="mt-auto pt-4 border-t border-[#E2E8F0]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-[#94A3B8]">
+                        {entry.providerCount} pro{entry.providerCount !== 1 ? 's' : ''} offering
+                      </span>
+                      <Link
+                        to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`}
+                        className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors"
+                      >
+                        Find Pros
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
