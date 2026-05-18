@@ -117,7 +117,7 @@ export default function HowItWorksPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {STEPS.map((step) => (
-              <div key={step.num} className="bg-white rounded-[24px] border border-[#E2E8F0] p-6 space-y-4">
+              <div key={step.num} className="step-card bg-white rounded-[24px] border border-[#E2E8F0] p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-[12px] bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center">
                     {step.icon}
