@@ -1,6 +1,19 @@
 # dependencies
 node_modules/
-.wasp/
+
+# Track .wasp/out/ for Coolify deployment — Dockerfile + generated server/SDK needed
+# Ignore only the heavy rebuilt-in-Docker artifacts
+.wasp/out/server/node_modules/
+.wasp/out/server/bundle/
+.wasp/out/sdk/wasp/node_modules/
+.wasp/out/sdk/wasp/dist/
+.wasp/out/libs/auth/node_modules/
+.wasp/out/libs/wasp/node_modules/
+.wasp/out/installedNpmDepsLog.json
+.wasp/out/web-app/
+# Dev-only Wasp internals (not needed for deployment)
+.wasp/build/
+.wasp/prisma/
 
 # testing
 /coverage

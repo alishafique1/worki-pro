@@ -645,3 +645,16 @@ model OtpVerification {
 
   @@index([phone, createdAt])
 }
+
+// ─── OTP Code (email-based passwordless login) ───────────────────────────────
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email, used])
+}

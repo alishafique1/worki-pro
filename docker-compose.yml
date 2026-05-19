@@ -1,0 +1,64 @@
+services:
+  thehelper-api:
+    build:
+      context: .
+      dockerfile: .wasp/out/Dockerfile
+    container_name: thehelper-api
+    restart: unless-stopped
+    networks:
+      - coolify
+    environment:
+      NODE_ENV: production
+      PORT: "3001"
+      DATABASE_URL: ${DATABASE_URL}
+      WASP_WEB_CLIENT_URL: ${WASP_WEB_CLIENT_URL:-https://thehelper.ca}
+      JWT_SECRET: ${JWT_SECRET}
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+      MAILGUN_DOMAIN: ${MAILGUN_DOMAIN}
+      ADMIN_EMAILS: ${ADMIN_EMAILS}
+      SKIP_EMAIL_VERIFICATION_IN_DEV: "false"
+      GHL_WEBHOOK_URL: ${GHL_WEBHOOK_URL:-}
+      GHL_OTP_WEBHOOK_URL: ${GHL_OTP_WEBHOOK_URL:-}
+      GHL_LOCATION_ID: ${GHL_LOCATION_ID:-}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.thehelper-api.rule=Host(`api.thehelper.ca`)
+      - traefik.http.routers.thehelper-api.entrypoints=https
+      - traefik.http.routers.thehelper-api.tls=true
+      - traefik.http.routers.thehelper-api.tls.certresolver=letsencrypt
+      - traefik.http.services.thehelper-api.loadbalancer.server.port=3001
+      - traefik.http.middlewares.thehelper-api-https.redirectscheme.scheme=https
+      - traefik.http.routers.thehelper-api-http.rule=Host(`api.thehelper.ca`)
+      - traefik.http.routers.thehelper-api-http.entrypoints=http
+      - traefik.http.routers.thehelper-api-http.middlewares=thehelper-api-https
+      - coolify.managed=true
+
+  thehelper-web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-https://api.thehelper.ca}
+    container_name: thehelper-web
+    restart: unless-stopped
+    networks:
+      - coolify
+    depends_on:
+      - thehelper-api
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.thehelper-web.rule=Host(`thehelper.ca`) || Host(`www.thehelper.ca`)
+      - traefik.http.routers.thehelper-web.entrypoints=https
+      - traefik.http.routers.thehelper-web.tls=true
+      - traefik.http.routers.thehelper-web.tls.certresolver=letsencrypt
+      - traefik.http.services.thehelper-web.loadbalancer.server.port=80
+      - traefik.http.middlewares.thehelper-web-https.redirectscheme.scheme=https
+      - traefik.http.routers.thehelper-web-http.rule=Host(`thehelper.ca`) || Host(`www.thehelper.ca`)
+      - traefik.http.routers.thehelper-web-http.entrypoints=http
+      - traefik.http.routers.thehelper-web-http.middlewares=thehelper-web-https
+      - coolify.managed=true
+
+networks:
+  coolify:
+    external: true
+    name: coolify
