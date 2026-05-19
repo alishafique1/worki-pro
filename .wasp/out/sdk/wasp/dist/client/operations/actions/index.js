@@ -1,6 +1,6 @@
 import { createAction } from './core';
 // PUBLIC API
-export const completeOnboarding = createAction('operations/complete-onboarding', ['User', 'Provider', 'RewardAccount', 'RewardTransaction', 'ServiceRequest', 'Referral']);
+export const completeOnboarding = createAction('operations/complete-onboarding', ['User', 'Provider', 'RewardAccount', 'RewardTransaction', 'ServiceRequest', 'Referral', 'ConsumerInterest', 'ProviderCategory', 'ServiceCategory']);
 // PUBLIC API
 export const redeemPoints = createAction('operations/redeem-points', ['RewardAccount', 'RewardTransaction', 'Redemption']);
 // PUBLIC API

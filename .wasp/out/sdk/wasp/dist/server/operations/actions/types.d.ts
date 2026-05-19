@@ -1,11 +1,14 @@
-import { type _User, type _Provider, type _RewardAccount, type _RewardTransaction, type _ServiceRequest, type _Referral, type _Redemption, type _ServiceCategory, type _WebhookLog, type _Lead, type _CommunicationLog, type _OtpVerification, type _Review, type _Appointment, type _ProviderFee, type _ProviderCategory, type _Task, type _GptResponse, type _File, type AuthenticatedActionDefinition, type Payload } from 'wasp/server/_types';
+import { type _User, type _Provider, type _RewardAccount, type _RewardTransaction, type _ServiceRequest, type _Referral, type _ConsumerInterest, type _ProviderCategory, type _ServiceCategory, type _Redemption, type _WebhookLog, type _Lead, type _CommunicationLog, type _OtpVerification, type _Review, type _Appointment, type _ProviderFee, type _Task, type _GptResponse, type _File, type AuthenticatedActionDefinition, type Payload } from 'wasp/server/_types';
 export type CompleteOnboarding<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _User,
     _Provider,
     _RewardAccount,
     _RewardTransaction,
     _ServiceRequest,
-    _Referral
+    _Referral,
+    _ConsumerInterest,
+    _ProviderCategory,
+    _ServiceCategory
 ], Input, Output>;
 export type RedeemPoints<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _RewardAccount,

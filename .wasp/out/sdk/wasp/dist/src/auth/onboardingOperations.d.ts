@@ -9,6 +9,8 @@ type CompleteOnboardingInput = {
     businessName?: string;
     serviceAreas?: string[];
     referralCode?: string;
+    interestCategoryIds?: string[];
+    serviceCategoryIds?: string[];
 };
 type CompleteOnboardingOutput = {
     success: boolean;

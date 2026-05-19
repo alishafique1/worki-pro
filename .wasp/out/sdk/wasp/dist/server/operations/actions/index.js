@@ -42,6 +42,9 @@ export const completeOnboarding = createAuthenticatedOperation(completeOnboardin
     RewardTransaction: prisma.rewardTransaction,
     ServiceRequest: prisma.serviceRequest,
     Referral: prisma.referral,
+    ConsumerInterest: prisma.consumerInterest,
+    ProviderCategory: prisma.providerCategory,
+    ServiceCategory: prisma.serviceCategory,
 });
 // PUBLIC API
 export const redeemPoints = createAuthenticatedOperation(redeemPoints_ext, {

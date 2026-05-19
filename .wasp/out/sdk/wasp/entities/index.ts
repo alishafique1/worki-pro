@@ -8,6 +8,7 @@ import {
   type Logs,
   type ContactFormMessage,
   type ServiceCategory,
+  type ConsumerInterest,
   type Provider,
   type ProviderCategory,
   type ServiceRequest,
@@ -36,6 +37,7 @@ export {
   type Logs,
   type ContactFormMessage,
   type ServiceCategory,
+  type ConsumerInterest,
   type Provider,
   type ProviderCategory,
   type ServiceRequest,
@@ -66,6 +68,7 @@ export type Entity =
   | Logs
   | ContactFormMessage
   | ServiceCategory
+  | ConsumerInterest
   | Provider
   | ProviderCategory
   | ServiceRequest
@@ -94,6 +97,7 @@ export type EntityName =
   | "Logs"
   | "ContactFormMessage"
   | "ServiceCategory"
+  | "ConsumerInterest"
   | "Provider"
   | "ProviderCategory"
   | "ServiceRequest"

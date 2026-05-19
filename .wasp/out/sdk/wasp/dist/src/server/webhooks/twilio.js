@@ -24,13 +24,39 @@ export const handleTwilioSms = async (req, res, context) => {
             return res.status(401).json({ error: 'Invalid Twilio signature' });
         }
     }
-    // Parse incoming SMS body and from number
     const { Body, From } = req.body;
-    console.log(`Received SMS from ${From}: ${Body}`);
-    // In the future:
-    // 1. Find User by phone number matching `From`
-    // 2. Identify if they are replying "YES" to a lead dispatch
-    // 3. Update ServiceRequest status or create CommunicationLog
+    const normalizedFrom = From.replace(/^\+/, '');
+    // Find the most recent open service request for this phone number
+    const pendingRequest = await context.entities.ServiceRequest.findFirst({
+        where: {
+            phone: { contains: normalizedFrom.slice(-10) },
+            status: { in: ['NEW', 'SMS_STARTED', 'QUALIFYING'] },
+        },
+        orderBy: { createdAt: 'desc' },
+    });
+    if (pendingRequest) {
+        if (pendingRequest.status === 'NEW') {
+            await context.entities.ServiceRequest.update({
+                where: { id: pendingRequest.id },
+                data: { status: 'SMS_STARTED' },
+            });
+        }
+        await context.entities.CommunicationLog.create({
+            data: {
+                serviceRequestId: pendingRequest.id,
+                channel: 'SMS',
+                direction: 'INBOUND',
+                from: From,
+                to: process.env.TWILIO_PHONE_NUMBER || 'TheHelper',
+                body: Body,
+                status: 'RECEIVED',
+            },
+        });
+        console.log(`[Twilio] SMS recorded for request ${pendingRequest.id} from ${From}: ${Body}`);
+    }
+    else {
+        console.log(`[Twilio] SMS from unknown number ${From}: ${Body}`);
+    }
     res.status(200).send('<Response><Message>Thanks for your reply. The Helper has recorded your response.</Message></Response>');
 };
 function getRequestUrl(req) {

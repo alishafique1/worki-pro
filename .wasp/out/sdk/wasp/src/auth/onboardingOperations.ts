@@ -1,6 +1,5 @@
 import { HttpError } from 'wasp/server';
 import { type CompleteOnboarding } from 'wasp/server/operations';
-import { type User, type Provider, type RewardAccount, type RewardTransaction } from 'wasp/entities';
 
 type CompleteOnboardingInput = {
   role: 'CONSUMER' | 'PROVIDER';
@@ -12,6 +11,8 @@ type CompleteOnboardingInput = {
   businessName?: string;
   serviceAreas?: string[];
   referralCode?: string;
+  interestCategoryIds?: string[];
+  serviceCategoryIds?: string[];
 };
 
 type CompleteOnboardingOutput = { success: boolean };
@@ -25,7 +26,7 @@ export const completeOnboarding: CompleteOnboarding<
   }
 
   const userId = context.user.id;
-  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode } = args;
+  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds } = args;
 
   await context.entities.User.update({
     where: { id: userId },
@@ -56,16 +57,39 @@ export const completeOnboarding: CompleteOnboarding<
         email: context.user.email ?? undefined,
       },
     });
+
+    if (serviceCategoryIds && serviceCategoryIds.length > 0) {
+      await context.entities.ProviderCategory.deleteMany({
+        where: { provider: { userId } },
+      });
+      for (const catId of serviceCategoryIds) {
+        await context.entities.ProviderCategory.create({
+          data: {
+            providerId: (await context.entities.Provider.findUnique({ where: { userId } }))!.id,
+            serviceCategoryId: catId,
+          },
+        });
+      }
+    }
   }
 
-  // Ensure a RewardAccount exists for this user
+  if (role === 'CONSUMER' && interestCategoryIds && interestCategoryIds.length > 0) {
+    await context.entities.ConsumerInterest.deleteMany({
+      where: { consumerId: userId },
+    });
+    for (const catId of interestCategoryIds) {
+      await context.entities.ConsumerInterest.create({
+        data: { consumerId: userId, serviceCategoryId: catId },
+      });
+    }
+  }
+
   await context.entities.RewardAccount.upsert({
     where: { consumerId: userId },
     update: {},
     create: { consumerId: userId },
   });
 
-  // Claim pending guest request rewards from submissions made before signup.
   const guestMatchFilters = [
     ...(context.user.email ? [{ email: context.user.email }] : []),
     { phone },
@@ -107,7 +131,6 @@ export const completeOnboarding: CompleteOnboarding<
     });
   }
 
-  // Grant SIGNUP_BONUS if not already given
   const existing = await context.entities.RewardTransaction.findFirst({
     where: { consumerId: userId, type: 'SIGNUP_BONUS' },
   });
@@ -132,7 +155,6 @@ export const completeOnboarding: CompleteOnboarding<
     });
   }
 
-  // Apply referral code if provided (consumers only)
   if (referralCode && role === 'CONSUMER') {
     const code = referralCode.trim().toUpperCase();
     const referral = await context.entities.Referral.findUnique({

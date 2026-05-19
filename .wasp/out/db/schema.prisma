@@ -44,6 +44,7 @@ model User {
   referralsGiven                Referral[]           @relation("ReferrerUser")
   referralReceived              Referral?            @relation("ReferredUser")
   communicationLogs             CommunicationLog[]
+  interests                     ConsumerInterest[]
   auth                          Auth?
 }
 
@@ -118,19 +119,30 @@ model ContactFormMessage {
 }
 
 model ServiceCategory {
-  id               String             @id @default(cuid())
-  name             String
-  slug             String             @unique
-  description      String?
-  icon             String?
-  imageUrl         String?
-  active           Boolean            @default(true)
-  parentCategoryId String?
-  parent           ServiceCategory?   @relation("SubCategories", fields: [parentCategoryId], references: [id])
-  children         ServiceCategory[]  @relation("SubCategories")
-  serviceRequests  ServiceRequest[]
-  providers        ProviderCategory[]
-  createdAt        DateTime           @default(now())
+  id                String             @id @default(cuid())
+  name              String
+  slug              String             @unique
+  description       String?
+  icon              String?
+  imageUrl          String?
+  active            Boolean            @default(true)
+  parentCategoryId  String?
+  parent            ServiceCategory?   @relation("SubCategories", fields: [parentCategoryId], references: [id])
+  children          ServiceCategory[]  @relation("SubCategories")
+  serviceRequests   ServiceRequest[]
+  providers         ProviderCategory[]
+  consumerInterests ConsumerInterest[]
+  createdAt         DateTime           @default(now())
+}
+
+model ConsumerInterest {
+  id                String          @id @default(cuid())
+  consumerId        String
+  consumer          User            @relation(fields: [consumerId], references: [id])
+  serviceCategoryId String
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id])
+
+  @@unique([consumerId, serviceCategoryId])
 }
 
 model Provider {

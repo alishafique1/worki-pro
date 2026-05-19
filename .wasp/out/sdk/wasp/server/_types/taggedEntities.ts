@@ -15,6 +15,7 @@ import {
   type Logs,
   type ContactFormMessage,
   type ServiceCategory,
+  type ConsumerInterest,
   type Provider,
   type ProviderCategory,
   type ServiceRequest,
@@ -42,6 +43,7 @@ export type _PageViewSource = WithName<PageViewSource, "PageViewSource">
 export type _Logs = WithName<Logs, "Logs">
 export type _ContactFormMessage = WithName<ContactFormMessage, "ContactFormMessage">
 export type _ServiceCategory = WithName<ServiceCategory, "ServiceCategory">
+export type _ConsumerInterest = WithName<ConsumerInterest, "ConsumerInterest">
 export type _Provider = WithName<Provider, "Provider">
 export type _ProviderCategory = WithName<ProviderCategory, "ProviderCategory">
 export type _ServiceRequest = WithName<ServiceRequest, "ServiceRequest">
@@ -69,6 +71,7 @@ export type _Entity =
   | _Logs
   | _ContactFormMessage
   | _ServiceCategory
+  | _ConsumerInterest
   | _Provider
   | _ProviderCategory
   | _ServiceRequest

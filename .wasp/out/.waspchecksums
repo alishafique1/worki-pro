@@ -25,7 +25,7 @@
             "file",
             "db/schema.prisma"
         ],
-        "07c26f3eb9aea092970152c91ce7da73f97b8d24d3383c4d8666097e8dd677f6"
+        "6338852382d0f6744185a703173ab78685a3c4fb5d384fa979f1ed1b7e81a830"
     ],
     [
         [
@@ -452,7 +452,7 @@
             "file",
             "sdk/wasp/client/operations/actions/index.ts"
         ],
-        "5f5f81596660d93f499414de2f7c3d693a3f5c592fd170d9c0ed51e24a07139f"
+        "ad118a4bf0e25585396c4e90a4221d015fecddd122e1028c091bff56218bf5e9"
     ],
     [
         [
@@ -655,7 +655,7 @@
             "file",
             "sdk/wasp/client/vite/virtual-files/files/routes.tsx"
         ],
-        "5d379883ad2f9dbdb5400f078a8d9fb05062e7bf6a20edbdac03f70528725ed8"
+        "980a2f767cd57940fa59b733ab77303c3ea80ddbdccf9f6f32abc2ea0113a28e"
     ],
     [
         [
@@ -711,7 +711,7 @@
             "file",
             "sdk/wasp/entities/index.ts"
         ],
-        "d75e0b5cff387ef2c63087691014a72c48c81ea32c1750ab8107eaa44d18e344"
+        "cc589d084c7fd9fcc73d84879ed5202e88d078183df9afa2af9f31058fdbedab"
     ],
     [
         [
@@ -760,14 +760,14 @@
             "file",
             "sdk/wasp/server/_types/index.ts"
         ],
-        "2b007c8ce372faeca23f5b05e48290fd53d460cd4d64d6ef0190584feed38bb2"
+        "ba723762ae0774b92ed89714ed789ba9f44d14ab7907d01e7ba971b56a57cbb0"
     ],
     [
         [
             "file",
             "sdk/wasp/server/_types/taggedEntities.ts"
         ],
-        "bd3b5043b2a8d1d1de4467b81cdfeb2ad5a3edfbaa40cdd4566bad93f0c08c90"
+        "2d1916e9caddf801702e46f5d813946febe138865efbe441c0551ef2af57901a"
     ],
     [
         [
@@ -942,14 +942,14 @@
             "file",
             "sdk/wasp/server/operations/actions/index.ts"
         ],
-        "0500653d8cd3a32e2a35b850b911393342936dc05c6426c48214c163bb117e6c"
+        "22edbccdd2b194a171921acdf746fbece6ff2f120fbfdbe9ee558e74a879e2d7"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/actions/types.ts"
         ],
-        "2c2d69b8a36c1e371c84c4a23de7d8188d936e22c49bdc42ed07d99ae634a3f8"
+        "80d2f3990d34abfb8268e8c3431d94564439762714e063c057ebbf2be1490add"
     ],
     [
         [
@@ -1227,13 +1227,6 @@
     [
         [
             "file",
-            "sdk/wasp/src/auth/OnboardingPage.tsx"
-        ],
-        "28d66da4333c11e9ffed58a1549bbbc99a15a048539c79b7edc6df09ab59fe90"
-    ],
-    [
-        [
-            "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
         "8a3ba56e6df8962ed471ef0b566a7d2f958e64d1cc83f22cf21349364bc317ce"
@@ -1269,9 +1262,51 @@
     [
         [
             "file",
+            "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
+        ],
+        "bf7fb1a03dc6592016c59b522fccd9a275ab8dc2e9805336b5fca31138911f4b"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/CategoryCardGrid.tsx"
+        ],
+        "d338a1a091684de1f59897b001de149a3f8eb56dee131e32288bedd465c50f5a"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/ProgressBar.tsx"
+        ],
+        "a8e749fed30cc80f351b7d4cc44f1639f229baf44ff5cfe6a0ff42ff506c9cd4"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/StepBusiness.tsx"
+        ],
+        "26035bb479cbc14b9db155ad2d1b5aa65c8440f700bf67ff02d5319b6642e460"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/StepProfile.tsx"
+        ],
+        "6c1dbf6ada4fe2932be8abd2a03cb7b9ac788bb3ff36699b1d52a5d92c150de2"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/StepRole.tsx"
+        ],
+        "7491453a219cd124e98e0c0e139ae98807787ac07f152ac7bdb912a86ec7be57"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "6467715ff11928cb48abb14f7bade04a56a459b0ed3ad2c9de2457984bc3fecc"
+        "82d764a088808d68af349c88ca6a070965df76553b088a8302fbeeff24c7022b"
     ],
     [
         [
@@ -1866,7 +1901,7 @@
             "file",
             "sdk/wasp/src/consumer/RequestServicePage.tsx"
         ],
-        "dd9e827e8d0821732f95dd54c2028600b0fd2415d9bf581ea54ac2b90cd7fb44"
+        "115eab72759d517e580cba265030b1f7af67ab3655dc8261727cc0843a814311"
     ],
     [
         [
@@ -1908,7 +1943,7 @@
             "file",
             "sdk/wasp/src/consumer/operations.ts"
         ],
-        "84e922b554e7ebd08cf69a330b2afc34f45bd46add6a77f775e0b7ef75d6d5c2"
+        "eb8748bf914b072affd39c23b6233be39e442ddd266f75872b63e922a1f837ea"
     ],
     [
         [
@@ -2461,7 +2496,7 @@
             "file",
             "sdk/wasp/src/server/webhooks/twilio.ts"
         ],
-        "cbf190b2a03c90efb25e5038c884570cb994a1175bef399cceb54dd3428eb41d"
+        "1c543ca62a14f45ae723ab8fd0369222376587c51514bc4d7f04259d6eac1467"
     ],
     [
         [
@@ -2692,7 +2727,7 @@
             "file",
             "server/src/actions/completeOnboarding.ts"
         ],
-        "56f070eda0a03209ca276d22bb3a706f09c21a62c2353f1e9078512902d04c09"
+        "e8778158c382d0409f61f1ced21cc30b86efc5c589ef20884ee45b7e24e6744c"
     ],
     [
         [

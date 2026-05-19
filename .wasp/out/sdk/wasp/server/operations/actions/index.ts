@@ -55,6 +55,9 @@ export const completeOnboarding: AuthenticatedOperationFor<CompleteOnboarding_ex
       RewardTransaction: prisma.rewardTransaction,
       ServiceRequest: prisma.serviceRequest,
       Referral: prisma.referral,
+      ConsumerInterest: prisma.consumerInterest,
+      ProviderCategory: prisma.providerCategory,
+      ServiceCategory: prisma.serviceCategory,
     },
   )
 

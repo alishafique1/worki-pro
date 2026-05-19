@@ -37,7 +37,7 @@ import { RejectRewardTransaction_ext } from 'wasp/server/operations/actions'
 // PUBLIC API
 export const completeOnboarding: ActionFor<CompleteOnboarding_ext> = createAction<CompleteOnboarding_ext>(
   'operations/complete-onboarding',
-  ['User', 'Provider', 'RewardAccount', 'RewardTransaction', 'ServiceRequest', 'Referral'],
+  ['User', 'Provider', 'RewardAccount', 'RewardTransaction', 'ServiceRequest', 'Referral', 'ConsumerInterest', 'ProviderCategory', 'ServiceCategory'],
 )
 
 // PUBLIC API

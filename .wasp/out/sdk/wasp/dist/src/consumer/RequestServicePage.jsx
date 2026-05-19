@@ -172,11 +172,11 @@ export default function RequestServicePage() {
         smsConsent: false,
         estimatedSchedule: 'THIS_WEEK',
     });
-    // Pre-select category from URL param ?category=hvac
+    // Pre-select category from URL param ?category=hvac or ?service=hvac
     useEffect(() => {
-        const categoryParam = searchParams.get('category');
-        if (categoryParam && parentCategories.length > 0) {
-            const matchedCategory = parentCategories.find(c => c.slug === categoryParam);
+        const slug = searchParams.get('category') || searchParams.get('service');
+        if (slug && parentCategories.length > 0) {
+            const matchedCategory = parentCategories.find(c => c.slug === slug);
             if (matchedCategory) {
                 setForm(prev => ({
                     ...prev,

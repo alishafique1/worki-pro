@@ -1,4 +1,4 @@
-import { type Entity, type EntityName, type User, type GptResponse, type Task, type File, type DailyStats, type PageViewSource, type Logs, type ContactFormMessage, type ServiceCategory, type Provider, type ProviderCategory, type ServiceRequest, type Appointment, type RewardAccount, type RewardTransaction, type Redemption, type Referral, type CommunicationLog, type ProviderFee, type RequestNote, type Lead, type WebhookLog, type Review, type OtpVerification, type OtpCode } from 'wasp/entities';
+import { type Entity, type EntityName, type User, type GptResponse, type Task, type File, type DailyStats, type PageViewSource, type Logs, type ContactFormMessage, type ServiceCategory, type ConsumerInterest, type Provider, type ProviderCategory, type ServiceRequest, type Appointment, type RewardAccount, type RewardTransaction, type Redemption, type Referral, type CommunicationLog, type ProviderFee, type RequestNote, type Lead, type WebhookLog, type Review, type OtpVerification, type OtpCode } from 'wasp/entities';
 export type _User = WithName<User, "User">;
 export type _GptResponse = WithName<GptResponse, "GptResponse">;
 export type _Task = WithName<Task, "Task">;
@@ -8,6 +8,7 @@ export type _PageViewSource = WithName<PageViewSource, "PageViewSource">;
 export type _Logs = WithName<Logs, "Logs">;
 export type _ContactFormMessage = WithName<ContactFormMessage, "ContactFormMessage">;
 export type _ServiceCategory = WithName<ServiceCategory, "ServiceCategory">;
+export type _ConsumerInterest = WithName<ConsumerInterest, "ConsumerInterest">;
 export type _Provider = WithName<Provider, "Provider">;
 export type _ProviderCategory = WithName<ProviderCategory, "ProviderCategory">;
 export type _ServiceRequest = WithName<ServiceRequest, "ServiceRequest">;
@@ -24,7 +25,7 @@ export type _WebhookLog = WithName<WebhookLog, "WebhookLog">;
 export type _Review = WithName<Review, "Review">;
 export type _OtpVerification = WithName<OtpVerification, "OtpVerification">;
 export type _OtpCode = WithName<OtpCode, "OtpCode">;
-export type _Entity = _User | _GptResponse | _Task | _File | _DailyStats | _PageViewSource | _Logs | _ContactFormMessage | _ServiceCategory | _Provider | _ProviderCategory | _ServiceRequest | _Appointment | _RewardAccount | _RewardTransaction | _Redemption | _Referral | _CommunicationLog | _ProviderFee | _RequestNote | _Lead | _WebhookLog | _Review | _OtpVerification | _OtpCode | never;
+export type _Entity = _User | _GptResponse | _Task | _File | _DailyStats | _PageViewSource | _Logs | _ContactFormMessage | _ServiceCategory | _ConsumerInterest | _Provider | _ProviderCategory | _ServiceRequest | _Appointment | _RewardAccount | _RewardTransaction | _Redemption | _Referral | _CommunicationLog | _ProviderFee | _RequestNote | _Lead | _WebhookLog | _Review | _OtpVerification | _OtpCode | never;
 type WithName<E extends Entity, Name extends EntityName> = E & {
     _entityName: Name;
 };

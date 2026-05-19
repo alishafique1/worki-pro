@@ -13,6 +13,9 @@ export default async function (args, context) {
       RewardTransaction: prisma.rewardTransaction,
       ServiceRequest: prisma.serviceRequest,
       Referral: prisma.referral,
+      ConsumerInterest: prisma.consumerInterest,
+      ProviderCategory: prisma.providerCategory,
+      ServiceCategory: prisma.serviceCategory,
     },
   })
 }

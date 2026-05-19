@@ -1,0 +1,1 @@
+{"version":3,"file":"ProgressBar.d.ts","sourceRoot":"","sources":["../../../../../src/auth/onboarding/components/ProgressBar.tsx"],"names":[],"mappings":"AAAA,KAAK,gBAAgB,GAAG;IACtB,OAAO,EAAE,MAAM,CAAC;IAChB,KAAK,EAAE,MAAM,CAAC;CACf,CAAC;AAEF,MAAM,CAAC,OAAO,UAAU,WAAW,CAAC,EAAE,OAAO,EAAE,KAAK,EAAE,EAAE,gBAAgB,+BAevE"}

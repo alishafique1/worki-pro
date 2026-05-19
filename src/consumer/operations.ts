@@ -552,7 +552,7 @@ export const submitLead: SubmitLead<{
   message?: string;
   source?: string;
 }, Lead> = async ({ name, email, phone, postalCode, serviceType, message, source }, context) => {
-  return context.entities.Lead.create({
+  const lead = await context.entities.Lead.create({
     data: {
       name,
       email,
@@ -564,6 +564,23 @@ export const submitLead: SubmitLead<{
       status: 'NEW',
     },
   });
+
+  sendLeadToGHL(
+    {
+      serviceRequestId: lead.id,
+      name,
+      phone: phone || '',
+      email,
+      postalCode: postalCode || '',
+      serviceType: serviceType || '',
+      description: message || '',
+      urgency: 'STANDARD',
+      source: source || 'WEBSITE',
+    },
+    context.entities as any,
+  ).catch(() => {});
+
+  return lead;
 };
 
 // ─── OTP Verification ────────────────────────────────────────────────────────

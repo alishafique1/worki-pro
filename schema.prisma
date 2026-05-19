@@ -16,7 +16,7 @@ model User {
   username                  String?         @unique
   isAdmin                   Boolean         @default(false)
 
-  // -- Worki specific fields --
+  // -- The Helper fields --
   firstName                 String?
   lastName                  String?
   phone                     String?
@@ -43,7 +43,7 @@ model User {
   tasks                     Task[]
   files                     File[]
 
-  // Worki Relations
+  // The Helper Relations
   provider          Provider?
   serviceRequests   ServiceRequest[]  @relation("ConsumerRequests")
   rewardAccount     RewardAccount?
@@ -52,6 +52,7 @@ model User {
   referralsGiven    Referral[]        @relation("ReferrerUser")
   referralReceived  Referral?         @relation("ReferredUser")
   communicationLogs CommunicationLog[]
+  interests         ConsumerInterest[]
 }
 
 enum Role {
@@ -150,7 +151,7 @@ model ContactFormMessage {
   repliedAt                 DateTime?
 }
 
-// ─── Worki Service Category ─────────────────────────────────────────────────
+// ─── The Helper Service Category ────────────────────────────────────────────
 
 model ServiceCategory {
   id               String            @id @default(cuid())
@@ -165,7 +166,20 @@ model ServiceCategory {
   children         ServiceCategory[] @relation("SubCategories")
   serviceRequests  ServiceRequest[]
   providers        ProviderCategory[]
+  consumerInterests ConsumerInterest[]
   createdAt        DateTime          @default(now())
+}
+
+// ─── The Helper Consumer Interest ────────────────────────────────────────────
+
+model ConsumerInterest {
+  id                String          @id @default(cuid())
+  consumerId        String
+  consumer          User            @relation(fields: [consumerId], references: [id])
+  serviceCategoryId String
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id])
+
+  @@unique([consumerId, serviceCategoryId])
 }
 
 // ─── Worki Provider ─────────────────────────────────────────────────────────

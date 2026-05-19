@@ -150,7 +150,7 @@ page PrivacyPage { component: import PrivacyPage from "@src/shared/PrivacyPage" 
 route OnboardingRoute { path: "/onboarding", to: OnboardingPage }
 page OnboardingPage {
   authRequired: true,
-  component: import OnboardingPage from "@src/auth/OnboardingPage"
+  component: import OnboardingPage from "@src/auth/onboarding/OnboardingPage"
 }
 
 //#region Auth Pages
@@ -182,7 +182,7 @@ page EmailVerificationPage {
 
 action completeOnboarding {
   fn: import { completeOnboarding } from "@src/auth/onboardingOperations",
-  entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest, Referral]
+  entities: [User, Provider, RewardAccount, RewardTransaction, ServiceRequest, Referral, ConsumerInterest, ProviderCategory, ServiceCategory]
 }
 
 // Passwordless OTP auth — public endpoints (no Wasp session required)

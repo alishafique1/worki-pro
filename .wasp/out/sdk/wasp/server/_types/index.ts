@@ -91,6 +91,7 @@ export type PrismaDelegate = {
   "Logs": typeof prisma.logs,
   "ContactFormMessage": typeof prisma.contactFormMessage,
   "ServiceCategory": typeof prisma.serviceCategory,
+  "ConsumerInterest": typeof prisma.consumerInterest,
   "Provider": typeof prisma.provider,
   "ProviderCategory": typeof prisma.providerCategory,
   "ServiceRequest": typeof prisma.serviceRequest,
