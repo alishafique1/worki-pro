@@ -24,7 +24,11 @@
       "Bash(tailscale status *)",
       "Bash(/usr/local/bin/tailscale status *)",
       "Bash(/Applications/Tailscale.app/Contents/MacOS/Tailscale status *)",
-      "Bash(wasp build *)"
+      "Bash(wasp build *)",
+      "Bash(wasp db *)",
+      "Bash(curl -s http://localhost:3100/)",
+      "Bash(kill 41338)",
+      "Bash(docker exec multica-postgres-1 *)"
     ]
   }
 }

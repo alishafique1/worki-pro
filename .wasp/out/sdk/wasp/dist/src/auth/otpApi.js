@@ -26,22 +26,22 @@ export const requestOtp = async (req, res, context) => {
     try {
         await emailSender.send({
             to: normalizedEmail,
-            subject: `${code} is your Worki sign-in code`,
-            text: `Your Worki sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
+            subject: `${code} is your The Helper sign-in code`,
+            text: `Your The Helper sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
             html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
           <div style="text-align:center;margin-bottom:32px;">
             <div style="display:inline-flex;align-items:center;gap:10px;">
-              <div style="width:40px;height:40px;background:#F2B5D7;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#000;line-height:1;">W</div>
-              <span style="font-size:22px;font-weight:900;color:#000;">Worki</span>
+              <div style="width:40px;height:40px;background:#2563EB;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;line-height:1;">H</div>
+              <span style="font-size:22px;font-weight:900;color:#0F172A;">The Helper</span>
             </div>
           </div>
           <h2 style="text-align:center;font-size:22px;font-weight:800;margin:0 0 8px;">Your sign-in code</h2>
-          <p style="text-align:center;color:#666;margin:0 0 32px;font-size:15px;">Enter this code to access your Worki account.</p>
-          <div style="background:#f7f7f7;border:2px solid #e8e8e8;border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;">
-            <span style="font-size:52px;font-weight:900;letter-spacing:10px;color:#111;font-family:monospace;">${code}</span>
+          <p style="text-align:center;color:#475569;margin:0 0 32px;font-size:15px;">Enter this code to access your The Helper account.</p>
+          <div style="background:#F8FAFC;border:2px solid #E2E8F0;border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;">
+            <span style="font-size:52px;font-weight:900;letter-spacing:10px;color:#0F172A;font-family:monospace;">${code}</span>
           </div>
-          <p style="text-align:center;color:#999;font-size:12px;margin:0;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
+          <p style="text-align:center;color:#94a3b8;font-size:12px;margin:0;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
         </div>
       `,
         });
