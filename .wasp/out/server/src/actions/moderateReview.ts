@@ -8,6 +8,7 @@ export default async function (args, context) {
     ...context,
     entities: {
       Review: prisma.review,
+      Provider: prisma.provider,
     },
   })
 }

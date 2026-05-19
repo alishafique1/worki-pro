@@ -244,6 +244,7 @@ export type ModerateReview<Input extends Payload = never, Output extends Payload
   AuthenticatedActionDefinition<
     [
       _Review,
+      _Provider,
     ],
     Input,
     Output

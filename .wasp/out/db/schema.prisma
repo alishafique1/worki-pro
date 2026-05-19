@@ -413,6 +413,7 @@ model OtpCode {
   id        String   @id @default(cuid())
   email     String
   code      String
+  attempts  Int      @default(0)
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())

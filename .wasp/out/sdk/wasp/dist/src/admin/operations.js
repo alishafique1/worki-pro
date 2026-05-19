@@ -155,13 +155,13 @@ export const rejectRewardTransaction = async ({ transactionId }, context) => {
         },
     });
 };
-export const getAdminLeads = (async (_args, context) => {
+export const getAdminLeads = async (_args, context) => {
     requireAdmin(context);
     return context.entities.Lead.findMany({
         orderBy: { createdAt: 'desc' },
     });
-});
-export const updateLead = (async ({ leadId, status, assignedTo, notes }, context) => {
+};
+export const updateLead = async ({ leadId, status, assignedTo, notes }, context) => {
     requireAdmin(context);
     const data = {};
     if (status !== undefined)
@@ -174,23 +174,23 @@ export const updateLead = (async ({ leadId, status, assignedTo, notes }, context
         where: { id: leadId },
         data,
     });
-});
+};
 // ─── Review Moderation ────────────────────────────────────────────────────────
-export const getAdminReviews = (async (_args, context) => {
+export const getAdminReviews = async (_args, context) => {
     requireAdmin(context);
     return context.entities.Review.findMany({
         orderBy: { createdAt: 'desc' },
         include: { provider: { select: { businessName: true, slug: true } } },
     });
-});
-export const moderateReview = (async ({ reviewId, status }, context) => {
+};
+export const moderateReview = async ({ reviewId, status }, context) => {
     requireAdmin(context);
     const allowed = ['PENDING', 'PUBLISHED', 'REJECTED'];
     if (!allowed.includes(status))
         throw new HttpError(400, 'Invalid status.');
     const review = await context.entities.Review.update({
         where: { id: reviewId },
-        data: { status },
+        data: { status: status },
     });
     // Recalculate provider average rating
     const agg = await context.entities.Review.aggregate({
@@ -202,5 +202,5 @@ export const moderateReview = (async ({ reviewId, status }, context) => {
         data: { ratingInternal: agg._avg.rating ?? undefined },
     });
     return review;
-});
+};
 //# sourceMappingURL=operations.js.map

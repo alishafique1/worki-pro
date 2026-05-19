@@ -450,7 +450,7 @@ query getAdminReviews {
 
 action moderateReview {
   fn: import { moderateReview } from "@src/admin/operations",
-  entities: [Review]
+  entities: [Review, Provider]
 }
 //#endregion
 

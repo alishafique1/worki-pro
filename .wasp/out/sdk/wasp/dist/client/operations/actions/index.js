@@ -36,7 +36,7 @@ export const updateProviderProfile = createAction('operations/update-provider-pr
 // PUBLIC API
 export const claimLead = createAction('operations/claim-lead', ['ServiceRequest', 'Provider', 'ProviderFee', 'CommunicationLog']);
 // PUBLIC API
-export const moderateReview = createAction('operations/moderate-review', ['Review']);
+export const moderateReview = createAction('operations/moderate-review', ['Review', 'Provider']);
 // PUBLIC API
 export const updateIsUserAdminById = createAction('operations/update-is-user-admin-by-id', ['User']);
 // PUBLIC API

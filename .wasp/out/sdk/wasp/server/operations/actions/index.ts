@@ -303,6 +303,7 @@ export const moderateReview: AuthenticatedOperationFor<ModerateReview_ext> =
     moderateReview_ext,
     {
       Review: prisma.review,
+      Provider: prisma.provider,
     },
   )
 

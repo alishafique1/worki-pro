@@ -1,5 +1,6 @@
 import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount, Lead, Review } from 'wasp/entities';
-import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider } from 'wasp/server/operations';
+import type { ReviewStatus } from '@prisma/client';
+import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider, GetAdminLeads, UpdateLead, GetAdminReviews, ModerateReview } from 'wasp/server/operations';
 import { HttpError } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
 
@@ -180,16 +181,16 @@ export const rejectRewardTransaction: RejectRewardTransaction<{ transactionId: s
   });
 };
 
-export const getAdminLeads = (async (_args: void, context: any) => {
+export const getAdminLeads: GetAdminLeads<void, Lead[]> = async (_args, context) => {
   requireAdmin(context);
   return context.entities.Lead.findMany({
     orderBy: { createdAt: 'desc' },
   });
-}) as any;
+};
 
 type UpdateLeadInput = { leadId: string; status?: string; assignedTo?: string; notes?: string };
 
-export const updateLead = (async ({ leadId, status, assignedTo, notes }: UpdateLeadInput, context: any) => {
+export const updateLead: UpdateLead<UpdateLeadInput, Lead> = async ({ leadId, status, assignedTo, notes }, context) => {
   requireAdmin(context);
   const data: any = {};
   if (status !== undefined) data.status = status;
@@ -199,21 +200,21 @@ export const updateLead = (async ({ leadId, status, assignedTo, notes }: UpdateL
     where: { id: leadId },
     data,
   });
-}) as any;
+};
 
 // ─── Review Moderation ────────────────────────────────────────────────────────
 
-export const getAdminReviews = (async (_args: void, context: any) => {
+export const getAdminReviews: GetAdminReviews<void, Review[]> = async (_args, context) => {
   requireAdmin(context);
   return context.entities.Review.findMany({
     orderBy: { createdAt: 'desc' },
     include: { provider: { select: { businessName: true, slug: true } } },
   });
-}) as any;
+};
 
-export const moderateReview = (async (
-  { reviewId, status }: { reviewId: string; status: string },
-  context: any,
+export const moderateReview: ModerateReview<{ reviewId: string; status: string }, Review> = async (
+  { reviewId, status },
+  context,
 ) => {
   requireAdmin(context);
   const allowed = ['PENDING', 'PUBLISHED', 'REJECTED'];
@@ -221,7 +222,7 @@ export const moderateReview = (async (
 
   const review = await context.entities.Review.update({
     where: { id: reviewId },
-    data: { status },
+    data: { status: status as ReviewStatus },
   });
 
   // Recalculate provider average rating
@@ -235,4 +236,4 @@ export const moderateReview = (async (
   });
 
   return review;
-}) as any;
+};

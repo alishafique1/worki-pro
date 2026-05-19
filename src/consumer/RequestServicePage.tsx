@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { useAction, useQuery, submitServiceRequest, sendOtp, verifyOtp, submitLead, getServiceCategories } from 'wasp/client/operations';
+import { useQuery, submitServiceRequest, sendOtp, verifyOtp, submitLead, getServiceCategories } from 'wasp/client/operations';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useAuth } from 'wasp/client/auth';
 import { ACTIVE_PREFIXES, getCityForPrefix } from '../shared/geoConfig';
@@ -30,6 +30,7 @@ import {
   Waves,
   PartyPopper,
   Loader2,
+  CheckCircle,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -122,13 +123,13 @@ function ProgressBar({ step }: { step: number }) {
       {/* Trust signal */}
       <div className="mt-3 flex items-center gap-4 text-xs text-[#475569]">
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">-</span> 100% Free
+          <CheckCircle className="size-3 text-[#22C55E]" /> 100% Free
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">-</span> Verified Pros
+          <CheckCircle className="size-3 text-[#22C55E]" /> Verified Pros
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-[#22C55E]">-</span> Same-Day Available
+          <CheckCircle className="size-3 text-[#22C55E]" /> Same-Day Available
         </span>
       </div>
     </div>
@@ -193,8 +194,6 @@ export default function RequestServicePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { data: user } = useAuth();
-  const submitRequest = useAction(submitServiceRequest);
-  const submitLeadFn = useAction(submitLead);
 
   // Fetch service categories from DB
   const { data: categories, isLoading: categoriesLoading } = useQuery(getServiceCategories);
@@ -361,7 +360,7 @@ export default function RequestServicePage() {
     }
 
     try {
-      await submitRequest({
+      await submitServiceRequest({
         name:                  form.name,
         phone:                 form.phone,
         postalCode:            form.postalCode,
@@ -579,7 +578,7 @@ export default function RequestServicePage() {
                           if (!notifyEmail.trim()) return;
                           setNotifySubmitting(true);
                           try {
-                            await submitLeadFn({
+                            await submitLead({
                               name: form.name || 'Anonymous',
                               email: notifyEmail.trim(),
                               postalCode: form.postalCode,

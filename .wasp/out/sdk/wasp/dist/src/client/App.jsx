@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Outlet, useLocation } from "react-router";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { routes } from "wasp/client/router";
 import { Toaster } from "../client/components/ui/toaster";
 import "./Main.css";
@@ -50,10 +51,10 @@ export default function App() {
     }, [location]);
     return (<>
       <div className="bg-background text-foreground min-h-screen">
-        {isAdminDashboard ? (<Outlet />) : (<>
+        {isAdminDashboard ? (<ErrorBoundary><Outlet /></ErrorBoundary>) : (<>
             {shouldDisplayAppNavBar && (<NavBar navigationItems={navigationItems}/>)}
             <div className="mx-auto max-w-(--breakpoint-2xl)">
-              <Outlet />
+              <ErrorBoundary><Outlet /></ErrorBoundary>
             </div>
           </>)}
       </div>

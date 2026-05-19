@@ -91,7 +91,8 @@ export type ClaimLead<Input extends Payload = never, Output extends Payload = Pa
     _CommunicationLog
 ], Input, Output>;
 export type ModerateReview<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
-    _Review
+    _Review,
+    _Provider
 ], Input, Output>;
 export type UpdateIsUserAdminById<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _User

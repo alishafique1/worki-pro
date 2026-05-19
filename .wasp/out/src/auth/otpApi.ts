@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { prisma } from 'wasp/server'
+import { HttpError, prisma } from 'wasp/server'
 import { createSession } from 'wasp/auth/session'
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth'
 import { emailSender } from 'wasp/server/email'
@@ -21,6 +21,18 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   }
 
   const normalizedEmail = email.toLowerCase().trim()
+
+  // Rate-limit: max 3 OTPs in last 5 minutes
+  const recentCount = await prisma.otpCode.count({
+    where: {
+      email: normalizedEmail,
+      createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+    },
+  })
+  if (recentCount >= 3) {
+    throw new HttpError(429, 'Too many OTP requests. Please wait a few minutes.')
+  }
+
   const code = generateOtp()
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 min
 
@@ -34,22 +46,22 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   try {
     await emailSender.send({
       to: normalizedEmail,
-      subject: `${code} is your Worki sign-in code`,
-      text: `Your Worki sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
+      subject: `Your The Helper sign-in code: ${code}`,
+      text: `Your The Helper sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
           <div style="text-align:center;margin-bottom:32px;">
             <div style="display:inline-flex;align-items:center;gap:10px;">
-              <div style="width:40px;height:40px;background:#F2B5D7;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#000;line-height:1;">W</div>
-              <span style="font-size:22px;font-weight:900;color:#000;">Worki</span>
+              <div style="width:40px;height:40px;background:#2563EB;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;line-height:1;">H</div>
+              <span style="font-size:22px;font-weight:900;color:#0F172A;">The Helper</span>
             </div>
           </div>
           <h2 style="text-align:center;font-size:22px;font-weight:800;margin:0 0 8px;">Your sign-in code</h2>
-          <p style="text-align:center;color:#666;margin:0 0 32px;font-size:15px;">Enter this code to access your Worki account.</p>
-          <div style="background:#f7f7f7;border:2px solid #e8e8e8;border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;">
-            <span style="font-size:52px;font-weight:900;letter-spacing:10px;color:#111;font-family:monospace;">${code}</span>
+          <p style="text-align:center;color:#475569;margin:0 0 32px;font-size:15px;">Enter this code to access your The Helper account.</p>
+          <div style="background:#F8FAFC;border:2px solid #E2E8F0;border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;">
+            <span style="font-size:52px;font-weight:900;letter-spacing:10px;color:#0F172A;font-family:monospace;">${code}</span>
           </div>
-          <p style="text-align:center;color:#999;font-size:12px;margin:0;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
+          <p style="text-align:center;color:#94a3b8;font-size:12px;margin:0;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
         </div>
       `,
     })
@@ -76,13 +88,22 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
       email: normalizedEmail,
       used: false,
       expiresAt: { gt: new Date() },
+      attempts: { lt: 5 },
     },
     orderBy: { createdAt: 'desc' },
   })
 
-  if (!otpRecord || otpRecord.code !== hashCode(code.trim())) {
-    res.status(400).json({ error: 'Incorrect or expired code. Please request a new one.' })
-    return
+  if (!otpRecord) {
+    throw new HttpError(400, 'No valid OTP found. Please request a new code.')
+  }
+
+  await prisma.otpCode.update({
+    where: { id: otpRecord.id },
+    data: { attempts: { increment: 1 } },
+  })
+
+  if (otpRecord.code !== hashCode(code.trim())) {
+    throw new HttpError(400, 'Incorrect verification code.')
   }
 
   await prisma.otpCode.update({ where: { id: otpRecord.id }, data: { used: true } })

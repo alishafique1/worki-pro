@@ -1,6 +1,7 @@
+import { HttpError } from 'wasp/server';
 export const completeOnboarding = async (args, context) => {
     if (!context.user) {
-        throw new Error('Not authenticated');
+        throw new HttpError(401, 'Not authenticated');
     }
     const userId = context.user.id;
     const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode } = args;

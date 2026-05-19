@@ -1,3 +1,4 @@
+import { HttpError } from 'wasp/server';
 import { type CompleteOnboarding } from 'wasp/server/operations';
 import { type User, type Provider, type RewardAccount, type RewardTransaction } from 'wasp/entities';
 
@@ -20,7 +21,7 @@ export const completeOnboarding: CompleteOnboarding<
   CompleteOnboardingOutput
 > = async (args, context) => {
   if (!context.user) {
-    throw new Error('Not authenticated');
+    throw new HttpError(401, 'Not authenticated');
   }
 
   const userId = context.user.id;

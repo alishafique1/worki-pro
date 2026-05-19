@@ -145,7 +145,7 @@ export const claimLead: ActionFor<ClaimLead_ext> = createAction<ClaimLead_ext>(
 // PUBLIC API
 export const moderateReview: ActionFor<ModerateReview_ext> = createAction<ModerateReview_ext>(
   'operations/moderate-review',
-  ['Review'],
+  ['Review', 'Provider'],
 )
 
 // PUBLIC API

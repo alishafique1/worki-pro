@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AirVent, ArrowRight, Hammer, ShowerHead, } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import { CategoryCard, Container, CTASection, Footer, SectionHeader, StepCard, } from "./marketplace/components";
@@ -11,12 +11,18 @@ const popularServices = [
     { icon: <Hammer className="size-4"/>, name: "Fix a door", category: "Handyman" },
 ];
 function SearchPanel() {
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
     return (<div className="mt-4 overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-[0_20px_60px_rgba(37,99,235,0.10)] transition-all duration-300">
       <div className="p-4 sm:p-6">
         {/* Search input */}
         <div className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
           <span className="text-lg">🔍</span>
-          <input type="text" className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none" placeholder={`e.g. "AC not cooling", "leaky faucet", "outdoor lighting"…`}/>
+          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+                navigate(`/request-service?q=${encodeURIComponent(searchQuery)}`);
+            }
+        }} className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none" placeholder={`e.g. "AC not cooling", "leaky faucet", "outdoor lighting"…`}/>
         </div>
 
         {/* Browse categories */}

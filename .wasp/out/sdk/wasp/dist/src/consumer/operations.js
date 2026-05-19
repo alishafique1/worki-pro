@@ -414,7 +414,7 @@ export const sendOtp = async ({ phone }, context) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ phone: normalized, code, ttlMinutes: OTP_TTL_MINUTES }),
-        }).catch((err) => console.error("[GHL OTP] Webhook failed:", err));
+        }).catch(() => console.warn("[GHL OTP] Webhook failed"));
     }
     else {
         // Dev mode: log to console

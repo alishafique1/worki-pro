@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { prisma } from 'wasp/server'
+import { HttpError, prisma } from 'wasp/server'
 import { createSession } from 'wasp/auth/session'
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth'
 import { emailSender } from 'wasp/server/email'
@@ -21,6 +21,18 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   }
 
   const normalizedEmail = email.toLowerCase().trim()
+
+  // Rate-limit: max 3 OTPs in last 5 minutes
+  const recentCount = await prisma.otpCode.count({
+    where: {
+      email: normalizedEmail,
+      createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+    },
+  })
+  if (recentCount >= 3) {
+    throw new HttpError(429, 'Too many OTP requests. Please wait a few minutes.')
+  }
+
   const code = generateOtp()
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 min
 
@@ -34,7 +46,7 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   try {
     await emailSender.send({
       to: normalizedEmail,
-      subject: `${code} is your The Helper sign-in code`,
+      subject: `Your The Helper sign-in code: ${code}`,
       text: `Your The Helper sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
@@ -76,13 +88,22 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
       email: normalizedEmail,
       used: false,
       expiresAt: { gt: new Date() },
+      attempts: { lt: 5 },
     },
     orderBy: { createdAt: 'desc' },
   })
 
-  if (!otpRecord || otpRecord.code !== hashCode(code.trim())) {
-    res.status(400).json({ error: 'Incorrect or expired code. Please request a new one.' })
-    return
+  if (!otpRecord) {
+    throw new HttpError(400, 'No valid OTP found. Please request a new code.')
+  }
+
+  await prisma.otpCode.update({
+    where: { id: otpRecord.id },
+    data: { attempts: { increment: 1 } },
+  })
+
+  if (otpRecord.code !== hashCode(code.trim())) {
+    throw new HttpError(400, 'Incorrect verification code.')
   }
 
   await prisma.otpCode.update({ where: { id: otpRecord.id }, data: { used: true } })

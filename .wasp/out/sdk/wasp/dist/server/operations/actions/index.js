@@ -146,6 +146,7 @@ export const claimLead = createAuthenticatedOperation(claimLead_ext, {
 // PUBLIC API
 export const moderateReview = createAuthenticatedOperation(moderateReview_ext, {
     Review: prisma.review,
+    Provider: prisma.provider,
 });
 // PUBLIC API
 export const updateIsUserAdminById = createAuthenticatedOperation(updateIsUserAdminById_ext, {
