@@ -20,6 +20,7 @@ node_modules/
 # production
 /build
 /dist
+# deploy/dist is intentionally tracked (pre-built SPA for Nginx Docker image)
 
 # misc
 .DS_Store
