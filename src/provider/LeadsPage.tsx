@@ -65,10 +65,12 @@ export default function ProviderLeadsPage() {
       {verificationStatus && verificationStatus !== 'VERIFIED' && (
         <div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${
           verificationStatus === 'REJECTED'
-            ? 'bg-red-500/10 border-red-400/30 text-red-400'
-            : 'bg-yellow-500/10 border-yellow-400/30 text-yellow-500'
+            ? 'bg-red-500/10 border-red-400/30 text-red-600'
+            : 'bg-[#FEF3C7] border-[#FDE68A] text-[#92400E]'
         }`}>
-          <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
+          <span role="img" aria-label={verificationStatus === 'REJECTED' ? 'Blocked' : 'Pending'} className="text-xl mt-0.5">
+            {verificationStatus === 'REJECTED' ? '⛔' : '⏳'}
+          </span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED'
@@ -189,7 +191,7 @@ export default function ProviderLeadsPage() {
 
         {!isLoading && !error && leads?.length === 0 && (
           <div className="text-center py-16 text-[#475569]">
-            <p className="text-4xl mb-4">🔍</p>
+            <p role="img" aria-label="Magnifying glass" className="text-4xl mb-4">🔍</p>
             <p className="font-bold text-lg text-[#0F172A]">No open leads right now</p>
             <p className="text-sm mt-1">
               New leads appear here as soon as a customer submits a request.

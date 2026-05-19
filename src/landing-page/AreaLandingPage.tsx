@@ -203,10 +203,10 @@ const SERVICES = [
 const SERVICE_COLOR_CLASSES: Record<string, { badge: string; icon: string }> = {
   blue:    { badge: 'bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB]',    icon: 'text-[#2563EB]' },
   amber:   { badge: 'bg-[#FEF3C7] border-[#FDE68A] text-[#F59E0B]',    icon: 'text-[#F59E0B]' },
-  cyan:    { badge: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-600',  icon: 'text-cyan-600' },
-  yellow:  { badge: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-600', icon: 'text-yellow-600' },
-  emerald: { badge: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600', icon: 'text-emerald-600' },
-  purple:  { badge: 'bg-purple-500/10 border-purple-500/20 text-purple-600', icon: 'text-purple-600' },
+  cyan:    { badge: 'bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB]',    icon: 'text-[#2563EB]' },
+  yellow:  { badge: 'bg-[#FEF3C7] border-[#FDE68A] text-[#F59E0B]',    icon: 'text-[#F59E0B]' },
+  emerald: { badge: 'bg-[#F0FDF4] border-[#BBF7D0] text-[#22C55E]',    icon: 'text-[#22C55E]' },
+  purple:  { badge: 'bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB]',    icon: 'text-[#2563EB]' },
 };
 
 const HOW_IT_WORKS = [

@@ -61,7 +61,9 @@ export default function ProviderDashboardPage() {
             ? 'bg-red-500/10 border-red-400/30 text-red-600'
             : 'bg-[#FEF3C7] border-[#FDE68A] text-amber-700'
         }`}>
-          <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
+          <span role="img" aria-label={verificationStatus === 'REJECTED' ? 'Blocked' : 'Pending'} className="text-xl mt-0.5">
+            {verificationStatus === 'REJECTED' ? '⛔' : '⏳'}
+          </span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'}
@@ -116,7 +118,7 @@ export default function ProviderDashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
             <h2 className="text-2xl font-bold flex items-center gap-3 text-[#0F172A]">
-              <span className="text-2xl">📋</span>
+              <span role="img" aria-label="Clipboard" className="text-2xl">📋</span>
               My Service Listings
             </h2>
             <p className="text-[#475569] mt-1">

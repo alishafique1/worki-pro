@@ -11,6 +11,7 @@ import {
   KeyRound,
   Layers,
   Leaf,
+  Bell,
   MapPin,
   MessageSquareText,
   MoveRight,
@@ -63,7 +64,7 @@ export const painPoints = [
 ];
 
 function BellIcon() {
-  return <MessageSquareText className="size-5" />;
+  return <Bell className="size-5" />;
 }
 
 export const solutionSteps = [
