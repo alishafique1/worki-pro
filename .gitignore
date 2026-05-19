@@ -6,7 +6,6 @@ node_modules/
 .wasp/out/server/node_modules/
 .wasp/out/server/bundle/
 .wasp/out/sdk/wasp/node_modules/
-.wasp/out/sdk/wasp/dist/
 .wasp/out/libs/auth/node_modules/
 .wasp/out/libs/wasp/node_modules/
 .wasp/out/installedNpmDepsLog.json

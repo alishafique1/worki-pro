@@ -1,0 +1,144 @@
+import { FileText, Mail, Upload, User } from "lucide-react";
+import { Button } from "../../../client/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, } from "../../../client/components/ui/card";
+import { Input } from "../../../client/components/ui/input";
+import { Label } from "../../../client/components/ui/label";
+import { Textarea } from "../../../client/components/ui/textarea";
+import Breadcrumb from "../../layout/Breadcrumb";
+import DefaultLayout from "../../layout/DefaultLayout";
+const SettingsPage = ({ user }) => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    };
+    return (<DefaultLayout user={user}>
+      <div className="max-w-270 mx-auto">
+        <Breadcrumb pageName="Settings"/>
+
+        <div className="grid grid-cols-5 gap-8">
+          <div className="col-span-5 xl:col-span-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Personal Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-6 text-sm">
+                  Settings are currently read-only during launch stabilization.
+                </p>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-5.5 gap-5.5 flex flex-col sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <Label htmlFor="full-name" className="text-foreground mb-3 block text-sm font-medium">
+                        Full Name
+                      </Label>
+                      <div className="relative">
+                        <User className="left-4.5 text-muted-foreground absolute top-2 h-5 w-5"/>
+                        <Input className="pl-11.5" type="text" name="fullName" id="full-name" placeholder="Full name" defaultValue={user.username ?? ""}/>
+                      </div>
+                    </div>
+
+                    <div className="w-full sm:w-1/2">
+                      <Label htmlFor="phone-number" className="text-foreground mb-3 block text-sm font-medium">
+                        Phone Number
+                      </Label>
+                      <Input type="" name="phoneNumber" id="phone-number" placeholder="Phone number" defaultValue=""/>
+                    </div>
+                  </div>
+
+                  <div className="mb-5.5">
+                    <Label htmlFor="email-address" className="text-foreground mb-3 block text-sm font-medium">
+                      Email Address
+                    </Label>
+                    <div className="relative">
+                      <Mail className="left-4.5 text-muted-foreground absolute top-2 h-5 w-5"/>
+                      <Input className="pl-11.5" type="email" name="emailAddress" id="email-address" placeholder="Email address" defaultValue={user.email ?? ""}/>
+                    </div>
+                  </div>
+
+                  <div className="mb-5.5">
+                    <Label htmlFor="username" className="text-foreground mb-3 block text-sm font-medium">
+                      Username
+                    </Label>
+                    <Input type="text" name="Username" id="username" placeholder="Username" defaultValue={user.username ?? ""}/>
+                  </div>
+
+                  <div className="mb-5.5">
+                    <Label htmlFor="bio" className="text-foreground mb-3 block text-sm font-medium">
+                      BIO
+                    </Label>
+                    <div className="relative">
+                      <FileText className="left-4.5 text-muted-foreground absolute top-4 h-5 w-5"/>
+                      <Textarea className="border-border bg-background pl-11.5 pr-4.5 text-foreground focus:border-primary w-full rounded border py-3 focus-visible:outline-hidden" name="bio" id="bio" rows={6} placeholder="Write your bio here" defaultValue=""></Textarea>
+                    </div>
+                  </div>
+
+                  <div className="gap-4.5 flex justify-end">
+                    <Button variant="outline" type="button" disabled>
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled>
+                      Save
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-span-5 xl:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Photo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form action="#" onSubmit={handleSubmit}>
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="h-14 w-14 rounded-full">
+                      {/* <img src={userThree} alt="User" /> */}
+                    </div>
+                    <div>
+                      <span className="text-foreground mb-1.5">
+                        Edit your photo
+                      </span>
+                      <span className="flex gap-2.5">
+                        <button type="button" className="hover:text-primary text-sm" disabled>
+                          Delete
+                        </button>
+                        <button type="button" className="hover:text-primary text-sm" disabled>
+                          Update
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div id="FileUpload" className="mb-5.5 border-primary bg-background sm:py-7.5 relative block w-full cursor-pointer appearance-none rounded border-2 border-dashed px-4 py-4">
+                    <input type="file" accept="image/*" disabled className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-hidden"/>
+                    <div className="flex flex-col items-center justify-center space-y-3">
+                      <span className="border-border bg-background flex h-10 w-10 items-center justify-center rounded-full border">
+                        <Upload className="text-primary h-4 w-4"/>
+                      </span>
+                      <p>
+                        <span className="text-primary">Click to upload</span> or
+                        drag and drop
+                      </p>
+                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
+                      <p>(max, 800 X 800px)</p>
+                    </div>
+                  </div>
+
+                  <div className="gap-4.5 flex justify-end">
+                    <Button variant="outline" type="button" disabled>
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled>
+                      Save
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </DefaultLayout>);
+};
+export default SettingsPage;
+//# sourceMappingURL=SettingsPage.jsx.map
