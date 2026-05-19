@@ -10,15 +10,9 @@ export const demoNavigationitems = [
     { name: "Contact", to: "/contact" },
 ];
 export const consumerNavigationItems = [
-    { name: "Discover Pros", to: "/discover" },
-    { name: "Services", to: "/services" },
-    { name: "Listings", to: "/listings" },
+    { name: "Find a Pro", to: "/discover" },
     { name: "My Requests", to: "/my-requests" },
-    { name: "Analytics", to: "/analytics" },
     { name: "Rewards", to: "/rewards" },
-    { name: "Referral", to: "/referral" },
-    { name: "Help", to: "/help" },
-    { name: "Request Service", to: "/request-service" },
 ];
 export const providerNavigationItems = [
     { name: "Dashboard", to: "/provider/dashboard" },

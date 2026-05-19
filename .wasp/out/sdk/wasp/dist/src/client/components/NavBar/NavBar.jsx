@@ -43,7 +43,12 @@ function DesktopAuth() {
           <ReactRouterLink to="/request-service" className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]">
             Find a Helper
           </ReactRouterLink>
-        </>) : (<UserDropdown user={user}/>)}
+        </>) : (<>
+          <ReactRouterLink to="/request-service" className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]">
+            Get Free Quotes
+          </ReactRouterLink>
+          <UserDropdown user={user}/>
+        </>)}
     </div>);
 }
 function MobileMenu({ navigationItems, }) {
@@ -81,9 +86,14 @@ function MobileMenu({ navigationItems, }) {
                 <ReactRouterLink to="/request-service" className="rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]" onClick={() => setOpen(false)}>
                   Find a Helper
                 </ReactRouterLink>
-              </div>) : (<ul className="space-y-1">
-                <UserMenuItems user={user} onItemClick={() => setOpen(false)}/>
-              </ul>)}
+              </div>) : (<>
+                <ReactRouterLink to="/request-service" className="mb-4 block rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]" onClick={() => setOpen(false)}>
+                  Get Free Quotes
+                </ReactRouterLink>
+                <ul className="space-y-1">
+                  <UserMenuItems user={user} onItemClick={() => setOpen(false)}/>
+                </ul>
+              </>)}
           </div>
         </SheetContent>
       </Sheet>
