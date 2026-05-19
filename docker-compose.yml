@@ -20,6 +20,7 @@ services:
       GHL_WEBHOOK_URL: ${GHL_WEBHOOK_URL:-}
       GHL_OTP_WEBHOOK_URL: ${GHL_OTP_WEBHOOK_URL:-}
       GHL_LOCATION_ID: ${GHL_LOCATION_ID:-}
+      WASP_SERVER_URL: ${WASP_SERVER_URL:-https://api.thehelper.ca}
     labels:
       - traefik.enable=true
       - traefik.http.routers.thehelper-api.rule=Host(`api.thehelper.ca`)
