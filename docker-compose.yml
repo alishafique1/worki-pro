@@ -21,6 +21,13 @@ services:
       GHL_OTP_WEBHOOK_URL: ${GHL_OTP_WEBHOOK_URL:-}
       GHL_LOCATION_ID: ${GHL_LOCATION_ID:-}
       WASP_SERVER_URL: ${WASP_SERVER_URL:-https://api.thehelper.ca}
+      STRIPE_API_KEY: ${STRIPE_API_KEY:-sk_test_placeholder}
+      LEMONSQUEEZY_API_KEY: ${LEMONSQUEEZY_API_KEY:-placeholder}
+      LEMONSQUEEZY_STORE_ID: ${LEMONSQUEEZY_STORE_ID:-012345}
+      LEMONSQUEEZY_WEBHOOK_SECRET: ${LEMONSQUEEZY_WEBHOOK_SECRET:-placeholder}
+      POLAR_ORGANIZATION_ACCESS_TOKEN: ${POLAR_ORGANIZATION_ACCESS_TOKEN:-placeholder}
+      POLAR_WEBHOOK_SECRET: ${POLAR_WEBHOOK_SECRET:-placeholder}
+      POLAR_SANDBOX_MODE: ${POLAR_SANDBOX_MODE:-true}
     labels:
       - traefik.enable=true
       - traefik.http.routers.thehelper-api.rule=Host(`api.thehelper.ca`)
