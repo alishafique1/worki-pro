@@ -66,10 +66,10 @@ export default function ProviderLeadsPage() {
       {verificationStatus && verificationStatus !== 'VERIFIED' && (
         <div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${
           verificationStatus === 'REJECTED'
-            ? 'bg-red-500/10 border-red-400/30 text-red-400'
-            : 'bg-yellow-500/10 border-yellow-400/30 text-yellow-500'
+            ? 'bg-red-500/10 border-red-400/30 text-red-600'
+            : 'bg-[#FEF3C7] border-[#FDE68A] text-[#92400E]'
         }`}>
-          <span className="inline-flex items-center gap-1.5">
+          <span role="img" aria-label={verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'} className="inline-flex items-center gap-1.5">
             {verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-400" /> : <Clock className="size-5 text-yellow-500" />}
           </span>
           <div>
@@ -192,7 +192,7 @@ export default function ProviderLeadsPage() {
 
         {!isLoading && !error && leads?.length === 0 && (
           <div className="text-center py-16 text-[#475569]">
-            <div className="mb-4 mx-auto flex size-16 items-center justify-center rounded-full bg-[#EFF6FF]">
+            <div role="img" aria-label="No leads found" className="mb-4 mx-auto flex size-16 items-center justify-center rounded-full bg-[#EFF6FF]">
               <Search className="size-6 text-[#2563EB]" />
             </div>
             <p className="font-bold text-lg text-[#0F172A]">No open leads right now</p>
