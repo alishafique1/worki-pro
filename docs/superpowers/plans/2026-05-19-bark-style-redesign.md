@@ -1475,7 +1475,7 @@ Hover "Services" in nav → dropdown shows all active categories → click HVAC 
 bash /Users/alishafique/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/stop-server.sh /Users/alishafique/Code/worki-pro/.superpowers/brainstorm/70781-1779239469
 ```
 
-- [ ] **Step 6: Final commit + push**
+- [x] **Step 6: Final commit + push**
 
 ```bash
 git push origin main
