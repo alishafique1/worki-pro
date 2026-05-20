@@ -151,7 +151,7 @@ git commit -m "feat: declare guest wizard + category landing routes and saveGues
 
 This action is called after OTP verification to atomically save the request and set up the user account.
 
-- [ ] **Step 1: Add the action to `operations.ts`**
+- [x] **Step 1: Add the action to `operations.ts`**
 
 Add at the bottom of `src/consumer/operations.ts`:
 
@@ -252,7 +252,7 @@ Make sure `HttpError` is imported at the top of the file:
 import { HttpError } from 'wasp/server'
 ```
 
-- [ ] **Step 2: Verify TypeScript**
+- [x] **Step 2: Verify TypeScript**
 
 ```bash
 cd .wasp/out/server && npx tsc --noEmit 2>&1 | head -20
@@ -260,7 +260,7 @@ cd .wasp/out/server && npx tsc --noEmit 2>&1 | head -20
 
 Expected: no errors (or only pre-existing unrelated errors).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/consumer/operations.ts
@@ -276,7 +276,7 @@ git commit -m "feat: add saveGuestRequest action"
 
 The existing `verifyOtp` handler returns `{ sessionId, isNewUser }`. We extend it to optionally accept a `pendingRequest` payload and call `saveGuestRequest` logic inline (we can't call Wasp actions from API handlers — we call the Prisma logic directly).
 
-- [ ] **Step 1: Add `PendingRequest` type and extend handler**
+- [x] **Step 1: Add `PendingRequest` type and extend handler**
 
 Replace the `verifyOtp` export in `src/auth/otpApi.ts` with:
 
@@ -434,14 +434,14 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
 }
 ```
 
-- [ ] **Step 2: Test backward compatibility**
+- [x] **Step 2: Test backward compatibility**
 
 Start the app (`wasp start`) and verify the existing login flow still works:
 1. Go to `http://localhost:3002` (or whatever port)
 2. Click "Sign in", enter `consumer@thehelper.ca`, get OTP
 3. Verify — should land on `/dashboard` as before
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/auth/otpApi.ts
