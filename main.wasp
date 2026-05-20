@@ -200,6 +200,16 @@ api verifyOtp {
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
 page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage" }
 
+route GuestRequestWizardRoute { path: "/get-quotes", to: GuestRequestWizardPage }
+page GuestRequestWizardPage {
+  component: import GuestRequestWizardPage from "@src/consumer/GuestRequestWizardPage"
+}
+
+route CategoryLandingRoute { path: "/services/:categorySlug", to: CategoryLandingPage }
+page CategoryLandingPage {
+  component: import CategoryLandingPage from "@src/landing-page/CategoryLandingPage"
+}
+
 route BookingRoute          { path: "/book/:requestId",     to: BookingPage }
 page BookingPage            { component: import BookingPage from "@src/consumer/BookingPage", authRequired: true }
 
@@ -277,6 +287,11 @@ query getMyRewardAccount {
 action redeemPoints {
   fn: import { redeemPoints } from "@src/consumer/operations",
   entities: [RewardAccount, RewardTransaction, Redemption]
+}
+
+action saveGuestRequest {
+  fn: import { saveGuestRequest } from "@src/consumer/operations",
+  entities: [ServiceRequest, User, RewardAccount, RewardTransaction, Referral]
 }
 
 action submitServiceRequest {
