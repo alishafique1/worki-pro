@@ -48,7 +48,7 @@
 - Modify: `schema.prisma`
 - Run: `wasp db migrate-dev`
 
-- [ ] **Step 1: Add `questions` to `ServiceCategory`**
+- [x] **Step 1: Add `questions` to `ServiceCategory`**
 
 In `schema.prisma`, find the `ServiceCategory` model and add after `imageUrl`:
 
@@ -56,7 +56,7 @@ In `schema.prisma`, find the `ServiceCategory` model and add after `imageUrl`:
   questions        Json?             // [{ id, type, label, options?, required? }]
 ```
 
-- [ ] **Step 2: Add guest fields to `ServiceRequest`**
+- [x] **Step 2: Add guest fields to `ServiceRequest`**
 
 In `schema.prisma`, find the `ServiceRequest` model and add after `email String?`:
 
@@ -66,7 +66,7 @@ In `schema.prisma`, find the `ServiceRequest` model and add after `email String?
   qualifierAnswers Json?             // { questionId: answer } from wizard step 3
 ```
 
-- [ ] **Step 3: Run migration**
+- [x] **Step 3: Run migration**
 
 ```bash
 wasp db migrate-dev --name add-guest-wizard-fields
@@ -74,7 +74,7 @@ wasp db migrate-dev --name add-guest-wizard-fields
 
 Expected output: `✔ Generated Prisma Client` with no errors.
 
-- [ ] **Step 4: Verify schema compiles**
+- [x] **Step 4: Verify schema compiles**
 
 ```bash
 cd .wasp/out/db && npx prisma validate
