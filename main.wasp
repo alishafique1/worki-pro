@@ -123,11 +123,6 @@ page ElectricalLandingPage { component: import ElectricalLandingPage from "@src/
 route HowRewardsWorkRoute { path: "/how-rewards-work", to: HowRewardsWorkPage }
 page HowRewardsWorkPage { component: import HowRewardsWorkPage from "@src/landing-page/HowRewardsWorkPage" }
 
-route ServiceCategoryRoute { path: "/services/:categorySlug", to: ServiceCategoryPage }
-page ServiceCategoryPage {
-  component: import ServiceCategoryPage from "@src/landing-page/services/ServiceCategoryPage"
-}
-
 route AreaRoute { path: "/areas/:areaSlug", to: AreaLandingPage }
 page AreaLandingPage { component: import AreaLandingPage from "@src/landing-page/AreaLandingPage" }
 
