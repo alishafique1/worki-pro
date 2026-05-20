@@ -1398,7 +1398,7 @@ git commit -m "feat: wizard steps 4-6 (location, contact, OTP + account creation
 
 Consumers who arrive at `/onboarding` without a pending request (direct login with no request) should be offered the wizard for their first request.
 
-- [ ] **Step 1: Add redirect to wizard for consumers on step 3**
+- [x] **Step 1: Add redirect to wizard for consumers on step 3**
 
 In `OnboardingPage.tsx`, find where step 3 renders for consumers (the `CategoryCardGrid` for interests). Replace it with a redirect prompt:
 
