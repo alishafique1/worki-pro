@@ -16,7 +16,7 @@ import OpenAI from 'openai'
 
 const PLAN_FILE = process.argv[2] || 'docs/superpowers/plans/2026-05-19-bark-style-redesign.md'
 const REQUESTED_TASK = process.argv[3] ? parseInt(process.argv[3]) : null
-const MAX_TOOL_ROUNDS = 40
+const MAX_TOOL_ROUNDS = 60
 
 const client = new OpenAI({
   apiKey: process.env.OPENCODE_API_KEY,
@@ -45,7 +45,7 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'write_file',
-      description: 'Write content to a file, creating it if needed. Creates parent directories automatically.',
+      description: 'Write content to a NEW file (creating it). For EXISTING files, prefer edit_file to avoid token limits.',
       parameters: {
         type: 'object',
         properties: {
@@ -53,6 +53,22 @@ const TOOLS = [
           content: { type: 'string', description: 'Full file content to write' },
         },
         required: ['path', 'content'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'edit_file',
+      description: 'Make a targeted edit to an existing file by replacing an exact string. Much safer than write_file for large files — avoids token limits. old_string must match exactly (including whitespace/indentation).',
+      parameters: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path relative to repo root' },
+          old_string: { type: 'string', description: 'Exact string to find and replace. Must be unique in the file.' },
+          new_string: { type: 'string', description: 'Replacement string' },
+        },
+        required: ['path', 'old_string', 'new_string'],
       },
     },
   },
@@ -137,6 +153,18 @@ function executeTool(name, args) {
       } catch (err) {
         return `Exit ${err.status}: ${err.stdout || ''}${err.stderr || ''}`
       }
+    }
+
+    case 'edit_file': {
+      const filePath = path.resolve(process.cwd(), args.path)
+      if (!fs.existsSync(filePath)) return `Error: file not found: ${args.path}`
+      const original = fs.readFileSync(filePath, 'utf8')
+      if (!original.includes(args.old_string)) {
+        return `Error: old_string not found in ${args.path}. Check exact whitespace/indentation.`
+      }
+      const updated = original.replace(args.old_string, args.new_string)
+      fs.writeFileSync(filePath, updated, 'utf8')
+      return `Edited: ${args.path}`
     }
 
     case 'mark_step_complete': {
@@ -254,6 +282,12 @@ KEY RULES:
 - Import paths in Wasp: use 'wasp/client/operations', 'wasp/entities', 'wasp/server' etc.
 - When the task is fully done and committed, call task_complete.
 
+CRITICAL — AVOID TOKEN LIMIT CRASHES:
+- NEVER use write_file on existing files (schema.prisma, operations.ts, etc.) — they are too large.
+- ALWAYS use edit_file for modifying existing files. Make one targeted change at a time.
+- Only use write_file when creating a brand new file that doesn't exist yet.
+- If edit_file returns "old_string not found", read the file first and find the exact text to match.
+
 DESIGN SPEC (abbreviated):
 ${specContent.slice(0, 3000)}
 `
@@ -278,7 +312,7 @@ Work through every step. Call mark_step_complete after each step. Commit all cha
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
       tools: TOOLS,
       tool_choice: 'auto',
-      max_tokens: 4096,
+      max_tokens: 8192,
     })
 
     const msg = response.choices[0].message
@@ -293,7 +327,18 @@ Work through every step. Call mark_step_complete after each step. Commit all cha
 
     const toolResults = []
     for (const call of msg.tool_calls) {
-      const args = JSON.parse(call.function.arguments)
+      let args
+      try {
+        args = JSON.parse(call.function.arguments)
+      } catch (parseErr) {
+        console.log(`  ⚠️  JSON parse error for ${call.function.name}: ${parseErr.message}`)
+        toolResults.push({
+          role: 'tool',
+          tool_call_id: call.id,
+          content: `Error: your tool call arguments were truncated (JSON parse failed). Please retry with shorter content, or use edit_file instead of write_file for large files.`,
+        })
+        continue
+      }
       console.log(`  → ${call.function.name}(${JSON.stringify(args).slice(0, 100)})`)
       const result = executeTool(call.function.name, args)
       const truncated = typeof result === 'string' && result.length > 500
