@@ -1432,11 +1432,11 @@ Update `validate()` so step 3 for consumers has no validation (the redirect hand
 
 Update `handleNext` for consumers at step 3: if they click "Skip for now", call `completeOnboarding` with empty `interestCategoryIds` and navigate to dashboard.
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Log in with a fresh email (never used before). Complete OTP → `/onboarding` → step 1 role → step 2 profile → step 3 should show "Find a local pro" CTA or "Skip for now". Clicking the CTA should go to `/get-quotes`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/auth/onboarding/OnboardingPage.tsx
