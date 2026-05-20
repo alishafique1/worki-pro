@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# run-agent-loop.sh
+# Runs on the VPS. Executes one plan task per iteration using Claude Code,
+# then loops until the plan is fully complete.
+#
+# Usage:
+#   ./scripts/run-agent-loop.sh [plan-file]
+#
+# Requires: claude (Claude Code CLI) in PATH, ANTHROPIC_API_KEY set
+
+set -e
+
+PLAN="${1:-docs/superpowers/plans/2026-05-19-bark-style-redesign.md}"
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+LOG_DIR="$REPO_DIR/.agent-logs"
+mkdir -p "$LOG_DIR"
+
+cd "$REPO_DIR"
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  Agent loop starting — plan: $PLAN"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Pull latest before starting
+git pull origin main --ff-only || true
+
+while true; do
+  # Count pending steps
+  PENDING=$(grep -c '^- \[ \]' "$PLAN" 2>/dev/null || echo "0")
+
+  if [ "$PENDING" -eq "0" ]; then
+    echo ""
+    echo "✅ All tasks complete!"
+    break
+  fi
+
+  # Find current task
+  TASK=$(grep -m1 '^## Task' "$PLAN" | head -1)
+  echo ""
+  echo "📋 $PENDING steps remaining — next: $TASK"
+  echo "$(date '+%Y-%m-%d %H:%M:%S') Starting task..."
+  echo ""
+
+  LOG="$LOG_DIR/task-$(date +%Y%m%d-%H%M%S).log"
+
+  # Run Claude Code non-interactively on this task
+  claude --dangerously-skip-permissions -p "$(cat <<PROMPT
+You are executing an implementation plan for a Wasp 0.21 full-stack app.
+Plan file: $PLAN
+Spec file: docs/superpowers/specs/2026-05-19-bark-style-redesign-design.md
+
+TASK: Find the FIRST task in the plan that has any unchecked steps (- [ ]).
+Execute EVERY step of that task in order. Do not start the next task.
+
+RULES:
+- Read the plan first to find the next task.
+- Execute each step exactly as described.
+- After each step completes, edit the plan file to change that step's checkbox from [ ] to [x].
+- Commit code changes after each step: git add -A && git commit -m "feat: <description>"
+- You CAN run: wasp db migrate-dev, wasp build, tsc, npm commands — the full environment is available.
+- Use targeted file edits (search-replace) rather than rewriting whole files.
+- When all steps in the task are done and committed, stop.
+PROMPT
+  )" 2>&1 | tee "$LOG"
+
+  EXIT_CODE=${PIPESTATUS[0]}
+
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo ""
+    echo "⚠️  Claude exited with code $EXIT_CODE — check $LOG"
+    echo "Retrying once after 10s..."
+    sleep 10
+    # Try once more before giving up
+    claude --dangerously-skip-permissions -p "Continue executing the current task in $PLAN. Find the next unchecked step and complete it. Commit when done." 2>&1 | tee -a "$LOG" || {
+      echo "❌ Retry also failed — stopping loop. Run manually to debug."
+      exit 1
+    }
+  fi
+
+  # Push progress after each task
+  git push origin main || echo "⚠️  Push failed — will retry next iteration"
+
+  echo ""
+  echo "✓ Task done — pulling and continuing..."
+  git pull origin main --ff-only || true
+  sleep 2
+done
+
+echo ""
+echo "🎉 Plan complete: $PLAN"
+git push origin main || true

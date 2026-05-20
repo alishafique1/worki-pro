@@ -4,80 +4,44 @@ on:
   workflow_dispatch:
     inputs:
       plan_file:
-        description: 'Path to the plan file'
+        description: 'Path to the plan file (relative to repo root)'
         required: false
         default: 'docs/superpowers/plans/2026-05-19-bark-style-redesign.md'
-      task_number:
-        description: 'Specific task number (leave empty to auto-pick next pending)'
-        required: false
-        default: ''
 
 jobs:
   execute-plan:
-    name: Execute next plan task
+    name: Run agent loop on VPS
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: write
+    timeout-minutes: 60
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Trigger agent loop on VPS
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 55m
+          script: |
+            set -e
 
-      - name: Configure git
-        run: |
-          git config user.name "claude-code[bot]"
-          git config user.email "claude-code[bot]@users.noreply.github.com"
+            REPO_DIR="/opt/worki-pro"
+            PLAN="${{ github.event.inputs.plan_file }}"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+            # Clone repo if it doesn't exist yet
+            if [ ! -d "$REPO_DIR/.git" ]; then
+              echo "Cloning repo to $REPO_DIR..."
+              git clone git@github.com:$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]').git "$REPO_DIR"
+            fi
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+            cd "$REPO_DIR"
 
-      - name: Check for pending tasks
-        id: check
-        run: |
-          PLAN="${{ github.event.inputs.plan_file }}"
-          PENDING=$(grep -c '^\- \[ \]' "$PLAN" 2>/dev/null || echo "0")
-          echo "pending=$PENDING" >> $GITHUB_OUTPUT
-          echo "plan=$PLAN" >> $GITHUB_OUTPUT
-          echo "Pending tasks: $PENDING"
+            # Pull latest
+            git pull origin main --ff-only || git fetch origin && git reset --hard origin/main
 
-      - name: Execute next task
-        if: steps.check.outputs.pending != '0'
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-        run: |
-          node scripts/execute-task.mjs \
-            "${{ steps.check.outputs.plan }}" \
-            "${{ github.event.inputs.task_number }}"
+            # Make the script executable
+            chmod +x scripts/run-agent-loop.sh
 
-      - name: All tasks done
-        if: steps.check.outputs.pending == '0'
-        run: echo "✅ All tasks complete — nothing to do."
-
-      - name: Check remaining and re-trigger
-        if: steps.check.outputs.pending != '0'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PLAN="${{ steps.check.outputs.plan }}"
-          REMAINING=$(grep -c '^\- \[ \]' "$PLAN" 2>/dev/null || echo "0")
-          echo "Remaining after this run: $REMAINING"
-          if [ "$REMAINING" -gt "0" ]; then
-            echo "🔄 Triggering next task run..."
-            gh workflow run execute-plan.yml \
-              --field plan_file="$PLAN" \
-              --field task_number=""
-          else
-            echo "🎉 All tasks complete!"
-            gh issue comment 68 \
-              --body "✅ All tasks in \`$PLAN\` are complete — implementation finished." \
-              2>/dev/null || true
-          fi
+            # Run the agent loop
+            ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}" \
+              bash scripts/run-agent-loop.sh "$PLAN"
