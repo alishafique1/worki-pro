@@ -458,7 +458,7 @@ git commit -m "feat: extend verifyOtp to atomically save pending guest request"
 
 The `SearchPanel` already exists. We update its navigation and the category card links.
 
-- [ ] **Step 1: Update `SearchPanel` navigation in `LandingPage.tsx`**
+- [x] **Step 1: Update `SearchPanel` navigation in `LandingPage.tsx`**
 
 Find the `onKeyDown` handler in `SearchPanel` and update:
 
@@ -475,7 +475,7 @@ Find the "Get Free Quotes" / submit button (or search button) in `SearchPanel` a
 onClick={() => navigate(`/get-quotes${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`)}
 ```
 
-- [ ] **Step 2: Update category card links in `SearchPanel`**
+- [x] **Step 2: Update category card links in `SearchPanel`**
 
 In `SearchPanel`, find the category card `Link` components and update so active categories go to `/services/:slug` and coming-soon categories stay on `/get-quotes`:
 
@@ -490,7 +490,7 @@ In `SearchPanel`, find the category card `Link` components and update so active 
 ))}
 ```
 
-- [ ] **Step 3: Add `slug` field to categories in `content.tsx`**
+- [x] **Step 3: Add `slug` field to categories in `content.tsx`**
 
 In `src/landing-page/marketplace/content.tsx`, find the `categories` array. Add a `slug` field matching the DB slug to each active category entry. Example:
 
@@ -500,11 +500,11 @@ In `src/landing-page/marketplace/content.tsx`, find the `categories` array. Add 
 // ... etc
 ```
 
-- [ ] **Step 4: Verify manually**
+- [x] **Step 4: Verify manually**
 
 Run `wasp start`, go to homepage. Click an active category card — should navigate to `/services/hvac` (404 for now, that's expected until Task 7). Type in search and hit Enter — should go to `/get-quotes` (404 for now, expected until Task 6).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/landing-page/LandingPage.tsx src/landing-page/marketplace/content.tsx
