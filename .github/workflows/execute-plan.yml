@@ -1,0 +1,115 @@
+name: Execute Implementation Plan
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_file:
+        description: 'Path to the plan file to execute'
+        required: false
+        default: 'docs/superpowers/plans/2026-05-19-bark-style-redesign.md'
+      task_number:
+        description: 'Specific task number to execute (leave empty to auto-pick next pending)'
+        required: false
+        default: ''
+
+jobs:
+  execute-plan:
+    name: Execute next plan task
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "claude-code[bot]"
+          git config user.email "claude-code[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check for pending tasks
+        id: check_tasks
+        run: |
+          PLAN="${{ github.event.inputs.plan_file }}"
+          PENDING=$(grep -c '^\- \[ \]' "$PLAN" || echo "0")
+          echo "pending=$PENDING" >> $GITHUB_OUTPUT
+          echo "plan=$PLAN" >> $GITHUB_OUTPUT
+          echo "Found $PENDING pending tasks in $PLAN"
+          if [ "$PENDING" -eq "0" ]; then
+            echo "✅ All tasks complete — nothing to do."
+          fi
+
+      - name: Execute next pending task
+        if: steps.check_tasks.outputs.pending != '0'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-sonnet-4-6
+          timeout_minutes: 25
+          allowed_tools: 'Bash,Read,Edit,Write,TodoWrite'
+          prompt: |
+            You are executing an implementation plan task-by-task. Read the plan and execute the NEXT unchecked task.
+
+            PLAN FILE: ${{ steps.check_tasks.outputs.plan }}
+            REQUESTED TASK: ${{ github.event.inputs.task_number || 'auto' }}
+
+            INSTRUCTIONS:
+            1. Read the plan file at ${{ steps.check_tasks.outputs.plan }}
+            2. If a task number was specified (${{ github.event.inputs.task_number }}), execute that task.
+               Otherwise, find the FIRST task that still has any unchecked steps (- [ ]) and execute it.
+            3. Execute EVERY step in that task in order. Do not skip steps.
+            4. As you complete each step, update the plan file: change `- [ ]` to `- [x]` for that step.
+            5. When all steps in the task are done, make sure all its checkboxes are checked.
+            6. Commit all code changes + the updated plan file together with a descriptive message.
+            7. STOP after completing one task. Do not start the next task.
+
+            IMPORTANT CONTEXT:
+            - This is a Wasp 0.21 full-stack app (React 19 + Node.js + Prisma + PostgreSQL)
+            - The database is Neon (remote PostgreSQL) — DATABASE_URL is in .env.server (not available in CI)
+            - For DB migrations, add the migration SQL to the migrations/ folder but do NOT run wasp db migrate-dev (no DB in CI)
+            - For TypeScript compilation checks, use: cd .wasp/out/server && npx tsc --noEmit (if .wasp/out exists)
+            - If .wasp/out doesn't exist, skip compilation checks — they'll be caught on next local run
+            - Do not run wasp start or wasp build — no Wasp CLI in CI
+            - Commit all changes before finishing
+            - Use the design spec at docs/superpowers/specs/2026-05-19-bark-style-redesign-design.md for context
+
+            CURRENT TASK STATUS:
+            $(grep -n '^\- \[' ${{ steps.check_tasks.outputs.plan }} | head -30)
+
+      - name: Check remaining tasks
+        if: steps.check_tasks.outputs.pending != '0'
+        id: remaining
+        run: |
+          PLAN="${{ steps.check_tasks.outputs.plan }}"
+          REMAINING=$(grep -c '^\- \[ \]' "$PLAN" || echo "0")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Remaining pending tasks: $REMAINING"
+
+      - name: Trigger next task if more remain
+        if: steps.check_tasks.outputs.pending != '0' && steps.remaining.outputs.remaining != '0'
+        run: |
+          echo "🔄 ${{ steps.remaining.outputs.remaining }} tasks remaining — triggering next run..."
+          gh workflow run execute-plan.yml \
+            --field plan_file="${{ steps.check_tasks.outputs.plan }}" \
+            --field task_number=""
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: All tasks complete
+        if: steps.remaining.outputs.remaining == '0'
+        run: |
+          echo "🎉 All tasks in ${{ steps.check_tasks.outputs.plan }} are complete!"
+          gh issue comment 68 --body "✅ Implementation plan complete — all tasks in \`${{ steps.check_tasks.outputs.plan }}\` have been executed by the automated workflow."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
