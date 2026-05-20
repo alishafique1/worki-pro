@@ -36,7 +36,7 @@ TASK_ISSUES=(
 
 pc_update() {
   local identifier="$1" status="$2" comment="$3"
-  node scripts/paperclip-sync.js update-issue "$identifier" "$status" "$comment" 2>/dev/null || true
+  node scripts/paperclip-sync.cjs update-issue "$identifier" "$status" "$comment" 2>/dev/null || true
 }
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
