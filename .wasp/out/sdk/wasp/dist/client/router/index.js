@@ -37,10 +37,6 @@ export const routes = {
         to: "/how-rewards-work",
         build: (options) => interpolatePath("/how-rewards-work", undefined, options?.search, options?.hash),
     },
-    ServiceCategoryRoute: {
-        to: "/services/:categorySlug",
-        build: (options) => interpolatePath("/services/:categorySlug", options.params, options?.search, options?.hash),
-    },
     AreaRoute: {
         to: "/areas/:areaSlug",
         build: (options) => interpolatePath("/areas/:areaSlug", options.params, options?.search, options?.hash),
@@ -92,6 +88,14 @@ export const routes = {
     RequestServiceRoute: {
         to: "/request-service",
         build: (options) => interpolatePath("/request-service", undefined, options?.search, options?.hash),
+    },
+    GuestRequestWizardRoute: {
+        to: "/get-quotes",
+        build: (options) => interpolatePath("/get-quotes", undefined, options?.search, options?.hash),
+    },
+    CategoryLandingRoute: {
+        to: "/services/:categorySlug",
+        build: (options) => interpolatePath("/services/:categorySlug", options.params, options?.search, options?.hash),
     },
     BookingRoute: {
         to: "/book/:requestId",

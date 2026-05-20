@@ -71,7 +71,31 @@ export default function OnboardingPage() {
             if (!form.businessName.trim())
                 return 'Business name is required.';
         }
+        // step 3 for consumers has no validation — it's a redirect prompt
         return null;
+    }
+    async function handleSkipOnboarding() {
+        setIsSubmitting(true);
+        setError(null);
+        try {
+            await completeOnboarding({
+                role: form.role,
+                firstName: form.firstName.trim(),
+                lastName: form.lastName.trim() || undefined,
+                phone: form.phone.trim(),
+                postalCode: form.postalCode.trim(),
+                smsConsent: form.smsConsent,
+                referralCode: form.referralCode.trim() || undefined,
+                interestCategoryIds: [],
+            });
+            navigate(getDashboardPath(form.role));
+        }
+        catch (e) {
+            setError(e.message ?? 'Something went wrong. Please try again.');
+        }
+        finally {
+            setIsSubmitting(false);
+        }
     }
     async function handleNext() {
         const validationError = validate();
@@ -156,7 +180,16 @@ export default function OnboardingPage() {
                 referralCode: form.referralCode,
             }} role={form.role} onChange={(field, value) => update(field, value)}/>)}
 
-            {step === 3 && !isProvider && (<CategoryCardGrid title="What do you need help with?" subtitle="Select all that apply. We'll personalize your experience based on your interests." selectedIds={form.interestCategoryIds} onToggle={toggleInterest}/>)}
+            {step === 3 && !isProvider && (<div className="text-center py-4">
+                <h3 className="text-xl font-black mb-2 text-[#0F172A]">Ready to get quotes?</h3>
+                <p className="text-[#475569] text-sm mb-6">Tell us what you need and we'll match you with local pros.</p>
+                <button type="button" onClick={() => navigate('/get-quotes')} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
+                  Find a local pro →
+                </button>
+                <button type="button" onClick={handleSkipOnboarding} disabled={isSubmitting} className="block mx-auto mt-3 text-sm text-[#475569] hover:text-[#0F172A] disabled:opacity-50">
+                  {isSubmitting ? 'Saving…' : 'Skip for now'}
+                </button>
+              </div>)}
 
             {step === 3 && isProvider && (<StepBusiness businessName={form.businessName} serviceAreas={form.serviceAreas} onChange={(field, value) => update(field, value)}/>)}
 
@@ -168,19 +201,19 @@ export default function OnboardingPage() {
               {error}
             </p>)}
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between mt-8">
-            {step > 1 ? (<button type="button" onClick={goBack} className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors">
-                ← Back
-              </button>) : (<div />)}
-            <button type="button" onClick={handleNext} disabled={isSubmitting} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
-              {isSubmitting
-            ? 'Saving…'
-            : step === totalSteps
-                ? 'Complete Setup'
-                : 'Next →'}
-            </button>
-          </div>
+          {/* Navigation — hidden on step 3 for consumers (they have inline buttons) */}
+          {!(step === 3 && !isProvider) && (<div className="flex items-center justify-between mt-8">
+              {step > 1 ? (<button type="button" onClick={goBack} className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors">
+                  ← Back
+                </button>) : (<div />)}
+              <button type="button" onClick={handleNext} disabled={isSubmitting} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+                {isSubmitting
+                ? 'Saving…'
+                : step === totalSteps
+                    ? 'Complete Setup'
+                    : 'Next →'}
+              </button>
+            </div>)}
         </div>
       </div>
     </div>);

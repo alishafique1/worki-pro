@@ -24,7 +24,7 @@ export default function App() {
   const { data: user } = useAuth();
 
   const isMarketingPage = useMemo(() => {
-    const marketingPaths = ['/', '/hvac', '/handyman', '/appliance-repair', '/plumbing', '/electrical', '/smart-home', '/how-it-works', '/providers', '/request-service', '/request-success'];
+    const marketingPaths = ['/', '/hvac', '/handyman', '/appliance-repair', '/plumbing', '/electrical', '/smart-home', '/how-it-works', '/providers', '/get-quotes', '/request-success'];
     return (
       marketingPaths.includes(location.pathname) ||
       location.pathname.startsWith('/areas') ||

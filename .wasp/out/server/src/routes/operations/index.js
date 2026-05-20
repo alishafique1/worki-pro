@@ -4,6 +4,7 @@ import auth from 'wasp/core/auth'
 
 import completeOnboarding from './completeOnboarding.js'
 import redeemPoints from './redeemPoints.js'
+import saveGuestRequest from './saveGuestRequest.js'
 import submitServiceRequest from './submitServiceRequest.js'
 import submitLead from './submitLead.js'
 import sendCustomerMessage from './sendCustomerMessage.js'
@@ -67,6 +68,7 @@ const router = express.Router()
 
 router.post('/complete-onboarding', auth, completeOnboarding)
 router.post('/redeem-points', auth, redeemPoints)
+router.post('/save-guest-request', auth, saveGuestRequest)
 router.post('/submit-service-request', auth, submitServiceRequest)
 router.post('/submit-lead', auth, submitLead)
 router.post('/send-customer-message', auth, sendCustomerMessage)

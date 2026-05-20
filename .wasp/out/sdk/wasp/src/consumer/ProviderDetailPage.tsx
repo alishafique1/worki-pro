@@ -215,10 +215,10 @@ export default function ProviderDetailPage() {
               Ready to get started? Submit a service request and we'll match you with {provider.businessName}.
             </p>
             <Link
-              to={`/request-service?proId=${provider.id}`}
+              to={`/get-quotes?proId=${provider.id}`}
               className="block w-full text-center px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors mb-3"
             >
-              Request Service
+              Get Help
             </Link>
             <Link
               to="/discover"

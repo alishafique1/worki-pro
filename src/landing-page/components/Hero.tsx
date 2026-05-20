@@ -25,8 +25,8 @@ export default function Hero() {
                 </WaspRouterLink>
               </Button>
               <Button size="lg" variant="default" asChild>
-                <WaspRouterLink to="/request-service">
-                  Request a Service (Free) <span aria-hidden="true">→</span>
+                <WaspRouterLink to="/get-quotes">
+                  Get Help (Free) <span aria-hidden="true">→</span>
                 </WaspRouterLink>
               </Button>
             </div>

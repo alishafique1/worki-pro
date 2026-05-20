@@ -6,7 +6,7 @@ export function Announcement() {
       <span className="sm:hidden">
         Now serving GTA 🇨🇦. Earn rewards on every job.
       </span>
-      <a href="/request-service" className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#2563EB] transition duration-200 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+      <a href="/get-quotes" className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#2563EB] transition duration-200 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
         Request Help Today!
       </a>
     </div>);

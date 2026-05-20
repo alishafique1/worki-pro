@@ -328,10 +328,10 @@ export default function MyRequestsPage() {
           </p>
         </div>
         <Link
-          to="/request-service"
+          to="/get-quotes"
           className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
         >
-          <Wrench className="size-4" /> Request Service
+          <Wrench className="size-4" /> Get Help
         </Link>
       </div>
 
@@ -369,10 +369,10 @@ export default function MyRequestsPage() {
             messages.
           </p>
           <Link
-            to="/request-service"
+            to="/get-quotes"
             className="mt-2 rounded-[22px] bg-[#2563EB] px-6 py-2.5 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
           >
-            Request a Service
+            Get Help
           </Link>
         </div>
       )}

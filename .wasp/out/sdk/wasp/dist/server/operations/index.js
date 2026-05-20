@@ -30,6 +30,7 @@ export { getAdminRewards } from './queries/index.js';
 export { getAdminLeads } from './queries/index.js';
 export { completeOnboarding } from './actions/index.js';
 export { redeemPoints } from './actions/index.js';
+export { saveGuestRequest } from './actions/index.js';
 export { submitServiceRequest } from './actions/index.js';
 export { submitLead } from './actions/index.js';
 export { sendCustomerMessage } from './actions/index.js';

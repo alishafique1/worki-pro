@@ -54,6 +54,20 @@ export type RedeemPoints<Input extends Payload = never, Output extends Payload =
   >
 
 // PUBLIC API
+export type SaveGuestRequest<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _ServiceRequest,
+      _User,
+      _RewardAccount,
+      _RewardTransaction,
+      _Referral,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type SubmitServiceRequest<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedActionDefinition<
     [

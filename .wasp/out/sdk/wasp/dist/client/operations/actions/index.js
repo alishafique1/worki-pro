@@ -4,6 +4,8 @@ export const completeOnboarding = createAction('operations/complete-onboarding',
 // PUBLIC API
 export const redeemPoints = createAction('operations/redeem-points', ['RewardAccount', 'RewardTransaction', 'Redemption']);
 // PUBLIC API
+export const saveGuestRequest = createAction('operations/save-guest-request', ['ServiceRequest', 'User', 'RewardAccount', 'RewardTransaction', 'Referral']);
+// PUBLIC API
 export const submitServiceRequest = createAction('operations/submit-service-request', ['ServiceRequest', 'ServiceCategory', 'RewardTransaction', 'RewardAccount', 'Provider', 'WebhookLog']);
 // PUBLIC API
 export const submitLead = createAction('operations/submit-lead', ['Lead']);

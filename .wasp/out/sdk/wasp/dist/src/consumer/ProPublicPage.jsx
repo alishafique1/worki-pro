@@ -128,7 +128,7 @@ export default function ProPublicPage() {
 
             {/* CTA */}
             <div className="shrink-0">
-              <Link to={`/request-service?provider=${provider.id}`} className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors text-sm">
+              <Link to={`/get-quotes?provider=${provider.id}`} className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors text-sm">
                 Request a quote
               </Link>
             </div>

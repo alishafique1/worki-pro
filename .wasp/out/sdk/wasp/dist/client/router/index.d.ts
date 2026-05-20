@@ -36,14 +36,6 @@ export declare const routes: {
         readonly to: "/how-rewards-work";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
-    readonly ServiceCategoryRoute: {
-        readonly to: "/services/:categorySlug";
-        readonly build: (options: OptionalRouteOptions & {
-            params: {
-                "categorySlug": ParamValue;
-            };
-        }) => string;
-    };
     readonly AreaRoute: {
         readonly to: "/areas/:areaSlug";
         readonly build: (options: OptionalRouteOptions & {
@@ -99,6 +91,18 @@ export declare const routes: {
     readonly RequestServiceRoute: {
         readonly to: "/request-service";
         readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly GuestRequestWizardRoute: {
+        readonly to: "/get-quotes";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly CategoryLandingRoute: {
+        readonly to: "/services/:categorySlug";
+        readonly build: (options: OptionalRouteOptions & {
+            params: {
+                "categorySlug": ParamValue;
+            };
+        }) => string;
     };
     readonly BookingRoute: {
         readonly to: "/book/:requestId";

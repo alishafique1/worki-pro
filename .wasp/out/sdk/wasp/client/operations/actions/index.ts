@@ -1,6 +1,7 @@
 import { type ActionFor, createAction } from './core'
 import { CompleteOnboarding_ext } from 'wasp/server/operations/actions'
 import { RedeemPoints_ext } from 'wasp/server/operations/actions'
+import { SaveGuestRequest_ext } from 'wasp/server/operations/actions'
 import { SubmitServiceRequest_ext } from 'wasp/server/operations/actions'
 import { SubmitLead_ext } from 'wasp/server/operations/actions'
 import { SendCustomerMessage_ext } from 'wasp/server/operations/actions'
@@ -44,6 +45,12 @@ export const completeOnboarding: ActionFor<CompleteOnboarding_ext> = createActio
 export const redeemPoints: ActionFor<RedeemPoints_ext> = createAction<RedeemPoints_ext>(
   'operations/redeem-points',
   ['RewardAccount', 'RewardTransaction', 'Redemption'],
+)
+
+// PUBLIC API
+export const saveGuestRequest: ActionFor<SaveGuestRequest_ext> = createAction<SaveGuestRequest_ext>(
+  'operations/save-guest-request',
+  ['ServiceRequest', 'User', 'RewardAccount', 'RewardTransaction', 'Referral'],
 )
 
 // PUBLIC API

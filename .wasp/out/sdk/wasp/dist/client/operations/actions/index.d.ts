@@ -1,6 +1,7 @@
 import { type ActionFor } from './core';
 import { CompleteOnboarding_ext } from 'wasp/server/operations/actions';
 import { RedeemPoints_ext } from 'wasp/server/operations/actions';
+import { SaveGuestRequest_ext } from 'wasp/server/operations/actions';
 import { SubmitServiceRequest_ext } from 'wasp/server/operations/actions';
 import { SubmitLead_ext } from 'wasp/server/operations/actions';
 import { SendCustomerMessage_ext } from 'wasp/server/operations/actions';
@@ -35,6 +36,7 @@ import { ApproveRewardTransaction_ext } from 'wasp/server/operations/actions';
 import { RejectRewardTransaction_ext } from 'wasp/server/operations/actions';
 export declare const completeOnboarding: ActionFor<CompleteOnboarding_ext>;
 export declare const redeemPoints: ActionFor<RedeemPoints_ext>;
+export declare const saveGuestRequest: ActionFor<SaveGuestRequest_ext>;
 export declare const submitServiceRequest: ActionFor<SubmitServiceRequest_ext>;
 export declare const submitLead: ActionFor<SubmitLead_ext>;
 export declare const sendCustomerMessage: ActionFor<SendCustomerMessage_ext>;

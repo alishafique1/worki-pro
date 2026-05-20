@@ -579,4 +579,68 @@ export const applyReferralCode = async ({ code }, context) => {
     });
     return { success: true, message: "Referral applied! You'll both earn rewards after your first service." };
 };
+export const saveGuestRequest = async (args, context) => {
+    if (!context.user)
+        throw new HttpError(401, 'Not authenticated');
+    const userId = context.user.id;
+    await context.entities.User.update({
+        where: { id: userId },
+        data: {
+            firstName: args.firstName,
+            phone: args.phone,
+            postalCode: args.postalCode,
+            role: 'CONSUMER',
+            smsConsent: args.smsConsent,
+            smsConsentAt: args.smsConsent ? new Date() : undefined,
+        },
+    });
+    const request = await context.entities.ServiceRequest.create({
+        data: {
+            consumerId: userId,
+            name: args.firstName,
+            phone: args.phone,
+            postalCode: args.postalCode,
+            email: context.user.email ?? undefined,
+            smsConsentGiven: args.smsConsent,
+            serviceCategoryId: args.serviceCategoryId ?? null,
+            description: args.description,
+            qualifierAnswers: args.qualifierAnswers ?? {},
+            source: 'WEBSITE',
+        },
+    });
+    await context.entities.RewardAccount.upsert({
+        where: { consumerId: userId },
+        update: {},
+        create: { consumerId: userId },
+    });
+    const existing = await context.entities.RewardTransaction.findFirst({
+        where: { consumerId: userId, type: 'SIGNUP_BONUS' },
+    });
+    if (!existing) {
+        await context.entities.RewardTransaction.create({
+            data: {
+                consumerId: userId,
+                type: 'SIGNUP_BONUS',
+                points: 100,
+                status: 'APPROVED',
+                reason: 'Welcome bonus',
+            },
+        });
+        await context.entities.RewardAccount.update({
+            where: { consumerId: userId },
+            data: { pointsBalance: { increment: 100 }, lifetimePoints: { increment: 100 } },
+        });
+    }
+    if (args.referralCode) {
+        const code = args.referralCode.trim().toUpperCase();
+        const referral = await context.entities.Referral.findUnique({ where: { referralCode: code } });
+        if (referral && referral.referrerUserId !== userId && !referral.referredUserId) {
+            await context.entities.Referral.update({
+                where: { id: referral.id },
+                data: { referredUserId: userId, status: 'SIGNED_UP' },
+            });
+        }
+    }
+    return { requestId: request.id };
+};
 //# sourceMappingURL=operations.js.map

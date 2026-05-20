@@ -72,10 +72,10 @@ export default function HowItWorksPage() {
               Browse Pros
             </Link>
             <Link
-              to="/request-service"
+              to="/get-quotes"
               className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm"
             >
-              Request Service
+              Get Help
             </Link>
           </div>
         </div>
@@ -106,10 +106,10 @@ export default function HowItWorksPage() {
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/request-service"
+              to="/get-quotes"
               className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
             >
-              Get Free Quotes Now
+              Get Help Now
             </Link>
             <Link
               to="/providers/apply"
@@ -221,10 +221,10 @@ export default function HowItWorksPage() {
           <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free, no credit card required.</p>
           <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to $60 back on your first completed job</p>
           <Link
-            to="/request-service"
+            to="/get-quotes"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
           >
-            Get Free Quotes Now <ArrowRight className="size-5" />
+            Get Help Now <ArrowRight className="size-5" />
           </Link>
         </section>
 

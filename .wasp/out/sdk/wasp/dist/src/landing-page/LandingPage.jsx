@@ -20,7 +20,7 @@ function SearchPanel() {
           <span className="text-lg">🔍</span>
           <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => {
             if (e.key === 'Enter') {
-                navigate(`/request-service?q=${encodeURIComponent(searchQuery)}`);
+                navigate(`/get-quotes?q=${encodeURIComponent(searchQuery)}`);
             }
         }} className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none" placeholder={`e.g. "AC not cooling", "leaky faucet", "outdoor lighting"…`}/>
         </div>
@@ -31,7 +31,7 @@ function SearchPanel() {
             Browse Categories
           </p>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {categories.map((cat) => (<Link key={cat.name} to={cat.href ?? "/request-service"}>
+            {categories.map((cat) => (<Link key={cat.name} to={cat.comingSoon ? '/get-quotes' : `/services/${cat.slug ?? cat.name.toLowerCase().replace(/\s+/g, '-')}`}>
                 <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
                   <span className="text-[#2563EB]">{cat.icon}</span>
                   <span className="text-xs font-medium text-[#0F172A]">{cat.name}</span>
@@ -46,7 +46,7 @@ function SearchPanel() {
             Popular Services
           </p>
           <div className="flex flex-col gap-2">
-            {popularServices.map((svc) => (<Link key={svc.name} to="/request-service" className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]">
+            {popularServices.map((svc) => (<Link key={svc.name} to="/get-quotes" className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]">
                 <span className="flex size-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
                   {svc.icon}
                 </span>
@@ -141,8 +141,8 @@ export default function LandingPage() {
 
               {/* CTAs */}
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Link to="/request-service" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
-                  Get Free Quotes Now
+                <Link to="/get-quotes" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
+                  Get Help Now
                   <ArrowRight className="size-4"/>
                 </Link>
                 <button onClick={() => setShowSearch((v) => !v)} className="inline-flex items-center justify-center gap-1 rounded-full border border-[#E2E8F0] bg-white px-6 py-3.5 text-sm font-semibold text-[#475569] transition duration-150 hover:border-[#BFDBFE] hover:text-[#2563EB]">
@@ -228,13 +228,13 @@ export default function LandingPage() {
             <SectionHeader eyebrow="WHAT WE HELP WITH" title="Every service. One platform." description="HVAC, plumbing, electrical, handyman, and more. All from verified local pros."/>
             {/* Featured services - first 6 with images */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {categories.filter(c => c.live).map((category) => (<CategoryCard key={category.name} icon={category.icon} name={category.name} description={category.description} href={category.href ?? "/request-service"} imageUrl={category.imageUrl}/>))}
+              {categories.filter(c => c.live).map((category) => (<CategoryCard key={category.name} icon={category.icon} name={category.name} description={category.description} href={category.href ?? "/get-quotes"} imageUrl={category.imageUrl}/>))}
             </div>
             {/* Coming soon services */}
             <div className="mt-8">
               <p className="mb-4 text-sm font-semibold text-[#94A3B8] uppercase tracking-wider">Coming Soon</p>
               <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                {categories.filter(c => c.comingSoon).slice(0, 6).map((category) => (<Link key={category.name} to="/request-service" className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]">
+                {categories.filter(c => c.comingSoon).slice(0, 6).map((category) => (<Link key={category.name} to="/get-quotes" className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]">
                     <span className="text-[#2563EB]">{category.icon}</span>
                     <span className="text-sm font-medium text-[#475569]">{category.name}</span>
                   </Link>))}
@@ -242,7 +242,7 @@ export default function LandingPage() {
             </div>
             {/* CTA */}
             <div className="mt-8 text-center">
-              <Link to="/request-service" className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:underline">
+              <Link to="/get-quotes" className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:underline">
                 View all services <ArrowRight className="size-4"/>
               </Link>
             </div>
@@ -260,8 +260,8 @@ export default function LandingPage() {
               <StepCard step="04" title="Job done. Get rewarded." description="Earn $60+ back on your first completed job. No extra steps."/>
             </div>
             <div className="mt-8 text-center">
-              <Link to="/request-service" className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8]">
-                Get Started Now <ArrowRight className="size-4"/>
+              <Link to="/get-quotes" className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8]">
+                Get Help Now <ArrowRight className="size-4"/>
               </Link>
             </div>
           </Container>

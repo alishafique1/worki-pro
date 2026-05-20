@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Link as ReactRouterLink } from "react-router";
 import { useAuth } from "wasp/client/auth";
+import { useQuery, getServiceCategories } from "wasp/client/operations";
 import { Link as WaspRouterLink, routes } from "wasp/client/router";
 import {
   Sheet,
@@ -14,10 +15,12 @@ import { UserDropdown } from "../../../user/UserDropdown";
 import { UserMenuItems } from "../../../user/UserMenuItems";
 import logo from "../../static/logo.webp";
 import { cn } from "../../utils";
+import type { ServiceCategory } from "wasp/entities";
 
 export interface NavigationItem {
   name: string;
   to: string;
+  hasDropdown?: boolean;
 }
 
 export default function NavBar({
@@ -42,17 +45,23 @@ export default function NavBar({
 
         {/* Desktop nav links */}
         <ul className="hidden items-center gap-8 lg:flex">
-          {navigationItems.map((item) => (
-            <li key={item.name}>
-              <ReactRouterLink
-                to={item.to}
-                className="text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
-                target={item.to.startsWith("http") ? "_blank" : undefined}
-              >
-                {item.name}
-              </ReactRouterLink>
-            </li>
-          ))}
+          {navigationItems.map((item) =>
+            item.hasDropdown ? (
+              <li key={item.name}>
+                <ServicesDropdownItem item={item} />
+              </li>
+            ) : (
+              <li key={item.name}>
+                <ReactRouterLink
+                  to={item.to}
+                  className="text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
+                  target={item.to.startsWith("http") ? "_blank" : undefined}
+                >
+                  {item.name}
+                </ReactRouterLink>
+              </li>
+            )
+          )}
         </ul>
 
         {/* Desktop right side */}
@@ -62,6 +71,37 @@ export default function NavBar({
         <MobileMenu navigationItems={navigationItems} />
       </nav>
     </header>
+  );
+}
+
+function ServicesDropdownItem({ item }: { item: NavigationItem }) {
+  const { data: categories } = useQuery(getServiceCategories);
+  const activeParents = (categories as ServiceCategory[] | undefined)?.filter(
+    (c) => !c.parentCategoryId && c.active
+  ) ?? [];
+
+  return (
+    <div className="relative group">
+      <ReactRouterLink
+        to={item.to}
+        className="text-sm font-medium text-[#475569] transition-colors hover:text-[#0F172A]"
+      >
+        {item.name}
+      </ReactRouterLink>
+      {activeParents.length > 0 && (
+        <div className="absolute top-full left-0 hidden group-hover:block bg-white border border-[#E2E8F0] rounded-2xl shadow-lg p-3 min-w-[200px] z-50">
+          {activeParents.map((cat) => (
+            <ReactRouterLink
+              key={cat.id}
+              to={`/services/${cat.slug}`}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-[#475569] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
+            >
+              {cat.name}
+            </ReactRouterLink>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -79,19 +119,19 @@ function DesktopAuth() {
             Log in
           </WaspRouterLink>
           <ReactRouterLink
-            to="/request-service"
+            to="/get-quotes"
             className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
           >
-            Find a Helper
+            Get Help
           </ReactRouterLink>
         </>
       ) : (
         <>
           <ReactRouterLink
-            to="/request-service"
+            to="/get-quotes"
             className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
           >
-            Get Free Quotes
+            Get Help
           </ReactRouterLink>
           <UserDropdown user={user} />
         </>
@@ -155,21 +195,21 @@ function MobileMenu({
                   Log in
                 </WaspRouterLink>
                 <ReactRouterLink
-                  to="/request-service"
+                  to="/get-quotes"
                   className="rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
                   onClick={() => setOpen(false)}
                 >
-                  Find a Helper
+                  Get Help
                 </ReactRouterLink>
               </div>
             ) : (
               <>
                 <ReactRouterLink
-                  to="/request-service"
+                  to="/get-quotes"
                   className="mb-4 block rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
                   onClick={() => setOpen(false)}
                 >
-                  Get Free Quotes
+                  Get Help
                 </ReactRouterLink>
                 <ul className="space-y-1">
                   <UserMenuItems user={user} onItemClick={() => setOpen(false)} />

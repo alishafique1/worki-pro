@@ -181,7 +181,7 @@ export default function HowRewardsWorkPage() {
         {/* CTA */}
         <div className='text-center'>
           <Link
-            to='/request-service'
+            to='/get-quotes'
             className='inline-block px-14 py-6 bg-[#2563EB] text-white font-black rounded-[30px] text-xl hover:bg-[#1D4ED8] transition-colors hover:scale-105'
           >
             Start Earning: Request a Service

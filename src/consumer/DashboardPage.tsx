@@ -42,10 +42,10 @@ export default function DashboardPage() {
           </p>
         </div>
         <Link
-          to="/request-service"
+          to="/get-quotes"
           className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm"
         >
-          + Get Free Quotes
+          + Get Help
         </Link>
       </div>
 

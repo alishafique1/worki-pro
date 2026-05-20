@@ -264,10 +264,10 @@ export default function AreaLandingPage() {
             We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
           </p>
           <Link
-            to="/request-service"
+            to="/get-quotes"
             className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all"
           >
-            Request Service Anyway
+            Get Help
           </Link>
         </div>
       </div>
@@ -362,10 +362,10 @@ export default function AreaLandingPage() {
           </p>
 
           <Link
-            to="/request-service"
+            to="/get-quotes"
             className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
           >
-            Request Service in {area.name} →
+            Get Help in {area.name} →
           </Link>
         </div>
       </section>
@@ -418,7 +418,7 @@ export default function AreaLandingPage() {
               return (
                 <Link
                   key={slug}
-                  to={`/request-service?service=${slug}&postalCode=`}
+                  to={`/get-quotes?service=${slug}`}
                   className="group p-8 bg-white rounded-[32px] border border-[#E2E8F0] hover:border-[#BFDBFE] transition-all hover:-translate-y-1 hover:shadow-xl text-left"
                 >
                   <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl border mb-5 text-2xl ${c.badge}`}>
@@ -652,10 +652,10 @@ export default function AreaLandingPage() {
                 Describe your issue once. We'll match you with the right expert, manage scheduling, and follow up until the job is done.
               </p>
               <Link
-                to="/request-service"
+                to="/get-quotes"
                 className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
               >
-                Get Started (It's Free) →
+                Get Help Now →
               </Link>
               <p className="mt-4 text-xs text-[#94A3B8]">🎁 Plus earn cashback on every job booked</p>
             </div>

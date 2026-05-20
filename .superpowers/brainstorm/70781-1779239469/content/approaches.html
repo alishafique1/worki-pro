@@ -1,0 +1,82 @@
+<h2>3 Ways to Execute the Bark Flip</h2>
+<p class="subtitle">All three put the request first — they differ in when auth happens and how complex the build is</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Pure Guest Wizard — auth at the very end</h3>
+      <p>Homepage → pick category → all service questions → location → <em>then</em> enter email + OTP → account created + request saved in one shot.</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Maximum conversion — zero friction before value</li>
+          <li>Exactly how Bark works</li>
+          <li>User sees the full wizard before committing</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Biggest build — guest state must survive to account creation</li>
+          <li>Need to wire OTP into the end of the request wizard</li>
+        </ul></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;background:#EFF6FF;padding:8px;border-radius:8px;color:#1e40af">
+        ⭐ Recommended — highest conversion, true Bark model
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Email-first, then questions</h3>
+      <p>Homepage → pick category → enter email (one field only) → service questions → OTP verify at end → account + request created.</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Lead captured early — even if they abandon mid-wizard</li>
+          <li>Simpler state management (email anchors the session)</li>
+          <li>Easy to re-engage via email if they drop off</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>One extra field before wizard starts</li>
+          <li>Slight friction vs pure guest flow</li>
+        </ul></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;background:#F8FAFC;padding:8px;border-radius:8px;color:#475569">
+        Good middle ground — GHL gets a lead even on abandonment
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Category pages → existing OTP → smart onboarding</h3>
+      <p>Homepage → category cards → service detail page with rich CTA → existing OTP login → onboarding wizard is now service-specific (not generic).</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Least code change — reuses existing auth flow</li>
+          <li>SEO-friendly — rich service detail pages</li>
+          <li>Faster to ship</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Still auth-before-request — doesn't fully solve the problem</li>
+          <li>Homepage still needs a rebuild</li>
+        </ul></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;background:#FEF3C7;padding:8px;border-radius:8px;color:#92400e">
+        Safer scope — but leaves the core friction in place
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <div class="label">What all three share</div>
+  <ul style="font-size:13px;color:#475569;line-height:2;margin:8px 0 0 16px">
+    <li>Homepage rebuilt with search + visual category grid (no more confusing nav)</li>
+    <li>Service detail pages get real content (pricing, FAQs, local trust signals)</li>
+    <li>Onboarding wizard becomes service-specific with dynamic follow-up questions</li>
+    <li>Provider onboarding stays roughly the same (separate flow)</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top:16px">Click your preferred approach above, then tell me in the terminal.</p>

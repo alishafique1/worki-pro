@@ -55,7 +55,7 @@ Homepage
 **Category grid**
 - Visual cards with Unsplash/DB images, icons, service name
 - Active categories link to `/services/:slug`
-- Coming-soon categories shown greyed out
+- We add Categories and detailed categories
 - 2–3 column grid, mobile-first
 
 **Nav services dropdown**
@@ -70,10 +70,10 @@ Each page serves dual purpose: SEO landing page + wizard entry point.
 
 **Sections per page:**
 1. **Hero** — service name, value prop, "Get Free Quotes" CTA (pre-loads wizard with category)
-2. **How it works** — 3 steps: describe job → get matched → choose provider
+2. **How it works** — 3 steps: describe job → get matched → Get Help
 3. **Pricing range** — rough local estimates (e.g. "Most HVAC repairs in Milton cost $150–$400")
 4. **FAQs** — 4–6 common questions per service category
-5. **Local trust signals** — "47 verified HVAC pros serving Milton, Oakville & Burlington"
+5. **Local trust signals** — "Verified Helpers serving Milton, Oakville & Burlington"
 6. **Footer CTA** — repeat quote button
 
 **Data source:** DB via `getServiceCategories` query — fully dynamic, no hardcoded content except pricing ranges (stored as category metadata or content.tsx).
@@ -175,7 +175,7 @@ Current OTP verify endpoint (`/api/auth/verify-otp`) returns `{ sessionId, isNew
 New behaviour needed:
 - Accept optional `pendingRequest` payload alongside OTP verification
 - On success, atomically: verify OTP → create/fetch user → save request → return session
-- New endpoint or extended existing: `POST /api/auth/verify-otp-and-save-request`
+- Existing `/api/auth/verify-otp` endpoint extended with optional `pendingRequest` body field — fully backward compatible (existing LoginPage sends no `pendingRequest`, behaviour unchanged)
 
 ---
 

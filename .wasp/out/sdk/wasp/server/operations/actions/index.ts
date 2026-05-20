@@ -8,6 +8,7 @@ import {
 } from '../wrappers.js'
 import { completeOnboarding as completeOnboarding_ext } from 'wasp/src/auth/onboardingOperations'
 import { redeemPoints as redeemPoints_ext } from 'wasp/src/consumer/operations'
+import { saveGuestRequest as saveGuestRequest_ext } from 'wasp/src/consumer/operations'
 import { submitServiceRequest as submitServiceRequest_ext } from 'wasp/src/consumer/operations'
 import { submitLead as submitLead_ext } from 'wasp/src/consumer/operations'
 import { sendCustomerMessage as sendCustomerMessage_ext } from 'wasp/src/consumer/operations'
@@ -72,6 +73,22 @@ export const redeemPoints: AuthenticatedOperationFor<RedeemPoints_ext> =
       RewardAccount: prisma.rewardAccount,
       RewardTransaction: prisma.rewardTransaction,
       Redemption: prisma.redemption,
+    },
+  )
+
+// PRIVATE API
+export type SaveGuestRequest_ext = typeof saveGuestRequest_ext
+
+// PUBLIC API
+export const saveGuestRequest: AuthenticatedOperationFor<SaveGuestRequest_ext> =
+  createAuthenticatedOperation(
+    saveGuestRequest_ext,
+    {
+      ServiceRequest: prisma.serviceRequest,
+      User: prisma.user,
+      RewardAccount: prisma.rewardAccount,
+      RewardTransaction: prisma.rewardTransaction,
+      Referral: prisma.referral,
     },
   )
 

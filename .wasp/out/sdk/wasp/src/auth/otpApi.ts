@@ -74,8 +74,24 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   res.json({ success: true })
 }
 
+type PendingRequest = {
+  firstName: string
+  phone: string
+  postalCode: string
+  smsConsent: boolean
+  serviceCategoryId?: string
+  description: string
+  qualifierAnswers?: Record<string, string | string[]>
+  referralCode?: string
+}
+
 export const verifyOtp = async (req: Request, res: Response, context: any): Promise<void> => {
-  const { email, code } = req.body as { email?: string; code?: string }
+  const { email, code, pendingRequest } = req.body as {
+    email?: string
+    code?: string
+    pendingRequest?: PendingRequest
+  }
+
   if (!email || !code) {
     res.status(400).json({ error: 'Email and code are required.' })
     return
@@ -116,12 +132,11 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
   if (!authIdentity) {
     isNewUser = true
     const serializedProviderData = await sanitizeAndSerializeProviderData({
-      hashedPassword: crypto.randomUUID(), // random password, never exposed — OTP is the login mechanism
+      hashedPassword: crypto.randomUUID(),
       isEmailVerified: true,
       emailVerificationSentAt: null,
       passwordResetSentAt: null,
     })
-
     const result = await createUser(providerId, serializedProviderData, {
       email: normalizedEmail,
     })
@@ -133,5 +148,75 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
 
   const session = await createSession(authId)
 
-  res.json({ success: true, sessionId: session.id, isNewUser })
+  // If a pending request was submitted with the OTP, save it now
+  let requestId: string | undefined
+  if (pendingRequest) {
+    const userRecord = await prisma.user.findFirst({ where: { email: normalizedEmail } })
+    if (userRecord) {
+      await prisma.user.update({
+        where: { id: userRecord.id },
+        data: {
+          firstName: pendingRequest.firstName,
+          phone: pendingRequest.phone,
+          postalCode: pendingRequest.postalCode,
+          role: 'CONSUMER',
+          smsConsent: pendingRequest.smsConsent,
+          smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
+        },
+      })
+
+      const request = await prisma.serviceRequest.create({
+        data: {
+          consumerId: userRecord.id,
+          name: pendingRequest.firstName,
+          phone: pendingRequest.phone,
+          postalCode: pendingRequest.postalCode,
+          email: normalizedEmail,
+          smsConsentGiven: pendingRequest.smsConsent,
+          serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
+          description: pendingRequest.description,
+          qualifierAnswers: pendingRequest.qualifierAnswers ?? {},
+          source: 'WEBSITE',
+        },
+      })
+      requestId = request.id
+
+      await prisma.rewardAccount.upsert({
+        where: { consumerId: userRecord.id },
+        update: {},
+        create: { consumerId: userRecord.id },
+      })
+      const existingBonus = await prisma.rewardTransaction.findFirst({
+        where: { consumerId: userRecord.id, type: 'SIGNUP_BONUS' },
+      })
+      if (!existingBonus) {
+        await prisma.rewardTransaction.create({
+          data: {
+            consumerId: userRecord.id,
+            type: 'SIGNUP_BONUS',
+            points: 100,
+            status: 'APPROVED',
+            reason: 'Welcome bonus',
+          },
+        })
+        await prisma.rewardAccount.update({
+          where: { consumerId: userRecord.id },
+          data: { pointsBalance: { increment: 100 }, lifetimePoints: { increment: 100 } },
+        })
+      }
+
+      if (pendingRequest.referralCode) {
+        const refCode = pendingRequest.referralCode.trim().toUpperCase()
+        const referral = await prisma.referral.findUnique({ where: { referralCode: refCode } })
+        if (referral && referral.referrerUserId !== userRecord.id && !referral.referredUserId) {
+          await prisma.referral.update({
+            where: { id: referral.id },
+            data: { referredUserId: userRecord.id, status: 'SIGNED_UP' },
+          })
+        }
+      }
+    }
+  }
+
+  res.json({ success: true, sessionId: session.id, isNewUser, requestId })
 }

@@ -56,10 +56,10 @@ export default function ServicesPage() {
               className="w-full pl-12 pr-32 py-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-base focus:outline-none focus:border-[#2563EB] focus:bg-white transition-colors"
             />
             <Link
-              to={`/request-service${search ? `?q=${encodeURIComponent(search)}` : ''}`}
+              to={`/get-quotes${search ? `?q=${encodeURIComponent(search)}` : ''}`}
               className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
             >
-              Get Quotes
+              Get Help
             </Link>
           </form>
         </div>
@@ -119,10 +119,10 @@ export default function ServicesPage() {
               No live category matches "<strong>{search}</strong>" yet — but our pros can still help.
             </p>
             <Link
-              to={`/request-service?q=${encodeURIComponent(search)}`}
+              to={`/get-quotes?q=${encodeURIComponent(search)}`}
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
             >
-              Request this service →
+              Get Help with this →
             </Link>
           </div>
         )}
@@ -155,10 +155,10 @@ export default function ServicesPage() {
               <p className="text-[#94A3B8] text-sm">Describe the problem — we'll figure out the rest.</p>
             </div>
             <Link
-              to="/request-service"
+              to="/get-quotes"
               className="shrink-0 px-7 py-4 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
             >
-              Get Free Quotes →
+              Get Help →
             </Link>
           </div>
         )}

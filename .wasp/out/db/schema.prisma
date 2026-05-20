@@ -125,6 +125,7 @@ model ServiceCategory {
   description       String?
   icon              String?
   imageUrl          String?
+  questions         Json?
   active            Boolean            @default(true)
   parentCategoryId  String?
   parent            ServiceCategory?   @relation("SubCategories", fields: [parentCategoryId], references: [id])
@@ -210,6 +211,9 @@ model ServiceRequest {
   postalCode            String
   city                  String?
   email                 String?
+  guestEmail            String?
+  guestPhone            String?
+  qualifierAnswers      Json?
   smsConsentGiven       Boolean             @default(false)
   smsConsentIp          String?
   smsConsentFormVersion String?

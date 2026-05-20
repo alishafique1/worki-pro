@@ -1,6 +1,7 @@
 import { type AuthenticatedOperationFor } from '../wrappers.js';
 import { completeOnboarding as completeOnboarding_ext } from 'wasp/src/auth/onboardingOperations';
 import { redeemPoints as redeemPoints_ext } from 'wasp/src/consumer/operations';
+import { saveGuestRequest as saveGuestRequest_ext } from 'wasp/src/consumer/operations';
 import { submitServiceRequest as submitServiceRequest_ext } from 'wasp/src/consumer/operations';
 import { submitLead as submitLead_ext } from 'wasp/src/consumer/operations';
 import { sendCustomerMessage as sendCustomerMessage_ext } from 'wasp/src/consumer/operations';
@@ -37,6 +38,8 @@ export type CompleteOnboarding_ext = typeof completeOnboarding_ext;
 export declare const completeOnboarding: AuthenticatedOperationFor<CompleteOnboarding_ext>;
 export type RedeemPoints_ext = typeof redeemPoints_ext;
 export declare const redeemPoints: AuthenticatedOperationFor<RedeemPoints_ext>;
+export type SaveGuestRequest_ext = typeof saveGuestRequest_ext;
+export declare const saveGuestRequest: AuthenticatedOperationFor<SaveGuestRequest_ext>;
 export type SubmitServiceRequest_ext = typeof submitServiceRequest_ext;
 export declare const submitServiceRequest: AuthenticatedOperationFor<SubmitServiceRequest_ext>;
 export type SubmitLead_ext = typeof submitLead_ext;

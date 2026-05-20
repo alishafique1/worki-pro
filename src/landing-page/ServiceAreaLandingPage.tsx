@@ -142,7 +142,7 @@ export default function ServiceAreaLandingPage() {
 
         <div className="flex flex-wrap gap-3 mt-6">
           <Link
-            to={`/request-service?service=${serviceSlug}`}
+            to={`/get-quotes?service=${serviceSlug}`}
             className="inline-block px-7 py-4 bg-[#2563EB] text-white font-black rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-base"
           >
             Get quotes (it's free)
@@ -260,7 +260,7 @@ export default function ServiceAreaLandingPage() {
               Post your request and we'll match you with the best available pro.
             </p>
             <Link
-              to={`/request-service?service=${serviceSlug}`}
+              to={`/get-quotes?service=${serviceSlug}`}
               className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors"
             >
               Post a request

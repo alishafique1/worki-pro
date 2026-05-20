@@ -1,5 +1,5 @@
 import type { ServiceRequest, RewardAccount, RewardTransaction, Redemption, CommunicationLog, ServiceCategory, Provider, ProviderCategory, Lead, Review, Referral } from "wasp/entities";
-import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, SendCustomerMessage, GetServiceCategories, GetProviders, GetProviderById, GetConsumerStats, SubmitLead, SendOtp, VerifyOtp, SubmitReview, GetReviewsForProvider, GetMessagesForRequest, GetMyReferral, ApplyReferralCode } from "wasp/server/operations";
+import type { GetMyRequests, GetMyRewardAccount, SubmitServiceRequest, RedeemPoints, SendCustomerMessage, GetServiceCategories, GetProviders, GetProviderById, GetConsumerStats, SubmitLead, SendOtp, VerifyOtp, SubmitReview, GetReviewsForProvider, GetMessagesForRequest, GetMyReferral, ApplyReferralCode, SaveGuestRequest } from "wasp/server/operations";
 export declare const getServiceCategories: GetServiceCategories<void, ServiceCategory[]>;
 export declare const getMyRequests: GetMyRequests<void, any[]>;
 export declare const getMyRewardAccount: GetMyRewardAccount<void, {
@@ -140,6 +140,19 @@ export declare const applyReferralCode: ApplyReferralCode<{
 }, {
     success: boolean;
     message: string;
+}>;
+type SaveGuestRequestInput = {
+    firstName: string;
+    phone: string;
+    postalCode: string;
+    smsConsent: boolean;
+    serviceCategoryId?: string;
+    description: string;
+    qualifierAnswers?: Record<string, string | string[]>;
+    referralCode?: string;
+};
+export declare const saveGuestRequest: SaveGuestRequest<SaveGuestRequestInput, {
+    requestId: string;
 }>;
 export {};
 //# sourceMappingURL=operations.d.ts.map

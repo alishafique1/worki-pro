@@ -19,7 +19,7 @@ const consumerFaqs = [
   {
     question: 'How do I request a service?',
     answer:
-      'Click "Request Service" from your dashboard or the navigation. Fill in the details (category, urgency, property info, and description) and submit. A matching provider will be notified.',
+      'Click "Get Help" from the navigation or homepage. Fill in your service category, details, and contact info — takes about 2 minutes. A verified local pro will be notified right away.',
   },
   {
     question: 'How long does it take to get matched with a pro?',

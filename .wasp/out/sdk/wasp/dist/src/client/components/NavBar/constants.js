@@ -1,5 +1,5 @@
 export const marketingNavigationItems = [
-    { name: "Services", to: "/services" },
+    { name: "Services", to: "/services", hasDropdown: true },
     { name: "How it Works", to: "/how-it-works" },
     { name: "Rewards", to: "/how-rewards-work" },
 ];

@@ -146,8 +146,8 @@ export function Hero() {
 
           {/* CTAs */}
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button href="/request-service">
-              Get Free Quotes <ArrowRight className="size-4" />
+            <Button href="/get-quotes">
+              Get Help <ArrowRight className="size-4" />
             </Button>
             <Button href="/providers/apply" variant="secondary">
               Join as a Pro
@@ -241,7 +241,7 @@ export function MarketplaceMockup() {
               <span className="text-sm">What service do you need?</span>
             </div>
             <button className="rounded-[22px] bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
-              Get Free Quotes
+              Get Help
             </button>
           </div>
         </div>
@@ -288,7 +288,7 @@ export function CategoryCard({
   comingSoon?: boolean;
 }) {
   return (
-    <Link to={comingSoon ? "/request-service" : href}>
+    <Link to={comingSoon ? "/get-quotes" : href}>
       <article className="group relative h-full overflow-hidden rounded-[19px] border border-[#E2E8F0] bg-white shadow-[0_4px_16px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]">
         {/* Image section */}
         {imageUrl && (
@@ -481,10 +481,10 @@ export function CTASection() {
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                to="/request-service"
+                to="/get-quotes"
                 className="inline-flex items-center justify-center gap-2 rounded-[23px] bg-white px-5 py-3 text-sm font-semibold text-[#2563EB] shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition duration-200 hover:bg-blue-50"
               >
-                Get Free Quotes Now <ArrowRight className="size-4" />
+                Get Help Now <ArrowRight className="size-4" />
               </Link>
               <Link
                 to="/providers/apply"

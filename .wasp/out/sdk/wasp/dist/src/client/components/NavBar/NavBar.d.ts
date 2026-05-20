@@ -1,6 +1,7 @@
 export interface NavigationItem {
     name: string;
     to: string;
+    hasDropdown?: boolean;
 }
 export default function NavBar({ navigationItems, }: {
     navigationItems: NavigationItem[];

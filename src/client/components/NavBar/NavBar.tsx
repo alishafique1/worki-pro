@@ -119,19 +119,19 @@ function DesktopAuth() {
             Log in
           </WaspRouterLink>
           <ReactRouterLink
-            to="/request-service"
+            to="/get-quotes"
             className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
           >
-            Find a Helper
+            Get Help
           </ReactRouterLink>
         </>
       ) : (
         <>
           <ReactRouterLink
-            to="/request-service"
+            to="/get-quotes"
             className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
           >
-            Get Free Quotes
+            Get Help
           </ReactRouterLink>
           <UserDropdown user={user} />
         </>
@@ -195,21 +195,21 @@ function MobileMenu({
                   Log in
                 </WaspRouterLink>
                 <ReactRouterLink
-                  to="/request-service"
+                  to="/get-quotes"
                   className="rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
                   onClick={() => setOpen(false)}
                 >
-                  Find a Helper
+                  Get Help
                 </ReactRouterLink>
               </div>
             ) : (
               <>
                 <ReactRouterLink
-                  to="/request-service"
+                  to="/get-quotes"
                   className="mb-4 block rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
                   onClick={() => setOpen(false)}
                 >
-                  Get Free Quotes
+                  Get Help
                 </ReactRouterLink>
                 <ul className="space-y-1">
                   <UserMenuItems user={user} onItemClick={() => setOpen(false)} />

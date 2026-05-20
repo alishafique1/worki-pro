@@ -12,7 +12,6 @@ import SmartHomeLandingPage from './src/landing-page/SmartHomeLandingPage'
 import PlumbingLandingPage from './src/landing-page/PlumbingLandingPage'
 import ElectricalLandingPage from './src/landing-page/ElectricalLandingPage'
 import HowRewardsWorkPage from './src/landing-page/HowRewardsWorkPage'
-import ServiceCategoryPage from './src/landing-page/services/ServiceCategoryPage'
 import AreaLandingPage from './src/landing-page/AreaLandingPage'
 import ProviderLandingPage from './src/provider/LandingPage'
 import ProviderApplyPage from './src/provider/ApplyPage'
@@ -26,6 +25,8 @@ import { RequestPasswordResetPage } from './src/auth/email-and-pass/RequestPassw
 import { PasswordResetPage } from './src/auth/email-and-pass/PasswordResetPage'
 import { EmailVerificationPage } from './src/auth/email-and-pass/EmailVerificationPage'
 import RequestServicePage from './src/consumer/RequestServicePage'
+import GuestRequestWizardPage from './src/consumer/GuestRequestWizardPage'
+import CategoryLandingPage from './src/landing-page/CategoryLandingPage'
 import BookingPage from './src/consumer/BookingPage'
 import DashboardPage from './src/consumer/DashboardPage'
 import MyRequestsPage from './src/consumer/MyRequestsPage'
@@ -76,7 +77,6 @@ export const routesMapping = {
   PlumbingRoute: PlumbingLandingPage,
   ElectricalRoute: ElectricalLandingPage,
   HowRewardsWorkRoute: HowRewardsWorkPage,
-  ServiceCategoryRoute: ServiceCategoryPage,
   AreaRoute: AreaLandingPage,
   ProviderLandingRoute: ProviderLandingPage,
   ProviderApplyRoute: ProviderApplyPage,
@@ -90,6 +90,8 @@ export const routesMapping = {
   PasswordResetRoute: PasswordResetPage,
   EmailVerificationRoute: EmailVerificationPage,
   RequestServiceRoute: RequestServicePage,
+  GuestRequestWizardRoute: GuestRequestWizardPage,
+  CategoryLandingRoute: CategoryLandingPage,
   BookingRoute: createAuthRequiredPage(BookingPage),
   DashboardRoute: createAuthRequiredPage(DashboardPage),
   MyRequestsRoute: createAuthRequiredPage(MyRequestsPage),

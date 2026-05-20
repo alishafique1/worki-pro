@@ -125,19 +125,6 @@ export const routes = {
         options?.hash
       ),
   },
-  ServiceCategoryRoute: {
-    to: "/services/:categorySlug",
-    build: (
-      options: OptionalRouteOptions
-      & { params: {"categorySlug": ParamValue;}}
-    ) => interpolatePath(
-        
-        "/services/:categorySlug",
-        options.params,
-        options?.search,
-        options?.hash
-      ),
-  },
   AreaRoute: {
     to: "/areas/:areaSlug",
     build: (
@@ -303,6 +290,32 @@ export const routes = {
         
         "/request-service",
         undefined,
+        options?.search,
+        options?.hash
+      ),
+  },
+  GuestRequestWizardRoute: {
+    to: "/get-quotes",
+    build: (
+      options?:
+      OptionalRouteOptions
+    ) => interpolatePath(
+        
+        "/get-quotes",
+        undefined,
+        options?.search,
+        options?.hash
+      ),
+  },
+  CategoryLandingRoute: {
+    to: "/services/:categorySlug",
+    build: (
+      options: OptionalRouteOptions
+      & { params: {"categorySlug": ParamValue;}}
+    ) => interpolatePath(
+        
+        "/services/:categorySlug",
+        options.params,
         options?.search,
         options?.hash
       ),
