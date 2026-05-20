@@ -1104,7 +1104,7 @@ git commit -m "feat: wizard steps 1-3 (category, sub-service, qualifiers)"
 - Create: `src/consumer/components/wizard/StepContact.tsx`
 - Create: `src/consumer/components/wizard/StepOtp.tsx`
 
-- [ ] **Step 1: Create `StepLocation.tsx`**
+- [x] **Step 1: Create `StepLocation.tsx`**
 
 ```tsx
 import { useState } from 'react'
@@ -1150,7 +1150,7 @@ export default function StepLocation({ state, update, onNext, onBack }: Props) {
 }
 ```
 
-- [ ] **Step 2: Create `StepContact.tsx`**
+- [x] **Step 2: Create `StepContact.tsx`**
 
 ```tsx
 import { useState } from 'react'
@@ -1217,7 +1217,7 @@ export default function StepContact({ state, update, onNext, onBack }: Props) {
 }
 ```
 
-- [ ] **Step 3: Create `StepOtp.tsx`**
+- [x] **Step 3: Create `StepOtp.tsx`**
 
 ```tsx
 import { useState, useRef, useEffect } from 'react'
@@ -1367,7 +1367,7 @@ export default function StepOtp({ state, onBack, onSuccess, setError }: Props) {
 }
 ```
 
-- [ ] **Step 4: End-to-end test**
+- [x] **Step 4: End-to-end test**
 
 Run the full guest wizard flow:
 1. Go to `http://localhost:3002/get-quotes`
@@ -1375,14 +1375,14 @@ Run the full guest wizard flow:
 3. Should land on `/dashboard` showing the new request
 4. Check DB: `ServiceRequest` row should exist with `qualifierAnswers`, `consumerId` set, and `User` record created
 
-- [ ] **Step 5: Test returning user**
+- [x] **Step 5: Test returning user**
 
 Repeat with the same email (`consumer@thehelper.ca`). After OTP verify:
 - Should land on dashboard
 - A second `ServiceRequest` should be created and attached to the existing user
 - No duplicate `SIGNUP_BONUS` reward transaction
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/consumer/components/wizard/StepLocation.tsx src/consumer/components/wizard/StepContact.tsx src/consumer/components/wizard/StepOtp.tsx
