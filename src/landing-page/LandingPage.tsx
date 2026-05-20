@@ -42,7 +42,7 @@ function SearchPanel() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                navigate(`/request-service?q=${encodeURIComponent(searchQuery)}`);
+                navigate(`/get-quotes?q=${encodeURIComponent(searchQuery)}`);
               }
             }}
             className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none"
@@ -57,7 +57,7 @@ function SearchPanel() {
           </p>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {categories.map((cat) => (
-              <Link key={cat.name} to={cat.href ?? "/request-service"}>
+              <Link key={cat.name} to={cat.comingSoon ? '/get-quotes' : `/services/${cat.slug ?? cat.name.toLowerCase().replace(/\s+/g, '-')}`}>
                 <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
                   <span className="text-[#2563EB]">{cat.icon}</span>
                   <span className="text-xs font-medium text-[#0F172A]">{cat.name}</span>
@@ -76,7 +76,7 @@ function SearchPanel() {
             {popularServices.map((svc) => (
               <Link
                 key={svc.name}
-                to="/request-service"
+                to="/get-quotes"
                 className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]"
               >
                 <span className="flex size-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
@@ -194,7 +194,7 @@ export default function LandingPage() {
               {/* CTAs */}
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  to="/request-service"
+                  to="/get-quotes"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
                 >
                   Get Free Quotes Now
@@ -298,7 +298,7 @@ export default function LandingPage() {
                   icon={category.icon}
                   name={category.name}
                   description={category.description}
-                  href={category.href ?? "/request-service"}
+                  href={category.href ?? "/get-quotes"}
                   imageUrl={category.imageUrl}
                 />
               ))}
@@ -310,7 +310,7 @@ export default function LandingPage() {
                 {categories.filter(c => c.comingSoon).slice(0, 6).map((category) => (
                   <Link
                     key={category.name}
-                    to="/request-service"
+                    to="/get-quotes"
                     className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]"
                   >
                     <span className="text-[#2563EB]">{category.icon}</span>
@@ -322,7 +322,7 @@ export default function LandingPage() {
             {/* CTA */}
             <div className="mt-8 text-center">
               <Link
-                to="/request-service"
+                to="/get-quotes"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:underline"
               >
                 View all services <ArrowRight className="size-4" />
@@ -363,7 +363,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-8 text-center">
               <Link
-                to="/request-service"
+                to="/get-quotes"
                 className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8]"
               >
                 Get Started Now <ArrowRight className="size-4" />
