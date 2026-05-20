@@ -82,7 +82,7 @@ cd .wasp/out/db && npx prisma validate
 
 Expected: `The schema at schema.prisma is valid 🎉`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add schema.prisma migrations/
@@ -96,7 +96,7 @@ git commit -m "feat: add qualifier questions + guest fields to schema"
 **Files:**
 - Modify: `main.wasp`
 
-- [ ] **Step 1: Add guest wizard route + page**
+- [x] **Step 1: Add guest wizard route + page**
 
 Find the block with `route RequestServiceRoute` in `main.wasp` and add after it:
 
@@ -107,7 +107,7 @@ page GuestRequestWizardPage {
 }
 ```
 
-- [ ] **Step 2: Add category landing route + page**
+- [x] **Step 2: Add category landing route + page**
 
 ```wasp
 route CategoryLandingRoute { path: "/services/:categorySlug", to: CategoryLandingPage }
@@ -116,7 +116,7 @@ page CategoryLandingPage {
 }
 ```
 
-- [ ] **Step 3: Add `saveGuestRequest` action**
+- [x] **Step 3: Add `saveGuestRequest` action**
 
 Find the `actions` section and add:
 
@@ -127,7 +127,7 @@ action saveGuestRequest {
 }
 ```
 
-- [ ] **Step 4: Verify wasp compiles**
+- [x] **Step 4: Verify wasp compiles**
 
 ```bash
 wasp build 2>&1 | tail -5
@@ -135,7 +135,7 @@ wasp build 2>&1 | tail -5
 
 Expected: `✅ Your wasp project has successfully compiled.`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add main.wasp
