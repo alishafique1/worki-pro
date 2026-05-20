@@ -41,7 +41,7 @@ while true; do
 
   LOG="$LOG_DIR/task-$(date +%Y%m%d-%H%M%S).log"
 
-  claude --dangerously-skip-permissions -p "$(cat <<PROMPT
+  claude --allowedTools "Bash,Read,Edit,Write" -p "$(cat <<PROMPT
 You are executing an implementation plan for a Wasp 0.21 full-stack app.
 Plan file: $PLAN
 Spec file: docs/superpowers/specs/2026-05-19-bark-style-redesign-design.md
@@ -67,7 +67,7 @@ PROMPT
     echo "⚠️  Claude exited with code $EXIT_CODE — check $LOG"
     echo "Retrying once after 10s..."
     sleep 10
-    claude --dangerously-skip-permissions -p "Continue executing the current task in $PLAN. Find the next unchecked step and complete it. Commit when done." 2>&1 | tee -a "$LOG" || {
+    claude --allowedTools "Bash,Read,Edit,Write" -p "Continue executing the current task in $PLAN. Find the next unchecked step and complete it. Commit when done." 2>&1 | tee -a "$LOG" || {
       echo "❌ Retry also failed — stopping loop. Run manually to debug."
       exit 1
     }
