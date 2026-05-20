@@ -519,7 +519,7 @@ git commit -m "feat: wire homepage search and category cards to new routes"
 - Modify: `src/client/components/NavBar/constants.ts`
 - Modify: `src/client/components/NavBar/NavBar.tsx`
 
-- [ ] **Step 1: Update `constants.ts` to mark Services as a dropdown trigger**
+- [x] **Step 1: Update `constants.ts` to mark Services as a dropdown trigger**
 
 In `src/client/components/NavBar/constants.ts`, find `marketingNavigationItems`. Update the "Services" item to include a `hasDropdown: true` flag:
 
@@ -531,7 +531,7 @@ export const marketingNavigationItems = [
 ]
 ```
 
-- [ ] **Step 2: Add dropdown to `NavBar.tsx`**
+- [x] **Step 2: Add dropdown to `NavBar.tsx`**
 
 In `src/client/components/NavBar/NavBar.tsx`, add a `useQuery(getServiceCategories)` call and render a dropdown for the Services nav item. Add the import:
 
@@ -565,11 +565,11 @@ For the Services nav link, replace with:
 </div>
 ```
 
-- [ ] **Step 3: Verify manually**
+- [x] **Step 3: Verify manually**
 
 Hover "Services" in the nav — dropdown should show all active categories from DB. Each links to `/services/:slug`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/client/components/NavBar/constants.ts src/client/components/NavBar/NavBar.tsx
@@ -583,7 +583,7 @@ git commit -m "feat: add dynamic services dropdown to nav"
 **Files:**
 - Create: `src/landing-page/CategoryLandingPage.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 Create `src/landing-page/CategoryLandingPage.tsx`:
 
@@ -726,11 +726,11 @@ export default function CategoryLandingPage() {
 }
 ```
 
-- [ ] **Step 2: Verify manually**
+- [x] **Step 2: Verify manually**
 
 Navigate to `http://localhost:3002/services/hvac`. Should show the HVAC landing page with hero, how-it-works, pricing, FAQs. "Get Free Quotes" links to `/get-quotes?category=...` (wizard, not yet built — 404 is fine).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/landing-page/CategoryLandingPage.tsx
@@ -745,7 +745,7 @@ git commit -m "feat: add dynamic category landing pages (/services/:slug)"
 - Create: `src/consumer/GuestRequestWizardPage.tsx`
 - Create: `src/consumer/components/wizard/WizardProgress.tsx`
 
-- [ ] **Step 1: Create `WizardProgress.tsx`**
+- [x] **Step 1: Create `WizardProgress.tsx`**
 
 Create `src/consumer/components/wizard/WizardProgress.tsx`:
 
@@ -773,7 +773,7 @@ export default function WizardProgress({ current, total, labels }: WizardProgres
 }
 ```
 
-- [ ] **Step 2: Create wizard shell `GuestRequestWizardPage.tsx`**
+- [x] **Step 2: Create wizard shell `GuestRequestWizardPage.tsx`**
 
 Create `src/consumer/GuestRequestWizardPage.tsx`:
 
@@ -882,11 +882,11 @@ export default function GuestRequestWizardPage() {
 }
 ```
 
-- [ ] **Step 3: Verify the page renders**
+- [x] **Step 3: Verify the page renders**
 
 Navigate to `http://localhost:3002/get-quotes`. Should show The Helper header, progress bar, and a blank step 1 area (StepCategory will error until created in Task 9).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/consumer/GuestRequestWizardPage.tsx src/consumer/components/wizard/WizardProgress.tsx
@@ -902,7 +902,7 @@ git commit -m "feat: wizard shell and progress bar"
 - Create: `src/consumer/components/wizard/StepSubService.tsx`
 - Create: `src/consumer/components/wizard/StepQualifiers.tsx`
 
-- [ ] **Step 1: Create `StepCategory.tsx`**
+- [x] **Step 1: Create `StepCategory.tsx`**
 
 ```tsx
 import { useQuery, getServiceCategories } from 'wasp/client/operations'
@@ -946,7 +946,7 @@ export default function StepCategory({ state, update, onNext }: Props) {
 }
 ```
 
-- [ ] **Step 2: Create `StepSubService.tsx`**
+- [x] **Step 2: Create `StepSubService.tsx`**
 
 ```tsx
 import { useQuery, getServiceCategories } from 'wasp/client/operations'
@@ -999,7 +999,7 @@ export default function StepSubService({ state, update, onNext, onBack }: Props)
 }
 ```
 
-- [ ] **Step 3: Create `StepQualifiers.tsx`**
+- [x] **Step 3: Create `StepQualifiers.tsx`**
 
 ```tsx
 import { useState } from 'react'
