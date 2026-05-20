@@ -1081,14 +1081,14 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
 }
 ```
 
-- [ ] **Step 4: Verify steps 1–3 manually**
+- [x] **Step 4: Verify steps 1–3 manually**
 
 Go to `/get-quotes`. Should be able to:
 1. Pick a category → advances to step 2
 2. Pick a sub-service or skip → advances to step 3
 3. Answer qualifier questions, add description → "Next" advances to step 4 (StepLocation, errors until Task 10)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/consumer/components/wizard/StepCategory.tsx src/consumer/components/wizard/StepSubService.tsx src/consumer/components/wizard/StepQualifiers.tsx
