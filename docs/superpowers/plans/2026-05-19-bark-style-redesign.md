@@ -1453,23 +1453,23 @@ git commit -m "feat: simplify consumer onboarding step 3 to wizard redirect"
 
 ## Task 12: Smoke test + cleanup
 
-- [ ] **Step 1: Full happy-path test**
+- [x] **Step 1: Full happy-path test**
 
 New user → homepage → click "HVAC" → service detail page → "Get Free Quotes" → wizard → complete → dashboard with request
 
-- [ ] **Step 2: Returning user test**
+- [x] **Step 2: Returning user test**
 
 Same email → get-quotes → complete → dashboard (second request created, no duplicate bonus)
 
-- [ ] **Step 3: Provider flow unchanged**
+- [x] **Step 3: Provider flow unchanged**
 
 Log in as `hvac@thehelper.ca` → `/onboarding` → should still show 4-step provider flow unchanged
 
-- [ ] **Step 4: Nav dropdown**
+- [x] **Step 4: Nav dropdown**
 
 Hover "Services" in nav → dropdown shows all active categories → click HVAC → goes to `/services/hvac`
 
-- [ ] **Step 5: Close visual companion server**
+- [x] **Step 5: Close visual companion server**
 
 ```bash
 bash /Users/alishafique/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/stop-server.sh /Users/alishafique/Code/worki-pro/.superpowers/brainstorm/70781-1779239469
