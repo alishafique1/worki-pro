@@ -63,7 +63,9 @@ jobs:
             docker system prune -af
             echo "=== Pulling latest code ==="
             cd /data/thehelper
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
             echo "=== Building Docker images ==="
             docker compose build --no-cache
             echo "=== Restarting containers ==="
