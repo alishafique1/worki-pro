@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh run *)"
+      "Bash(gh run *)",
+      "Bash(dig thehelper.ca @1.1.1.1 +short)",
+      "Bash(dig thehelper.ca @8.8.8.8 +short)"
     ]
   }
 }
