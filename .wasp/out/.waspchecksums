@@ -1838,7 +1838,7 @@
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "4e8f1626546daa3a732fb98f047abbe5d4648dded12c55b55e54f11e1150fa73"
+        "6e31318c9b81ea23915f19b852bd198ef6bec48405fc7226f1c5fd3d9d740a4c"
     ],
     [
         [
@@ -1908,7 +1908,7 @@
             "file",
             "sdk/wasp/src/consumer/RequestServicePage.tsx"
         ],
-        "420cc42c316af48c4febecf87b59580d53a4cf2c95b02b2ea9adad56bc328304"
+        "a5a7156a2ca14fb4cde30ca26386cb0b8e37377848b41cfa8b223450248391aa"
     ],
     [
         [
@@ -1943,7 +1943,7 @@
             "file",
             "sdk/wasp/src/consumer/categoryQualifiers.ts"
         ],
-        "872351500e5af19a2a5d035a0bd70937e5a8aba3f08dd50340f8961999301e16"
+        "525f9577f947dc83a855707329465e343cae429eb4603627ebff8ac16efdb167"
     ],
     [
         [
@@ -1958,6 +1958,13 @@
             "sdk/wasp/src/consumer/components/wizard/StepContact.tsx"
         ],
         "5f8318b32004111e90d5fe8b2c96795ba61b11b3248c7daadb97393c1300665f"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/consumer/components/wizard/StepInfoAndVerify.tsx"
+        ],
+        "dab35764d8ef129d7af4e0688058de1e20afbc3804c48d8e73887a15a6b268f1"
     ],
     [
         [
@@ -2076,7 +2083,7 @@
             "file",
             "sdk/wasp/src/landing-page/CategoryLandingPage.tsx"
         ],
-        "f3dde64445735b84b9c92fc171c59b168e48c933a3ae95907a2750891e23e4b9"
+        "b42ad7a5e9c5d8ddbefa69942165c12edb3697445db9d99bd54a40941527f85a"
     ],
     [
         [
@@ -2266,13 +2273,6 @@
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
         "8675ccd0e0022832d697689ce5d1618cfd1d55d3df17a618f906c2dd981a26bb"
-    ],
-    [
-        [
-            "file",
-            "sdk/wasp/src/landing-page/services/ServiceCategoryPage.tsx"
-        ],
-        "d1ad0ed31342d8d78297c047648c9fbfa7c6b3779f54cf075b95dcfad9142066"
     ],
     [
         [
@@ -2711,16 +2711,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "5b67683c376ec3a62464df63fbffbea0b9e398fded21ef2dfd88ec22ca3f582e"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -3014,7 +3014,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3315,7 +3315,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3757,6 +3757,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

@@ -2,11 +2,8 @@ import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router'
 import WizardProgress from './components/wizard/WizardProgress'
 import StepCategory from './components/wizard/StepCategory'
-import StepSubService from './components/wizard/StepSubService'
 import StepQualifiers from './components/wizard/StepQualifiers'
-import StepLocation from './components/wizard/StepLocation'
-import StepContact from './components/wizard/StepContact'
-import StepOtp from './components/wizard/StepOtp'
+import StepInfoAndVerify from './components/wizard/StepInfoAndVerify'
 
 export type WizardState = {
   categoryId: string | null
@@ -24,8 +21,8 @@ export type WizardState = {
   referralCode: string
 }
 
-const STEP_LABELS = ['Service', 'Details', 'Questions', 'Location', 'Contact', 'Verify']
-const TOTAL_STEPS = 6
+const STEP_LABELS = ['Service', 'Questions', 'Your info']
+const TOTAL_STEPS = 3
 
 export default function GuestRequestWizardPage() {
   const [searchParams] = useSearchParams()
@@ -75,12 +72,9 @@ export default function GuestRequestWizardPage() {
         <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 shadow-lg">
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
             {step === 1 && <StepCategory state={state} update={update} onNext={next} />}
-            {step === 2 && <StepSubService state={state} update={update} onNext={next} onBack={back} />}
-            {step === 3 && <StepQualifiers state={state} update={update} onNext={next} onBack={back} />}
-            {step === 4 && <StepLocation state={state} update={update} onNext={next} onBack={back} />}
-            {step === 5 && <StepContact state={state} update={update} onNext={next} onBack={back} />}
-            {step === 6 && (
-              <StepOtp
+            {step === 2 && <StepQualifiers state={state} update={update} onNext={next} onBack={back} />}
+            {step === 3 && (
+              <StepInfoAndVerify
                 state={state}
                 update={update}
                 onBack={back}

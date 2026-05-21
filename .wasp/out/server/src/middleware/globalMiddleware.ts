@@ -1,5 +1,6 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import logger from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
 
@@ -7,29 +8,14 @@ import { config } from 'wasp/server'
 import type { MiddlewareConfig, MiddlewareConfigFn } from 'wasp/server/middleware'
 export type { MiddlewareConfig, MiddlewareConfigFn } from 'wasp/server/middleware'
 
-import pinoHttp from 'pino-http'
-
-const pinoHttpLogger = pinoHttp({
-  level: process.env.LOG_LEVEL || 'info',
-  autoLogging: {
-    ignore: (req) => req.url === '/api/health',
-  },
-  redact: {
-    paths: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]'],
-    censor: '[REDACTED]',
-  },
-})
-
-const _waspGlobalMiddlewareConfigFn = (mc: MiddlewareConfig) => {
-  mc.set('pino-logger', pinoHttpLogger)
-  return mc
-}
+const _waspGlobalMiddlewareConfigFn = (mc: MiddlewareConfig) => mc
 
 // This is the set of middleware Wasp supplies by default.
 // NOTE: Remember to update the docs of these change.
 const defaultGlobalMiddlewareConfig: MiddlewareConfig = new Map([
   ['helmet', helmet()],
   ['cors', cors({ origin: config.allowedCORSOrigins })],
+  ['logger', logger('dev')],
   ['express.json', express.json()],
   ['express.urlencoded', express.urlencoded()],
   ['cookieParser', cookieParser()]

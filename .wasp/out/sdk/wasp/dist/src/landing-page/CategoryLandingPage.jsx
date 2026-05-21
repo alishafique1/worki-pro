@@ -1,5 +1,7 @@
 import { useParams, Link } from 'react-router';
 import { useQuery, getServiceCategories } from 'wasp/client/operations';
+import PageSeo, { createServiceSchema, createFaqSchema, createBreadcrumbSchema } from './components/PageSeo';
+import { categoryPages } from './services/categoryData';
 const PRICING = {
     hvac: 'Most HVAC repairs in Milton cost $150–$400',
     plumbing: 'Most plumbing jobs in the GTA cost $100–$350',
@@ -8,30 +10,30 @@ const PRICING = {
     'smart-home': 'Smart home installs typically cost $150–$600',
     'appliance-repair': 'Appliance repairs usually cost $100–$300',
 };
-const FAQS = {
-    hvac: [
-        { q: 'How quickly can I get an HVAC tech?', a: 'Most verified HVAC pros can come within 24–48 hours. Mark urgent for same-day.' },
-        { q: 'Is a free quote really free?', a: 'Yes — providers compete for your job. You choose who to hire.' },
-        { q: 'What areas do you cover?', a: 'Milton, Oakville, Burlington, and surrounding GTA areas.' },
-        { q: 'Are providers vetted?', a: 'All providers go through our verification process before receiving leads.' },
-    ],
-    plumbing: [
-        { q: 'Can you help with emergency leaks?', a: 'Yes — mark your request as urgent and we\'ll match you with available plumbers immediately.' },
-        { q: 'Do plumbers bring their own parts?', a: 'Most do for common repairs. They\'ll let you know if they need to source parts.' },
-        { q: 'What areas do you cover?', a: 'Milton, Oakville, Burlington, and surrounding GTA areas.' },
-        { q: 'Are providers vetted?', a: 'All providers are verified before they can receive leads through The Helper.' },
-    ],
-};
 const DEFAULT_FAQS = [
     { q: 'Is it free to get quotes?', a: 'Yes — getting quotes through The Helper is completely free for homeowners.' },
     { q: 'How quickly will I hear back?', a: 'Most homeowners receive their first quote within a few hours.' },
     { q: 'What areas do you cover?', a: 'Milton, Oakville, Burlington, and surrounding GTA areas.' },
     { q: 'Are providers vetted?', a: 'All providers go through our verification process before receiving leads.' },
 ];
+const GTA_AREAS = [
+    { name: 'Milton', slug: 'milton' },
+    { name: 'Oakville', slug: 'oakville' },
+    { name: 'Burlington', slug: 'burlington' },
+    { name: 'Mississauga', slug: 'mississauga' },
+    { name: 'Brampton', slug: 'brampton' },
+];
 export default function CategoryLandingPage() {
     const { categorySlug } = useParams();
     const { data: categories, isLoading } = useQuery(getServiceCategories);
     const category = categories?.find(c => c.slug === categorySlug && !c.parentCategoryId);
+    const pageData = categoryPages.find(p => p.slug === categorySlug);
+    const faqs = pageData?.faqs?.length
+        ? pageData.faqs.map(f => ({ q: f.question, a: f.answer }))
+        : DEFAULT_FAQS;
+    const faqSchemaItems = faqs.map(f => ({ question: f.q, answer: f.a }));
+    const pricing = PRICING[categorySlug ?? ''];
+    const areas = GTA_AREAS;
     if (isLoading) {
         return (<div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
         <div className="animate-pulse text-[#475569]">Loading…</div>
@@ -43,21 +45,83 @@ export default function CategoryLandingPage() {
         <Link to="/" className="text-[#2563EB] hover:underline">← Back to home</Link>
       </div>);
     }
-    const faqs = FAQS[categorySlug ?? ''] ?? DEFAULT_FAQS;
-    const pricing = PRICING[categorySlug ?? ''];
     return (<div className="min-h-screen bg-[#F8FAFC]">
+      <PageSeo title={pageData?.seo?.title ?? `${category.name} in Milton, Oakville & Burlington | The Helper`} description={pageData?.seo?.description ?? `Get free quotes from verified ${category.name.toLowerCase()} professionals in Milton, Oakville, and Burlington.`} ogTitle={`${category.name} Services in GTA | The Helper`} ogDescription={pageData?.description ?? `Find trusted ${category.name.toLowerCase()} pros serving Milton, Oakville, and Burlington.`} canonicalPath={`/services/${categorySlug}`} keywords={`${category.name.toLowerCase()} repair Milton, ${category.name.toLowerCase()} Oakville, ${category.name.toLowerCase()} Burlington, GTA ${category.name.toLowerCase()}, home services`} structuredData={{
+            '@context': 'https://schema.org',
+            '@graph': [
+                createBreadcrumbSchema([
+                    { name: 'Home', url: 'https://thehelper.ca/' },
+                    { name: category.name, url: `https://thehelper.ca/services/${categorySlug}` },
+                ]),
+                createServiceSchema({
+                    name: `${category.name} Services in GTA`,
+                    description: pageData?.description ?? category.description ?? '',
+                    areaServed: ['Milton', 'Oakville', 'Burlington'],
+                    url: `https://thehelper.ca/services/${categorySlug}`,
+                }),
+                createFaqSchema(faqSchemaItems),
+            ],
+        }}/>
+
       {/* Hero */}
       <section className="bg-[#0F172A] text-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl font-black mb-4">{category.name} in Milton, Oakville & Burlington</h1>
-          <p className="text-[#94A3B8] text-lg mb-8">
-            Get free quotes from verified local {category.name.toLowerCase()} professionals — no commitment required.
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-[#60A5FA] mb-3">
+            {pageData?.badge ?? `${category.name} · GTA`}
+          </span>
+          <h1 className="text-4xl font-black mb-4">
+            {category.name} in Milton, Oakville & Burlington
+          </h1>
+          <p className="text-[#94A3B8] text-lg mb-8 max-w-2xl mx-auto">
+            {pageData?.description ?? `Get free quotes from verified local ${category.name.toLowerCase()} professionals — no commitment required.`}
           </p>
           <Link to={`/get-quotes?category=${category.id}&slug=${category.slug}`} className="inline-block px-10 py-4 bg-[#2563EB] text-white font-bold rounded-full text-lg hover:bg-[#1D4ED8] transition-colors">
             Get Help →
           </Link>
         </div>
       </section>
+
+      {/* Trust signals */}
+      <section className="py-10 px-6 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
+            <div className="text-2xl mb-1">✓</div>
+            <p className="font-semibold text-[#0F172A] text-sm">Verified pros</p>
+            <p className="text-xs text-[#64748B]">Every provider is background-checked</p>
+          </div>
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
+            <div className="text-2xl mb-1">💰</div>
+            <p className="font-semibold text-[#0F172A] text-sm">Free quotes</p>
+            <p className="text-xs text-[#64748B]">No obligation, compare & choose</p>
+          </div>
+          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
+            <div className="text-2xl mb-1">📅</div>
+            <p className="font-semibold text-[#0F172A] text-sm">Fast response</p>
+            <p className="text-xs text-[#64748B]">Most quotes arrive within hours</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Service grid */}
+      {pageData?.subCategories && pageData.subCategories.length > 0 && (<section className="py-16 px-6 max-w-5xl mx-auto">
+          <h2 className="text-2xl font-black text-[#0F172A] mb-8 text-center">
+            {category.name} services we cover
+          </h2>
+          <div className="space-y-10">
+            {pageData.subCategories.map(sub => (<div key={sub.name}>
+                <h3 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-[#2563EB] rounded-full inline-block"/>
+                  {sub.name}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {sub.services.map(s => (<div key={s.name} className="bg-white border border-[#E2E8F0] rounded-xl p-4 hover:border-[#2563EB]/30 transition-colors">
+                      <h4 className="font-bold text-[#0F172A] text-sm mb-1">{s.name}</h4>
+                      <p className="text-xs text-[#475569] leading-relaxed">{s.description}</p>
+                    </div>))}
+                </div>
+              </div>))}
+          </div>
+        </section>)}
 
       {/* How it works */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
@@ -83,6 +147,21 @@ export default function CategoryLandingPage() {
             <p className="text-sm text-[#92400E] mt-2">Exact quotes depend on scope — get yours free in 2 minutes.</p>
           </div>
         </section>)}
+
+      {/* Service areas */}
+      <section className="py-16 px-6 max-w-4xl mx-auto">
+        <h2 className="text-2xl font-black text-[#0F172A] mb-4 text-center">
+          {category.name} in your area
+        </h2>
+        <p className="text-[#475569] text-center mb-8 max-w-xl mx-auto">
+          We cover homes across the GTA. Select your area to see local {category.name.toLowerCase()} providers.
+        </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          {areas.map(area => (<Link key={area.slug} to={`/services/${categorySlug}/${area.slug}`} className="px-5 py-2.5 bg-white border border-[#E2E8F0] rounded-full text-sm font-semibold text-[#0F172A] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors">
+              {area.name}
+            </Link>))}
+        </div>
+      </section>
 
       {/* FAQs */}
       <section className="py-16 px-6 max-w-4xl mx-auto">

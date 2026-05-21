@@ -6,22 +6,7 @@ import indexRouter from './routes/index.js'
 // TODO: Consider extracting most of this logic into createApp(routes, path) function so that
 //   it can be used in unit tests to test each route individually.
 
-import * as Sentry from '@sentry/node'
-
-if (process.env.SENTRY_DSN) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'production',
-    tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE || '0.1'),
-  })
-}
-
 const app = express()
-
-if (process.env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.requestHandler())
-  app.use(Sentry.Handlers.tracingHandler())
-}
 
 // NOTE: Middleware are installed on a per-router or per-route basis.
 
@@ -47,9 +32,5 @@ app.use((err, _req, res, next) => {
   // If the user wants to put more information about the error into the response, they should use HttpError.
   return next(err)
 })
-
-if (process.env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.errorHandler())
-}
 
 export default app

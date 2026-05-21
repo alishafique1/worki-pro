@@ -5,6 +5,7 @@ import { getRequestPasswordResetRoute } from "../email/requestPasswordReset.js";
 import { resetPassword } from "../email/resetPassword.js";
 import { verifyEmail } from "../email/verifyEmail.js";
 import { defineHandler } from "wasp/server/utils";
+import { env } from "wasp/server";
 import { getEmailUserFields } from '../../../../../../../src/auth/userSignupFields';
 const _waspUserSignupFields = getEmailUserFields;
 import { getVerificationEmailContent } from '../../../../../../../src/auth/email-and-pass/emails';
@@ -27,7 +28,7 @@ const config = {
             fromField,
             clientRoute: '/email-verification',
             getVerificationEmailContent: _waspGetVerificationEmailContent,
-            isEmailAutoVerified: false,
+            isEmailAutoVerified: env.SKIP_EMAIL_VERIFICATION_IN_DEV,
         }));
         router.post('/signup', signupRoute);
         const requestPasswordResetRoute = defineHandler(getRequestPasswordResetRoute({
