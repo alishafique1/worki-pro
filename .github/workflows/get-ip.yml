@@ -1,0 +1,13 @@
+name: Get VPS IP
+on:
+  workflow_dispatch:
+jobs:
+  ip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: curl -s ifconfig.me
