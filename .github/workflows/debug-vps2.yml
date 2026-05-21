@@ -1,0 +1,22 @@
+name: Debug VPS curl
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl localhost on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            echo "=== curl localhost (direct nginx, no Cloudflare) ==="
+            curl -s -H "Host: thehelper.ca" http://localhost | grep -o '"[^"]*\.js"'
+            echo "=== docker exec index.html ==="
+            docker exec thehelper-web cat /usr/share/nginx/html/index.html | grep -o '"[^"]*\.js"'
+            echo "=== Traefik routing labels on thehelper-web ==="
+            docker inspect thehelper-web | python3 -c "import json,sys; c=json.load(sys.stdin)[0]; labels=c['Config']['Labels']; [print(k,'=',v) for k,v in labels.items() if 'traefik' in k.lower() and 'rule' in k.lower()]"
