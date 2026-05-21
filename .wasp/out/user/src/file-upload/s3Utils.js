@@ -5,11 +5,16 @@ import { randomUUID } from "crypto";
 import * as path from "path";
 import { MAX_FILE_SIZE_BYTES } from "./validation";
 export const s3Client = new S3Client({
-    region: process.env.AWS_S3_REGION,
+    region: process.env.AWS_S3_REGION ?? 'auto',
     credentials: {
         accessKeyId: process.env.AWS_S3_IAM_ACCESS_KEY,
         secretAccessKey: process.env.AWS_S3_IAM_SECRET_KEY,
     },
+    // R2 requires a custom endpoint; falls back to AWS if not set
+    ...(process.env.AWS_S3_ENDPOINT ? {
+        endpoint: process.env.AWS_S3_ENDPOINT,
+        forcePathStyle: false,
+    } : {}),
 });
 export const getUploadFileSignedURLFromS3 = async ({ fileName, fileType, userId, }) => {
     const s3Key = getS3Key(fileName, userId);
