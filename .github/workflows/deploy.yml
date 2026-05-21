@@ -25,10 +25,10 @@ jobs:
         run: npm install
 
       - name: Install Wasp CLI
-        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.21.1
+        run: npm i -g @wasp.sh/wasp-cli@0.21.1 @wasp.sh/wasp-cli-linux-x64-glibc@0.21.1
 
       - name: Build Wasp (generates .wasp/out/ + web-app source)
-        run: ~/.local/bin/wasp build
+        run: wasp build
 
       - name: Install workspace deps (web-app workspace now exists)
         run: npm install
