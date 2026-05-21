@@ -58,6 +58,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "deploy/dist"
           target: "/data/thehelper"
+          overwrite: true
 
       - name: Build images and restart containers
         uses: appleboy/ssh-action@v1.0.3
