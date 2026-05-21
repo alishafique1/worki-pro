@@ -5,113 +5,27 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  NODE_VERSION: "22"
-
 jobs:
-  build-and-deploy:
-    name: Build & Deploy
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install Wasp CLI
-        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh
-
-      - name: Build Wasp app
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          wasp build
-
-      - name: Install deps & build server bundle
-        run: |
-          npm ci
-          cd .wasp/out/server && npm ci && npm run bundle
-
-      - name: Install deps for web build
-        run: npm ci
-
-      - name: Build web frontend
-        run: |
-          REACT_APP_API_URL="https://api.thehelper.ca" npx vite build --outDir deploy/dist
-
-      - name: Create deployment archive
-        run: |
-          tar -czf /tmp/deploy.tar.gz \
-            .wasp/out/server/bundle \
-            .wasp/out/server/node_modules \
-            .wasp/out/server/package.json \
-            .wasp/out/db \
-            deploy/dist \
-            deploy/nginx.conf \
-            deploy/Dockerfile.web \
-            scripts/migrate.sh \
-            ecosystem.config.cjs \
-            package.json \
-            package-lock.json
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-package
-          path: /tmp/deploy.tar.gz
-          retention-days: 1
-
-      - name: Deploy to VPS via SSH
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: /tmp/deploy.tar.gz
-          target: /opt/worki-pro/
-          strip_components: 2
-
-      - name: Run deploy commands on VPS
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
+          username: root
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
-
-            cd /opt/worki-pro
-
-            # Backup current build
-            if [ -d ".wasp/out/server.bak" ]; then
-              rm -rf .wasp/out/server.bak
-            fi
-            [ -d ".wasp/out/server" ] && mv .wasp/out/server .wasp/out/server.bak
-
-            # Extract new deployment
-            tar -xzf deploy.tar.gz -C /opt/worki-pro
-            rm deploy.tar.gz
-
-            # Fix symlinks
-            ln -sfn .wasp/out/server server 2>/dev/null || true
-            ln -sfn .wasp/out/db db 2>/dev/null || true
-
-            # Run database migrations
-            echo "=== Running migrations ==="
-            cd .wasp/out/db
-            DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma migrate deploy
-
-            # Restart PM2
-            echo "=== Restarting API ==="
-            cd /opt/worki-pro
-            pm2 startOrReload ecosystem.config.cjs --update-env
-
-            # Verify
-            sleep 3
-            echo "=== Status ==="
-            pm2 status
-            echo "Deployment complete!"
+            cd /data/thehelper
+            echo "=== Pulling latest code ==="
+            git pull origin main
+            echo "=== Building Docker images ==="
+            docker compose build --no-cache
+            echo "=== Restarting containers ==="
+            docker compose up -d
+            echo "=== Deploy complete ==="
+            docker ps --format 'table {{.Names}}\t{{.Status}}' | grep thehelper
