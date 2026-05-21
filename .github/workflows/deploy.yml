@@ -38,7 +38,7 @@ jobs:
           REACT_APP_API_URL: https://api.thehelper.ca
         run: npx vite build --outDir deploy/dist
 
-      - name: Pull latest code on VPS
+      - name: Free disk space and pull latest code on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -46,8 +46,10 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
-            cd /data/thehelper
+            echo "=== Pruning unused Docker images/cache ==="
+            docker system prune -af
             echo "=== Pulling latest code ==="
+            cd /data/thehelper
             git pull origin main
 
       - name: Upload fresh frontend build to VPS
@@ -70,8 +72,6 @@ jobs:
           script: |
             set -e
             cd /data/thehelper
-            echo "=== Pruning unused Docker images/cache ==="
-            docker system prune -f
             echo "=== Building Docker images ==="
             docker compose build --no-cache
             echo "=== Restarting containers ==="
