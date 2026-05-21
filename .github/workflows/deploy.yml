@@ -9,10 +9,36 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
-      - name: Deploy via SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install Wasp CLI
+        run: npm i -g @wasp.sh/wasp-cli@0.21.1
+
+      - name: Build Wasp (generates .wasp/out/ + web-app source)
+        run: wasp build
+
+      - name: Install workspace deps (web-app workspace now exists)
+        run: npm install
+
+      - name: Build React SPA
+        env:
+          REACT_APP_API_URL: https://api.thehelper.ca
+        run: npx vite build --outDir deploy/dist
+
+      - name: Pull latest code on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -23,6 +49,25 @@ jobs:
             cd /data/thehelper
             echo "=== Pulling latest code ==="
             git pull origin main
+
+      - name: Upload fresh frontend build to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "deploy/dist"
+          target: "/data/thehelper"
+
+      - name: Build images and restart containers
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /data/thehelper
             echo "=== Building Docker images ==="
             docker compose build --no-cache
             echo "=== Restarting containers ==="
