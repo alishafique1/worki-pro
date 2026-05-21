@@ -302,6 +302,151 @@ export const CATEGORY_QUALIFIERS: Record<string, CategoryQualifierConfig> = {
       options: ["A few items", "Half truck", "Full truck", "Multiple loads"],
     },
   },
+
+  "pest-control": {
+    q1: {
+      id: "pest",
+      label: "What type of pest?",
+      options: ["Ants", "Cockroaches", "Rodents", "Wasps / Bees", "Bed bugs", "Other"],
+    },
+    q2: {
+      id: "severity",
+      label: "How severe is the problem?",
+      options: ["Just noticed", "Getting worse", "Infestation / urgent"],
+    },
+    detailChips: [
+      "Ants",
+      "Cockroaches",
+      "Mice / rats",
+      "Wasps / bees",
+      "Bed bugs",
+      "Something else",
+    ],
+    detailChipsLabel: "What's the main pest?",
+  },
+
+  waterproofing: {
+    q1: {
+      id: "location",
+      label: "Where is the water issue?",
+      options: ["Basement", "Foundation cracks", "Crawl space", "Window wells"],
+    },
+    q2: {
+      id: "type",
+      label: "What type of service?",
+      options: ["Inspection", "Interior waterproofing", "Exterior waterproofing", "Crack repair"],
+    },
+    detailChips: [
+      "Water seeping in",
+      "Cracks in foundation",
+      "Damp / mold smell",
+      "Flooding after rain",
+      "Not sure — need inspection",
+    ],
+    detailChipsLabel: "What best describes the issue?",
+  },
+
+  renovation: {
+    q1: {
+      id: "area",
+      label: "What are you renovating?",
+      options: ["Kitchen", "Bathroom", "Basement", "Addition / extension", "Full home"],
+    },
+    q2: {
+      id: "stage",
+      label: "What stage are you at?",
+      options: ["Planning / getting quotes", "Ready to start soon", "Mid-project help"],
+    },
+    detailChips: [
+      "Kitchen remodel",
+      "Bathroom update",
+      "Basement finishing",
+      "Open concept",
+      "Addition / bump-out",
+      "Something else",
+    ],
+    detailChipsLabel: "What's the main project?",
+  },
+
+  "home-inspection": {
+    q1: {
+      id: "type",
+      label: "What type of inspection?",
+      options: ["Pre-purchase", "Annual / maintenance", "Pre-listing", "Specific concern"],
+    },
+    q2: {
+      id: "property",
+      label: "Property type?",
+      options: ["Detached", "Semi-detached", "Townhouse", "Condo"],
+    },
+  },
+
+  "fence-gate": {
+    q1: {
+      id: "type",
+      label: "What type of work?",
+      options: ["New install", "Repair", "Replacement", "Gate only"],
+    },
+    q2: {
+      id: "material",
+      label: "Material preference?",
+      options: ["Wood", "Vinyl", "Chain-link", "Aluminum", "Not sure"],
+    },
+    detailChips: [
+      "Privacy fence",
+      "Picket fence",
+      "Chain-link",
+      "Driveway gate",
+      "Post repair",
+      "Something else",
+    ],
+    detailChipsLabel: "What do you need?",
+  },
+
+  "pool-spa": {
+    q1: {
+      id: "service",
+      label: "What service do you need?",
+      options: ["Opening", "Closing", "Maintenance / cleaning", "Repair", "New install"],
+    },
+    q2: {
+      id: "type",
+      label: "What type?",
+      options: ["In-ground pool", "Above-ground pool", "Hot tub / spa", "Both pool and spa"],
+    },
+    detailChips: [
+      "Spring opening",
+      "Fall closing",
+      "Weekly maintenance",
+      "Equipment repair",
+      "Leak / crack",
+      "Something else",
+    ],
+    detailChipsLabel: "What needs attention?",
+  },
+
+  events: {
+    q1: {
+      id: "type",
+      label: "What type of event?",
+      options: ["Wedding", "Birthday / party", "Corporate event", "Other"],
+    },
+    q2: {
+      id: "services",
+      label: "What do you need?",
+      options: ["Setup / teardown", "AV equipment", "Furniture rental", "Full coordination"],
+      isOptional: true,
+    },
+    detailChips: [
+      "Tent / canopy setup",
+      "Tables & chairs",
+      "AV / sound system",
+      "Cleanup crew",
+      "Full event setup",
+      "Something else",
+    ],
+    detailChipsLabel: "What services do you need?",
+  },
 };
 
 /**
