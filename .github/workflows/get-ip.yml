@@ -11,5 +11,11 @@ jobs:
           username: root
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            echo "IPv4:"; curl -4s ifconfig.me 2>/dev/null || echo "no IPv4"
-            echo "IPv6:"; curl -6s ifconfig.me 2>/dev/null || echo "no IPv6"
+            echo "=== Firewall ==="
+            ufw status 2>/dev/null || echo "ufw not active"
+            echo "=== Listening on 80/443 ==="
+            ss -tlnp | grep -E ":80 |:443 "
+            echo "=== Traefik ports ==="
+            docker inspect coolify-proxy --format '{{json .NetworkSettings.Ports}}'
+            echo "=== thehelper-web reachable from Traefik? ==="
+            docker exec coolify-proxy wget -qO- --header="Host: thehelper.ca" http://thehelper-web 2>/dev/null | grep -o '"[^"]*\.js"' || echo "not reachable"
