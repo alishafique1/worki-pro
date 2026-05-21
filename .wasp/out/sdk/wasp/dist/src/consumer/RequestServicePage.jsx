@@ -119,8 +119,8 @@ function QualifierQuestion({ label, options, value, onChange, isOptional = false
       </div>
     </div>);
 }
-// ── main component ────────────────────────────────────────────────────────────
-export default function RequestServicePage() {
+// ── main component (legacy — kept for reference, not exported) ────────────────
+function _LegacyRequestServicePage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { data: user } = useAuth();

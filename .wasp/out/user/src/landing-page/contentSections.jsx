@@ -106,7 +106,7 @@ export const faqs = [
 export const footerNavigation = {
     app: [
         { name: "Discover Pros", href: "/discover" },
-        { name: "Request Service", href: "/request-service" },
+        { name: "Get Help", href: "/get-quotes" },
         { name: "For Pros", href: "/providers" },
         { name: "Contact", href: "/contact" },
     ],

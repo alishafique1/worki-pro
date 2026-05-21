@@ -187,7 +187,7 @@ export default function ListingsPage() {
         <p className="text-[#475569] mb-6">
           Submit a service request and The Helper will match you with the right pro.
         </p>
-        <Link to="/request-service" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors inline-block">
+        <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors inline-block">
           Submit a Request
         </Link>
       </div>

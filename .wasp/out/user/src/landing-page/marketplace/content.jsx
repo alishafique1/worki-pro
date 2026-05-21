@@ -255,7 +255,7 @@ export const categories = [
         name: "More",
         slug: "more",
         description: "Pest control, renovation, pool, waterproofing, and more.",
-        href: "/request-service",
+        href: "/get-quotes",
     },
 ];
 export const customerSteps = [

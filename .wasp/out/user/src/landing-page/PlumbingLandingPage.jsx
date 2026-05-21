@@ -58,7 +58,7 @@ export default function PlumbingLandingPage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <Link to="/request-service?service=plumbing" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+            <Link to="/get-quotes?service=plumbing" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
               Request Plumbing Quote
             </Link>
           </div>

@@ -64,6 +64,22 @@ export type CalcomWebhook<
     ReqQuery,
     Locals
   >
+export type HealthCheck<
+  P extends ExpressParams = ExpressParams,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery extends ExpressQuery = ExpressQuery,
+  Locals extends Record<string, any> = Record<string, any>
+> =
+  AuthenticatedApi<
+    [
+    ],
+    P,
+    ResBody,
+    ReqBody,
+    ReqQuery,
+    Locals
+  >
 export type TwilioWebhook<
   P extends ExpressParams = ExpressParams,
   ResBody = any,

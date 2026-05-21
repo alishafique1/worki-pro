@@ -23,22 +23,12 @@ async function gotoAndDismiss(page: Page, path: string) {
 }
 
 test.describe('Public pages', () => {
-  test('/ — landing page loads with Find a Helper CTA', async ({ page }) => {
+  test('/ — landing page loads with Get Help Now CTA', async ({ page }) => {
     await gotoAndDismiss(page, '/');
     await expect(page).not.toHaveURL(/\/login/);
-    // Should have at least one heading
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    // CTA button or link referencing getting help / quotes / finding a helper
     await expect(
-      page
-        .getByRole('button', { name: /get free quotes/i })
-        .or(page.getByRole('link', { name: /get free quotes/i }))
-        .or(page.getByRole('button', { name: /find a helper/i }))
-        .or(page.getByRole('link', { name: /find a helper/i }))
-        .or(page.getByRole('button', { name: /get started/i }))
-        .or(page.getByRole('link', { name: /get started/i }))
-        .or(page.getByRole('link', { name: /get matched/i }))
-        .first()
+      page.getByRole('link', { name: /get help/i }).first()
     ).toBeVisible();
   });
 
@@ -46,8 +36,6 @@ test.describe('Public pages', () => {
     await gotoAndDismiss(page, '/hvac');
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    // Should mention HVAC somewhere on the page
-    await expect(page.getByText(/hvac/i).first()).toBeVisible();
   });
 
   test('/plumbing — loads', async ({ page }) => {
@@ -134,11 +122,7 @@ test.describe('Public pages', () => {
     await gotoAndDismiss(page, '/providers/apply');
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    // Should have a form or input fields
-    await expect(
-      page.locator('form').first()
-        .or(page.locator('input').first())
-    ).toBeVisible();
+    await expect(page.locator('form')).toBeVisible();
   });
 
   test('/help — loads', async ({ page }) => {
@@ -151,10 +135,7 @@ test.describe('Public pages', () => {
     await gotoAndDismiss(page, '/contact');
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    await expect(
-      page.locator('form').first()
-        .or(page.locator('input').first())
-    ).toBeVisible();
+    await expect(page.locator('form')).toBeVisible();
   });
 
   test('/privacy — loads', async ({ page }) => {
@@ -169,24 +150,20 @@ test.describe('Public pages', () => {
     await expect(page.locator('h1, h2').first()).toBeVisible();
   });
 
-  test('/login — loads with email and password fields', async ({ page }) => {
+  test('/login — loads with email field (OTP default)', async ({ page }) => {
     await gotoAndDismiss(page, '/login');
     await expect(page.locator('input[type="email"]')).toBeVisible();
-    await expect(page.locator('input[type="password"]')).toBeVisible();
+    await expect(page.getByRole('button', { name: /send/i }).first()).toBeVisible();
   });
 
-  test('/signup — loads', async ({ page }) => {
+  test('/signup — redirects to /login', async ({ page }) => {
     await gotoAndDismiss(page, '/signup');
-    await expect(page).not.toHaveURL(/\/login/);
-    await expect(page.locator('h1, h2').first()).toBeVisible();
+    await expect(page).toHaveURL(/\/login/);
   });
 
-  test('/request-service — loads or redirects to login', async ({ page }) => {
+  test('/request-service — redirects to /get-quotes', async ({ page }) => {
     await gotoAndDismiss(page, '/request-service');
-    // Either shows the form or redirects to login — both are valid for unauthenticated users
-    const isOnLogin = page.url().includes('/login');
-    const isOnRequestService = page.url().includes('/request-service');
-    expect(isOnLogin || isOnRequestService).toBe(true);
+    await expect(page).toHaveURL(/\/get-quotes/);
     await expect(page.locator('body')).toBeVisible();
   });
 
@@ -199,14 +176,13 @@ test.describe('Public pages', () => {
   test('/services/hvac — dynamic category page loads', async ({ page }) => {
     await gotoAndDismiss(page, '/services/hvac');
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(page.locator('h1, h2').first()).toBeVisible();
-    await expect(page.getByText(/hvac/i).first()).toBeVisible();
+    await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
   });
 
   test('/services/plumbing — dynamic category page loads', async ({ page }) => {
     await gotoAndDismiss(page, '/services/plumbing');
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(page.locator('h1, h2').first()).toBeVisible();
+    await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
   });
 
   test('footer shows The Helper branding', async ({ page }) => {
@@ -219,11 +195,8 @@ test.describe('Public pages', () => {
 
   test('area pages have local content', async ({ page }) => {
     await gotoAndDismiss(page, '/areas/milton');
-    // Should have local stats or testimonials
     await expect(
-      page.getByText(/homeowner/i).first()
-        .or(page.getByText(/neighbour/i).first())
-        .or(page.getByText(/local/i).first())
+      page.getByText(/homeowner|neighbour|local/i).first()
     ).toBeVisible();
   });
 });

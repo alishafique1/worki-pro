@@ -774,7 +774,7 @@
             "file",
             "sdk/wasp/server/api/index.ts"
         ],
-        "97314d668671de40e35d5fe8c4348b4d377a6c78584dbde250aa5a966ec0d4df"
+        "8aae2d56a6d3fbcd243ac78331581d039175f4242218e52737c06019a934522e"
     ],
     [
         [
@@ -1908,7 +1908,7 @@
             "file",
             "sdk/wasp/src/consumer/RequestServicePage.tsx"
         ],
-        "b922d54ba35199e72c5adaa2d1d94ebc2f4154745a5bedef94c0045c5e083417"
+        "420cc42c316af48c4febecf87b59580d53a4cf2c95b02b2ea9adad56bc328304"
     ],
     [
         [
@@ -2508,6 +2508,20 @@
     [
         [
             "file",
+            "sdk/wasp/src/server/healthCheck.ts"
+        ],
+        "c10a76dc19d95e9960796fec2e177805b403b471719a3bec1c4d8494201ea42f"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/server/logger.ts"
+        ],
+        "723fdb3ec2c0f84933369c0eccaabdc1bc95de4fcf664f968ebe02c03e1b2e02"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/server/scripts/dbSeeds.ts"
         ],
         "2dbfcf3bd67fa36007f7aeb8741a9fa32398bb6c8a1b4071f097dbaf845da462"
@@ -2697,16 +2711,16 @@
     [
         [
             "file",
-            "server/.env"
+            "server/.gitignore"
         ],
-        "5b67683c376ec3a62464df63fbffbea0b9e398fded21ef2dfd88ec22ca3f582e"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.npmrc"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
     ],
     [
         [
@@ -3000,7 +3014,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
+        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
     ],
     [
         [
@@ -3273,7 +3287,7 @@
             "file",
             "server/src/routes/apis/index.ts"
         ],
-        "b4f99ebaebb11529407dcc8aaad451f0a96578a7172b3b3bd339df524046dc0c"
+        "df062f0c9e4732947b0ba8d3839e24e6039b7d560607e79393a4a69ae29733c0"
     ],
     [
         [
@@ -3301,7 +3315,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
+        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
     ],
     [
         [
@@ -3743,13 +3757,6 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
-    ],
-    [
-        [
-            "file",
-            "server/src/views/wrong-port.ts"
-        ],
-        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

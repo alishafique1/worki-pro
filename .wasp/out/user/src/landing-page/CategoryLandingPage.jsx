@@ -54,7 +54,7 @@ export default function CategoryLandingPage() {
             Get free quotes from verified local {category.name.toLowerCase()} professionals — no commitment required.
           </p>
           <Link to={`/get-quotes?category=${category.id}&slug=${category.slug}`} className="inline-block px-10 py-4 bg-[#2563EB] text-white font-bold rounded-full text-lg hover:bg-[#1D4ED8] transition-colors">
-            Get Free Quotes →
+            Get Help →
           </Link>
         </div>
       </section>
@@ -99,7 +99,7 @@ export default function CategoryLandingPage() {
       <section className="py-16 px-6 bg-[#0F172A] text-white text-center">
         <p className="text-[#94A3B8] mb-4">Verified {category.name.toLowerCase()} pros serving Milton · Oakville · Burlington</p>
         <Link to={`/get-quotes?category=${category.id}&slug=${category.slug}`} className="inline-block px-10 py-4 bg-[#2563EB] text-white font-bold rounded-full text-lg hover:bg-[#1D4ED8] transition-colors">
-          Get Free Quotes →
+          Get Help →
         </Link>
       </section>
     </div>);

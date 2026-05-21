@@ -217,8 +217,8 @@ export default function AreaLandingPage() {
           <p className="text-[#475569] mb-8">
             We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
           </p>
-          <Link to="/request-service" className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all">
-            Request Service Anyway
+          <Link to="/get-quotes" className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all">
+            Get Help
           </Link>
         </div>
       </div>);
@@ -291,8 +291,8 @@ export default function AreaLandingPage() {
             {area.localContent ? area.localContent.heroSubtext : `${area.tagline}. Expert, vetted pros matched to your job. Scheduling, coordination, and follow-up all handled for you.`}
           </p>
 
-          <Link to="/request-service" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
-            Request Service in {area.name} →
+          <Link to="/get-quotes" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+            Get Help in {area.name} →
           </Link>
         </div>
       </section>
@@ -340,7 +340,7 @@ export default function AreaLandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {SERVICES.map(({ slug, label, icon, color, desc }) => {
             const c = SERVICE_COLOR_CLASSES[color];
-            return (<Link key={slug} to={`/request-service?service=${slug}&postalCode=`} className="group p-8 bg-white rounded-[32px] border border-[#E2E8F0] hover:border-[#BFDBFE] transition-all hover:-translate-y-1 hover:shadow-xl text-left">
+            return (<Link key={slug} to={`/get-quotes?service=${slug}`} className="group p-8 bg-white rounded-[32px] border border-[#E2E8F0] hover:border-[#BFDBFE] transition-all hover:-translate-y-1 hover:shadow-xl text-left">
                   <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl border mb-5 text-2xl ${c.badge}`}>
                     {icon}
                   </div>
@@ -524,8 +524,8 @@ export default function AreaLandingPage() {
               <p className="text-[#94A3B8] mb-8 max-w-lg mx-auto">
                 Describe your issue once. We'll match you with the right expert, manage scheduling, and follow up until the job is done.
               </p>
-              <Link to="/request-service" className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
-                Get Started (It's Free) →
+              <Link to="/get-quotes" className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+                Get Help Now →
               </Link>
               <p className="mt-4 text-xs text-[#94A3B8]">🎁 Plus earn cashback on every job booked</p>
             </div>

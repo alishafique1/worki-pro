@@ -22,8 +22,8 @@ export default function DashboardPage() {
             Track service requests, bookings, messages, and rewards from here.
           </p>
         </div>
-        <Link to="/request-service" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm">
-          + Get Free Quotes
+        <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm">
+          + Get Help
         </Link>
       </div>
 

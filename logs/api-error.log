@@ -1,0 +1,102 @@
+2026-05-21 01:05:12 +00:00: npm warn config ignoring workspace config at /tmp/worki-pro-deploy/.wasp/out/server/.npmrc
+2026-05-21 01:05:15 +00:00: (node:2782060) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-05-21 01:05:15 +00:00: (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-05-21 01:05:15 +00:00: (node:2782060) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+2026-05-21 01:05:15 +00:00: In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+2026-05-21 01:05:15 +00:00: 
+2026-05-21 01:05:15 +00:00: To prepare for this change:
+2026-05-21 01:05:15 +00:00: - If you want the current behavior, explicitly use 'sslmode=verify-full'
+2026-05-21 01:05:15 +00:00: - If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+2026-05-21 01:05:15 +00:00: 
+2026-05-21 01:05:15 +00:00: See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+2026-05-21 02:38:16 +00:00: npm warn config ignoring workspace config at /tmp/worki-pro-deploy/.wasp/out/server/.npmrc
+2026-05-21 02:38:21 +00:00: (node:3183476) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-05-21 02:38:21 +00:00: (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-05-21 02:38:21 +00:00: (node:3183476) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+2026-05-21 02:38:21 +00:00: In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+2026-05-21 02:38:21 +00:00: 
+2026-05-21 02:38:21 +00:00: To prepare for this change:
+2026-05-21 02:38:21 +00:00: - If you want the current behavior, explicitly use 'sslmode=verify-full'
+2026-05-21 02:38:21 +00:00: - If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+2026-05-21 02:38:21 +00:00: 
+2026-05-21 02:38:21 +00:00: See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+2026-05-21 02:43:13 +00:00: npm warn config ignoring workspace config at /tmp/worki-pro-deploy/.wasp/out/server/.npmrc
+2026-05-21 02:43:16 +00:00: (node:3204597) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-05-21 02:43:16 +00:00: (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-05-21 02:43:16 +00:00: (node:3204597) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+2026-05-21 02:43:16 +00:00: In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+2026-05-21 02:43:16 +00:00: 
+2026-05-21 02:43:16 +00:00: To prepare for this change:
+2026-05-21 02:43:16 +00:00: - If you want the current behavior, explicitly use 'sslmode=verify-full'
+2026-05-21 02:43:16 +00:00: - If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+2026-05-21 02:43:16 +00:00: 
+2026-05-21 02:43:16 +00:00: See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+2026-05-21 02:59:55 +00:00: [OTP] Email send failed: [Error: Unauthorized] {
+2026-05-21 02:59:55 +00:00:   status: 401,
+2026-05-21 02:59:55 +00:00:   details: 'Forbidden',
+2026-05-21 02:59:55 +00:00:   type: 'MailgunAPIError'
+2026-05-21 02:59:55 +00:00: }
+2026-05-21 03:00:06 +00:00: Error calculating daily stats:  StripeAuthenticationError: Invalid API Key provided: sk_test_...
+2026-05-21 03:00:06 +00:00:     at res.toJSON.then.StripeAPIError.message (file:///tmp/worki-pro-deploy/node_modules/stripe/esm/RequestSender.js:93:31)
+2026-05-21 03:00:06 +00:00:     at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+2026-05-21 03:00:06 +00:00:   type: 'StripeAuthenticationError',
+2026-05-21 03:00:06 +00:00:   raw: {
+2026-05-21 03:00:06 +00:00:     message: 'Invalid API Key provided: sk_test_...',
+2026-05-21 03:00:06 +00:00:     type: 'invalid_request_error',
+2026-05-21 03:00:06 +00:00:     headers: {
+2026-05-21 03:00:06 +00:00:       server: 'nginx',
+2026-05-21 03:00:06 +00:00:       date: 'Thu, 21 May 2026 03:00:06 GMT',
+2026-05-21 03:00:06 +00:00:       'content-type': 'application/json',
+2026-05-21 03:00:06 +00:00:       'content-length': '113',
+2026-05-21 03:00:06 +00:00:       connection: 'keep-alive',
+2026-05-21 03:00:06 +00:00:       'access-control-allow-credentials': 'true',
+2026-05-21 03:00:06 +00:00:       'access-control-allow-methods': 'GET, HEAD, PUT, PATCH, POST, DELETE',
+2026-05-21 03:00:06 +00:00:       'access-control-allow-origin': '*',
+2026-05-21 03:00:06 +00:00:       'access-control-expose-headers': 'Request-Id, Stripe-Manage-Version, Stripe-Should-Retry, X-Stripe-External-Auth-Required, X-Stripe-Privileged-Session-Required',
+2026-05-21 03:00:06 +00:00:       'access-control-max-age': '300',
+2026-05-21 03:00:06 +00:00:       'cache-control': 'no-cache, no-store',
+2026-05-21 03:00:06 +00:00:       'content-security-policy': "base-uri 'none'; default-src 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests",
+2026-05-21 03:00:06 +00:00:       vary: 'Origin',
+2026-05-21 03:00:06 +00:00:       'www-authenticate': 'Bearer realm="Stripe"',
+2026-05-21 03:00:06 +00:00:       'x-robots-tag': 'none',
+2026-05-21 03:00:06 +00:00:       'x-wc': '383',
+2026-05-21 03:00:06 +00:00:       'strict-transport-security': 'max-age=63072000; includeSubDomains; preload'
+2026-05-21 03:00:06 +00:00:     },
+2026-05-21 03:00:06 +00:00:     statusCode: 401,
+2026-05-21 03:00:06 +00:00:     requestId: undefined
+2026-05-21 03:00:06 +00:00:   },
+2026-05-21 03:00:06 +00:00:   rawType: 'invalid_request_error',
+2026-05-21 03:00:06 +00:00:   code: undefined,
+2026-05-21 03:00:06 +00:00:   doc_url: undefined,
+2026-05-21 03:00:06 +00:00:   param: undefined,
+2026-05-21 03:00:06 +00:00:   detail: undefined,
+2026-05-21 03:00:06 +00:00:   headers: {
+2026-05-21 03:00:06 +00:00:     server: 'nginx',
+2026-05-21 03:00:06 +00:00:     date: 'Thu, 21 May 2026 03:00:06 GMT',
+2026-05-21 03:00:06 +00:00:     'content-type': 'application/json',
+2026-05-21 03:00:06 +00:00:     'content-length': '113',
+2026-05-21 03:00:06 +00:00:     connection: 'keep-alive',
+2026-05-21 03:00:06 +00:00:     'access-control-allow-credentials': 'true',
+2026-05-21 03:00:06 +00:00:     'access-control-allow-methods': 'GET, HEAD, PUT, PATCH, POST, DELETE',
+2026-05-21 03:00:06 +00:00:     'access-control-allow-origin': '*',
+2026-05-21 03:00:06 +00:00:     'access-control-expose-headers': 'Request-Id, Stripe-Manage-Version, Stripe-Should-Retry, X-Stripe-External-Auth-Required, X-Stripe-Privileged-Session-Required',
+2026-05-21 03:00:06 +00:00:     'access-control-max-age': '300',
+2026-05-21 03:00:06 +00:00:     'cache-control': 'no-cache, no-store',
+2026-05-21 03:00:06 +00:00:     'content-security-policy': "base-uri 'none'; default-src 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests",
+2026-05-21 03:00:06 +00:00:     vary: 'Origin',
+2026-05-21 03:00:06 +00:00:     'www-authenticate': 'Bearer realm="Stripe"',
+2026-05-21 03:00:06 +00:00:     'x-robots-tag': 'none',
+2026-05-21 03:00:06 +00:00:     'x-wc': '383',
+2026-05-21 03:00:06 +00:00:     'strict-transport-security': 'max-age=63072000; includeSubDomains; preload'
+2026-05-21 03:00:06 +00:00:   },
+2026-05-21 03:00:06 +00:00:   requestId: undefined,
+2026-05-21 03:00:06 +00:00:   statusCode: 401,
+2026-05-21 03:00:06 +00:00:   userMessage: undefined,
+2026-05-21 03:00:06 +00:00:   charge: undefined,
+2026-05-21 03:00:06 +00:00:   decline_code: undefined,
+2026-05-21 03:00:06 +00:00:   payment_intent: undefined,
+2026-05-21 03:00:06 +00:00:   payment_method: undefined,
+2026-05-21 03:00:06 +00:00:   payment_method_type: undefined,
+2026-05-21 03:00:06 +00:00:   setup_intent: undefined,
+2026-05-21 03:00:06 +00:00:   source: undefined
+2026-05-21 03:00:06 +00:00: }

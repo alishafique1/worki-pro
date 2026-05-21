@@ -696,6 +696,13 @@ page AdminMessagesPage {
 }
 //#endregion
 
+//#region Monitoring
+api healthCheck {
+  fn: import { healthCheck } from "@src/server/healthCheck",
+  httpRoute: (GET, "/api/health")
+}
+//#endregion
+
 //#region Webhooks
 api twilioWebhook {
   fn: import { handleTwilioSms } from "@src/server/webhooks/twilio",

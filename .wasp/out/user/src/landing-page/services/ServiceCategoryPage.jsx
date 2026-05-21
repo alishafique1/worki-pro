@@ -231,7 +231,7 @@ export default function ServiceCategoryPage() {
 
             {/* CTAs */}
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link to={`/request-service?category=${category.slug}`} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.25)] transition hover:bg-[#1D4ED8]">
+              <Link to={`/get-quotes?category=${category.slug}`} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.25)] transition hover:bg-[#1D4ED8]">
                 Get matched now
                 <ArrowRight className="size-4"/>
               </Link>
@@ -365,7 +365,7 @@ export default function ServiceCategoryPage() {
               <p className="text-[#BFDBFE] text-sm max-w-md">
                 Submit a request in under 2 minutes. Vetted GTA pros respond fast.
               </p>
-              <Link to={`/request-service?category=${category.slug}`} className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-[#2563EB] shadow-lg transition hover:bg-[#EFF6FF]">
+              <Link to={`/get-quotes?category=${category.slug}`} className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-[#2563EB] shadow-lg transition hover:bg-[#EFF6FF]">
                 Find a Helper Now
                 <ArrowRight className="size-4"/>
               </Link>

@@ -7,12 +7,14 @@ import { makeAuthUserIfPossible } from 'wasp/auth/user';
 import { requestOtp as _wasprequestOtpfn } from '../../../../../../src/auth/otpApi';
 import { verifyOtp as _waspverifyOtpfn } from '../../../../../../src/auth/otpApi';
 import { calcomWebhook as _waspcalcomWebhookfn } from '../../../../../../src/server/webhooks/calcom';
+import { healthCheck as _wasphealthCheckfn } from '../../../../../../src/server/healthCheck';
 import { handleTwilioSms as _wasptwilioWebhookfn } from '../../../../../../src/server/webhooks/twilio';
 import { handleGhlWebhook as _waspghlWebhookfn } from '../../../../../../src/server/webhooks/ghl';
 const idFn = x => x;
 const _wasprequestOtpmiddlewareConfigFn = idFn;
 const _waspverifyOtpmiddlewareConfigFn = idFn;
 const _waspcalcomWebhookmiddlewareConfigFn = idFn;
+const _wasphealthCheckmiddlewareConfigFn = idFn;
 const _wasptwilioWebhookmiddlewareConfigFn = idFn;
 const _waspghlWebhookmiddlewareConfigFn = idFn;
 const router = express.Router();
@@ -43,6 +45,14 @@ router.post('/calcom-webhook', [auth, ...calcomWebhookMiddleware], defineHandler
         },
     };
     return _waspcalcomWebhookfn(req, res, context);
+}));
+const healthCheckMiddleware = globalMiddlewareConfigForExpress(_wasphealthCheckmiddlewareConfigFn);
+router.get('/api/health', [auth, ...healthCheckMiddleware], defineHandler((req, res) => {
+    const context = {
+        user: makeAuthUserIfPossible(req.user),
+        entities: {},
+    };
+    return _wasphealthCheckfn(req, res, context);
 }));
 const twilioWebhookMiddleware = globalMiddlewareConfigForExpress(_wasptwilioWebhookmiddlewareConfigFn);
 router.post('/webhooks/twilio', [auth, ...twilioWebhookMiddleware], defineHandler((req, res) => {

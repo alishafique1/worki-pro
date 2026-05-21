@@ -50,8 +50,8 @@ export default function HowItWorksPage() {
             <Link to="/discover" className="text-sm font-semibold text-[#475569] hover:text-[#0F172A] transition-colors">
               Browse Pros
             </Link>
-            <Link to="/request-service" className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm">
-              Request Service
+            <Link to="/get-quotes" className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm">
+              Get Help
             </Link>
           </div>
         </div>
@@ -79,8 +79,8 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/request-service" className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
-              Get Free Quotes Now
+            <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
+              Get Help Now
             </Link>
             <Link to="/providers/apply" className="px-8 py-4 bg-white border border-[#E2E8F0] font-bold rounded-[22px] hover:border-[#2563EB] transition-colors text-[#0F172A]">
               Join as a Pro
@@ -176,8 +176,8 @@ export default function HowItWorksPage() {
           <h2 className="text-4xl font-black tracking-tight mb-4 text-[#0F172A]">Ready to get matched?</h2>
           <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free, no credit card required.</p>
           <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to $60 back on your first completed job</p>
-          <Link to="/request-service" className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
-            Get Free Quotes Now <ArrowRight className="size-5"/>
+          <Link to="/get-quotes" className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
+            Get Help Now <ArrowRight className="size-5"/>
           </Link>
         </section>
 

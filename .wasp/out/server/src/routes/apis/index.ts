@@ -9,6 +9,7 @@ import { type AuthUserData, makeAuthUserIfPossible } from 'wasp/auth/user'
 import { requestOtp as _wasprequestOtpfn } from '../../../../../../src/auth/otpApi'
 import { verifyOtp as _waspverifyOtpfn } from '../../../../../../src/auth/otpApi'
 import { calcomWebhook as _waspcalcomWebhookfn } from '../../../../../../src/server/webhooks/calcom'
+import { healthCheck as _wasphealthCheckfn } from '../../../../../../src/server/healthCheck'
 import { handleTwilioSms as _wasptwilioWebhookfn } from '../../../../../../src/server/webhooks/twilio'
 import { handleGhlWebhook as _waspghlWebhookfn } from '../../../../../../src/server/webhooks/ghl'
 
@@ -17,6 +18,7 @@ const idFn: MiddlewareConfigFn = x => x
 const _wasprequestOtpmiddlewareConfigFn = idFn
 const _waspverifyOtpmiddlewareConfigFn = idFn
 const _waspcalcomWebhookmiddlewareConfigFn = idFn
+const _wasphealthCheckmiddlewareConfigFn = idFn
 const _wasptwilioWebhookmiddlewareConfigFn = idFn
 const _waspghlWebhookmiddlewareConfigFn = idFn
 
@@ -77,6 +79,24 @@ router.post(
         },
       }
       return _waspcalcomWebhookfn(req, res, context)
+    }
+  )
+)
+const healthCheckMiddleware = globalMiddlewareConfigForExpress(_wasphealthCheckmiddlewareConfigFn)
+router.get(
+  '/api/health',
+  [auth, ...healthCheckMiddleware],
+  defineHandler(
+    (
+      req: Parameters<typeof _wasphealthCheckfn>[0] & { user: AuthUserData | null },
+      res: Parameters<typeof _wasphealthCheckfn>[1],
+    ) => {
+      const context = {
+        user: makeAuthUserIfPossible(req.user),
+        entities: {
+        },
+      }
+      return _wasphealthCheckfn(req, res, context)
     }
   )
 )

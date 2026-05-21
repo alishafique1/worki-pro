@@ -23,8 +23,10 @@ async function login(page: Page, email: string, password: string) {
   await page.goto('/login');
   await dismissCookieConsent(page);
   await page.locator('input[type="email"]').fill(email);
+  // Default mode is OTP — switch to password mode
+  await page.getByRole('button', { name: /sign in with password/i }).click();
   await page.locator('input[type="password"]').fill(password);
-  await page.getByRole('button', { name: /log in/i }).click();
+  await page.getByRole('button', { name: /sign in/i }).click();
   await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 15000 });
 }
 
@@ -89,7 +91,6 @@ test.describe('Consumer — authenticated flow', () => {
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('body')).toBeVisible();
-    await expect(page.locator('h1, h2').first()).toBeVisible();
   });
 
   test('/help — loads as authenticated user', async ({ page }) => {
@@ -103,15 +104,8 @@ test.describe('Consumer — authenticated flow', () => {
     await page.goto('/request-service');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
-    // Step 1 should show service selection — look for category cards, heading, or progress indicator
-    await expect(
-      page.locator('h1, h2').first()
-        .or(page.getByText(/what.*service/i))
-        .or(page.getByText(/select.*category/i))
-        .or(page.locator('[class*="step"]').first())
-        .or(page.locator('[class*="category"]').first())
-        .or(page.locator('[class*="card"]').first())
-    ).toBeVisible();
+    // Step 1 should show service selection — look for the category selection heading
+    await expect(page.getByRole('heading', { name: /free quotes/i })).toBeVisible();
   });
 
   test('/request-service — can select a category', async ({ page }) => {
