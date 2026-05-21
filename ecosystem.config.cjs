@@ -1,0 +1,31 @@
+module.exports = {
+  apps: [
+    {
+      name: 'thehelper-api',
+      cwd: './.wasp/out/server',
+      script: 'npm',
+      args: 'run start-production',
+      env: {
+        NODE_ENV: 'production',
+        PORT: '3001',
+        WASP_WEB_CLIENT_URL: 'https://thehelper.ca',
+        WASP_SERVER_URL: 'https://api.thehelper.ca',
+      },
+      env_file: '../../.env.server',
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '512M',
+      restart_delay: 3000,
+      max_restarts: 10,
+      error_file: '../../logs/api-error.log',
+      out_file: '../../logs/api-out.log',
+      merge_logs: true,
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      kill_timeout: 10000,
+      listen_timeout: 3000,
+      shutdown_with_message: true,
+    },
+  ],
+}
