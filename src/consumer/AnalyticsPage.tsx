@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery, getConsumerStats } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 
 const STATUS_LABELS: Record<string, string> = {
   NEW: 'New',
@@ -51,6 +52,7 @@ function MiniBar({ value, max, color }: { value: number; max: number; color: str
 }
 
 export default function AnalyticsPage() {
+  useRoleGuard('CONSUMER');
   const { data: stats, isLoading } = useQuery(getConsumerStats);
 
   if (isLoading) {

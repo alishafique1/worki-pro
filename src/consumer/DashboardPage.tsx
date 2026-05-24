@@ -5,8 +5,10 @@ import {
   getMyRewardAccount,
 } from "wasp/client/operations";
 import { Link } from "react-router";
+import { useRoleGuard } from '../shared/useRoleGuard';
 
 export default function DashboardPage() {
+  useRoleGuard('CONSUMER');
   const {
     data: requests,
     isLoading: requestsLoading,

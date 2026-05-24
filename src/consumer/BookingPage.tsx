@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router';
 import { useQuery, getMyRequests } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 
 // Cal.com embed via their lightweight script loader
 declare global {
@@ -74,6 +75,7 @@ function CalEmbed({ calLink, prefill }: CalEmbedProps) {
 }
 
 export default function BookingPage() {
+  useRoleGuard('CONSUMER');
   const { requestId } = useParams<{ requestId: string }>();
   const { data: requests, isLoading } = useQuery(getMyRequests);
 

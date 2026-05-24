@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAction, useQuery, getMyRequests, sendCustomerMessage } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 import {
   ArrowLeft,
   CalendarClock,
@@ -193,6 +194,7 @@ function MessageThread({ requestId, messages }: { requestId: string; messages: a
 }
 
 export default function RequestDetailPage() {
+  useRoleGuard('CONSUMER');
   const { requestId } = useParams<{ requestId: string }>();
   const { data: requests, isLoading, error } = useQuery(getMyRequests);
 
