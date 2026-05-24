@@ -317,6 +317,9 @@ model ServiceRequest {
   notes              RequestNote[]
   fees               ProviderFee[]
   webhookLogs        WebhookLog[]
+
+  @@index([email])
+  @@index([consumerId, email])
 }
 
 enum RequestSource {
@@ -417,6 +420,9 @@ model RewardTransaction {
   createdAt           DateTime            @default(now())
   approvedAt          DateTime?
   expiresAt           DateTime?
+
+  @@index([consumerId, type])
+  @@unique([consumerId, serviceRequestId, type], name: "unique_consumer_request_type")
 }
 
 enum TransactionType {
