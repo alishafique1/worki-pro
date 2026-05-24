@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
+import LandingHeroBanner from './components/LandingHeroBanner';
 const electricalFaqs = [
     {
         question: 'How much does an electrician cost in Milton?',
@@ -45,7 +46,8 @@ export default function ElectricalLandingPage() {
             ],
         }}/>
     <div className="min-h-screen bg-[#F8FAFC]">
-      <main className="pt-20 pb-32">
+      <LandingHeroBanner src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=80" alt="Certified electrician working on a panel in Burlington"/>
+      <main className="pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6">
             ESA-Certified Electricians in Milton, Oakville & Burlington

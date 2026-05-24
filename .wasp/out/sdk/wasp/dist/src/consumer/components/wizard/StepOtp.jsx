@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { setSessionId } from 'wasp/client/api';
+import { config } from 'wasp/client';
 export default function StepOtp({ state, onBack, onSuccess, setError }) {
     const [code, setCode] = useState(['', '', '', '', '', '']);
     const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +13,7 @@ export default function StepOtp({ state, onBack, onSuccess, setError }) {
     async function sendCode() {
         setIsLoading(true);
         try {
-            const res = await fetch('/api/auth/request-otp', {
+            const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: state.email }),
@@ -53,7 +54,7 @@ export default function StepOtp({ state, onBack, onSuccess, setError }) {
                 qualifierAnswers: state.qualifierAnswers,
                 referralCode: state.referralCode || undefined,
             };
-            const res = await fetch('/api/auth/verify-otp', {
+            const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: state.email, code: codeValue, pendingRequest }),

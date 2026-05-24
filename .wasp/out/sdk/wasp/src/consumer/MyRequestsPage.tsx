@@ -6,6 +6,7 @@ import {
   getMyRequests,
   sendCustomerMessage,
 } from "wasp/client/operations";
+import { useRoleGuard } from '../shared/useRoleGuard';
 import {
   CalendarClock,
   CheckCircle2,
@@ -313,6 +314,7 @@ function RequestCard({ req }: { req: any }) {
 }
 
 export default function MyRequestsPage() {
+  useRoleGuard('CONSUMER');
   const { data: requests, isLoading, error } = useQuery(getMyRequests);
 
   return (

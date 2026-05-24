@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router';
 import { useAction, useQuery, getMyRequests, sendCustomerMessage, } from "wasp/client/operations";
+import { useRoleGuard } from '../shared/useRoleGuard';
 import { CalendarClock, CheckCircle2, Clock3, MessageSquareText, Send, ShieldCheck, Wrench, } from "lucide-react";
 import { AddToCalendarDropdown } from "../client/components/AddToCalendarDropdown";
 const statusColor = (s) => {
@@ -214,6 +215,7 @@ function RequestCard({ req }) {
     </article>);
 }
 export default function MyRequestsPage() {
+    useRoleGuard('CONSUMER');
     const { data: requests, isLoading, error } = useQuery(getMyRequests);
     return (<div className="mx-auto max-w-5xl space-y-6 p-6 bg-[#F8FAFC] min-h-screen">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">

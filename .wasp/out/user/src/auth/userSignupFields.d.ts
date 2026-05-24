@@ -10,7 +10,7 @@ export declare const getEmailUserFields: {
     }) => boolean;
     role: (data: {
         [key: string]: unknown;
-    }) => "PROVIDER" | "CONSUMER";
+    }) => "CONSUMER" | "PROVIDER";
 };
 export declare const getGitHubUserFields: {
     email: (data: {

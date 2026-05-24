@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router";
 import { useQuery, useAction } from "wasp/client/operations";
 import { getMessagesForRequest, sendCustomerMessage } from "wasp/client/operations";
+import { useRoleGuard } from '../shared/useRoleGuard';
 function timeStamp(date) {
     return new Date(date).toLocaleTimeString("en-CA", {
         hour: "2-digit",
@@ -16,6 +17,7 @@ function dateLabel(date) {
     });
 }
 export default function RequestMessagesPage() {
+    useRoleGuard('CONSUMER');
     const { requestId } = useParams();
     const bottomRef = useRef(null);
     const { data, isLoading, error } = useQuery(getMessagesForRequest, { requestId: requestId ?? "" }, { refetchInterval: 5000 });

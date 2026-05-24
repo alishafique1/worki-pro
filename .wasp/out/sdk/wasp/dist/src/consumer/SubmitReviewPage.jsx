@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { useQuery, useAction } from "wasp/client/operations";
 import { getMyRequests, submitReview } from "wasp/client/operations";
+import { useRoleGuard } from '../shared/useRoleGuard';
 function StarPicker({ value, onChange, }) {
     const [hovered, setHovered] = useState(0);
     return (<div className="flex gap-2">
@@ -14,6 +15,7 @@ function StarPicker({ value, onChange, }) {
 }
 const RATING_LABELS = ["", "Poor", "Fair", "Good", "Very Good", "Excellent"];
 export default function SubmitReviewPage() {
+    useRoleGuard('CONSUMER');
     const { requestId } = useParams();
     const navigate = useNavigate();
     const { data: requests, isLoading } = useQuery(getMyRequests);

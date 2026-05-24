@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { setSessionId } from 'wasp/client/api';
 import { login } from 'wasp/client/auth';
+import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
 export default function Login() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Login() {
         setIsLoading(true);
         setError(null);
         try {
-            const res = await fetch('/api/auth/request-otp', {
+            const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() }),
@@ -74,7 +75,7 @@ export default function Login() {
         setIsLoading(true);
         setError(null);
         try {
-            const res = await fetch('/api/auth/verify-otp', {
+            const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim(), code: codeValue }),

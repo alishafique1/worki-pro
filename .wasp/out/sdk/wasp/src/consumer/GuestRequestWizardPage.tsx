@@ -4,6 +4,7 @@ import WizardProgress from './components/wizard/WizardProgress'
 import StepCategory from './components/wizard/StepCategory'
 import StepQualifiers from './components/wizard/StepQualifiers'
 import StepInfoAndVerify from './components/wizard/StepInfoAndVerify'
+import StepVerifyEmail from './components/wizard/StepVerifyEmail'
 
 export type WizardState = {
   categoryId: string | null
@@ -21,8 +22,8 @@ export type WizardState = {
   referralCode: string
 }
 
-const STEP_LABELS = ['Service', 'Questions', 'Your info']
-const TOTAL_STEPS = 3
+const STEP_LABELS = ['Service', 'Questions', 'Your info', 'Verify email']
+const TOTAL_STEPS = 4
 
 export default function GuestRequestWizardPage() {
   const [searchParams] = useSearchParams()
@@ -73,8 +74,9 @@ export default function GuestRequestWizardPage() {
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
             {step === 1 && <StepCategory state={state} update={update} onNext={next} />}
             {step === 2 && <StepQualifiers state={state} update={update} onNext={next} onBack={back} />}
-            {step === 3 && (
-              <StepInfoAndVerify
+            {step === 3 && <StepInfoAndVerify state={state} update={update} onBack={back} onNext={next} />}
+            {step === 4 && (
+              <StepVerifyEmail
                 state={state}
                 update={update}
                 onBack={back}

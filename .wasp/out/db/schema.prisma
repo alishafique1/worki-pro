@@ -243,6 +243,9 @@ model ServiceRequest {
   notes                 RequestNote[]
   fees                  ProviderFee[]
   webhookLogs           WebhookLog[]
+
+  @@index([email])
+  @@index([consumerId, email])
 }
 
 model Appointment {
@@ -289,6 +292,9 @@ model RewardTransaction {
   createdAt         DateTime          @default(now())
   approvedAt        DateTime?
   expiresAt         DateTime?
+
+  @@unique([consumerId, serviceRequestId, type], name: "unique_consumer_request_type")
+  @@index([consumerId, type])
 }
 
 model Redemption {

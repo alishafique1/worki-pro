@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAction, useQuery, getMyRequests, sendCustomerMessage } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 import { ArrowLeft, CalendarClock, CheckCircle2, Clock3, MessageSquareText, Phone, Mail, MapPin, Send, ShieldCheck, Wrench, } from 'lucide-react';
 const statusColor = (s) => {
     if (['COMPLETED', 'REWARD_APPROVED'].includes(s))
@@ -136,6 +137,7 @@ function MessageThread({ requestId, messages }) {
     </div>);
 }
 export default function RequestDetailPage() {
+    useRoleGuard('CONSUMER');
     const { requestId } = useParams();
     const { data: requests, isLoading, error } = useQuery(getMyRequests);
     const request = requests?.find((r) => r.id === requestId);

@@ -17,6 +17,22 @@ import logo from "../../static/logo.webp";
 import { cn } from "../../utils";
 import type { ServiceCategory } from "wasp/entities";
 
+function NavCtaButton({ role, onClick, className }: { role?: string; onClick?: () => void; className?: string }) {
+  const base = "rounded-full bg-[#2563EB] text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]";
+  if (role === 'PROVIDER') {
+    return (
+      <ReactRouterLink to="/provider/dashboard" className={cn(base, className)} onClick={onClick}>
+        My Dashboard
+      </ReactRouterLink>
+    );
+  }
+  return (
+    <ReactRouterLink to="/get-quotes" className={cn(base, className)} onClick={onClick}>
+      Get Help
+    </ReactRouterLink>
+  );
+}
+
 export interface NavigationItem {
   name: string;
   to: string;
@@ -127,12 +143,7 @@ function DesktopAuth() {
         </>
       ) : (
         <>
-          <ReactRouterLink
-            to="/get-quotes"
-            className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
-          >
-            Get Help
-          </ReactRouterLink>
+          <NavCtaButton role={user.role} className="px-4 py-2" />
           <UserDropdown user={user} />
         </>
       )}
@@ -204,13 +215,11 @@ function MobileMenu({
               </div>
             ) : (
               <>
-                <ReactRouterLink
-                  to="/get-quotes"
-                  className="mb-4 block rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
+                <NavCtaButton
+                  role={user.role}
                   onClick={() => setOpen(false)}
-                >
-                  Get Help
-                </ReactRouterLink>
+                  className="mb-4 block px-4 py-3 text-center"
+                />
                 <ul className="space-y-1">
                   <UserMenuItems user={user} onItemClick={() => setOpen(false)} />
                 </ul>

@@ -8,6 +8,18 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, } from "../
 import { UserDropdown } from "../../../user/UserDropdown";
 import { UserMenuItems } from "../../../user/UserMenuItems";
 import logo from "../../static/logo.webp";
+import { cn } from "../../utils";
+function NavCtaButton({ role, onClick, className }) {
+    const base = "rounded-full bg-[#2563EB] text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]";
+    if (role === 'PROVIDER') {
+        return (<ReactRouterLink to="/provider/dashboard" className={cn(base, className)} onClick={onClick}>
+        My Dashboard
+      </ReactRouterLink>);
+    }
+    return (<ReactRouterLink to="/get-quotes" className={cn(base, className)} onClick={onClick}>
+      Get Help
+    </ReactRouterLink>);
+}
 export default function NavBar({ navigationItems, }) {
     return (<header className="sticky top-0 z-50 border-b border-[#E2E8F0] bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8" aria-label="Global">
@@ -61,9 +73,7 @@ function DesktopAuth() {
             Get Help
           </ReactRouterLink>
         </>) : (<>
-          <ReactRouterLink to="/get-quotes" className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]">
-            Get Help
-          </ReactRouterLink>
+          <NavCtaButton role={user.role} className="px-4 py-2"/>
           <UserDropdown user={user}/>
         </>)}
     </div>);
@@ -104,9 +114,7 @@ function MobileMenu({ navigationItems, }) {
                   Get Help
                 </ReactRouterLink>
               </div>) : (<>
-                <ReactRouterLink to="/get-quotes" className="mb-4 block rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]" onClick={() => setOpen(false)}>
-                  Get Help
-                </ReactRouterLink>
+                <NavCtaButton role={user.role} onClick={() => setOpen(false)} className="mb-4 block px-4 py-3 text-center"/>
                 <ul className="space-y-1">
                   <UserMenuItems user={user} onItemClick={() => setOpen(false)}/>
                 </ul>

@@ -29,6 +29,8 @@ export function UserDropdown({ user }: { user: Partial<UserEntity> }) {
         {userMenuItems.map((item) => {
           if (item.isAuthRequired && !user) return null;
           if (item.isAdminOnly && (!user || !user.isAdmin)) return null;
+          if ('isProviderOnly' in item && item.isProviderOnly && user.role !== 'PROVIDER') return null;
+          if ('isConsumerOnly' in item && item.isConsumerOnly && user.role !== 'CONSUMER') return null;
 
           return (
             <DropdownMenuItem key={item.name}>

@@ -22,7 +22,8 @@ export default function StepProfile({ form, role, onChange }) {
       </div>
       <div>
         <label className={labelClass}>Postal Code *</label>
-        <input type="text" className={inputClass} placeholder="M5V 3A8" value={form.postalCode} onChange={e => onChange('postalCode', e.target.value)}/>
+        <input type="text" className={`${inputClass} uppercase`} placeholder="L9T 2X5" value={form.postalCode} onChange={e => onChange('postalCode', e.target.value.toUpperCase())} maxLength={7}/>
+        <p className="text-xs text-[#94A3B8] mt-1">We serve Milton, Oakville, Burlington and surrounding GTA areas.</p>
       </div>
       <label className="flex items-start gap-3 cursor-pointer">
         <input type="checkbox" className="mt-0.5 accent-[#2563EB]" checked={form.smsConsent} onChange={e => onChange('smsConsent', e.target.checked)}/>

@@ -81,16 +81,19 @@ const testimonials = [
         quote: "Found an HVAC tech in 3 hours. AC fixed same day. And I earned reward points I didn't even expect.",
         name: "Sarah M.",
         city: "Milton",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
     },
     {
         quote: "One request, no calling around. Matched, booked, done. The referral bonus was a nice touch too.",
         name: "James K.",
         city: "Oakville",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
     },
     {
         quote: "A platform that actually vets who they send. The rewards program is a great bonus.",
         name: "Priya S.",
         city: "Burlington",
+        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
     },
 ];
 // ── Main page ────────────────────────────────────────────────────────────────
@@ -167,18 +170,23 @@ export default function LandingPage() {
               {showSearch && <SearchPanel />}
             </div>
 
-            {/* Right column — Live Activity Card */}
+            {/* Right column — Photo + Live Activity Card */}
             <div className="relative">
-              {/* Floating notification */}
-              <div className="absolute -top-3 left-0 z-10 sm:-top-4 sm:left-4">
-                <div className="flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-4 py-2 text-xs font-medium text-[#475569] shadow-lg animate-[bounce_3s_ease-in-out_infinite]">
-                  <span className="flex size-6 items-center justify-center rounded-full bg-[#DCFCE7] text-sm">✓</span>
-                  Sarah just earned $5! · AC repair · Milton
+              {/* Background photo card */}
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80" alt="Professional handyman completing home repair" className="w-full h-72 sm:h-80 object-cover"/>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"/>
+                {/* Floating notification */}
+                <div className="absolute top-4 left-4 z-10">
+                  <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/90 backdrop-blur px-4 py-2 text-xs font-medium text-[#475569] shadow-lg animate-[bounce_3s_ease-in-out_infinite]">
+                    <span className="flex size-6 items-center justify-center rounded-full bg-[#DCFCE7] text-sm">✓</span>
+                    Sarah just earned $5! · AC repair · Milton
+                  </div>
                 </div>
               </div>
 
-              {/* Card */}
-              <div className="mt-8 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.10)] sm:mt-10">
+              {/* Activity card overlapping the photo */}
+              <div className="-mt-6 mx-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.14)] relative z-10">
                 {/* Card header */}
                 <div className="flex items-center justify-between mb-4">
                   <p className="text-sm font-semibold text-[#0F172A]">Live requests near you</p>
@@ -187,7 +195,6 @@ export default function LandingPage() {
                     Live
                   </span>
                 </div>
-
                 {/* Request rows */}
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-3">
@@ -212,7 +219,6 @@ export default function LandingPage() {
                     <span className="rounded-full bg-[#FEF3C7] px-2.5 py-1 text-[11px] font-semibold text-[#92400E]">New</span>
                   </div>
                 </div>
-
                 {/* Bottom amber callout */}
                 <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#FDE68A] bg-[#FEF3C7] px-4 py-3 text-sm font-medium text-[#92400E]">
                   James earned $50 this month from completed jobs
@@ -354,9 +360,7 @@ export default function LandingPage() {
                   </div>
                   <p className="text-sm leading-6 text-[#475569]">"{t.quote}"</p>
                   <div className="mt-4 flex items-center gap-2">
-                    <span className="flex size-8 items-center justify-center rounded-full bg-[#EFF6FF] text-xs font-bold text-[#2563EB]">
-                      {t.name.charAt(0)}
-                    </span>
+                    <img src={t.avatar} alt={t.name} className="size-8 rounded-full object-cover" loading="lazy"/>
                     <div>
                       <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
                       <p className="text-xs text-[#94A3B8]">{t.city}</p>

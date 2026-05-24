@@ -25,7 +25,7 @@
             "file",
             "db/schema.prisma"
         ],
-        "be65bd204f137b980c05861547ec4ed306569e938f757a26524d08f7005f9ebf"
+        "a84ec96a6d677f83e3f957747468da4c3e43a83567c5ef7ffcd5efac3bda764c"
     ],
     [
         [
@@ -1222,7 +1222,7 @@
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "251fbe73ac2fa91ff545a080b3209cc5952691e5612d3235ffbaf39aad03c3c8"
+        "b899dc88524a21a0c267dbba0a4de404953278d019f1ca77b961deb88899cdf0"
     ],
     [
         [
@@ -1264,7 +1264,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "4237d8ef7e377e6d076cf0fd32482c94c0c5897b8d27dce5e6a562cc018d2412"
+        "1162cd57104328b66e522dbf3f2e66b8dd65fd7c80986ac1dc239802c0a418a3"
     ],
     [
         [
@@ -1292,7 +1292,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/components/StepProfile.tsx"
         ],
-        "6c1dbf6ada4fe2932be8abd2a03cb7b9ac788bb3ff36699b1d52a5d92c150de2"
+        "84f50f8449ce514b62dae81d5c6a3cb32a80cd7bbfbcb4b5b2396086d4536b52"
     ],
     [
         [
@@ -1306,7 +1306,7 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "82d764a088808d68af349c88ca6a070965df76553b088a8302fbeeff24c7022b"
+        "056ad51abc992831deb69000dea06357e075041eda0c18488179cec660e1b24b"
     ],
     [
         [
@@ -1376,7 +1376,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "84afc07c18ed589782bdc8829c6d3b723ed532803950771e934c5dbbe5caaa6d"
+        "e42cbe144e5ed84d4e49a86838784e24248917d7aa767bee28fec77f2e377142"
     ],
     [
         [
@@ -1803,14 +1803,14 @@
             "file",
             "sdk/wasp/src/consumer/AnalyticsPage.tsx"
         ],
-        "39f9f3e095d5bfd12bc2c4385f144628a0842d3dfefc9e63052f3a738945b23b"
+        "10eb81ce42be4f932c8e57667f0b435d4441e2d18d7bd035b419f53b74c86f0f"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/BookingPage.tsx"
         ],
-        "f15383c652d5709d06dba10b9378daf66d99fd4133223a32bf702a44354cabca"
+        "86ca0046235ed0cee168e285c95fea4256d022c62cd92af070d1908f9182d8f6"
     ],
     [
         [
@@ -1824,7 +1824,7 @@
             "file",
             "sdk/wasp/src/consumer/DashboardPage.tsx"
         ],
-        "3302629daaaa0b84959ee5549d8536ccb1308a37ab28b1dc28142b5bdaf671dd"
+        "44d19e302800aa6034baf94f682d87780f7313788927c51f37e4634caa5d8562"
     ],
     [
         [
@@ -1838,7 +1838,7 @@
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "6e31318c9b81ea23915f19b852bd198ef6bec48405fc7226f1c5fd3d9d740a4c"
+        "9d01a36c4c98467dc59b5aec39d2e8bf92c8991f66a07370c20e2407f246f291"
     ],
     [
         [
@@ -1852,7 +1852,7 @@
             "file",
             "sdk/wasp/src/consumer/HowItWorksPage.tsx"
         ],
-        "ed1a1f85f436a9330338a2988376c3e076f483ea0c4026ef13c4ebd5e7d44a7c"
+        "77647a5b822f51f22ce9c13bbc18b02eacae761ce74a4dd811c80b09188e78aa"
     ],
     [
         [
@@ -1866,7 +1866,7 @@
             "file",
             "sdk/wasp/src/consumer/MyRequestsPage.tsx"
         ],
-        "db3931b160588cc5cb5204cbc935835e3bb402385c1ce37cdd194a0cf1a636bc"
+        "5bc568f179358e124b743df9ce072fadacd3c10510153053bc2ad02cbfc61664"
     ],
     [
         [
@@ -1887,21 +1887,21 @@
             "file",
             "sdk/wasp/src/consumer/ReferralPage.tsx"
         ],
-        "1bd73d3e21c45c409bf37392ffd2a1bb622411ce46f537c2fcfd303827f4dc97"
+        "b0fef55269f940a6619b4dfa34f7cbc3be60a00bed19d2e136debad5d6a0798b"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/RequestDetailPage.tsx"
         ],
-        "05057bee97e072f284cef494ba97a2a4a7a878a796a578d819c46201ec6fb94a"
+        "ba09a2a3909d1791eddc9b3fb74a80c54f02b9b092e1a6966b686ad20fb10403"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/RequestMessagesPage.tsx"
         ],
-        "86ede2c051810b2f3035cfd9b84a83b082694d058bf4975e9aa67f69c7ecd250"
+        "cb82968ee081d471e422cc89b063e741f86109bfa387f34ebb81eb648e3a540a"
     ],
     [
         [
@@ -1922,7 +1922,7 @@
             "file",
             "sdk/wasp/src/consumer/RewardsPage.tsx"
         ],
-        "7e9dc707ba735d68f608bb31e8e4274dfcf9e7332dee11cc193b5a73340d3e1b"
+        "185e18c21b9162f59bd95dabd046df1bd2d47c0b5c24a97f114d7b8d9b3dd1f2"
     ],
     [
         [
@@ -1936,7 +1936,7 @@
             "file",
             "sdk/wasp/src/consumer/SubmitReviewPage.tsx"
         ],
-        "4e83a7835e7605432b384f5ab6327fdb0b71d53b4ef6f8b7e373dec2d213c812"
+        "ecc5cc41222c88f7f020c8ed7abc0432c7bfd57f68614496ba98cccbab25a6ef"
     ],
     [
         [
@@ -1964,7 +1964,7 @@
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepInfoAndVerify.tsx"
         ],
-        "dab35764d8ef129d7af4e0688058de1e20afbc3804c48d8e73887a15a6b268f1"
+        "200a64a455b5e31e4e1a7aa3f28d1d491b0dcaba4db98a032956fa524bd648e6"
     ],
     [
         [
@@ -1972,13 +1972,6 @@
             "sdk/wasp/src/consumer/components/wizard/StepLocation.tsx"
         ],
         "ecd53f82e135d24ad88ef0a66abc00b7686e6c8706a99aebc54920896b136658"
-    ],
-    [
-        [
-            "file",
-            "sdk/wasp/src/consumer/components/wizard/StepOtp.tsx"
-        ],
-        "126e5950ff0c0fd0ace1ee74810e6b895a3cbe352931c7f8d57716c8407cee19"
     ],
     [
         [
@@ -1993,6 +1986,13 @@
             "sdk/wasp/src/consumer/components/wizard/StepSubService.tsx"
         ],
         "b5bfd90dd7662d7f7c1c2ce7453518d0a93bb52d010e97198890d769266675c5"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/consumer/components/wizard/StepVerifyEmail.tsx"
+        ],
+        "415712967dc157d7825fa179201c5d4a02978220c9a65646cfefdc7aa5d99b44"
     ],
     [
         [
@@ -2055,7 +2055,7 @@
             "file",
             "sdk/wasp/src/file-upload/s3Utils.ts"
         ],
-        "34713312d67714c319b0b76bb903c45cfc1e55ed1f319774adea275771a9084c"
+        "4bb67a929520eac1a82b0adb5fe37bcce8e20d726bdf6b13941224ce468d7785"
     ],
     [
         [
@@ -2069,7 +2069,7 @@
             "file",
             "sdk/wasp/src/landing-page/ApplianceLandingPage.tsx"
         ],
-        "3241f03adbbb66eff445335e811f40203f8e27fb823abb8f85fee1ab4c0c1a64"
+        "69e14173386518b7e479c7b16097324cbc5e7618f8553cdb3bc8c727e8d5ee0d"
     ],
     [
         [
@@ -2090,7 +2090,7 @@
             "file",
             "sdk/wasp/src/landing-page/ElectricalLandingPage.tsx"
         ],
-        "5e86ccd54c7de4a90e774b838cb4a83ea0f2b891d1d01ed4dd09059d91c05240"
+        "cb0ad228212feb279463f15eec164e7bb03cba23a03c739f6ff9300a4edf8eaf"
     ],
     [
         [
@@ -2104,7 +2104,7 @@
             "file",
             "sdk/wasp/src/landing-page/HandymanLandingPage.tsx"
         ],
-        "cbfbb366bf6e7c2183609d813fee0fb18913d32563a60720fd97c11d5f59ce5b"
+        "a62fcf715ee8f6c30ab8d019b64f5ffc97e6c39dc9ac65efec6d1c65733736a8"
     ],
     [
         [
@@ -2118,21 +2118,21 @@
             "file",
             "sdk/wasp/src/landing-page/HvacLandingPage.tsx"
         ],
-        "0bbb33b9c92f7102c962d3535a6a1458329347e5d3d09c93edddcf4bbbba26d1"
+        "dd320d5aa49ae9d72c4b1e1d73dcd20b4ad6da659de2c7d345feb52352c0a912"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "2be772c93808f90d9395df5031f7393cffb989f30d49dfcd886a53ae018d6e4a"
+        "07b57d916d0e3dd2525945084dcd6eb39c8e5782ce8da1f592fc2de6468f8848"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/PlumbingLandingPage.tsx"
         ],
-        "81d037ebe711a7c94284d3b05460cae8a298ea535f8b1b20b91e06ae43bee835"
+        "f2fcc504c0996a509283e949615d8e27d3986635b90483a62da843806ed4e72b"
     ],
     [
         [
@@ -2146,7 +2146,7 @@
             "file",
             "sdk/wasp/src/landing-page/SmartHomeLandingPage.tsx"
         ],
-        "6b77b5e77f1cd5fb2946c0b71d418ac1b3120e70831eb4908d1fa422278c1fa2"
+        "ba1a6a6c38488c9692aa58fbe28936e24f1be793fedb9b104ee7cfe4c0f95cb7"
     ],
     [
         [
@@ -2203,6 +2203,13 @@
             "sdk/wasp/src/landing-page/components/HighlightedFeature.tsx"
         ],
         "7f8af3f2c513657489b01003f807d338c6810ca2ac3cc37999b9836b7e8e58a7"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/landing-page/components/LandingHeroBanner.tsx"
+        ],
+        "f5f0375afcbdcff90c2920f8efa7d0b2415993bacb292e4d81614a0ddcaabc8a"
     ],
     [
         [
@@ -2454,14 +2461,14 @@
             "file",
             "sdk/wasp/src/provider/DashboardPage.tsx"
         ],
-        "bb7152c019ecf86ba36b93220036724d5051b3a1f180cec927d1ef313b9b8e59"
+        "f7ae052e52d2c25c81bfdbcdb6c159aae8345a24e60502b1443c870048a21dc5"
     ],
     [
         [
             "file",
             "sdk/wasp/src/provider/LandingPage.tsx"
         ],
-        "34113619d23f010f80ac54cafd194cb118c79334d907c110c95056c13cba6dc5"
+        "d1b2fc64bf97e07c63277e6989f906089881dec12b88ce7eb0d32c31dd6b724a"
     ],
     [
         [
@@ -2606,9 +2613,16 @@
     [
         [
             "file",
+            "sdk/wasp/src/shared/rewardConstants.ts"
+        ],
+        "dce7bed0d0647f2247db17e178f22ed14733273a76de638fd13892ad527b28b2"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/shared/useRoleGuard.ts"
         ],
-        "bc8eb8256589058edc1fbe5185a5ebc4a3505045e8c03eef3faedc7ef7252080"
+        "5811f6eb465e5f858dc97d7700f7975c32d1f7e64af742f4c2c448e5bc0b5514"
     ],
     [
         [
@@ -2629,7 +2643,7 @@
             "file",
             "sdk/wasp/src/user/UserDropdown.tsx"
         ],
-        "b709bc17d1feda577b7da92aaea30d0168ca73e352d52282da0bd91b82773a7b"
+        "ff4c77e97d53ae25171b82e5afeba91cb151f1f9a2dfd9d7e7cf372b896dbd80"
     ],
     [
         [

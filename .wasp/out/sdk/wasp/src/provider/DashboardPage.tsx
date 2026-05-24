@@ -7,7 +7,7 @@ import {
   getProviderLeads,
   getProviderProfile,
 } from "wasp/client/operations";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useRoleGuard } from '../shared/useRoleGuard';
 
 function safeParseServices(json: any): any[] {
@@ -22,6 +22,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 export default function ProviderDashboardPage() {
   useRoleGuard('PROVIDER');
+  const navigate = useNavigate();
 
   const [acceptError, setAcceptError] = useState<string | null>(null);
 
@@ -38,6 +39,7 @@ export default function ProviderDashboardPage() {
   const {
     data: profile,
     isLoading: profileLoading,
+    error: profileError,
   } = useQuery(getProviderProfile);
   const acceptLeadFn = useAction(acceptServiceRequest);
 
@@ -49,6 +51,27 @@ export default function ProviderDashboardPage() {
       setAcceptError("Could not accept lead: " + (err.message || 'Unknown error'));
     }
   };
+
+  // Provider record missing — send back to finish onboarding
+  if (!profileLoading && profileError) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
+        <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-10 max-w-md w-full text-center shadow-sm">
+          <div className="text-4xl mb-4">🔧</div>
+          <h2 className="text-xl font-black text-[#0F172A] mb-2">Finish setting up your account</h2>
+          <p className="text-sm text-[#475569] mb-6">
+            Your provider profile isn't complete yet. Let's finish the setup so you can start receiving leads.
+          </p>
+          <button
+            onClick={() => navigate('/onboarding')}
+            className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+          >
+            Complete setup →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const verificationStatus = (profile as any)?.verificationStatus;
 

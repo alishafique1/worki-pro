@@ -42,29 +42,22 @@ const TRUST_POINTS = [
 ];
 export default function HowItWorksPage() {
     return (<div className="min-h-screen bg-[#F8FAFC]">
-      {/* Header */}
-      <header className="border-b border-[#E2E8F0] bg-white/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-[#0F172A]">TheHelper</Link>
-          <div className="flex items-center gap-4">
-            <Link to="/discover" className="text-sm font-semibold text-[#475569] hover:text-[#0F172A] transition-colors">
-              Browse Pros
-            </Link>
-            <Link to="/get-quotes" className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm">
-              Get Help
-            </Link>
-          </div>
+      {/* Hero photo banner */}
+      <div className="relative h-56 sm:h-72 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1600&q=80" alt="Homeowner reviewing service request on phone" className="w-full h-full object-cover"/>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-[#F8FAFC]"/>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-white/80 mb-3">How TheHelper works</p>
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-tight text-white max-w-2xl drop-shadow-lg">
+            Submit. Match. Book. Done.
+          </h1>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-6xl mx-auto px-6 py-16 space-y-24">
 
         {/* Hero */}
         <section className="text-center max-w-3xl mx-auto">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#2563EB] mb-4">How TheHelper works</p>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6 text-[#0F172A]">
-            Submit. Match. Book. Done.
-          </h1>
           <p className="text-xl text-[#475569] leading-relaxed">
             Get connected to a verified local pro in under 15 minutes. 100% free for homeowners.
             No more calling around or waiting for callbacks.

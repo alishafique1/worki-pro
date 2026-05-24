@@ -82,6 +82,8 @@ export default function OnboardingPage() {
     setError(null);
   }
 
+  const CA_POSTAL = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+
   function validate(): string | null {
     if (step === 1) {
       if (!form.role) return 'Please select your role to continue.';
@@ -90,11 +92,11 @@ export default function OnboardingPage() {
       if (!form.firstName.trim()) return 'First name is required.';
       if (!form.phone.trim()) return 'Phone number is required.';
       if (!form.postalCode.trim()) return 'Postal code is required.';
+      if (!CA_POSTAL.test(form.postalCode.trim())) return 'Enter a valid Canadian postal code (e.g. L9T 2X5).';
     }
     if (step === 3 && isProvider) {
       if (!form.businessName.trim()) return 'Business name is required.';
     }
-    // step 3 for consumers has no validation — it's a redirect prompt
     return null;
   }
 
@@ -225,10 +227,31 @@ export default function OnboardingPage() {
                 <p className="text-[#475569] text-sm mb-6">Tell us what you need and we'll match you with local pros.</p>
                 <button
                   type="button"
-                  onClick={() => navigate('/get-quotes')}
-                  className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+                  disabled={isSubmitting}
+                  onClick={async () => {
+                    setIsSubmitting(true);
+                    setError(null);
+                    try {
+                      await completeOnboarding({
+                        role: form.role!,
+                        firstName: form.firstName.trim(),
+                        lastName: form.lastName.trim() || undefined,
+                        phone: form.phone.trim(),
+                        postalCode: form.postalCode.trim(),
+                        smsConsent: form.smsConsent,
+                        referralCode: form.referralCode.trim() || undefined,
+                        interestCategoryIds: [],
+                      });
+                      navigate('/get-quotes');
+                    } catch (e: any) {
+                      setError(e.message ?? 'Something went wrong. Please try again.');
+                    } finally {
+                      setIsSubmitting(false);
+                    }
+                  }}
+                  className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
                 >
-                  Find a local pro →
+                  {isSubmitting ? 'Saving…' : 'Find a local pro →'}
                 </button>
                 <button
                   type="button"
@@ -236,7 +259,7 @@ export default function OnboardingPage() {
                   disabled={isSubmitting}
                   className="block mx-auto mt-3 text-sm text-[#475569] hover:text-[#0F172A] disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Saving…' : 'Skip for now'}
+                  {isSubmitting ? '' : 'Skip for now'}
                 </button>
               </div>
             )}

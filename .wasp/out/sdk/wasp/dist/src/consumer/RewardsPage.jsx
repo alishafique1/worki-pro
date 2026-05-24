@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useAction, getMyRewardAccount, redeemPoints } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 const LEVELS = [
     { key: 'NEW_HOMEOWNER', label: 'New Homeowner', min: 0, max: 499 },
     { key: 'ACTIVE_HOMEOWNER', label: 'Active Homeowner', min: 500, max: 1999 },
@@ -44,6 +45,7 @@ function getLevelInfo(balance) {
     return { current, next, progress, toNext };
 }
 export default function RewardsPage() {
+    useRoleGuard('CONSUMER');
     const { data, isLoading, refetch } = useQuery(getMyRewardAccount);
     const redeemPointsAction = useAction(redeemPoints);
     const [selectedPoints, setSelectedPoints] = useState(500);

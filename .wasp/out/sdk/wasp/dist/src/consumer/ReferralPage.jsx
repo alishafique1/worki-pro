@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, getMyReferral } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 export default function ReferralPage() {
+    useRoleGuard('CONSUMER');
     const { data: referral, isLoading } = useQuery(getMyReferral);
     const [copied, setCopied] = useState(false);
     const referralCode = referral?.referralCode ?? 'Loading…';

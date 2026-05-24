@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router';
 import { useQuery, getMyRequests } from 'wasp/client/operations';
+import { useRoleGuard } from '../shared/useRoleGuard';
 function CalEmbed({ calLink, prefill }) {
     const containerRef = useRef(null);
     const loadedRef = useRef(false);
@@ -49,6 +50,7 @@ function CalEmbed({ calLink, prefill }) {
     return (<div ref={containerRef} className="w-full min-h-[600px] rounded-[24px] overflow-hidden border border-[#E2E8F0] bg-white shadow-sm"/>);
 }
 export default function BookingPage() {
+    useRoleGuard('CONSUMER');
     const { requestId } = useParams();
     const { data: requests, isLoading } = useQuery(getMyRequests);
     const request = requests?.find((r) => r.id === requestId);

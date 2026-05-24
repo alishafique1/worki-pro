@@ -1,7 +1,9 @@
 import React from "react";
 import { useQuery, getMyRequests, getMyRewardAccount, } from "wasp/client/operations";
 import { Link } from "react-router";
+import { useRoleGuard } from '../shared/useRoleGuard';
 export default function DashboardPage() {
+    useRoleGuard('CONSUMER');
     const { data: requests, isLoading: requestsLoading, error: requestsError, } = useQuery(getMyRequests);
     const { data: rewards, isLoading: rewardsLoading, error: rewardsError, } = useQuery(getMyRewardAccount);
     return (<div className="p-8 max-w-7xl mx-auto space-y-12">

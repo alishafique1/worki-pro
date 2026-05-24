@@ -4,8 +4,9 @@ import WizardProgress from './components/wizard/WizardProgress';
 import StepCategory from './components/wizard/StepCategory';
 import StepQualifiers from './components/wizard/StepQualifiers';
 import StepInfoAndVerify from './components/wizard/StepInfoAndVerify';
-const STEP_LABELS = ['Service', 'Questions', 'Your info'];
-const TOTAL_STEPS = 3;
+import StepVerifyEmail from './components/wizard/StepVerifyEmail';
+const STEP_LABELS = ['Service', 'Questions', 'Your info', 'Verify email'];
+const TOTAL_STEPS = 4;
 export default function GuestRequestWizardPage() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -50,7 +51,8 @@ export default function GuestRequestWizardPage() {
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
             {step === 1 && <StepCategory state={state} update={update} onNext={next}/>}
             {step === 2 && <StepQualifiers state={state} update={update} onNext={next} onBack={back}/>}
-            {step === 3 && (<StepInfoAndVerify state={state} update={update} onBack={back} onSuccess={(requestId) => navigate(`/dashboard${requestId ? `?newRequest=${requestId}` : ''}`)} setError={setError}/>)}
+            {step === 3 && <StepInfoAndVerify state={state} update={update} onBack={back} onNext={next}/>}
+            {step === 4 && (<StepVerifyEmail state={state} update={update} onBack={back} onSuccess={(requestId) => navigate(`/dashboard${requestId ? `?newRequest=${requestId}` : ''}`)} setError={setError}/>)}
           </div>
 
           {error && (<p className="mt-4 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-[10px] px-4 py-3">
