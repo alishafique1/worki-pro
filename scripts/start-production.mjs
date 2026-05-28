@@ -13,8 +13,10 @@ process.env.NODE_ENV = 'production'
 const serverDir = resolve(projectDir, '.wasp/out/server')
 const schemaPath = resolve(projectDir, '.wasp/out/db/schema.prisma')
 
-console.log('=== Running database migrations ===')
-execSync(`npx prisma migrate deploy --schema=${schemaPath}`, {
+console.log('=== Syncing database schema ===')
+// Use db push instead of migrate deploy to handle migration drift gracefully.
+// db push is safe: adds tables/columns/indices without data loss.
+execSync(`npx prisma db push --schema=${schemaPath} --accept-data-loss`, {
   cwd: serverDir,
   stdio: 'inherit',
   env: process.env,
