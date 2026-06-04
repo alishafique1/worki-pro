@@ -1222,14 +1222,14 @@
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "b899dc88524a21a0c267dbba0a4de404953278d019f1ca77b961deb88899cdf0"
+        "b5616443688970bb7dc01062b1bcda5da1bbf23bd4d1067fa558e05db9c2141f"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
-        "8a3ba56e6df8962ed471ef0b566a7d2f958e64d1cc83f22cf21349364bc317ce"
+        "920ca08ed37e6a18cd1964e5b09f7053e524d842c5cf3f52f44868d5419c5288"
     ],
     [
         [
@@ -1376,7 +1376,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "e42cbe144e5ed84d4e49a86838784e24248917d7aa767bee28fec77f2e377142"
+        "ff23a76f2d6d9404c5c6f93f033c080084f889e74284f3130d873c33ded64175"
     ],
     [
         [

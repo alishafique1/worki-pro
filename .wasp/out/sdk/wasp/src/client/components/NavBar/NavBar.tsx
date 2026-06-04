@@ -135,6 +135,12 @@ function DesktopAuth() {
             Log in
           </WaspRouterLink>
           <ReactRouterLink
+            to="/signup"
+            className="text-sm font-semibold text-[#2563EB] transition-colors hover:text-[#1D4ED8]"
+          >
+            Sign up
+          </ReactRouterLink>
+          <ReactRouterLink
             to="/get-quotes"
             className="rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
           >
@@ -205,6 +211,13 @@ function MobileMenu({
                 >
                   Log in
                 </WaspRouterLink>
+                <ReactRouterLink
+                  to="/signup"
+                  className="text-center text-sm font-semibold text-[#2563EB] transition-colors hover:text-[#1D4ED8]"
+                  onClick={() => setOpen(false)}
+                >
+                  Sign up
+                </ReactRouterLink>
                 <ReactRouterLink
                   to="/get-quotes"
                   className="rounded-full bg-[#2563EB] px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]"

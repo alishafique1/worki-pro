@@ -4,6 +4,7 @@ import { setSessionId } from 'wasp/client/api'
 import { login } from 'wasp/client/auth'
 import { config } from 'wasp/client'
 import { AuthPageLayout } from './AuthPageLayout'
+import { Link } from 'react-router'
 
 type Step = 'email' | 'code'
 type Mode = 'otp' | 'password'
@@ -284,6 +285,16 @@ export default function Login() {
           </p>
         </form>
       )}
+
+      {/* Sign up link */}
+      <div className="mt-6 pt-6 border-t border-[#E2E8F0] text-center">
+        <p className="text-sm text-[#475569]">
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-[#2563EB] font-semibold hover:underline">
+            Create one — it's free
+          </Link>
+        </p>
+      </div>
     </AuthPageLayout>
   )
 }
