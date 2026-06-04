@@ -201,24 +201,45 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
   const CONSUMER_EMAIL = process.env.CONSUMER_EMAIL ?? 'consumer@thehelper.ca';
   const CONSUMER_PASSWORD = process.env.CONSUMER_PASSWORD ?? 'HelperTest123';
 
+  // Verify test accounts exist before running — skip entire block if not
+  test.beforeAll(() => {
+    // Allow override via TEST_CONSUMER_EXISTS=true to bypass check
+    if (process.env.TEST_CONSUMER_EXISTS === 'true') return;
+    // FIXME: Add DB ping here once a `/api/auth/check-account` endpoint exists.
+    // For now, login attempts will fail with a clear error rather than timeout.
+  });
+
   async function loginConsumer(page: Page): Promise<void> {
+    const email = process.env.CONSUMER_EMAIL ?? 'consumer@thehelper.ca';
+    const password = process.env.CONSUMER_PASSWORD ?? 'HelperTest123';
     await page.goto('/login');
     await dismissCookieConsent(page);
-    await waitForPageReady(page);
 
-    // Switch from OTP to password mode
-    const passwordToggle = page.getByRole('button', { name: /sign in with password/i });
-    if (await passwordToggle.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await passwordToggle.click();
+    // Wait for the email input to be ready (Wasp SSR hydration)
+    await page.locator('input[type="email"]').waitFor({ state: 'visible', timeout: 15000 });
+    await page.locator('input[type="email"]').fill(email);
+
+    // Default mode is OTP — switch to password mode (guard if already on password)
+    const pwToggle = page.getByRole('button', { name: /sign in with password/i });
+    if (await pwToggle.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await pwToggle.click();
     }
 
-    await page.locator('input[type="email"]').fill(CONSUMER_EMAIL);
-    await page.locator('input[type="password"]').fill(CONSUMER_PASSWORD);
-
+    // Wait for password field to appear
+    await page.locator('input[type="password"]').waitFor({ state: 'visible', timeout: 5000 });
+    await page.locator('input[type="password"]').fill(password);
     await page.getByRole('button', { name: /sign in/i }).click();
 
-    // Handle redirect: onboarding (new user) or dashboard (returning)
-    await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 15000 }).catch(() => {});
+    // Wait for post-login redirect OR stay on login (auth failure)
+    await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 20000 }).catch(() => {});
+
+    // If still on login after the timeout, the credentials likely failed — surface an error
+    // so the test doesn't silently proceed on the wrong page.
+    if (page.url().includes('/login')) {
+      const errorText = await page.locator('[class*="error"], [class*="alert"], p[class*="red"]').first()
+        .textContent().catch(() => '');
+      throw new Error(`Login failed for ${email} — check credentials. Error: ${errorText}`);
+    }
   }
 
   test('Consumer completes onboarding — Step 1: Role selection', async ({ page }) => {
