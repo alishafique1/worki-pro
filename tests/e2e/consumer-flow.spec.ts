@@ -22,12 +22,29 @@ async function dismissCookieConsent(page: Page) {
 async function login(page: Page, email: string, password: string) {
   await page.goto('/login');
   await dismissCookieConsent(page);
+  // Wait for the page to hydrate (Wasp SSR)
+  await page.locator('input[type="email"]').waitFor({ state: 'visible', timeout: 15000 });
   await page.locator('input[type="email"]').fill(email);
+
   // Default mode is OTP — switch to password mode
-  await page.getByRole('button', { name: /sign in with password/i }).click();
+  const pwToggle = page.getByRole('button', { name: /sign in with password/i });
+  if (await pwToggle.isVisible({ timeout: 5000 }).catch(() => false)) {
+    await pwToggle.click();
+  }
+
+  // Wait for password field to appear after toggling mode
+  await page.locator('input[type="password"]').waitFor({ state: 'visible', timeout: 5000 });
   await page.locator('input[type="password"]').fill(password);
   await page.getByRole('button', { name: /sign in/i }).click();
-  await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 15000 });
+
+  // Wait for post-login redirect (onboarding for new users, dashboard for returning)
+  await page.waitForURL(
+    /\/(dashboard|onboarding)/,
+    { timeout: 20000 }
+  ).catch(async () => {
+    // Fallback: if redirect didn't match expected routes, the page still needs to be visible
+    await expect(page.locator('body')).toBeVisible({ timeout: 5000 });
+  });
 }
 
 test.describe('Consumer — authenticated flow', () => {

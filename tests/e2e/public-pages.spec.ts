@@ -156,9 +156,14 @@ test.describe('Public pages', () => {
     await expect(page.getByRole('button', { name: /send/i }).first()).toBeVisible();
   });
 
-  test('/signup — redirects to /login', async ({ page }) => {
+  test('/signup — loads the dedicated signup page', async ({ page }) => {
     await gotoAndDismiss(page, '/signup');
-    await expect(page).toHaveURL(/\/login/);
+    await expect(page).not.toHaveURL(/^\/login/);
+    // Should show signup form (email + password fields)
+    await expect(page.locator('input[type="email"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('input[type="password"]').first()).toBeVisible();
+    // Heading should mention account creation
+    await expect(page.locator('h2').first()).toContainText(/create|sign up|account/i);
   });
 
   test('/request-service — redirects to /get-quotes', async ({ page }) => {
