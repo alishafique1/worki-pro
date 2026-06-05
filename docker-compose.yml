@@ -12,10 +12,11 @@ services:
       PORT: "3001"
       DATABASE_URL: ${DATABASE_URL}
       WASP_WEB_CLIENT_URL: ${WASP_WEB_CLIENT_URL:-https://thehelper.ca}
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:-a38c66fc6385f943fbce7cbef5b7fb73e3d4c23ffbf0e33f8338637b8990d1bf}
+      ADMIN_EMAILS: ${ADMIN_EMAILS}
+      WASP_EMAIL_FROM_NAME: ${WASP_EMAIL_FROM_NAME:-TheHelper}
       MAILGUN_API_KEY: ${MAILGUN_API_KEY}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN}
-      ADMIN_EMAILS: ${ADMIN_EMAILS}
       SKIP_EMAIL_VERIFICATION_IN_DEV: "false"
       GHL_WEBHOOK_URL: ${GHL_WEBHOOK_URL:-}
       GHL_OTP_WEBHOOK_URL: ${GHL_OTP_WEBHOOK_URL:-}
@@ -36,6 +37,9 @@ services:
       POLAR_ORGANIZATION_ACCESS_TOKEN: ${POLAR_ORGANIZATION_ACCESS_TOKEN:-placeholder}
       POLAR_WEBHOOK_SECRET: ${POLAR_WEBHOOK_SECRET:-placeholder}
       POLAR_SANDBOX_MODE: ${POLAR_SANDBOX_MODE:-true}
+    # Skip prisma migrate — DB is fully migrated on Neon, migration files are stale
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["NODE_ENV=production npm run start"]
     labels:
       - traefik.enable=true
       - traefik.http.routers.thehelper-api.rule=Host(`api.thehelper.ca`)

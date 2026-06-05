@@ -1,0 +1,2 @@
+-- Stub migration to match database state
+-- Actual schema changes already applied via direct DB access

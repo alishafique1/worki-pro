@@ -1,0 +1,2 @@
+-- Add guest wizard fields (already applied to Neon DB)
+-- No schema changes needed — migration recorded for consistency
