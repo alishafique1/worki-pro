@@ -5,6 +5,23 @@ import {
   ArrowRight,
   Hammer,
   ShowerHead,
+  ShieldCheck,
+  Star,
+  MessageSquare,
+  MapPin,
+  Clock,
+  BadgeCheck,
+  Users,
+  Zap,
+  Gift,
+  Award,
+  Home,
+  Crown,
+  BriefcaseBusiness,
+  CheckCircle2,
+  Phone,
+  StarHalf,
+  Search,
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import {
@@ -35,7 +52,7 @@ function SearchPanel() {
       <div className="p-4 sm:p-6">
         {/* Search input */}
         <div className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
-          <span className="text-lg">🔍</span>
+          <Search className="size-4 text-[#94A3B8]" />
           <input
             type="text"
             value={searchQuery}
@@ -99,19 +116,19 @@ function SearchPanel() {
 // ── Trust tier cards ─────────────────────────────────────────────────────────
 
 const rewardTiers = [
-  { emoji: "🏠", label: "New Homeowner", range: "0 – 499 pts", note: "Start earning from your first booking" },
-  { emoji: "⭐", label: "Active Homeowner", range: "500 - 1,999 pts", note: "Keep going, your next job unlocks more" },
-  { emoji: "🔧", label: "Smart Maintainer", range: "2,000 - 4,999 pts", note: "You're a regular, thank you" },
-  { emoji: "🏆", label: "Home Rewards Pro", range: "5,000+ pts", note: "Top tier with maximum rewards every time" },
+  { icon: <Home className="size-5 text-[#93C5FD]" />, label: "New Homeowner", range: "0 – 499 pts", note: "Start earning from your first booking" },
+  { icon: <Star className="size-5 text-[#FCD34D]" />, label: "Active Homeowner", range: "500 - 1,999 pts", note: "Keep going, your next job unlocks more" },
+  { icon: <Award className="size-5 text-[#93C5FD]" />, label: "Smart Maintainer", range: "2,000 - 4,999 pts", note: "You're a regular, thank you" },
+  { icon: <Crown className="size-5 text-[#FCD34D]" />, label: "Home Rewards Pro", range: "5,000+ pts", note: "Top tier with maximum rewards every time" },
 ];
 
 // ── Trust pillars ────────────────────────────────────────────────────────────
 
 const trustPillars = [
-  { emoji: "🛡️", title: "Verified providers", body: "Credentials, insurance, and service areas reviewed before approval." },
-  { emoji: "⭐", title: "Real reviews", body: "Ratings from verified completed jobs. No fake reviews, ever." },
-  { emoji: "💬", title: "Secure messaging", body: "All communication stays connected to the job, in one place." },
-  { emoji: "🇨🇦", title: "Canadian owned", body: "Built for Canadian homeowners. GTA-first, growing city by city." },
+  { icon: <ShieldCheck className="size-6 text-[#22C55E]" />, title: "Verified providers", body: "Credentials, insurance, and service areas reviewed before approval." },
+  { icon: <Star className="size-6 text-[#F59E0B]" />, title: "Real reviews", body: "Ratings from verified completed jobs. No fake reviews, ever." },
+  { icon: <MessageSquare className="size-6 text-[#2563EB]" />, title: "Secure messaging", body: "All communication stays connected to the job, in one place." },
+  { icon: <MapPin className="size-6 text-[#2563EB]" />, title: "Canadian owned", body: "Built for Canadian homeowners. GTA-first, growing city by city." },
 ];
 
 // ── Testimonials ─────────────────────────────────────────────────────────────
@@ -145,12 +162,12 @@ export default function LandingPage() {
   return (
     <>
       <PageSeo
-        title="The Helper | Home Services in Milton, Oakville & Burlington"
-        description="Find verified HVAC, plumbing, electrical, handyman & smart home pros in the GTA. Get matched with local experts, book appointments, and earn rewards on every job. Serving Milton, Oakville & Burlington."
-        ogTitle="The Helper | Home Services Marketplace in GTA"
-        ogDescription="Connect with vetted local pros for HVAC, plumbing, electrical, handyman & more. Serving Milton, Oakville & Burlington homeowners."
+        title="Find a Verified Home Pro in Minutes | The Helper"
+        description="Get matched with vetted HVAC, plumbing, electrical, handyman& smart home pros in Milton, Oakville & Burlington. One request — book, earn rewards, and save."
+        ogTitle="Find a Verified Home Pro in Minutes | The Helper"
+        ogDescription="One request. Matched with a verified local pro. Book same-day and earn cash back on every job. Serving Milton, Oakville & Burlington homeowners."
         canonicalPath="/"
-        keywords="home services GTA, HVAC Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair services, verified contractors Toronto"
+        keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
           name: 'The Helper Home Services',
           description: 'Home services marketplace connecting GTA homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.',
@@ -179,19 +196,20 @@ export default function LandingPage() {
 
               {/* H1 - Conversion focused headline */}
               <h1 className="mt-5 text-[38px] font-bold leading-[1.1] text-[#0F172A] sm:text-5xl lg:text-[56px]">
-                One call.{" "}
-                <span className="text-[#2563EB]">Verified pros.</span>{" "}
-                <span className="whitespace-nowrap">Same day.</span>
+                Find a{" "}
+                <span className="text-[#2563EB]">verified pro</span>{" "}
+                <span className="whitespace-nowrap">in minutes.</span>
               </h1>
 
               {/* Subhead */}
               <p className="mt-4 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
-                Stop calling around. Submit one request, get matched with a verified local pro in minutes, and book same-day service.
+                Submit one request. Get matched with a local pro who's licensed, insured, and ready to help today.
               </p>
 
               {/* Amber reward pill */}
               <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-4 py-2 text-sm font-medium text-[#92400E]">
-                Earn $60+ cash back on your first completed job
+                <Gift className="size-4 text-[#F59E0B]" />
+                Earn $60+ cash back on your first job
               </div>
 
               {/* CTAs */}
@@ -414,7 +432,9 @@ export default function LandingPage() {
                     key={tier.label}
                     className="flex items-center gap-4 rounded-xl border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-sm"
                   >
-                    <span className="text-2xl">{tier.emoji}</span>
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white/10">
+                      {tier.icon}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-white">{tier.label}</p>
                       <p className="text-xs text-[#93C5FD]">{tier.note}</p>
@@ -427,7 +447,7 @@ export default function LandingPage() {
 
                 {/* Referral callout */}
                 <div className="mt-2 flex items-center gap-2 rounded-xl border border-[#FDE68A]/40 bg-[#FEF3C7]/10 px-5 py-3 text-sm font-medium text-[#FCD34D]">
-                  🎁 Refer a friend. Both of you earn $5 when they submit their first request.
+                  <Gift className="size-4 text-[#FCD34D]" /> Refer a friend. Both of you earn $5 when they submit their first request.
                 </div>
 
                 {/* Earning summary */}
@@ -462,7 +482,7 @@ export default function LandingPage() {
                   key={pillar.title}
                   className="rounded-2xl border border-white/10 bg-white/5 p-5 transition duration-200 hover:bg-white/8"
                 >
-                  <span className="text-2xl">{pillar.emoji}</span>
+                  <div className="mb-3 flex size-10 items-center justify-center rounded-xl bg-white/10">{pillar.icon}</div>
                   <h3 className="mt-3 text-base font-semibold text-white">{pillar.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-[#94A3B8]">{pillar.body}</p>
                 </article>
@@ -482,19 +502,21 @@ export default function LandingPage() {
               {testimonials.map((t) => (
                 <article
                   key={t.name}
-                  className="rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_14px_40px_rgba(15,23,42,0.06)]"
+                  className="relative rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_14px_40px_rgba(15,23,42,0.06)]"
                 >
+                  {/* Decorative quote */}
+                  <div className="absolute right-5 top-5 text-4xl leading-none font-serif text-[#2563EB]/10 select-none">"</div>
                   <div className="mb-4 flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-[#F59E0B] text-sm">★</span>
                     ))}
                   </div>
-                  <p className="text-sm leading-6 text-[#475569]">"{t.quote}"</p>
+                  <p className="text-sm leading-6 text-[#475569] relative z-10">"{t.quote}"</p>
                   <div className="mt-4 flex items-center gap-2">
                     <img
                       src={t.avatar}
                       alt={t.name}
-                      className="size-8 rounded-full object-cover"
+                      className="size-8 rounded-full object-cover ring-2 ring-[#E2E8F0]"
                       loading="lazy"
                     />
                     <div>
@@ -520,12 +542,17 @@ export default function LandingPage() {
                   Get matched with qualified leads in your service area. Manage bookings, messages, and reviews, all in one place.
                 </p>
                 <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
-                  {["6 service categories", "GTA coverage", "Free to apply"].map((stat) => (
+                  {[
+                    { icon: <BriefcaseBusiness className="size-3.5" />, text: "6 service categories" },
+                    { icon: <MapPin className="size-3.5" />, text: "GTA coverage" },
+                    { icon: <BadgeCheck className="size-3.5" />, text: "Free to apply" },
+                  ].map(({ icon, text }) => (
                     <span
-                      key={stat}
-                      className="rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1 text-xs font-semibold text-[#2563EB]"
+                      key={text}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1 text-xs font-semibold text-[#2563EB]"
                     >
-                      {stat}
+                      {icon}
+                      {text}
                     </span>
                   ))}
                 </div>

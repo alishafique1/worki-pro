@@ -1,17 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { CheckCircle2, DollarSign, MapPin, Target } from 'lucide-react';
 import PageSeo from '../landing-page/components/PageSeo';
 
 export default function ProviderLandingPage() {
   return (
     <>
       <PageSeo
-        title="Join The Helper as a Home Service Pro | Get Leads in GTA"
-        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington and the GTA. No bidding wars - just vetted homeowners ready to book. HVAC, plumbing, electrical, and handyman pros welcome."
-        ogTitle="Become a The Helper Service Provider | GTA"
-        ogDescription="Partner with The Helper to get qualified home service leads in Milton, Oakville & Burlington. Licensed HVAC, plumbing, electrical, and handyman pros welcome."
+        title="Get More Customers: Join The Helper Pro Network | GTA"
+        description="Stop chasing cold leads. The Helper delivers high-intent homeowners in Milton, Oakville, Burlington & GTA who are ready to book. No bidding wars, no commission — just verified jobs."
+        ogTitle="Get More Customers: Join The Helper Pro Network | GTA"
+        ogDescription="Stop chasing cold leads. The Helper delivers verified, booking-ready homeowners in Milton, Oakville & Burlington. No commission, no bidding wars."
         canonicalPath="/providers"
-        keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades"
+        keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades, home service marketing"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'ProfessionalService',
+          name: 'The Helper Pro Network',
+          description: 'Home services marketplace connecting GTA homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.',
+          url: 'https://thehelper.ca/providers',
+          areaServed: ['Milton', 'Oakville', 'Burlington', 'Mississauga', 'Brampton', 'Toronto'],
+          serviceType: ['HVAC Repair', 'Plumbing Services', 'Electrical Services', 'Handyman Services', 'Appliance Repair', 'Smart Home Installation'],
+          priceRange: '$$',
+        }}
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pb-20">
@@ -65,12 +76,12 @@ export default function ProviderLandingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: '🎯' },
-              { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: '📍' },
-              { title: 'Transparent Fees', desc: 'Pay $45 per booked job, or $199/mo for priority routing. No annual contract, no dual fees.', icon: '💰' }
+              { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: <Target className="size-7" /> },
+              { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: <MapPin className="size-7" /> },
+              { title: 'Transparent Fees', desc: 'Pay $45 per booked job, or $199/mo for priority routing. No annual contract, no dual fees.', icon: <DollarSign className="size-7" /> }
             ].map((feature) => (
               <div key={feature.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:border-[#2563EB] transition-colors text-left shadow-sm">
-                <div className="text-4xl mb-6">{feature.icon}</div>
+                <div className="text-[#2563EB] mb-6">{feature.icon}</div>
                 <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{feature.title}</h3>
                 <p className="text-[#475569] leading-relaxed">{feature.desc}</p>
               </div>

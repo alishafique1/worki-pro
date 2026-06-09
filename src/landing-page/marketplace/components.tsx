@@ -141,7 +141,7 @@ export function Hero() {
           {/* Reward pill */}
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-3 py-1.5 text-xs font-semibold text-[#92400E]">
             <Trophy className="size-3.5 text-[#F59E0B]" />
-            🏆 Earn reward points on every completed job
+            Earn reward points on every completed job
           </div>
 
           {/* CTAs */}
@@ -583,7 +583,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 text-xs sm:flex-row sm:items-center">
-          <p>© 2026 The Helper · 🇨🇦 Made in Canada</p>
+          <p className="flex items-center gap-1.5"><MapPin className="size-3.5" />© 2026 The Helper · Milton, Ontario, Canada</p>
           <div className="flex gap-5">
             <Link to="/privacy" className="transition duration-150 hover:text-white">Privacy Policy</Link>
             <Link to="/terms" className="transition duration-150 hover:text-white">Terms of Service</Link>

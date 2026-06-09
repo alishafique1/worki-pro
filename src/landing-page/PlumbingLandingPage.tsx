@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { AlertTriangle, ChevronDown, ChevronUp, DollarSign, Wrench } from 'lucide-react', Home, RefreshCw, ShowerHead from "lucide-react";
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 
@@ -101,12 +101,12 @@ export default function PlumbingLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-              { label: 'Licensed Plumbers', icon: '🔧', alt: 'Licensed professional plumbers' },
-              { label: '24/7 Emergency', icon: '🚨', alt: '24/7 emergency service' },
-              { label: 'Upfront Pricing', icon: '💰', alt: 'Upfront transparent pricing' }
+              { label: 'Licensed Plumbers', icon: <Wrench className="size-6" />, alt: 'Licensed professional plumbers' },
+              { label: '24/7 Emergency', icon: <AlertTriangle className="size-6 text-red-500" />, alt: '24/7 emergency service' },
+              { label: 'Upfront Pricing', icon: <DollarSign className="size-6" />, alt: 'Upfront transparent pricing' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
+                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
                 <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
               </div>
             ))}
@@ -117,9 +117,9 @@ export default function PlumbingLandingPage() {
             <h2 id="plumbing-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our Plumbing Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-                { title: 'Leak Repair', desc: 'Fast diagnosis and repair of faucet leaks, pipe leaks, and hidden water damage. We fix problems before they become costly emergencies.', icon: '🚿' },
-                { title: 'Drain Cleaning', desc: 'Professional drain clearing for kitchen sinks, bathroom drains, and main sewer lines. Camera inspection available to identify stubborn blockages.', icon: '🌀' },
-                { title: 'Installations', desc: 'Water heater installation, toilet replacement, faucet upgrades, and complete bathroom/kitchen plumbing rough-ins.', icon: '🏠' }
+                { title: 'Leak Repair', desc: 'Fast diagnosis and repair of faucet leaks, pipe leaks, and hidden water damage. We fix problems before they become costly emergencies.', icon: '<ShowerHead' },
+                { title: 'Drain Cleaning', desc: 'Professional drain clearing for kitchen sinks, bathroom drains, and main sewer lines. Camera inspection available to identify stubborn blockages.', icon: '<RefreshCw' },
+                { title: 'Installations', desc: 'Water heater installation, toilet replacement, faucet upgrades, and complete bathroom/kitchen plumbing rough-ins.', icon: '<Home' }
               ].map((service) => (
                 <article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
                   <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>

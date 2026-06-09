@@ -1,4 +1,5 @@
 import React from 'react';
+import { BarChart3 } from 'lucide-react';
 import { useQuery, getConsumerStats } from 'wasp/client/operations';
 import { useRoleGuard } from '../shared/useRoleGuard';
 
