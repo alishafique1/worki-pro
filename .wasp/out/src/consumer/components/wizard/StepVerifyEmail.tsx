@@ -183,7 +183,7 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
     <div>
       <h3 className="text-xl font-black mb-1 text-[#0F172A]">Verify your email</h3>
       <p className="text-[#475569] text-sm mb-6">
-        We'll send a 6-digit code to confirm your email and create your account.
+        We'll send a 6-digit code to confirm your email. Your email becomes your login — use it to track your rewards and appointments.
       </p>
       <form onSubmit={handleSendCode} className="space-y-4">
         <div>

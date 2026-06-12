@@ -1845,7 +1845,7 @@
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "931ef1448ad1eb5a72a9b80b86a00fca5bd93629386b3b7e528e029d2dc56856"
+        "109030f9a4c8edee65f9076c8c49f432f09f4837d209ee03325d403f3a2359fb"
     ],
     [
         [
@@ -1929,7 +1929,7 @@
             "file",
             "sdk/wasp/src/consumer/RewardsPage.tsx"
         ],
-        "185e18c21b9162f59bd95dabd046df1bd2d47c0b5c24a97f114d7b8d9b3dd1f2"
+        "25670885220e779dbd81e2f9602cbcfa37e354cab04c46ce02e7ec50a3f90442"
     ],
     [
         [
@@ -1971,7 +1971,7 @@
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepInfoAndVerify.tsx"
         ],
-        "200a64a455b5e31e4e1a7aa3f28d1d491b0dcaba4db98a032956fa524bd648e6"
+        "b9907280523fd6b0fd1404899692f24e89cc1895730e0ca3a7b24fab29015565"
     ],
     [
         [
@@ -1999,7 +1999,7 @@
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepVerifyEmail.tsx"
         ],
-        "f4d6fbd0f959805f6478c596ba955c52ae64513ef5b9965067bfc86b1ae2d771"
+        "10c09416bce74cf0afaac9784546679e80fab7304fc12fbb475c83cf9abb2c29"
     ],
     [
         [
@@ -2132,7 +2132,7 @@
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "cd8a1fa8e22235792c1d3a42c1dc66251275f77a84035a1692ad5fc433622c86"
+        "31beca99bdaff0e437f67dabbe3a3c72b534353c52ddbce5b93571245c3a8e99"
     ],
     [
         [

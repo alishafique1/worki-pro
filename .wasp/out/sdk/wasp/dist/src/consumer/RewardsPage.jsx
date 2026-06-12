@@ -30,9 +30,9 @@ const STATUS_BADGE = {
 };
 const ptsToDollars = (pts) => (pts / 100).toFixed(2);
 const PRESETS = [
-    { points: 500, label: '$5.00' },
-    { points: 1000, label: '$10.00' },
-    { points: 2000, label: '$20.00' },
+    { points: 500, label: '500 pts ($5.00)' },
+    { points: 1000, label: '1,000 pts ($10.00)' },
+    { points: 2000, label: '2,000 pts ($20.00)' },
 ];
 function getLevelInfo(balance) {
     const idx = LEVELS.findIndex(l => balance >= l.min && balance <= l.max);
@@ -67,7 +67,7 @@ export default function RewardsPage() {
             return;
         }
         if (effectivePoints < 500 || effectivePoints % 500 !== 0) {
-            setError('Amount must be at least $5.00 and a multiple of $5.00.');
+            setError('Amount must be at least 500 points and a multiple of 500 points.');
             return;
         }
         if (effectivePoints > balance) {
@@ -77,7 +77,7 @@ export default function RewardsPage() {
         setSubmitting(true);
         try {
             await redeemPointsAction({ points: effectivePoints, giftCardEmail: email });
-            setSuccess(`Successfully redeemed $${ptsToDollars(effectivePoints)}. Check your email!`);
+            setSuccess(`Successfully redeemed ${effectivePoints.toLocaleString()} points ($${ptsToDollars(effectivePoints)}). Check your email!`);
             setEmail('');
             setCustomPoints('');
             setSelectedPoints(500);
@@ -97,17 +97,18 @@ export default function RewardsPage() {
       <div className="bg-white rounded-[16px] border border-[#E2E8F0] shadow p-6 space-y-4">
         {isLoading ? (<p className="text-[#475569]">Loading your wallet…</p>) : (<>
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-extrabold text-[#2563EB]">${ptsToDollars(balance)}</span>
+              <span className="text-5xl font-extrabold text-[#2563EB]">{balance.toLocaleString()} pts</span>
+              <span className="text-sm text-[#94A3B8] mb-1">≈ ${ptsToDollars(balance)}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold bg-[#FEF3C7] text-[#92400E] px-3 py-1 rounded-full">
                 {current.label}
               </span>
-              <span className="text-sm text-[#94A3B8]">· ${ptsToDollars(lifetime)} lifetime</span>
+              <span className="text-sm text-[#94A3B8]">· {lifetime.toLocaleString()} pts lifetime</span>
             </div>
             {next && (<div className="space-y-1">
                 <div className="flex justify-between text-xs text-[#94A3B8]">
-                  <span>${ptsToDollars(toNext)} to {next.label}</span>
+                  <span>{toNext.toLocaleString()} pts to {next.label}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
                 <div className="w-full h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
@@ -129,8 +130,8 @@ export default function RewardsPage() {
               </button>))}
           </div>
           <div>
-            <label className="block text-xs text-[#94A3B8] mb-1">Custom amount in dollars (multiples of $5.00)</label>
-            <input type="number" min={5} step={5} value={customPoints} onChange={e => setCustomPoints(e.target.value)} placeholder="10.00" className="w-full bg-white border border-[#E2E8F0] rounded-[10px] px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]"/>
+            <label className="block text-xs text-[#94A3B8] mb-1">Custom amount in points (multiples of 500, minimum 500)</label>
+            <input type="number" min={500} step={500} value={customPoints} onChange={e => setCustomPoints(e.target.value)} placeholder="1000" className="w-full bg-white border border-[#E2E8F0] rounded-[10px] px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]"/>
           </div>
           <div>
             <label className="block text-xs text-[#94A3B8] mb-1">Gift card email</label>
@@ -142,10 +143,10 @@ export default function RewardsPage() {
             {submitting
             ? 'Processing…'
             : effectivePoints >= 500
-                ? `Redeem $${ptsToDollars(effectivePoints)}`
+                ? `Redeem ${effectivePoints.toLocaleString()} pts ($${ptsToDollars(effectivePoints)})`
                 : 'Enter an amount'}
           </button>
-          {effectivePoints > balance && (<p className="text-xs text-[#94A3B8] text-center">You need ${ptsToDollars(effectivePoints - balance)} more</p>)}
+          {effectivePoints > balance && (<p className="text-xs text-[#94A3B8] text-center">You need {(effectivePoints - balance).toLocaleString()} more points</p>)}
         </form>
       </div>
 
@@ -164,7 +165,7 @@ export default function RewardsPage() {
                   </div>
                 </div>
                 <span className={`text-sm font-bold ${tx.points > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                  {tx.points > 0 ? '+' : '-'}${ptsToDollars(Math.abs(tx.points))}
+                  {tx.points > 0 ? '+' : '-'}{Math.abs(tx.points).toLocaleString()} pts
                 </span>
               </div>))}
           </div>)}
@@ -176,7 +177,7 @@ export default function RewardsPage() {
           <div className="space-y-2">
             {data.redemptions.map(r => (<div key={r.id} className="flex items-center justify-between py-2.5 border-b border-[#E2E8F0] last:border-0">
                 <div className="space-y-0.5">
-                  <p className="text-sm font-medium">${ptsToDollars(r.pointsUsed)} gift card</p>
+                  <p className="text-sm font-medium">{r.pointsUsed.toLocaleString()} pts (${(r.pointsUsed / 100).toFixed(2)} gift card)</p>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[r.status] ?? 'bg-slate-100 text-slate-500'}`}>
                       {r.status.charAt(0) + r.status.slice(1).toLowerCase()}

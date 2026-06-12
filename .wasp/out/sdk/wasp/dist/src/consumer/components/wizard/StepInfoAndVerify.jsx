@@ -55,7 +55,7 @@ export default function StepInfoAndVerify({ state, update, onBack, onNext }) {
         </div>
         <label className="flex items-start gap-3 cursor-pointer">
           <input type="checkbox" className="mt-0.5 accent-[#2563EB]" checked={smsConsent} onChange={e => setSmsConsent(e.target.checked)}/>
-          <span className="text-sm text-[#475569]">I agree to receive SMS updates about my service request</span>
+          <span className="text-sm text-[#475569]">Text me when a pro confirms my appointment or sends an update</span>
         </label>
         {!showReferral ? (<button type="button" onClick={() => setShowReferral(true)} className="text-xs text-[#2563EB] hover:underline">Have a referral code?</button>) : (<div>
             <label className="block text-sm font-semibold text-[#475569] mb-1.5">Referral Code <span className="font-normal opacity-60">(optional)</span></label>

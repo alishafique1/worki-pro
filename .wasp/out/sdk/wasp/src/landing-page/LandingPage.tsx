@@ -217,7 +217,7 @@ export default function LandingPage() {
                   to="/get-quotes"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8] hover:shadow-[0_12px_32px_rgba(37,99,235,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
                 >
-                  Get Help Now
+                  Get matched now
                   <ArrowRight className="size-4" />
                 </Link>
                 <button
@@ -393,7 +393,7 @@ export default function LandingPage() {
                 to="/get-quotes"
                 className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition duration-200 hover:bg-[#1D4ED8]"
               >
-                Get Help Now <ArrowRight className="size-4" />
+                Get matched now <ArrowRight className="size-4" />
               </Link>
             </div>
           </Container>
@@ -414,7 +414,7 @@ export default function LandingPage() {
                   platform where you get rewarded for getting things done.
                 </h2>
                 <p className="mt-4 text-base leading-7 text-[#BFDBFE]">
-                  Every completed job earns you real cash back, redeemable as gift cards. The more you use The Helper, the more you save.
+                  Every completed job earns you points you can redeem for gift cards. The more you use The Helper, the more you save.
                 </p>
                 <Link
                   to="/how-rewards-work"

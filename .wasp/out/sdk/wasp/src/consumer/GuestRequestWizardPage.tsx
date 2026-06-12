@@ -65,8 +65,8 @@ export default function GuestRequestWizardPage() {
             <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
             <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
           </div>
-          <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Get free quotes</h2>
-          <p className="text-[#475569] text-sm mt-1">No account needed — takes 2 minutes</p>
+          <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Get matched with a pro</h2>
+          <p className="text-[#475569] text-sm mt-1">No account needed, no cost — takes 2 minutes</p>
         </div>
 
         <WizardProgress current={step} total={TOTAL_STEPS} labels={STEP_LABELS} />
