@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router";
 
-import { MapPin, Zap, Award, Search, ArrowLeft } from 'lucide-react';
+import { MapPin, Zap, Award, Search, ArrowLeft, BadgeCheck } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
 import { getPublicProvider } from "wasp/client/operations";
 
@@ -160,8 +160,8 @@ export default function ProPublicPage() {
               <div className="flex flex-wrap items-center gap-3 mb-1">
                 <h1 className="text-3xl font-black text-[#0F172A]">{provider.businessName}</h1>
                 {provider.verificationStatus === "VERIFIED" && (
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-[#22C55E] border border-green-200">
-                    ✓ Verified
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-[#22C55E] border border-green-200">
+                    <BadgeCheck className="size-3.5" /> Verified
                   </span>
                 )}
               </div>
@@ -207,7 +207,7 @@ export default function ProPublicPage() {
             <div className="shrink-0">
               <Link
                 to={`/get-quotes?provider=${provider.id}`}
-                className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] shadow-[0_4px_16px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors text-sm"
+                className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors text-sm"
               >
                 Request a quote
               </Link>
