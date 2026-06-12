@@ -38,7 +38,7 @@ export const requestOtp = async (req, res, context) => {
         await emailSender.send({
             to: normalizedEmail,
             subject: `Your The Helper sign-in code: ${code}`,
-            text: `Your The Helper sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.`,
+            text: `Your The Helper sign-in code is: ${code}\n\nThis code expires in 10 minutes. If you didn't request this, ignore this email.\n\nThis email is your The Helper account. Save it to log in and track your rewards, appointments, and job status.\nAccount: https://thehelper.ca/login`,
             html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
           <div style="text-align:center;margin-bottom:32px;">
@@ -52,7 +52,15 @@ export const requestOtp = async (req, res, context) => {
           <div style="background:#F8FAFC;border:2px solid #E2E8F0;border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;">
             <span style="font-size:52px;font-weight:900;letter-spacing:10px;color:#0F172A;font-family:monospace;">${code}</span>
           </div>
-          <p style="text-align:center;color:#94a3b8;font-size:12px;margin:0;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
+          <p style="text-align:center;color:#94a3b8;font-size:12px;margin:0 0 32px;">Expires in 10 minutes. If you didn't request this, no action needed.</p>
+          <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:14px;padding:20px;">
+            <p style="margin:0 0 4px;color:#1E40AF;font-weight:700;font-size:14px;">Your portal</p>
+            <p style="margin:0;color:#475569;font-size:13px;">
+              This email is your The Helper account.
+              <a href="https://thehelper.ca/login" style="color:#2563EB;text-decoration:none;font-weight:600;">Log in</a>
+              to track your rewards, appointments, and job status.
+            </p>
+          </div>
         </div>
       `,
         });

@@ -1257,7 +1257,7 @@
             "file",
             "sdk/wasp/src/auth/email-and-pass/emails.ts"
         ],
-        "395cdbd6049bd91f3d0b53cd5bfb876c0ace4391f2d01adad9433e2b0d7bccdc"
+        "bb37ad473eecc9f923a58cf307c1f7cfa3aa773adb7b3ee137893a9381efae72"
     ],
     [
         [
@@ -1313,7 +1313,7 @@
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "441b824a38710e2ee58e5c11f5235447c277951b2823489d59de1381f0a35899"
+        "d91f96dc771f12575597fcdeb6433689fb6a4aeb8225fa8bb7c016aa59e59105"
     ],
     [
         [
@@ -1383,7 +1383,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/constants.ts"
         ],
-        "cd23afa09fc34399a5309874906075b77574dc82c8a78a09f39c69d5e7849c93"
+        "584e3bc3f3c34da2341bae10685f1238f9a676df231fcaa20269c5417c20f408"
     ],
     [
         [
@@ -1999,7 +1999,7 @@
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepVerifyEmail.tsx"
         ],
-        "10c09416bce74cf0afaac9784546679e80fab7304fc12fbb475c83cf9abb2c29"
+        "c71356c65a92ad71d83b85a2d87b10919477ab20b352710745bf776dd1b62886"
     ],
     [
         [

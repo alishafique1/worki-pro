@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { CheckCircle2, ArrowRight, Gift, Mail } from "lucide-react";
 import { initSession } from 'wasp/auth/helpers/user';
 import { config } from 'wasp/client';
 const inputClass = 'w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors';
@@ -86,11 +87,11 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
             if (!data || !data.sessionId) {
                 throw new Error('Verification succeeded but no session was returned. Please try again.');
             }
-            // initSession invalidates the React Query cache so useAuth() refetches
-            // the user before any auth-guarded navigation. Plain setSessionId
-            // would race the auth check and bounce the user to /login.
+            // Show confirmation screen first, then navigate
+            setSubStep('confirmed');
             await initSession(data.sessionId);
-            onSuccess(data.requestId);
+            // Short delay so user sees the confirmation screen before navigating
+            setTimeout(() => onSuccess(data.requestId), 3000);
         }
         catch (err) {
             setError(err.message);
@@ -119,6 +120,41 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
             setCode(pasted.split(''));
             inputRefs.current[5]?.focus();
         }
+    }
+    if (subStep === 'confirmed') {
+        return (<div className="text-center">
+        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-[#DCFCE7]">
+          <CheckCircle2 className="size-8 text-[#22C55E]"/>
+        </div>
+        <h3 className="text-2xl font-black text-[#0F172A] mb-2">You're in!</h3>
+        <p className="text-[#475569] text-sm mb-6">
+          A verified pro in your area will be in touch within 15 minutes.
+        </p>
+        <div className="rounded-[18px] bg-[#FEF3C7] border border-[#FDE68A] p-5 text-left mb-6">
+          <div className="flex items-center gap-2 text-[#92400E] font-bold mb-2">
+            <Gift className="size-4 text-[#F59E0B]"/>
+            <span className="text-sm">You're earning rewards</span>
+          </div>
+          <p className="text-sm text-[#92400E]">
+            500 points when your appointment is booked. 
+            5,000 more when the job is done and verified.
+          </p>
+        </div>
+        <div className="rounded-[18px] bg-[#EFF6FF] border border-[#BFDBFE] p-4 text-left mb-6">
+          <div className="flex items-center gap-2 text-[#2563EB] font-bold mb-2">
+            <Mail className="size-4"/>
+            <span className="text-sm">Check your email</span>
+          </div>
+          <p className="text-sm text-[#475569]">
+            We sent your login details to{' '}
+            <span className="font-semibold">{email.trim().toLowerCase()}</span>.
+            Use this email to track your rewards, appointments, and job status.
+          </p>
+        </div>
+        <button onClick={() => onSuccess()} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-8 py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)] transition-all hover:bg-[#1D4ED8]">
+          Go to my dashboard <ArrowRight className="size-4"/>
+        </button>
+      </div>);
     }
     if (subStep === 'verify-code') {
         return (<div>

@@ -10,7 +10,7 @@ export const demoNavigationitems = [
     { name: "Contact", to: "/contact" },
 ];
 export const consumerNavigationItems = [
-    { name: "Find a Pro", to: "/discover" },
+    { name: "Get Help", to: "/get-quotes" },
     { name: "My Requests", to: "/my-requests" },
     { name: "Rewards", to: "/rewards" },
 ];

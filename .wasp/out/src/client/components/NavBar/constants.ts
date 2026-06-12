@@ -14,7 +14,7 @@ export const demoNavigationitems: NavigationItem[] = [
 ];
 
 export const consumerNavigationItems: NavigationItem[] = [
-  { name: "Find a Pro", to: "/discover" },
+  { name: "Get Help", to: "/get-quotes" },
   { name: "My Requests", to: "/my-requests" },
   { name: "Rewards", to: "/rewards" },
 ];
