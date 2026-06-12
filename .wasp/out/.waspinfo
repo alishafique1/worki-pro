@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"buildType":"Production","generatedAt":"2026-06-12T06:32:37.058302853Z","waspVersion":"0.21.1"}
-=======
-{"buildType":"Production","generatedAt":"2026-06-12T07:10:36.098212Z","waspVersion":"0.21.1"}
->>>>>>> 6b924b2 (phase-1: remove discover from nav, add post-verify confirmation screen, portal explainer in emails)
+{"buildType":"Production","generatedAt":"2026-06-12T07:13:59.318083Z","waspVersion":"0.21.1"}
