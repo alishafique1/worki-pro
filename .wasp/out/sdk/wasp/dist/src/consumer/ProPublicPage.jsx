@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router";
+import { MapPin, Zap, Award, Search } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
 import { getPublicProvider } from "wasp/client/operations";
 function StarRating({ rating, count }) {
@@ -46,7 +47,9 @@ export default function ProPublicPage() {
     if (error || !provider) {
         return (<div className="p-8 max-w-5xl mx-auto min-h-[80vh] flex flex-col items-center justify-center">
         <div className="bg-white border border-red-200 rounded-[24px] p-12 text-center max-w-md">
-          <div className="text-4xl mb-4">🔍</div>
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-50">
+            <Search className="size-6 text-red-400"/>
+          </div>
           <h2 className="text-xl font-bold mb-2 text-[#0F172A]">Pro not found</h2>
           <p className="text-[#475569] mb-6">
             This pro may no longer be available or the link is incorrect.
@@ -118,8 +121,8 @@ export default function ProPublicPage() {
 
               {/* Meta */}
               <div className="flex flex-wrap gap-4 text-sm text-[#475569]">
-                {provider.serviceAreas?.length > 0 && (<span>📍 {provider.serviceAreas.join(", ")}</span>)}
-                {provider.responseTimeMins && (<span>⚡ Responds in ~{provider.responseTimeMins < 60 ? `${provider.responseTimeMins}m` : `${Math.floor(provider.responseTimeMins / 60)}h`}</span>)}
+                {provider.serviceAreas?.length > 0 && (<span className="inline-flex items-center gap-1.5"><MapPin className="size-4"/> {provider.serviceAreas.join(", ")}</span>)}
+                {provider.responseTimeMins && (<span className="inline-flex items-center gap-1.5"><Zap className="size-4 text-[#F59E0B]"/> Responds in ~{provider.responseTimeMins < 60 ? `${provider.responseTimeMins}m` : `${Math.floor(provider.responseTimeMins / 60)}h`}</span>)}
                 {provider.website && (<a href={provider.website} target="_blank" rel="noopener noreferrer" className="hover:underline text-[#2563EB]">
                     Website ↗
                   </a>)}
@@ -146,7 +149,7 @@ export default function ProPublicPage() {
             <h2 className="text-xl font-black mb-4 text-[#0F172A]">Certifications & Accreditations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {accreditations.map((acc, i) => (<div key={i} className="flex items-center gap-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]">
-                  <span className="text-2xl">🏅</span>
+                  <span className="text-2xl"><Award /></span>
                   <div>
                     <p className="font-bold text-sm text-[#0F172A]">{acc.name}</p>
                     {acc.issuedBy && (<p className="text-xs text-[#475569]">

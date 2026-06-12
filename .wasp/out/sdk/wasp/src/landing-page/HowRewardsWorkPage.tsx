@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PageSeo, { createFaqSchema } from './components/PageSeo';
+import { CheckCircle2, CreditCard, Gift, Star, ArrowRight, TrendingUp, Building2, Coffee, Home } from 'lucide-react';
 
 const rewardsFaqs = [
   {
@@ -29,7 +30,7 @@ const FIRST_JOB_TIERS = [
     dollar: '$5',
     color: 'text-[#2563EB]',
     bg: 'bg-[#EFF6FF] border-[#BFDBFE]',
-    icon: '📋',
+    icon: <CreditCard className="size-7 text-[#2563EB]" />,
     desc: 'Fill out our 60-second concierge form describing what you need. The moment your request is submitted, 500 points ($5) are added to your wallet. No appointment needed, just asking counts.',
   },
   {
@@ -39,8 +40,8 @@ const FIRST_JOB_TIERS = [
     dollar: '$5',
     color: 'text-[#F59E0B]',
     bg: 'bg-[#FEF3C7] border-[#FDE68A]',
-    icon: '📅',
-    desc: 'When a vetted TheHelper pro accepts and schedules your appointment, another 500 points ($5) are credited. You\'re already at $10 before the work starts.',
+    icon: <CheckCircle2 className="size-7 text-[#F59E0B]" />,
+    desc: "When a vetted TheHelper pro accepts and schedules your appointment, another 500 points ($5) are credited. You're already at $10 before the work starts.",
   },
   {
     step: '03',
@@ -49,8 +50,8 @@ const FIRST_JOB_TIERS = [
     dollar: '$50',
     color: 'text-[#22C55E]',
     bg: 'bg-green-50 border-green-200',
-    icon: '🎉',
-    desc: 'Once your pro marks the first job complete and our team verifies it, a $50 welcome bonus (5,000 points) lands in your wallet. Total first job value: up to $60 in rewards.',
+    icon: <Gift className="size-7 text-[#22C55E]" />,
+    desc: "Once your pro marks the first job complete and our team verifies it, a $50 welcome bonus (5,000 points) lands in your wallet. Total first job value: up to $60 in rewards.",
   },
 ];
 
@@ -58,12 +59,12 @@ export default function HowRewardsWorkPage() {
   return (
     <>
       <PageSeo
-        title="The Helper Rewards | Earn 5% Cashback on Home Services in GTA"
-        description="Earn up to $60 back on your first home service job and 5% cashback on every job after. Stack The Helper rewards on top of your credit card points. Redeem for Amazon, Starbucks, or service credits."
-        ogTitle="Earn 5% Cashback on Home Services | The Helper Rewards"
-        ogDescription="The Helper stacks 5% cashback on top of your credit card points. Earn up to $60 on your first job - HVAC, plumbing, electrical and more in the GTA."
+        title="How Rewards Work — Earn 5% Cash Back on Every Home Service | The Helper"
+        description="Earn $60 on your first completed job, then 5% cash back on every job after. Points never expire. Redeem for Amazon gift cards, Starbucks, or service credits at $100 minimum."
+        ogTitle="Earn Real Cash Back on Every Home Service Job | The Helper"
+        ogDescription="Stack 5% cash back on top of your credit card points. $60 bonus on your first job. Redeem for Amazon, Starbucks, or service credits."
         canonicalPath="/how-rewards-work"
-        keywords="home services rewards, cashback home repair, earn rewards HVAC, plumbing rewards, home service loyalty program"
+        keywords="home services cash back, rewards program GTA, earn on home repairs, HVAC cash back, plumbing rewards, handyman loyalty"
         structuredData={createFaqSchema(rewardsFaqs)}
       />
     <div className='min-h-screen bg-[#F8FAFC]'>
@@ -74,14 +75,12 @@ export default function HowRewardsWorkPage() {
           <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEF3C7] border border-[#FDE68A] text-[#F59E0B] text-xs font-bold uppercase tracking-wider mb-6'>
             TheHelper Rewards
           </div>
-          <h1 className='text-5xl sm:text-7xl font-black tracking-tighter mb-6 text-[#0F172A]'>
-            Double the Rewards<br /><span className='text-[#2563EB]'>On Every Job.</span>
+          <h1 className='text-5xl sm:text-6xl font-black tracking-tighter mb-6 text-[#0F172A]'>
+            Get Paid for Getting Things <span className='text-[#2563EB]'>Done.</span><br />
           </h1>
           <p className='text-xl text-[#475569] max-w-2xl mx-auto'>
-            Your Visa or Amex already gives you points when you pay. TheHelper stacks <strong className='text-[#0F172A]'>cashback on top of that</strong>.
-            Earn <strong className='text-[#0F172A]'>$60 back on your first job</strong>, then <strong className='text-[#0F172A]'>5% cashback</strong> on every job after.
-            Double the rewards for home services you were always going to pay for.
-            <br /><span className='text-sm mt-2 inline-block'>Cash out at $100. 100 pts = $1. Simple.</span>
+            Your credit card earns points on purchases. The Helper <strong className='text-[#0F172A]'>pays you back on top of that</strong> for completing real home service jobs. <strong className='text-[#0F172A]'>$60 on your first job</strong>, then <strong className='text-[#0F172A]'>5% back</strong> on every job after. Never expires.
+            <br /><span className='text-sm mt-2 inline-block text-[#94A3B8]'>100 pts = $1 · Cash out at $100 · Amazon, Starbucks, or service credits</span>
           </p>
         </div>
 
@@ -123,7 +122,9 @@ export default function HowRewardsWorkPage() {
           <div className='bg-white rounded-[32px] border border-[#E2E8F0] p-10 flex flex-col md:flex-row items-start md:items-center gap-8'>
             <div className='shrink-0 text-center'>
               <div className='text-5xl font-black text-[#2563EB] mb-1'>5%</div>
-              <div className='text-4xl'>💳</div>
+              <div className='mt-2 mx-auto w-fit p-3 rounded-xl bg-[#EFF6FF]'>
+                <CreditCard className='size-7 text-[#2563EB]' />
+              </div>
             </div>
             <div className='flex-1'>
               <h2 className='text-2xl font-black mb-3 text-[#0F172A]'>Ongoing 5% Cashback on Every Job</h2>
@@ -145,7 +146,9 @@ export default function HowRewardsWorkPage() {
         {/* Cash out threshold callout */}
         <div className='bg-white rounded-[32px] border border-[#E2E8F0] p-10 mb-16'>
           <div className='flex flex-col md:flex-row items-center gap-8'>
-            <div className='text-6xl'>🏦</div>
+            <div className='shrink-0 p-4 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A]'>
+              <TrendingUp className='size-8 text-[#F59E0B]' />
+            </div>
             <div className='flex-1'>
               <h2 className='text-2xl font-black mb-2 text-[#0F172A]'>Cash Out at $100</h2>
               <p className='text-[#475569] leading-relaxed'>
@@ -165,12 +168,12 @@ export default function HowRewardsWorkPage() {
           <h2 className='text-3xl font-black mb-4 text-[#0F172A]'>How to Redeem</h2>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 text-left'>
             {[
-              { icon: '🎁', label: 'Amazon Gift Cards', desc: 'Spend on anything you need' },
-              { icon: '☕', label: 'Starbucks Cards', desc: 'Your next coffee, on us' },
-              { icon: '🏠', label: 'Service Discounts', desc: 'Apply to your next TheHelper booking' },
+              { icon: <Gift className='size-7 text-[#2563EB]' />, label: 'Amazon Gift Cards', desc: 'Spend on anything you need' },
+              { icon: <Coffee className='size-7 text-[#2563EB]' />, label: 'Starbucks Cards', desc: 'Your next coffee, on us' },
+              { icon: <Home className='size-7 text-[#2563EB]' />, label: 'Service Discounts', desc: 'Apply to your next TheHelper booking' },
             ].map(r => (
               <div key={r.label} className='p-6 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0]'>
-                <div className='text-3xl mb-3'>{r.icon}</div>
+                <div className='mb-3 w-fit p-2.5 rounded-xl bg-[#EFF6FF]'>{r.icon}</div>
                 <div className='font-bold mb-1 text-[#0F172A]'>{r.label}</div>
                 <div className='text-sm text-[#475569]'>{r.desc}</div>
               </div>

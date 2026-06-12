@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Package, Search, ShieldCheck, Star, Wrench } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 
@@ -101,12 +101,12 @@ export default function HandymanLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-              { label: 'Background Checked', icon: '🔍', alt: 'Background checked handymen' },
-              { label: 'Fully Insured', icon: '🛡️', alt: 'Fully insured service' },
-              { label: 'Satisfaction Guaranteed', icon: '⭐', alt: 'Satisfaction guaranteed' }
+              { label: 'Background Checked', icon: <Search className="size-6" />, alt: 'Background checked handymen' },
+              { label: 'Fully Insured', icon: <ShieldCheck className="size-6" />, alt: 'Fully insured service' },
+              { label: 'Satisfaction Guaranteed', icon: <Star className="size-6" />, alt: 'Satisfaction guaranteed' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
+                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
                 <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
               </div>
             ))}
@@ -117,12 +117,12 @@ export default function HandymanLandingPage() {
             <h2 id="handyman-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our Handyman Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-                { title: 'Mounting & Installation', desc: 'Expert TV mounting on any wall type, shelf installation, mirror hanging, artwork mounting, and curtain rod installation.', icon: '🖼️' },
-                { title: 'Home Repairs', desc: 'Drywall patching, door adjustments, lock installation, weather stripping, caulking, and minor plumbing fixes like leaky faucets.', icon: '🔧' },
-                { title: 'Assembly & Painting', desc: 'Professional furniture assembly for IKEA, Wayfair, and all major brands. Interior painting touch-ups and small paint jobs.', icon: '📦' }
+                { title: 'Mounting & Installation', desc: 'Expert TV mounting on any wall type, shelf installation, mirror hanging, artwork mounting, and curtain rod installation.', icon: <Wrench className="size-7" /> },
+                { title: 'Home Repairs', desc: 'Drywall patching, door adjustments, lock installation, weather stripping, caulking, and minor plumbing fixes like leaky faucets.', icon: <Wrench className="size-7" /> },
+                { title: 'Assembly & Painting', desc: 'Professional furniture assembly for IKEA, Wayfair, and all major brands. Interior painting touch-ups and small paint jobs.', icon: <Package className="size-7" /> }
               ].map((service) => (
                 <article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                  <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>
+                  <div className="text-[#2563EB] mb-6" aria-hidden="true">{service.icon}</div>
                   <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
                   <p className="text-[#475569] leading-relaxed">{service.desc}</p>
                 </article>

@@ -2,12 +2,14 @@ import React from "react";
 import { useParams, Link } from "react-router";
 import { useQuery } from "wasp/client/operations";
 import { getProviders } from "wasp/client/operations";
+import { Home, Lightbulb, Smartphone, Target, Wrench, Zap } from 'lucide-react';
 import { SERVICE_ZONES } from "../shared/geoConfig";
+import PageSeo, { createServiceSchema } from "./components/PageSeo";
 const SERVICE_META = {
     hvac: {
         label: "HVAC",
-        icon: "❄️",
-        description: "heating, cooling & air quality repairs",
+        icon: <Zap className="size-7"/>,
+        description: "heating, cooling& air quality repairs",
         bullets: [
             "Furnace repair & replacement",
             "Air conditioner service",
@@ -17,7 +19,7 @@ const SERVICE_META = {
     },
     handyman: {
         label: "Handyman",
-        icon: "🔨",
+        icon: <Wrench className="size-7"/>,
         description: "home repairs, mounting & installations",
         bullets: [
             "TV & picture mounting",
@@ -28,7 +30,7 @@ const SERVICE_META = {
     },
     plumbing: {
         label: "Plumbing",
-        icon: "🚰",
+        icon: <Target className="size-7"/>,
         description: "leak repairs, drain cleaning & fixture installs",
         bullets: [
             "Leak detection & repair",
@@ -39,7 +41,7 @@ const SERVICE_META = {
     },
     electrical: {
         label: "Electrical",
-        icon: "⚡",
+        icon: <Lightbulb className="size-7"/>,
         description: "panel upgrades, outlet installs & EV chargers",
         bullets: [
             "Outlet & switch installation",
@@ -50,7 +52,7 @@ const SERVICE_META = {
     },
     "appliance-repair": {
         label: "Appliance Repair",
-        icon: "🔧",
+        icon: <Home className="size-7"/>,
         description: "fridge, washer, dryer & oven repairs",
         bullets: [
             "Refrigerator repair",
@@ -61,7 +63,7 @@ const SERVICE_META = {
     },
     "smart-home": {
         label: "Smart Home",
-        icon: "🏠",
+        icon: <Smartphone className="size-7"/>,
         description: "smart device setup, cameras & automation",
         bullets: [
             "Smart thermostat install",
@@ -86,25 +88,19 @@ export default function ServiceAreaLandingPage() {
         categorySlug: serviceSlug,
         areaSlug,
     });
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        name: `${serviceLabel} in ${areaName}`,
+    const jsonLd = createServiceSchema({
+        name: `${serviceLabel} Services in ${areaName}`,
         description: `Find verified, insured ${serviceLabel.toLowerCase()} professionals in ${areaName}. Get matched in minutes with TheHelper.`,
-        areaServed: areaName,
-        provider: {
-            "@type": "Organization",
-            name: "TheHelper Home Services",
-            url: "https://thehelper.ca",
-        },
-    };
+        areaServed: [areaName],
+        url: `https://thehelper.ca/services/${serviceSlug}/${areaSlug}`,
+    });
     return (<div className="min-h-screen bg-[#F8FAFC]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}/>
+      <PageSeo title={`${serviceLabel} in ${areaName} | Get Matched Today`} description={`Find verified, insured ${serviceLabel.toLowerCase()} pros in ${areaName}. One request — get matched in minutes, book same-day, earn reward points on your job.`} ogTitle={`${serviceLabel} in ${areaName} | The Helper`} ogDescription={`Book verified ${serviceLabel.toLowerCase()} pros in ${areaName}. Matched in minutes, background-checked, and backed by The Helper rewards.`} canonicalPath={`/services/${serviceSlug}/${areaSlug}`} keywords={`${serviceLabel.toLowerCase()} ${areaName}, ${serviceLabel.toLowerCase()} ${areaSlug}, ${serviceLabel.toLowerCase()} GTA, verified ${serviceLabel.toLowerCase()} pro`} structuredData={jsonLd}/>
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-4 pt-16 pb-12">
         <div className="flex items-center gap-3 mb-4">
-          {serviceMeta?.icon && (<span className="text-5xl">{serviceMeta.icon}</span>)}
+          {serviceMeta?.icon && (<div className="text-[#2563EB]">{serviceMeta.icon}</div>)}
           <div>
             <h1 className="text-4xl md:text-5xl font-black leading-tight text-[#0F172A]">
               {serviceLabel} in {areaName}

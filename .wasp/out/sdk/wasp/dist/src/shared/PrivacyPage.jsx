@@ -2,7 +2,20 @@ import React from 'react';
 import PageSeo from '../landing-page/components/PageSeo';
 export default function PrivacyPage() {
     return (<>
-      <PageSeo title="Privacy Policy | The Helper" description="Read The Helper privacy policy. Learn how we collect, use, and protect your personal information when using our home services marketplace." canonicalPath="/privacy"/>
+      <PageSeo title="Read Our Privacy Policy | The Helper" description="Understand exactly how The Helper collects, uses, and protects your personal data — and your rights under Canadian privacy law. Transparent, straightforward." ogTitle="Privacy Policy | The Helper" ogDescription="How The Helper collects, uses, and protects your data — and your rights under PIPEDA. Clear terms, no surprises." canonicalPath="/privacy" keywords="privacy policy, data protection, personal information, PIPEDA, Canadian privacy law, The Helper" structuredData={{
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'Privacy Policy | The Helper',
+            description: 'The Helper privacy policy — how we collect, use, and protect your personal information under Canadian privacy law.',
+            url: 'https://thehelper.ca/privacy',
+            about: {
+                '@type': 'Organization',
+                name: 'The Helper Home Services',
+                url: 'https://thehelper.ca',
+            },
+            datePublished: '2024-05-01',
+            dateModified: '2025-05-01',
+        }}/>
     <div className="bg-[#F8FAFC] text-[#0F172A] min-h-screen py-20 px-6">
       <div className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl p-10 shadow-sm">
         <h1 className="text-4xl font-black mb-2 text-[#0F172A]">Privacy Policy</h1>

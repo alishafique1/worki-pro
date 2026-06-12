@@ -5,9 +5,26 @@ export default function TermsPage() {
   return (
     <>
       <PageSeo
-        title="Terms of Service | The Helper"
-        description="Read The Helper terms of service. Learn about our home services marketplace policies, user responsibilities, and service provider guidelines."
+        title="Read Our Terms of Service | The Helper"
+        description="Know your rights and responsibilities as a The Helper user. Clear terms covering service requests, accounts, rewards, and provider relationships — all in plain language."
+        ogTitle="Terms of Service | The Helper"
+        ogDescription="The Helper terms of service — marketplace policies, user responsibilities, and provider guidelines in plain language."
         canonicalPath="/terms"
+        keywords="terms of service, user agreement, marketplace terms, provider guidelines, The Helper"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: 'Terms of Service | The Helper',
+          description: 'The Helper terms of service — marketplace policies, user responsibilities, and provider guidelines for GTA homeowners and service providers.',
+          url: 'https://thehelper.ca/terms',
+          about: {
+            '@type': 'Organization',
+            name: 'The Helper Home Services',
+            url: 'https://thehelper.ca',
+          },
+          datePublished: '2024-05-01',
+          dateModified: '2025-05-01',
+        }}
       />
     <div className="bg-[#F8FAFC] text-[#0F172A] min-h-screen py-20 px-6">
       <div className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl p-10 shadow-sm">

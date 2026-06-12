@@ -141,7 +141,7 @@ export function Hero() {
           {/* Reward pill */}
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-3 py-1.5 text-xs font-semibold text-[#92400E]">
             <Trophy className="size-3.5 text-[#F59E0B]" />
-            🏆 Earn reward points on every completed job
+            Earn reward points on every completed job
           </div>
 
           {/* CTAs */}
@@ -474,10 +474,10 @@ export function CTASection() {
               Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Get matched with a verified pro today
+              Stop calling around. Get matched with a verified pro in 15 minutes.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              Join 500+ GTA homeowners who trust The Helper. 100% free to use. Earn $60+ back on your first job.
+              One request. Matched with a licensed, insured local pro. 100% free for homeowners. $60+ cash back on your first completed job.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
@@ -583,7 +583,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 text-xs sm:flex-row sm:items-center">
-          <p>© 2026 The Helper · 🇨🇦 Made in Canada</p>
+          <p className="flex items-center gap-1.5"><MapPin className="size-3.5" />© 2026 The Helper · Milton, Ontario, Canada</p>
           <div className="flex gap-5">
             <Link to="/privacy" className="transition duration-150 hover:text-white">Privacy Policy</Link>
             <Link to="/terms" className="transition duration-150 hover:text-white">Terms of Service</Link>

@@ -5,6 +5,7 @@ import { login } from 'wasp/client/auth';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
 import { Link } from 'react-router';
+import logo from '../client/static/logo.webp';
 export default function Login() {
     const navigate = useNavigate();
     const [step, setStep] = useState('email');
@@ -29,9 +30,9 @@ export default function Login() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() }),
             });
-            const data = await res.json();
+            const data = await res.json().catch(() => ({}));
             if (!res.ok)
-                throw new Error(data.error || 'Failed to send code.');
+                throw new Error((data && data.error) || 'Failed to send code.');
             setStep('code');
             setResendCooldown(60);
             const timer = setInterval(() => {
@@ -46,7 +47,11 @@ export default function Login() {
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
         }
         catch (err) {
-            setError(err.message);
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
         }
         finally {
             setIsLoading(false);
@@ -63,7 +68,11 @@ export default function Login() {
             navigate('/dashboard');
         }
         catch (err) {
-            setError(err.message || 'Invalid email or password.');
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Invalid email or password.';
+            setError(friendly);
         }
         finally {
             setIsLoading(false);
@@ -81,14 +90,21 @@ export default function Login() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim(), code: codeValue }),
             });
-            const data = await res.json();
+            const data = await res.json().catch(() => ({}));
             if (!res.ok)
-                throw new Error(data.error || 'Verification failed.');
+                throw new Error((data && data.error) || 'Verification failed.');
+            if (!data || !data.sessionId) {
+                throw new Error('Verification succeeded but no session was returned. Please sign in.');
+            }
             setSessionId(data.sessionId);
             navigate(data.isNewUser ? '/onboarding' : '/dashboard');
         }
         catch (err) {
-            setError(err.message);
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
         }
         finally {
             setIsLoading(false);
@@ -125,7 +141,7 @@ export default function Login() {
     return (<AuthPageLayout>
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">H</div>
+          <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg"/>
           <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
         </div>
         {step === 'email' ? (<>

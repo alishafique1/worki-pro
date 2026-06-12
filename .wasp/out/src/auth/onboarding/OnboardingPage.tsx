@@ -7,6 +7,7 @@ import StepRole from './components/StepRole';
 import StepProfile from './components/StepProfile';
 import StepBusiness from './components/StepBusiness';
 import CategoryCardGrid from './components/CategoryCardGrid';
+import logo from '../../client/static/logo.webp';
 
 type Role = 'CONSUMER' | 'PROVIDER';
 
@@ -187,7 +188,7 @@ export default function OnboardingPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">H</div>
+            <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
             <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
           </div>
           <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Set up your account</h2>

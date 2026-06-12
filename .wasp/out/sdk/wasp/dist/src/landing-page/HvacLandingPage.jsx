@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { CalendarClock, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Zap } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 const hvacFaqs = [
@@ -69,11 +69,11 @@ export default function HvacLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-            { label: 'TSSA Licensed', icon: '✅', alt: 'TSSA licensed contractors' },
-            { label: 'Fully Insured', icon: '🛡️', alt: 'Fully insured pros' },
-            { label: 'Same-Day Service', icon: '📅', alt: 'Same-day emergency service' }
+            { label: 'TSSA Licensed', icon: <CheckCircle2 className="size-6"/>, alt: 'TSSA licensed contractors' },
+            { label: 'Fully Insured', icon: <ShieldCheck className="size-6"/>, alt: 'Fully insured pros' },
+            { label: 'Same-Day Service', icon: <CalendarClock className="size-6"/>, alt: 'Same-day emergency service' }
         ].map((stat) => (<div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
+                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
                 <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
               </div>))}
           </div>
@@ -83,11 +83,11 @@ export default function HvacLandingPage() {
             <h2 id="hvac-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our HVAC Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-            { title: 'Heating Services', desc: 'Furnace repair, maintenance, tune-ups, and new high-efficiency installations. Heat pump and boiler services also available.', icon: '🔥' },
-            { title: 'Cooling Services', desc: 'AC repair, installation, and seasonal tune-ups. Mini-split systems and central air conditioning for homes of all sizes.', icon: '❄️' },
-            { title: 'Air Quality', desc: 'Duct cleaning, humidifier installation, air purifiers, and HRV/ERV maintenance for a healthier home environment.', icon: '💨' }
+            { title: 'Heating Services', desc: 'Furnace repair, maintenance, tune-ups, and new high-efficiency installations. Heat pump and boiler services also available.', icon: '<Flame' },
+            { title: 'Cooling Services', desc: 'AC repair, installation, and seasonal tune-ups. Mini-split systems and central air conditioning for homes of all sizes.', icon: <Zap className="size-7"/> },
+            { title: 'Air Quality', desc: 'Duct cleaning, humidifier installation, air purifiers, and HRV/ERV maintenance for a healthier home environment.', icon: '<Wind' }
         ].map((service) => (<article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                  <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>
+                  <div className="text-[#2563EB] mb-6" aria-hidden="true">{service.icon}</div>
                   <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
                   <p className="text-[#475569] leading-relaxed">{service.desc}</p>
                 </article>))}

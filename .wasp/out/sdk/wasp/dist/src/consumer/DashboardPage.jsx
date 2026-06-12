@@ -2,6 +2,13 @@ import React from "react";
 import { useQuery, getMyRequests, getMyRewardAccount, } from "wasp/client/operations";
 import { Link } from "react-router";
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { CalendarClock, CheckCircle2, Clock3, ShieldCheck, Wrench, TrendingUp, Gift, Star, ArrowRight, Zap, Calendar, } from "lucide-react";
+const urgencyConfig = {
+    EMERGENCY: { label: "Emergency", className: "bg-red-50 text-red-600 border border-red-200", icon: <Zap className="size-3"/> },
+    URGENT: { label: "Urgent", className: "bg-amber-50 text-amber-700 border border-amber-200", icon: <Clock3 className="size-3"/> },
+    SOON: { label: "Soon", className: "bg-blue-50 text-blue-600 border border-blue-200", icon: <Calendar className="size-3"/> },
+    PLANNED: { label: "Planned", className: "bg-slate-50 text-slate-500 border border-slate-200", icon: <Calendar className="size-3"/> },
+};
 export default function DashboardPage() {
     useRoleGuard('CONSUMER');
     const { data: requests, isLoading: requestsLoading, error: requestsError, } = useQuery(getMyRequests);
@@ -13,21 +20,38 @@ export default function DashboardPage() {
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
               Welcome back
             </h1>
-            {rewards && !rewardsLoading && (<span className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
-                🏆 ${((rewards?.account?.pointsBalance ?? 0) / 100).toFixed(2)} in rewards
+            {rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
+                <Gift className="size-3.5 text-[#F59E0B]"/>
+                ${((rewards?.account?.pointsBalance ?? 0) / 100).toFixed(2)} in rewards
               </span>)}
-            {!rewards && !rewardsLoading && (<span className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
-                🏆 $12.50 in rewards
+            {!rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
+                <Gift className="size-3.5 text-[#F59E0B]"/>
+                $12.50 in rewards
               </span>)}
           </div>
           <p className="text-[#475569] mt-2 text-lg">
             Track service requests, bookings, messages, and rewards from here.
           </p>
         </div>
-        <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-sm">
-          + Get Help
+        <Link to="/get-quotes" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_16px_rgba(37,99,235,0.35)]">
+          <Wrench className="size-4"/> Get Help
         </Link>
       </div>
+
+      {/* Stats strip */}
+      {!requestsLoading && !requestsError && requests && requests.length > 0 && (<div className="grid grid-cols-3 gap-4">
+          {[
+                { label: "Total Requests", value: requests.length, icon: <Wrench className="size-4 text-[#2563EB]"/> },
+                { label: "In Progress", value: requests.filter((r) => !['COMPLETED', 'LOST', 'INVALID', 'SPAM', 'CLOSED'].includes(r.status)).length, icon: <Clock3 className="size-4 text-[#F59E0B]"/> },
+                { label: "Completed", value: requests.filter((r) => r.status === 'COMPLETED').length, icon: <CheckCircle2 className="size-4 text-[#22C55E]"/> },
+            ].map(({ label, value, icon }) => (<div key={label} className="bg-white border border-[#E2E8F0] rounded-[18px] p-4 flex items-center gap-4">
+              <div className="size-10 shrink-0 flex items-center justify-center rounded-xl bg-[#EFF6FF]">{icon}</div>
+              <div>
+                <p className="text-2xl font-extrabold text-[#0F172A]">{value}</p>
+                <p className="text-xs text-[#94A3B8] font-medium">{label}</p>
+              </div>
+            </div>))}
+        </div>)}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Requests */}
@@ -64,62 +88,76 @@ export default function DashboardPage() {
                 booking updates and messages here after it is created.
               </p>
             </div>) : !requestsLoading && !requestsError && requests?.length ? (<div className="space-y-4">
-              {requests.map((req) => (<div key={req.id} className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#2563EB] transition-colors group">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full mb-3 inline-block uppercase tracking-wider">
-                        {req.urgency}
+              {requests.map((req) => {
+                const urgency = urgencyConfig[req.urgency] ?? urgencyConfig.PLANNED;
+                const appt = req.appointments?.[0];
+                const provider = appt?.provider || req.assignedProvider;
+                return (<div key={req.id} className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)] transition-all duration-200 group">
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="min-w-0 flex-1">
+                      {/* Urgency badge */}
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full mb-3 ${urgency.className}`}>
+                        {urgency.icon}
+                        {urgency.label}
                       </span>
-                      <h3 className="text-xl font-bold truncate max-w-[400px]">
+                      <h3 className="text-lg font-bold text-[#0F172A] line-clamp-2">
                         {req.description}
                       </h3>
                     </div>
-                    <span className={`px-4 py-2 rounded-full text-sm font-bold ${req.status === 'COMPLETED'
-                    ? 'bg-green-50 text-green-700'
-                    : req.status === 'NEW'
-                        ? 'bg-slate-100 text-slate-600'
-                        : 'bg-[#EFF6FF] text-[#2563EB]'}`}>
+                    <span className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${req.status === 'COMPLETED'
+                        ? 'bg-green-50 text-green-700 border border-green-200'
+                        : ['NEW', 'QUALIFYING', 'QUALIFIED'].includes(req.status)
+                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                            : 'bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]'}`}>
                       {req.status.replace(/_/g, " ")}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-1 text-[#475569] text-sm">
-                    <p>
-                      Requested on{" "}
+
+                  {/* Meta row */}
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#475569]">
+                    <span className="flex items-center gap-1.5">
+                      <CalendarClock className="size-3.5 text-[#94A3B8]"/>
                       {new Date(req.createdAt).toLocaleDateString()}
-                    </p>
-                    {req.appointments?.[0]?.scheduledAt && (<p>
-                        Booked for{" "}
-                        {new Date(req.appointments[0].scheduledAt).toLocaleString()}
-                      </p>)}
-                    {(req.appointments?.[0]?.provider ||
-                    req.assignedProvider) && (<p>
-                        Provider:{" "}
-                        {(req.appointments?.[0]?.provider ||
-                        req.assignedProvider).businessName}
-                      </p>)}
+                    </span>
+                    {appt?.scheduledAt && (<span className="flex items-center gap-1.5">
+                        <Calendar className="size-3.5 text-[#94A3B8]"/>
+                        {new Date(appt.scheduledAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </span>)}
+                    {provider && (<span className="flex items-center gap-1.5">
+                        <ShieldCheck className="size-3.5 text-[#94A3B8]"/>
+                        {provider.businessName}
+                      </span>)}
                   </div>
-                  <Link to={`/my-requests/${req.id}`} className="mt-4 inline-block text-sm font-bold text-[#2563EB] hover:underline">
-                    Open booking details and messages →
-                  </Link>
-                  {!req.appointments?.[0]?.scheduledAt &&
-                    ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (<Link to={`/book/${req.id}`} className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors">
-                        Schedule Now (Same-Day Available)
-                      </Link>)}
-                </div>))}
+
+                  {/* Actions */}
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Link to={`/my-requests/${req.id}`} className="inline-flex items-center gap-1.5 text-sm font-bold text-[#2563EB] hover:underline">
+                      View details <ArrowRight className="size-3"/>
+                    </Link>
+                    {!appt?.scheduledAt &&
+                        ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (<Link to={`/book/${req.id}`} className="inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_12px_rgba(37,99,235,0.3)]">
+                          <Calendar className="size-3.5"/> Book Now
+                        </Link>)}
+                  </div>
+                </div>);
+            })}
             </div>) : null}
         </div>
 
         {/* Right Column: Rewards Widget */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold">Rewards</h2>
-            <Link to="/rewards" className="text-sm font-bold text-[#2563EB] hover:underline">
-              View rewards →
-            </Link>
-          </div>
-
           <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 relative overflow-hidden shadow-sm">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#2563EB] opacity-5 blur-3xl rounded-full translate-x-10 -translate-y-10"></div>
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
+                <Gift className="size-5 text-[#F59E0B]"/> Rewards
+              </h3>
+              <Link to="/rewards" className="text-xs font-bold text-[#2563EB] hover:underline flex items-center gap-1">
+                View History <ArrowRight className="size-3"/>
+              </Link>
+            </div>
 
             {rewardsLoading ? (<div className="animate-pulse h-20 bg-[#F8FAFC] rounded-[14px]"></div>) : rewardsError ? (<div>
                 <p className="font-bold">Rewards could not load</p>
@@ -127,25 +165,34 @@ export default function DashboardPage() {
                   Open rewards to check your balance and history.
                 </p>
               </div>) : (<>
-                <p className="text-[#475569] font-medium mb-2">
-                  Available points
+                <p className="text-[#94A3B8] font-medium mb-1 text-xs uppercase tracking-wider">
+                  Points balance
                 </p>
-                <div className="text-6xl font-extrabold text-[#2563EB] tracking-tighter mb-8">
+                <div className="text-6xl font-extrabold text-[#0F172A] tracking-tighter mb-6">
                   {rewards?.account?.pointsBalance || 0}
+                </div>
+
+                {/* Cash equivalent */}
+                <div className="mb-6 inline-flex items-center gap-2 rounded-xl bg-[#FEF3C7] px-4 py-2.5">
+                  <TrendingUp className="size-4 text-[#F59E0B]"/>
+                  <span className="text-sm font-semibold text-[#92400E]">
+                    Worth ${((rewards?.account?.pointsBalance || 0) / 100).toFixed(2)} in gift cards
+                  </span>
                 </div>
 
                 <div className="pt-6 border-t border-[#E2E8F0] flex justify-between items-center">
                   <div>
-                    <p className="text-sm text-[#475569]">
+                    <p className="text-sm text-[#94A3B8]">
                       Current Tier
                     </p>
-                    <p className="font-bold text-lg">
+                    <p className="font-bold text-lg flex items-center gap-1.5">
+                      <Star className="size-4 text-[#F59E0B] fill-[#F59E0B]"/>
                       {rewards?.account?.level.replace(/_/g, " ") ||
                 "New Homeowner"}
                     </p>
                   </div>
-                  <Link to="/rewards" className="text-sm font-bold text-[#2563EB] hover:underline">
-                    View History →
+                  <Link to="/how-rewards-work" className="px-4 py-2 bg-[#2563EB] text-white text-xs font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors">
+                    Earn More →
                   </Link>
                 </div>
               </>)}

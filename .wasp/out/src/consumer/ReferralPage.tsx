@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, getMyReferral } from 'wasp/client/operations';
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { Gift, Clock } from 'lucide-react';
 
 export default function ReferralPage() {
   useRoleGuard('CONSUMER');
@@ -40,10 +41,12 @@ export default function ReferralPage() {
           </div>
         )}
         {referral?.referredUserId && (
-          <p className="text-sm text-[#2563EB] font-semibold">
+          <p className={`text-sm font-semibold flex items-center gap-2 ${
+            referral.status === 'REWARDED' ? 'text-[#22C55E]' : 'text-[#F59E0B]'
+          }`}>
             {referral.status === 'REWARDED'
-              ? '🎉 Your referral is complete. You both earned 500 points!'
-              : '⏳ Friend signed up. Points will land when their first service is complete.'}
+              ? <><Gift className="size-4" /> Your referral is complete. You both earned 500 points!</>
+              : <><Clock className="size-4" /> Friend signed up. Points land when their first service completes.</>}
           </p>
         )}
       </div>

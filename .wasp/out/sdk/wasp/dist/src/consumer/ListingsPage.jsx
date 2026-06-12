@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
+import { Wrench } from 'lucide-react';
 export default function ListingsPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -113,7 +114,7 @@ export default function ListingsPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (<div key={i} className="animate-pulse bg-white rounded-[24px] h-52 border border-[#E2E8F0]"/>))}
         </div>) : listings.length === 0 ? (<div className="text-center py-20">
           <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
-            <span className="text-3xl opacity-50">🛠️</span>
+            <span className="text-3xl opacity-50"><Wrench /></span>
           </div>
           <h3 className="text-xl font-bold mb-2 text-[#0F172A]">No listings found</h3>
           <p className="text-[#475569]">
@@ -127,8 +128,8 @@ export default function ListingsPage() {
                 const key = `${entry.service.name}-${entry.service.categorySlug}`;
                 return (<div key={key} className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#BFDBFE] transition-all duration-300 flex flex-col">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center">
-                    <span className="text-lg">🔧</span>
+                  <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#2563EB]">
+                    <Wrench className="size-5"/>
                   </div>
                   {entry.minPrice !== null && (<span className="px-3 py-1 bg-[#2563EB] text-white rounded-full text-sm font-bold">
                       ${entry.minPrice.toFixed(2)}

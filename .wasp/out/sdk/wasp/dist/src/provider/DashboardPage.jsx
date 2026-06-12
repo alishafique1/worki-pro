@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAction, useQuery, acceptServiceRequest, getProviderAppointments, getProviderLeads, getProviderProfile, } from "wasp/client/operations";
 import { Link, useNavigate } from "react-router";
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { Wrench, CalendarClock, CheckCircle2, Clock3, Inbox, Package, Zap, AlertTriangle, Clock, MapPin, } from "lucide-react";
 function safeParseServices(json) {
     try {
         return JSON.parse(json) || [];
@@ -11,9 +12,21 @@ function safeParseServices(json) {
     }
 }
 const STATUS_LABEL = {
-    ASSIGNED: 'New',
+    ASSIGNED: 'New Lead',
     ACCEPTED_BY_PROVIDER: 'Accepted',
     BOOKED: 'Booked',
+};
+const urgencyBadge = {
+    EMERGENCY: { label: 'Emergency', className: 'bg-red-50 text-red-600 border-red-200', icon: <Zap className="size-3"/> },
+    URGENT: { label: 'Urgent', className: 'bg-amber-50 text-amber-700 border-amber-200', icon: <Clock3 className="size-3"/> },
+    SOON: { label: 'Soon', className: 'bg-blue-50 text-blue-600 border-blue-200', icon: <CalendarClock className="size-3"/> },
+    PLANNED: { label: 'Planned', className: 'bg-slate-50 text-slate-500 border-slate-200', icon: <CalendarClock className="size-3"/> },
+};
+const apptStatusBadge = {
+    CONFIRMED: { label: 'Confirmed', className: 'bg-green-50 text-green-700 border-green-200' },
+    PENDING: { label: 'Pending', className: 'bg-amber-50 text-amber-700 border-amber-200' },
+    CANCELLED: { label: 'Cancelled', className: 'bg-red-50 text-red-600 border-red-200' },
+    COMPLETED: { label: 'Completed', className: 'bg-green-50 text-green-700 border-green-200' },
 };
 export default function ProviderDashboardPage() {
     useRoleGuard('PROVIDER');
@@ -36,7 +49,9 @@ export default function ProviderDashboardPage() {
     if (!profileLoading && profileError) {
         return (<div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
         <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-10 max-w-md w-full text-center shadow-sm">
-          <div className="text-4xl mb-4">🔧</div>
+          <div className="size-14 mx-auto mb-4 flex items-center justify-center rounded-2xl bg-[#EFF6FF]">
+            <Wrench className="size-7 text-[#2563EB]"/>
+          </div>
           <h2 className="text-xl font-black text-[#0F172A] mb-2">Finish setting up your account</h2>
           <p className="text-sm text-[#475569] mb-6">
             Your provider profile isn't complete yet. Let's finish the setup so you can start receiving leads.
@@ -48,12 +63,12 @@ export default function ProviderDashboardPage() {
       </div>);
     }
     const verificationStatus = profile?.verificationStatus;
-    return (<div className="p-8 max-w-7xl mx-auto space-y-12 bg-[#F8FAFC] min-h-screen">
+    return (<div className="p-8 max-w-7xl mx-auto space-y-10 bg-[#F8FAFC] min-h-screen">
       {/* Verification banner */}
       {!profileLoading && verificationStatus && verificationStatus !== 'VERIFIED' && (<div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${verificationStatus === 'REJECTED'
                 ? 'bg-red-500/10 border-red-400/30 text-red-600'
                 : 'bg-[#FEF3C7] border-[#FDE68A] text-amber-700'}`}>
-          <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
+          <span className="mt-0.5">{verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-500"/> : <Clock className="size-5 text-amber-500"/>}</span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'}
@@ -69,10 +84,26 @@ export default function ProviderDashboardPage() {
           {acceptError}
           <button onClick={() => setAcceptError(null)} className="ml-3 underline">Dismiss</button>
         </div>)}
+
+      {/* KPI Strip */}
+      <div className="grid grid-cols-3 gap-4">
+        {[
+            { label: "Active Leads", value: leads?.length ?? 0, icon: <Inbox className="size-5 text-[#2563EB]"/>, color: "blue" },
+            { label: "Upcoming Bookings", value: appts?.filter((a) => a.scheduledAt && new Date(a.scheduledAt) >= new Date()).length ?? 0, icon: <CalendarClock className="size-5 text-[#F59E0B]"/>, color: "amber" },
+            { label: "Completed Jobs", value: appts?.filter((a) => a.status === 'COMPLETED').length ?? 0, icon: <CheckCircle2 className="size-5 text-[#22C55E]"/>, color: "green" },
+        ].map(({ label, value, icon }) => (<div key={label} className="bg-white border border-[#E2E8F0] rounded-[18px] p-5 flex items-center gap-4">
+            <div className="size-11 shrink-0 flex items-center justify-center rounded-xl bg-[#EFF6FF]">{icon}</div>
+            <div>
+              <p className="text-2xl font-extrabold text-[#0F172A]">{value}</p>
+              <p className="text-xs text-[#94A3B8] font-medium">{label}</p>
+            </div>
+          </div>))}
+      </div>
+
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0F172A]">
-            Provider Portal
+            Provider Dashboard
           </h1>
           <p className="text-[#475569] mt-2 text-lg">
             Review assigned leads, accept work, and manage booking updates.
@@ -96,7 +127,9 @@ export default function ProviderDashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
             <h2 className="text-2xl font-bold flex items-center gap-3 text-[#0F172A]">
-              <span className="text-2xl">📋</span>
+              <div className="size-9 flex items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB]">
+                <Package className="size-5"/>
+              </div>
               My Service Listings
             </h2>
             <p className="text-[#475569] mt-1">
@@ -159,6 +192,9 @@ export default function ProviderDashboardPage() {
               </Link>
             </div>) : (<div className="space-y-4">
               {leads?.length === 0 ? (<div className="text-center p-8 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0]">
+                  <div className="size-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-[#EFF6FF] text-[#2563EB]">
+                    <Inbox className="size-6"/>
+                  </div>
                   <p className="text-[#475569]">
                     Your lead queue is empty.
                   </p>
@@ -168,18 +204,22 @@ export default function ProviderDashboardPage() {
                 </div>) : (leads?.map((lead) => (<div key={lead.id} className="p-6 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0] hover:border-[#2563EB] transition-colors group">
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex flex-wrap gap-2 mb-2">
-                        <span className="px-3 py-1 bg-white border border-[#E2E8F0] text-xs font-bold rounded-full inline-block uppercase text-[#475569]">
-                          {lead.urgency}
-                        </span>
-                        <span className="px-3 py-1 bg-[#FEF3C7] text-amber-700 text-xs font-bold rounded-full inline-block uppercase border border-[#FDE68A]">
+                        {(() => {
+                    const u = urgencyBadge[lead.urgency] ?? urgencyBadge.PLANNED;
+                    return (<span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full border ${u.className}`}>
+                              {u.icon} {u.label}
+                            </span>);
+                })()}
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#EFF6FF] text-[#2563EB] text-xs font-bold rounded-full border border-[#BFDBFE]">
                           {STATUS_LABEL[lead.status] ?? lead.status}
                         </span>
                       </div>
-                      <span className="text-sm text-[#475569] font-medium shrink-0">
+                      <span className="text-sm text-[#94A3B8] font-medium shrink-0">
                         {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <h3 className="font-bold text-lg mb-1 text-[#0F172A]">
+                    <h3 className="font-bold text-lg mb-1 text-[#0F172A] flex items-center gap-1.5">
+                      <MapPin className="size-4 text-[#94A3B8]"/>
                       {lead.city || lead.postalCode}
                     </h3>
                     <p className="text-[#475569] mb-4 line-clamp-2">
@@ -218,9 +258,13 @@ export default function ProviderDashboardPage() {
               </Link>
             </div>) : (<div className="space-y-4">
               {appts?.length === 0 ? (<div className="text-center p-8 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0]">
+                  <div className="size-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-[#EFF6FF] text-[#2563EB]">
+                    <CalendarClock className="size-6"/>
+                  </div>
                   <p className="text-[#475569]">
-                    No accepted jobs or booking updates yet.
+                    No bookings yet.
                   </p>
+                  <p className="text-sm text-[#94A3B8] mt-1">Accept leads to start scheduling jobs.</p>
                 </div>) : (appts?.map((appt) => (<div key={appt.id} className="p-6 bg-[#F8FAFC] rounded-[14px] border border-[#E2E8F0] flex justify-between items-center">
                     <div>
                       <p className="font-bold text-lg mb-1 text-[#0F172A]">
@@ -238,9 +282,12 @@ export default function ProviderDashboardPage() {
                     : "Pending Scheduling"}
                       </p>
                     </div>
-                    <span className="px-4 py-2 bg-[#EFF6FF] text-[#2563EB] rounded-full text-xs font-bold uppercase tracking-wider border border-[#BFDBFE]">
-                      {appt.status}
-                    </span>
+                    {(() => {
+                    const b = apptStatusBadge[appt.status] ?? { label: appt.status, className: 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]' };
+                    return (<span className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border ${b.className}`}>
+                          {b.label}
+                        </span>);
+                })()}
                   </div>)))}
             </div>)}
         </div>

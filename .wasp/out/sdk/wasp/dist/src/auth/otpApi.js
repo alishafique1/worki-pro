@@ -42,7 +42,7 @@ export const requestOtp = async (req, res, context) => {
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
           <div style="text-align:center;margin-bottom:32px;">
             <div style="display:inline-flex;align-items:center;gap:10px;">
-              <div style="width:40px;height:40px;background:#2563EB;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;line-height:1;">H</div>
+              <img src="https://thehelper.ca/apple-touch-icon.png" alt="The Helper" width="40" height="40" style="border-radius:10px;display:inline-block;vertical-align:middle;" />
               <span style="font-size:22px;font-weight:900;color:#0F172A;">The Helper</span>
             </div>
           </div>

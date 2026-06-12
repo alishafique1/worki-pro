@@ -2,33 +2,33 @@ import { AirVent, BadgeCheck, Brush, CalendarCheck, ClipboardList, Clock3, Dropl
 export const painPoints = [
     {
         icon: <Clock3 className="size-5"/>,
-        title: "Missed calls",
-        description: "You explain the same job again and again.",
+        title: "Calling 5 pros and getting 2 callbacks",
+        description: "Half the pros you call do not answer. The other half ghost after the quote.",
     },
     {
         icon: <ClipboardList className="size-5"/>,
-        title: "Incomplete details",
-        description: "Important job context gets missed in calls and texts.",
+        title: "Same job, explained 3 times",
+        description: "Text, then call, then email. The details get lost between channels.",
     },
     {
         icon: <CalendarCheck className="size-5"/>,
-        title: "No-shows",
-        description: "Your day gets blocked, then the provider disappears.",
+        title: "Pro does not show up",
+        description: "You blocked the afternoon. The pro cancels 30 minutes before. Day wasted.",
     },
     {
         icon: <MessageSquareText className="size-5"/>,
-        title: "Scattered messages",
-        description: "Details live across texts, calls, WhatsApp, and email.",
+        title: "Details scattered everywhere",
+        description: "Photos on WhatsApp, voice notes on iMessage, quote in your email. None of it connects.",
     },
     {
         icon: <BadgeCheck className="size-5"/>,
-        title: "Unclear fit",
-        description: "It is not always obvious which service category to request.",
+        title: "Not sure which pro to call",
+        description: "Is it plumbing or handyman? HVAC or electrical? The job does not fit one category.",
     },
     {
         icon: <BellIcon />,
-        title: "Poor follow-up",
-        description: "You are left chasing updates after requesting help.",
+        title: "No follow-up after the job",
+        description: "You pay, they leave, and there is no record of the work or who to call if something breaks.",
     },
 ];
 function BellIcon() {
@@ -38,22 +38,22 @@ export const solutionSteps = [
     {
         icon: <Search className="size-5"/>,
         title: "Submit",
-        description: "Tell us what you need in under 2 minutes. 100% free for homeowners.",
+        description: "Tell us what's broken. Add photos if needed. Takes under 2 minutes. 100% free for homeowners.",
     },
     {
         icon: <BadgeCheck className="size-5"/>,
         title: "Match",
-        description: "We connect you with a verified local pro, often within 15 minutes.",
+        description: "We connect you with a verified local pro who is available today. Often within 15 minutes. No calling around.",
     },
     {
         icon: <CalendarCheck className="size-5"/>,
         title: "Book",
-        description: "Pick a time that works. Same-day service available for urgent jobs.",
+        description: "Pick a time that works. Same-day service available for urgent jobs like a broken AC or a leak. No-shows are rare.",
     },
     {
         icon: <MapPin className="size-5"/>,
         title: "Done",
-        description: "Job complete. Leave a review and earn reward points automatically.",
+        description: "Job complete. Leave a review. Earn $60+ cash back on your first completed job. Redeemable as gift cards.",
     },
 ];
 // Unsplash image URLs for each service category
@@ -262,22 +262,22 @@ export const customerSteps = [
     {
         step: "01",
         title: "Submit your request",
-        description: "Takes under 2 minutes. 100% free, no credit card needed.",
+        description: "Takes under 2 minutes. Tell us what's broken. 100% free, no credit card needed.",
     },
     {
         step: "02",
         title: "Get matched fast",
-        description: "A verified local pro responds, typically within 15 minutes.",
+        description: "A verified local pro responds, typically within 15 minutes. No calling around.",
     },
     {
         step: "03",
-        title: "Book same-day or later",
-        description: "Pick a time that works. Urgent? Same-day service available.",
+        title: "Book a time that works",
+        description: "Same-day for urgent jobs like a broken AC or a leak. Or schedule a window that fits your week.",
     },
     {
         step: "04",
-        title: "Job done. Get rewarded.",
-        description: "Earn $60+ back on your first completed job. No extra steps.",
+        title: "Job done. Earn rewards.",
+        description: "$60+ cash back on your first completed job. Redeemable as gift cards at $100.",
     },
 ];
 export const providerSteps = [
@@ -348,46 +348,50 @@ export const trustFeatures = [
 ];
 export const providerBenefits = [
     {
-        title: "Receive service requests",
-        description: "Connect with homeowners who submit supported request types.",
+        title: "Leads that are ready to book",
+        description: "Every lead comes from a homeowner who submitted a specific request. No cold calls. No tyre-kickers.",
     },
     {
-        title: "Category and area fit",
-        description: "Apply for the services and locations your business supports.",
+        title: "Only jobs that fit your business",
+        description: "Set your service categories and coverage area. You only receive requests that match.",
     },
     {
-        title: "Reduce admin",
-        description: "Keep requests, appointments, messages, and follow-ups organized in one flow.",
+        title: "Less admin, more jobs",
+        description: "Requests, scheduling, messages, and follow-ups in one dashboard. Stop managing five apps.",
     },
     {
-        title: "Build local visibility",
-        description: "Use a clear profile and accepted jobs to build marketplace presence.",
+        title: "Reviews that build your business",
+        description: "Every completed job can generate a verified review. Builds trust and helps you rank higher over time.",
     },
 ];
 export const faqs = [
     {
         question: "Is The Helper free for homeowners?",
-        answer: "Yes! Submitting requests and getting matched is 100% free for homeowners. You only pay the pro for the actual work, with no platform fees or hidden charges.",
+        answer: "Yes. Submitting a request and getting matched costs nothing. You pay the pro directly for the work. No platform fee, no hidden charges, no subscription.",
     },
     {
-        question: "How fast can I get help?",
-        answer: "Most homeowners get matched with a verified pro within 15 minutes. For urgent jobs, same-day service is often available.",
+        question: "How fast will I get matched?",
+        answer: "Most homeowners get matched with a verified local pro within 15 minutes of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
     },
     {
-        question: "How are providers verified?",
-        answer: "Every pro is vetted before joining. We verify business credentials, insurance, service areas, and customer reviews. Only approved pros appear on the platform.",
+        question: "How do I know the pro is actually verified?",
+        answer: "Every pro goes through a review before they can accept jobs. We check business credentials, insurance status, and service area. Only approved pros appear on the platform. Reviews only post after a job is completed and confirmed.",
     },
     {
         question: "Where is The Helper available?",
-        answer: "We currently serve the Greater Toronto Area: Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton. Enter your postal code to check coverage.",
+        answer: "We currently serve Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton. More GTA cities are being added. Enter your postal code on the request form to confirm coverage in your area.",
     },
     {
-        question: "What if I'm not satisfied?",
-        answer: "Your satisfaction matters. If something goes wrong, contact our support team and we'll help make it right, including re-matching you with another pro if needed.",
+        question: "What if the pro does not show up or the work is not done right?",
+        answer: "Contact our support team. We will help you get a resolution, including re-matching you with another verified pro at no extra cost. Every job is tracked so there is a clear record of what was booked and agreed.",
     },
     {
-        question: "How do rewards work?",
-        answer: "Earn points automatically: $5 when you submit, $5 when you book, and $50+ when your first job completes. Redeem for gift cards or service credits at $100.",
+        question: "How do the rewards work?",
+        answer: "You earn points automatically at each step. $5 when you submit a request. $5 when you book. $50 when your first job is completed. Refer a friend and both of you earn $5 when they submit their first request. Redeem as gift cards once you hit $100.",
+    },
+    {
+        question: "I already have a guy I call. Why use The Helper?",
+        answer: "Your regular pro is great when they are available. The Helper fills the gaps: when your usual contact is booked, when you need a second opinion on a quote, or when you need a service category they do not cover. No commitment required.",
     },
 ];
 //# sourceMappingURL=content.jsx.map

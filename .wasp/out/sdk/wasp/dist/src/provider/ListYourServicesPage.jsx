@@ -1,3 +1,4 @@
+import { CheckCircle2, DollarSign, Smartphone, Target } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useAction } from 'wasp/client/operations';
@@ -6,22 +7,22 @@ import { useQuery } from 'wasp/client/operations';
 import { getServiceCategories } from 'wasp/client/operations';
 const BENEFITS = [
     {
-        icon: '🎯',
+        icon: <Target className="size-7"/>,
         title: 'Get Found by Ready Customers',
         desc: 'Your services appear in search results when GTA homeowners search for exactly what you offer. No cold calls needed.',
     },
     {
-        icon: '💰',
+        icon: <DollarSign className="size-7"/>,
         title: '5% Cashback on Every Job',
         desc: "The Helper's rewards program means customers earn points on every booking, giving you a competitive edge over providers who don't.",
     },
     {
-        icon: '✅',
+        icon: <CheckCircle2 className="size-7"/>,
         title: 'Background-Checked & Verified',
         desc: 'Every pro on The Helper is verified. Customers see your licence, insurance, and reviews, building trust that converts to bookings.',
     },
     {
-        icon: '📱',
+        icon: <Smartphone className="size-7"/>,
         title: 'Simple Dashboard',
         desc: 'Manage leads, appointments, and earnings from one place. Real-time notifications when a new job matches your services.',
     },
@@ -126,7 +127,7 @@ export default function ListYourServicesPage() {
         {/* Benefits grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
           {BENEFITS.map((b) => (<div key={b.title} className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 hover:border-[#2563EB] transition-colors shadow-sm">
-              <div className="text-3xl mb-4">{b.icon}</div>
+              <div className="text-[#2563EB] mb-4">{b.icon}</div>
               <h3 className="font-bold text-base mb-2 text-[#0F172A]">{b.title}</h3>
               <p className="text-sm text-[#475569] leading-relaxed">{b.desc}</p>
             </div>))}

@@ -5,6 +5,7 @@ import StepCategory from './components/wizard/StepCategory';
 import StepQualifiers from './components/wizard/StepQualifiers';
 import StepInfoAndVerify from './components/wizard/StepInfoAndVerify';
 import StepVerifyEmail from './components/wizard/StepVerifyEmail';
+import logo from '../client/static/logo.webp';
 const STEP_LABELS = ['Service', 'Questions', 'Your info', 'Verify email'];
 const TOTAL_STEPS = 4;
 export default function GuestRequestWizardPage() {
@@ -38,7 +39,7 @@ export default function GuestRequestWizardPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">H</div>
+            <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg"/>
             <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
           </div>
           <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Get free quotes</h2>

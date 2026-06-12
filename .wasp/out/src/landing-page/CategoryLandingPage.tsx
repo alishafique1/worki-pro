@@ -3,6 +3,7 @@ import { useQuery, getServiceCategories } from 'wasp/client/operations'
 import type { ServiceCategory } from 'wasp/entities'
 import PageSeo, { createServiceSchema, createFaqSchema, createBreadcrumbSchema } from './components/PageSeo'
 import { categoryPages } from './services/categoryData'
+import { ShieldCheck, BadgeDollarSign, CalendarClock } from 'lucide-react'
 
 const PRICING: Record<string, string> = {
   hvac: 'Most HVAC repairs in Milton cost $150–$400',
@@ -112,21 +113,17 @@ export default function CategoryLandingPage() {
       {/* Trust signals */}
       <section className="py-10 px-6 max-w-3xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-            <div className="text-2xl mb-1">✓</div>
-            <p className="font-semibold text-[#0F172A] text-sm">Verified pros</p>
-            <p className="text-xs text-[#64748B]">Every provider is background-checked</p>
-          </div>
-          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-            <div className="text-2xl mb-1">💰</div>
-            <p className="font-semibold text-[#0F172A] text-sm">Free quotes</p>
-            <p className="text-xs text-[#64748B]">No obligation, compare & choose</p>
-          </div>
-          <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
-            <div className="text-2xl mb-1">📅</div>
-            <p className="font-semibold text-[#0F172A] text-sm">Fast response</p>
-            <p className="text-xs text-[#64748B]">Most quotes arrive within hours</p>
-          </div>
+          {[
+            { icon: <ShieldCheck className="size-6 text-[#22C55E]" />, label: 'Verified pros', desc: 'Every provider is background-checked', iconBg: 'bg-green-50 border-green-200' },
+            { icon: <BadgeDollarSign className="size-6 text-[#2563EB]" />, label: 'Free quotes', desc: 'No obligation, compare & choose', iconBg: 'bg-blue-50 border-blue-200' },
+            { icon: <CalendarClock className="size-6 text-[#F59E0B]" />, label: 'Fast response', desc: 'Most quotes arrive within hours', iconBg: 'bg-amber-50 border-amber-200' },
+          ].map(item => (
+            <div key={item.label} className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
+              <div className={`w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center border ${item.iconBg}`}>{item.icon}</div>
+              <p className="font-semibold text-[#0F172A] text-sm">{item.label}</p>
+              <p className="text-xs text-[#64748B]">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 

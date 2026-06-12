@@ -1,19 +1,39 @@
 #!/bin/bash
 # Run before every deploy to regenerate .wasp/out/ and rebuild the React SPA.
-# Usage: REACT_APP_API_URL=https://api.thehelper.ca ./deploy/build.sh
+# Usage: REACT_APP_API_URL=https://thehelper.ca ./deploy/build.sh
 #
 # REACT_APP_API_URL is baked into the JS bundle at build time.
-# Default: https://api.thehelper.ca
+# Default: https://thehelper.ca
 
 set -e
 
-API_URL="${REACT_APP_API_URL:-https://api.thehelper.ca}"
+API_URL="${REACT_APP_API_URL:-https://thehelper.ca}"
 
 echo "Building Wasp server artifacts..."
 wasp build
 
 echo "Building React SPA (API_URL=$API_URL)..."
 REACT_APP_API_URL="$API_URL" npx vite build --outDir deploy/dist
+
+# === Bundle guard: catch the "wrong REACT_APP_API_URL" class of bug. ===
+# If someone rebuilds the bundle with the wrong env var, the deployed
+# site breaks silently (browser CORS / 502 from missing proxy) and the
+# symptom is the dreaded "Unexpected token '<'" JSON parse error.
+# Refuse the build instead of pushing a broken bundle.
+BUNDLE=$(ls deploy/dist/assets/index-*.js 2>/dev/null | head -1)
+if [ -z "$BUNDLE" ]; then
+  echo "ERROR: no JS bundle found in deploy/dist/assets/" >&2
+  exit 1
+fi
+if ! grep -q "REACT_APP_API_URL:\"$API_URL\"" "$BUNDLE"; then
+  ACTUAL=$(grep -oE 'REACT_APP_API_URL:"[^"]+"' "$BUNDLE" | head -1 || echo "(not found)")
+  echo "ERROR: bundle has wrong REACT_APP_API_URL." >&2
+  echo "  expected: $API_URL" >&2
+  echo "  actual:   $ACTUAL" >&2
+  echo "  re-run with: REACT_APP_API_URL=$API_URL ./deploy/build.sh" >&2
+  exit 1
+fi
+echo "Bundle guard: OK (REACT_APP_API_URL=$API_URL)"
 
 echo ""
 echo "Done. Stage, commit, and push:"

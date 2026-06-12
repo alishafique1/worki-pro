@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAction, useQuery, getMyRequests, sendCustomerMessage } from 'wasp/client/operations';
 import { useRoleGuard } from '../shared/useRoleGuard';
-import { ArrowLeft, CalendarClock, CheckCircle2, Clock3, MessageSquareText, Phone, Mail, MapPin, Send, ShieldCheck, Wrench, } from 'lucide-react';
+import { ArrowLeft, CalendarClock, CheckCircle2, Clock3, Gift, Mail, MapPin, MessageSquareText, Phone, Search, Send, ShieldCheck, Wrench, } from 'lucide-react';
 const statusColor = (s) => {
     if (['COMPLETED', 'REWARD_APPROVED'].includes(s))
         return 'bg-[#F0FDF4] text-[#15803D] border border-green-200';
@@ -151,7 +151,9 @@ export default function RequestDetailPage() {
     if (error || !request) {
         return (<div className='p-8 max-w-4xl mx-auto min-h-[80vh] flex flex-col items-center justify-center bg-[#F8FAFC]'>
         <div className='bg-white border border-red-200 rounded-[24px] p-12 text-center max-w-md shadow-sm'>
-          <div className='text-4xl mb-4'>🔍</div>
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-50">
+            <Search className="size-6 text-red-400"/>
+          </div>
           <h2 className='text-xl font-bold mb-2 text-[#0F172A]'>Request not found</h2>
           <p className='text-[#475569] mb-6'>
             This request may not exist or you may not have access to it.
@@ -192,7 +194,7 @@ export default function RequestDetailPage() {
 
           {/* Book appointment CTA */}
           {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (<Link to={`/book/${request.id}`} className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap'>
-              📅 Book Appointment
+              <CalendarClock className='size-4'/> Book Appointment
             </Link>)}
         </div>
 
@@ -270,9 +272,10 @@ export default function RequestDetailPage() {
 
           {/* Rewards summary */}
           {request.rewardEligible && (<div className='rounded-[20px] border border-[#E2E8F0] bg-white p-5 shadow-sm'>
-              <div className='mb-4 flex items-center gap-2 text-sm font-bold text-[#0F172A]'>
-                🎁 Rewards
-              </div>
+              <div className="mb-4 flex items-center gap-2 text-sm font-bold text-[#0F172A]">
+                  <Gift className="size-5"/>
+                  Rewards
+                </div>
               <div className='space-y-1.5 text-sm'>
                 {['NEW', 'QUALIFYING', 'QUALIFIED', 'ASSIGNED', 'ACCEPTED_BY_PROVIDER'].includes(request.status) && (<div className='flex justify-between'>
                     <span className='text-[#475569]'>Request submitted</span>

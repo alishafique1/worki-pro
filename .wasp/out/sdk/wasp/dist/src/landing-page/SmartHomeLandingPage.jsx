@@ -69,8 +69,8 @@ export default function SmartHomeLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-            { label: 'Certified Installers', icon: '📱', alt: 'Certified smart home installers' },
-            { label: 'All Platforms', icon: '🏠', alt: 'All smart home platforms supported' },
+            { label: 'Certified Installers', icon: '<Smartphone', alt: 'Certified smart home installers' },
+            { label: 'All Platforms', icon: '<Home', alt: 'All smart home platforms supported' },
             { label: 'Professional Setup', icon: '⚙️', alt: 'Professional installation and setup' }
         ].map((stat) => (<div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
                 <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
@@ -83,9 +83,9 @@ export default function SmartHomeLandingPage() {
             <h2 id="smart-home-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our Smart Home Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-            { title: 'Smart Security', desc: 'Smart lock installation, video doorbell setup, security camera placement, motion sensors, and full home security system integration.', icon: '🔒' },
-            { title: 'Home Automation', desc: 'Smart thermostat installation, voice assistant setup, smart lighting, automated blinds, and whole-home hub configuration.', icon: '🎮' },
-            { title: 'AV & Connectivity', desc: 'TV mounting with concealed wiring, surround sound setup, structured wiring, mesh WiFi installation, and network optimization.', icon: '📡' }
+            { title: 'Smart Security', desc: 'Smart lock installation, video doorbell setup, security camera placement, motion sensors, and full home security system integration.', icon: '<Lock' },
+            { title: 'Home Automation', desc: 'Smart thermostat installation, voice assistant setup, smart lighting, automated blinds, and whole-home hub configuration.', icon: '<Gamepad2' },
+            { title: 'AV & Connectivity', desc: 'TV mounting with concealed wiring, surround sound setup, structured wiring, mesh WiFi installation, and network optimization.', icon: '<Radio' }
         ].map((service) => (<article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
                   <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>
                   <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>

@@ -6,68 +6,69 @@ import promptpanda from "../client/static/examples/promptpanda.webp";
 import reviewradar from "../client/static/examples/reviewradar.webp";
 import scribeist from "../client/static/examples/scribeist.webp";
 import searchcraft from "../client/static/examples/searchcraft.webp";
+import { BriefcaseBusiness, Handshake, Layers, Lock, Mail, Rocket, TrendingUp } from "lucide-react";
 import { DocsUrl } from "../shared/common";
 export const features = [
     {
         name: "Cool Feature 1",
         description: "Your feature",
-        emoji: "🤝",
+        icon: <Handshake className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "small",
     },
     {
         name: "Cool Feature 2",
         description: "Feature description",
-        emoji: "🔐",
+        icon: <Lock className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "small",
     },
     {
         name: "Cool Feature 3",
         description: "Describe your cool feature here",
-        emoji: "🥞",
+        icon: <Layers className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "medium",
     },
     {
         name: "Cool Feature 4",
         description: "Describe your cool feature here",
-        emoji: "💸",
+        icon: <BriefcaseBusiness className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "large",
     },
     {
         name: "Cool Feature 5",
         description: "Describe your cool feature here",
-        emoji: "💼",
+        icon: <BriefcaseBusiness className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "large",
     },
     {
         name: "Cool Feature 6",
         description: "It is cool",
-        emoji: "📈",
+        icon: <TrendingUp className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "small",
     },
     {
         name: "Cool Feature 7",
         description: "Cool feature",
-        emoji: "📧",
+        icon: <Mail className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "small",
     },
     {
         name: "Cool Feature 8",
         description: "Describe your cool feature here",
-        emoji: "🤖",
+        icon: <Layers className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "medium",
     },
     {
         name: "Cool Feature 9",
         description: "Describe your cool feature here",
-        emoji: "🚀",
+        icon: <Rocket className="size-8 text-[#2563EB]"/>,
         href: DocsUrl,
         size: "medium",
     },

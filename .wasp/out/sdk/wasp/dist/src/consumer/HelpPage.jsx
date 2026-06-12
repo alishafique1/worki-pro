@@ -88,15 +88,15 @@ const trustItems = [
 ];
 export default function HelpPage() {
     return (<>
-      <PageSeo title="Help Centre | The Helper" description="Get help with The Helper home services marketplace. Find answers to FAQs about service requests, appointments, rewards, and more." canonicalPath="/help" structuredData={createFaqSchema(consumerFaqs)}/>
+      <PageSeo title="Help Centre — Answers for Homeowners | The Helper" description="Find fast answers about service requests, appointments, rewards, and billing. Can't find what you need? The Helper team responds same business day." ogTitle="Help Centre | The Helper" ogDescription="FAQ for The Helper home services. Requests, appointments, rewards, referrals, and billing — or contact our team directly." canonicalPath="/help" structuredData={createFaqSchema(consumerFaqs)}/>
     <div className="min-h-[80vh] bg-[#F8FAFC]">
       {/* Hero */}
       <div className="bg-white border-b border-[#E2E8F0]">
         <Container>
           <div className="py-14 max-w-2xl">
             <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Help Centre</h1>
-            <p className="text-[#475569] text-lg">
-              Everything you need to know about using TheHelper, from submitting your first request to redeeming rewards.
+            <p className="text-[#475569] text-lg leading-relaxed">
+              Fast answers about service requests, appointments, rewards, and billing. Can't find what you need? Our team responds same business day.
             </p>
           </div>
         </Container>

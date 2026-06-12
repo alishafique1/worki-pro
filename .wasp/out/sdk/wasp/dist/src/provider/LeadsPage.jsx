@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
+import { MapPin } from 'lucide-react';
 import { useQuery, useAction } from "wasp/client/operations";
 import { getPublicLeadFeed, claimLead, getServiceCategories } from "wasp/client/operations";
+import { AlertTriangle, Clock, Search } from "lucide-react";
 const URGENCY_LABELS = {
     EMERGENCY: { label: "Urgent", color: "text-red-600 bg-red-50 border-red-200" },
     STANDARD: { label: "This week", color: "text-amber-700 bg-[#FEF3C7] border-amber-200" },
@@ -59,7 +61,9 @@ export default function ProviderLeadsPage() {
       {verificationStatus && verificationStatus !== 'VERIFIED' && (<div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${verificationStatus === 'REJECTED'
                 ? 'bg-red-500/10 border-red-400/30 text-red-400'
                 : 'bg-yellow-500/10 border-yellow-400/30 text-yellow-500'}`}>
-          <span className="text-xl mt-0.5">{verificationStatus === 'REJECTED' ? '⛔' : '⏳'}</span>
+          <span className="inline-flex items-center gap-1.5">
+            {verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-400"/> : <Clock className="size-5 text-yellow-500"/>}
+          </span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED'
@@ -146,7 +150,9 @@ export default function ProviderLeadsPage() {
           </p>)}
 
         {!isLoading && !error && leads?.length === 0 && (<div className="text-center py-16 text-[#475569]">
-            <p className="text-4xl mb-4">🔍</p>
+            <div className="mb-4 mx-auto flex size-16 items-center justify-center rounded-full bg-[#EFF6FF]">
+              <Search className="size-6 text-[#2563EB]"/>
+            </div>
             <p className="font-bold text-lg text-[#0F172A]">No open leads right now</p>
             <p className="text-sm mt-1">
               New leads appear here as soon as a customer submits a request.
@@ -178,10 +184,10 @@ export default function ProviderLeadsPage() {
 
               {/* Location + schedule */}
               <div className="flex flex-wrap gap-4 text-sm text-[#475569] mb-3">
-                <span>
-                  📍 {lead.city ?? lead.postalCode}
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="size-4"/> {lead.city ?? lead.postalCode}
                 </span>
-                {lead.estimatedSchedule && (<span>🗓️ {lead.estimatedSchedule.replace(/_/g, " ")}</span>)}
+                {lead.estimatedSchedule && (<span className="inline-flex items-center gap-1.5"><Clock className="size-4"/> {lead.estimatedSchedule.replace(/_/g, " ")}</span>)}
               </div>
 
               {/* Description preview */}

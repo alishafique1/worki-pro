@@ -1,17 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { CheckCircle2, DollarSign, MapPin, Target } from 'lucide-react';
 import PageSeo from '../landing-page/components/PageSeo';
 
 export default function ProviderLandingPage() {
   return (
     <>
       <PageSeo
-        title="Join The Helper as a Home Service Pro | Get Leads in GTA"
-        description="Grow your trades business with qualified, high-intent leads in Milton, Oakville, Burlington and the GTA. No bidding wars - just vetted homeowners ready to book. HVAC, plumbing, electrical, and handyman pros welcome."
-        ogTitle="Become a The Helper Service Provider | GTA"
-        ogDescription="Partner with The Helper to get qualified home service leads in Milton, Oakville & Burlington. Licensed HVAC, plumbing, electrical, and handyman pros welcome."
+        title="Get Booking-Ready Leads. No Bidding Wars. | The Helper Pro Network"
+        description="Stop paying for leads that never convert. The Helper matches you with GTA homeowners who submitted a specific request and are ready to book. Pay only when the job closes."
+        ogTitle="Get Booking-Ready Leads. No Bidding Wars. | The Helper Pro Network"
+        ogDescription="Every lead is a homeowner who submitted a specific request and is ready to book. No bidding wars, no commission. GTA coverage. Pay only when the job closes."
         canonicalPath="/providers"
-        keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades"
+        keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades, home service marketing"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'ProfessionalService',
+          name: 'The Helper Pro Network',
+          description: 'Home services marketplace connecting GTA homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.',
+          url: 'https://thehelper.ca/providers',
+          areaServed: ['Milton', 'Oakville', 'Burlington', 'Mississauga', 'Brampton', 'Toronto'],
+          serviceType: ['HVAC Repair', 'Plumbing Services', 'Electrical Services', 'Handyman Services', 'Appliance Repair', 'Smart Home Installation'],
+          priceRange: '$$',
+        }}
       />
     <div className="min-h-screen bg-[#F8FAFC]">
       <main className="pb-20">
@@ -24,10 +35,10 @@ export default function ProviderLandingPage() {
                 Partner with The Helper
               </div>
               <h1 className="text-5xl sm:text-6xl font-black tracking-tighter leading-[0.95] mb-6 text-[#0F172A]">
-                Grow Your<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Service Business.</span>
+                Stop Paying for<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Leads That Ghost.</span>
               </h1>
               <p className="text-lg text-[#475569] mb-8 max-w-lg leading-relaxed">
-                Get high-intent, qualified leads without the bidding wars. We match you with homeowners in your area who are ready to book.
+                Every lead is a homeowner who submitted a specific request and is ready to book. No bidding wars. No calling cold lists. You get matched with real jobs in your service area.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -54,8 +65,8 @@ export default function ProviderLandingPage() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur rounded-2xl px-4 py-3 shadow-lg">
-                <p className="text-sm font-bold text-[#0F172A]">Join 50+ verified GTA pros</p>
-                <p className="text-xs text-[#475569] mt-0.5">Get matched with homeowners ready to book today</p>
+                <p className="text-sm font-bold text-[#0F172A]">50+ verified GTA pros and growing</p>
+                <p className="text-xs text-[#475569] mt-0.5">Matched with homeowners who submitted a specific request</p>
               </div>
             </div>
           </div>
@@ -65,12 +76,12 @@ export default function ProviderLandingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: '🎯' },
-              { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: '📍' },
-              { title: 'Transparent Fees', desc: 'Pay $45 per booked job, or $199/mo for priority routing. No annual contract, no dual fees.', icon: '💰' }
+              { title: 'Leads That Are Ready to Book', desc: 'Every lead comes from a homeowner who submitted a specific request. No cold calls. No tyre-kickers. No bidding against 10 other pros.', icon: <Target className="size-7" /> },
+              { title: 'Only Jobs in Your Area', desc: 'Set your service area and categories. You only receive requests from Milton, Oakville, Burlington, and surrounding GTA cities that match.', icon: <MapPin className="size-7" /> },
+              { title: 'Pay Only When the Job Closes', desc: '$45 per booked job, or $199/mo for priority routing and unlimited leads. No annual contract. Cancel anytime.', icon: <DollarSign className="size-7" /> }
             ].map((feature) => (
               <div key={feature.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:border-[#2563EB] transition-colors text-left shadow-sm">
-                <div className="text-4xl mb-6">{feature.icon}</div>
+                <div className="text-[#2563EB] mb-6">{feature.icon}</div>
                 <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{feature.title}</h3>
                 <p className="text-[#475569] leading-relaxed">{feature.desc}</p>
               </div>

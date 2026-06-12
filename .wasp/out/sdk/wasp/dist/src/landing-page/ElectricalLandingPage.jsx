@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, FileText, ShieldCheck, Zap } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 const electricalFaqs = [
@@ -69,11 +69,11 @@ export default function ElectricalLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-            { label: 'ESA Certified', icon: '⚡', alt: 'ESA certified electricians' },
-            { label: 'Permit Ready', icon: '🛡️', alt: 'Handles permits and inspections' },
-            { label: 'Insured Work', icon: '📋', alt: 'Fully insured electrical work' }
+            { label: 'ESA Certified', icon: <Zap className="size-6"/>, alt: 'ESA certified electricians' },
+            { label: 'Permit Ready', icon: <ShieldCheck className="size-6"/>, alt: 'Handles permits and inspections' },
+            { label: 'Insured Work', icon: <FileText className="size-6"/>, alt: 'Fully insured electrical work' }
         ].map((stat) => (<div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
+                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
                 <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
               </div>))}
           </div>
@@ -83,9 +83,9 @@ export default function ElectricalLandingPage() {
             <h2 id="electrical-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our Electrical Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-            { title: 'Repairs & Outlets', desc: 'Outlet replacements, circuit troubleshooting, GFCI installation, and panel breaker repairs. Safety-focused diagnostics for flickering lights and tripping breakers.', icon: '🔌' },
-            { title: 'Lighting', desc: 'Pot light installation, fixture upgrades, under-cabinet lighting, outdoor lighting, and smart lighting setup with switches and dimmers.', icon: '💡' },
-            { title: 'Panel & Upgrades', desc: 'Electrical panel upgrades (100A to 200A), EV charger installation (Level 2), whole-home surge protection, and rewiring for renovations.', icon: '🔋' }
+            { title: 'Repairs & Outlets', desc: 'Outlet replacements, circuit troubleshooting, GFCI installation, and panel breaker repairs. Safety-focused diagnostics for flickering lights and tripping breakers.', icon: '<Plug' },
+            { title: 'Lighting', desc: 'Pot light installation, fixture upgrades, under-cabinet lighting, outdoor lighting, and smart lighting setup with switches and dimmers.', icon: '<Lightbulb' },
+            { title: 'Panel & Upgrades', desc: 'Electrical panel upgrades (100A to 200A), EV charger installation (Level 2), whole-home surge protection, and rewiring for renovations.', icon: '<Battery' }
         ].map((service) => (<article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
                   <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>
                   <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>

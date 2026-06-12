@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { BadgeCheck, ChevronDown, ChevronUp, ScrollText, ShieldCheck, Utensils, WashingMachine, Zap } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 
@@ -101,12 +101,12 @@ export default function ApplianceLandingPage() {
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-              { label: 'Certified Techs', icon: '📜', alt: 'Certified appliance technicians' },
-              { label: 'All Brands', icon: '🏷️', alt: 'All major brands serviced' },
-              { label: 'Same-Day Service', icon: '⚡', alt: 'Same-day repair available' }
+              { label: 'Certified Techs', icon: <ScrollText className="size-6" />, alt: 'Certified appliance technicians' },
+              { label: 'All Brands', icon: <BadgeCheck className="size-6" />, alt: 'All major brands serviced' },
+              { label: 'Same-Day Service', icon: <Zap className="size-6" />, alt: 'Same-day repair available' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-3xl" aria-hidden="true">{stat.icon}</div>
+                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
                 <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
               </div>
             ))}
@@ -117,12 +117,12 @@ export default function ApplianceLandingPage() {
             <h2 id="appliance-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Appliances We Repair</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-                { title: 'Kitchen Appliances', desc: 'Refrigerator repair, freezer repair, dishwasher repair, oven and stove repair, microwave repair, and range hood service.', icon: '🍳' },
-                { title: 'Laundry Appliances', desc: 'Washer repair, dryer repair, stackable unit service, and front-load/top-load machine diagnostics for all major brands.', icon: '👕' },
-                { title: 'Maintenance', desc: 'Preventative maintenance checkups, appliance cleaning, refrigerator coil cleaning, and dryer vent cleaning to extend appliance life.', icon: '🛡️' }
+                { title: 'Kitchen Appliances', desc: 'Refrigerator repair, freezer repair, dishwasher repair, oven and stove repair, microwave repair, and range hood service.', icon: <Utensils className="size-7" /> },
+                { title: 'Laundry Appliances', desc: 'Washer repair, dryer repair, stackable unit service, and front-load/top-load machine diagnostics for all major brands.', icon: <WashingMachine className="size-7" /> },
+                { title: 'Maintenance', desc: 'Preventative maintenance checkups, appliance cleaning, refrigerator coil cleaning, and dryer vent cleaning to extend appliance life.', icon: <ShieldCheck className="size-7" /> }
               ].map((service) => (
                 <article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                  <div className="text-4xl mb-6" aria-hidden="true">{service.icon}</div>
+                  <div className="text-[#2563EB] mb-6" aria-hidden="true">{service.icon}</div>
                   <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
                   <p className="text-[#475569] leading-relaxed">{service.desc}</p>
                 </article>

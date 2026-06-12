@@ -61,9 +61,9 @@ export default function ProviderApplyPage() {
           <div className="w-16 h-16 bg-[#F0FDF4] rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-3xl">✓</span>
           </div>
-          <h2 className="text-3xl font-bold mb-4 text-[#0F172A]">Application Received!</h2>
+          <h2 className="text-3xl font-bold mb-4 text-[#0F172A]">Application received.</h2>
           <p className="text-[#475569] mb-8">
-            Our team will review your application and contact you within 24-48 hours for verification.
+            Our team reviews every application within 24-48 hours. Once verified, you will start receiving leads from homeowners in your service area. We will email you as soon as your profile is approved.
           </p>
           <button onClick={() => window.location.href = '/provider/dashboard'} className="w-full py-4 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1D4ED8] transition-colors">
             Go to Dashboard
@@ -72,12 +72,12 @@ export default function ProviderApplyPage() {
       </div>);
     }
     return (<>
-      <PageSeo title="Apply as a Service Pro | Join The Helper Network" description="Apply to join The Helper network of verified home service professionals. HVAC, plumbing, electrical, handyman, and more in Milton, Oakville, Burlington." canonicalPath="/providers/apply" keywords="join contractor network, become service provider, HVAC contractor apply, plumber apply GTA"/>
+      <PageSeo title="Apply as a Service Pro | Join The Helper Network" description="Join 50+ verified GTA pros. Get matched with homeowners in Milton, Oakville, Burlington who are ready to book. No bidding wars, no commission. Apply in 3 minutes." canonicalPath="/providers/apply" keywords="join contractor network, become service provider, HVAC contractor apply, plumber apply GTA, get more service leads"/>
     <div className="min-h-screen bg-[#F8FAFC] py-20 px-6">
       <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Join the <span className="text-[#2563EB]">The Helper</span> Network</h1>
+        <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Apply in 3 minutes. Get matched with real jobs.</h1>
         <p className="text-[#475569] mb-12">
-          Fill out the form below to start your application. We are currently accepting HVAC and Handyman pros in the GTA.
+          Tell us about your business and service area. We review every application within 24-48 hours. Currently accepting HVAC, plumbing, electrical, handyman, and appliance repair pros across the GTA.
         </p>
 
         <div className="bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-sm">

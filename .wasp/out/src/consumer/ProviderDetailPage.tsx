@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviderById, getServiceCategories } from 'wasp/client/operations';
+import { Search, ShieldCheck } from 'lucide-react';
 
 export default function ProviderDetailPage() {
   const { providerId } = useParams<{ providerId: string }>();
@@ -24,7 +25,9 @@ export default function ProviderDetailPage() {
     return (
       <div className="p-8 max-w-5xl mx-auto min-h-[80vh] flex flex-col items-center justify-center">
         <div className="bg-white border border-red-200 rounded-[24px] p-12 text-center max-w-md">
-          <div className="text-4xl mb-4">🔍</div>
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-50">
+            <Search className="size-6 text-red-400" />
+          </div>
           <h2 className="text-xl font-bold mb-2 text-[#0F172A]">Pro not found</h2>
           <p className="text-[#475569] mb-6">
             This pro may no longer be available or the link may be incorrect.

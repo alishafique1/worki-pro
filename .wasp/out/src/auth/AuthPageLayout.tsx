@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import logo from "../client/static/logo.webp";
 
 export function AuthPageLayout({ children }: { children: ReactNode }) {
   return (
@@ -7,7 +8,7 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
       <div className="hidden lg:flex lg:w-1/2 bg-[#0F172A] flex-col justify-between p-12 text-white">
         <div>
           <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-lg">H</div>
+            <img src={logo} alt="The Helper" className="w-10 h-10 rounded-xl" />
             <span className="text-2xl font-black tracking-tight">The Helper</span>
           </div>
           <div>

@@ -17,10 +17,14 @@ const statusColor = (s) => {
 };
 const urgencyStyle = (u) => {
     if (u === "EMERGENCY")
-        return "bg-[#FEF2F2] text-red-600 border border-red-200";
+        return "bg-red-50 text-red-600 border border-red-200";
+    if (u === "URGENT")
+        return "bg-amber-50 text-amber-700 border border-amber-200";
+    if (u === "SOON")
+        return "bg-blue-50 text-blue-600 border border-blue-200";
     if (u === "PLANNED")
-        return "bg-[#F8FAFC] text-[#94A3B8] border border-[#E2E8F0]";
-    return "bg-[#F8FAFC] text-[#475569] border border-[#E2E8F0]";
+        return "bg-slate-50 text-slate-500 border border-slate-200";
+    return "bg-slate-50 text-slate-500 border border-slate-200";
 };
 const formatStatus = (s) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 const formatDate = (value) => {

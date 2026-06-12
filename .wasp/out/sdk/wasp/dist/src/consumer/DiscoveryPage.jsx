@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
 import { SERVICE_ZONES } from '../shared/geoConfig';
+import { Search } from 'lucide-react';
 import { ProviderCard, ProviderCardSkeleton, ProviderCardGrid, FeaturedProviderGrid, } from '../client/components/ProviderCard';
 const AREAS = [
     { slug: '', label: 'All Areas' },
@@ -84,8 +85,8 @@ export default function DiscoveryPage() {
           </ProviderCardGrid>
         </div>) : sortedProviders?.length === 0 ? (<div className="text-center py-20">
           <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
-            <span className="text-3xl opacity-50">🔍</span>
-          </div>
+              <Search className="size-6 text-[#2563EB]"/>
+            </div>
           <h3 className="text-xl font-bold mb-2 text-[#0F172A]">No pros found</h3>
           <p className="text-[#475569]">
             {selectedArea

@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router';
 import { setSessionId } from 'wasp/client/api';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
+import logo from '../client/static/logo.webp';
 export function Signup() {
     const navigate = useNavigate();
     const [step, setStep] = useState('form');
@@ -31,24 +32,28 @@ export function Signup() {
         setIsLoading(true);
         setError(null);
         try {
-            // Use Wasp's built-in signup endpoint
-            const res = await fetch(`${config.apiUrl}/auth/signup`, {
+            // Use Wasp's built-in email-signup endpoint. It returns {success:true}
+            // and (with SKIP_EMAIL_VERIFICATION_IN_DEV=false) sends a verification email.
+            const res = await fetch(`${config.apiUrl}/auth/email/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim(), password }),
             });
-            const data = await res.json();
-            if (!res.ok)
-                throw new Error(data.message || data.error || 'Signup failed.');
-            // After signup, send OTP for email verification
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                const msg = (data && (data.message || data.error)) || 'Signup failed. Please try again.';
+                throw new Error(typeof msg === 'string' ? msg : 'Signup failed. Please try again.');
+            }
+            // After signup, send the 6-digit OTP code the user will enter next.
             const otpRes = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() }),
             });
-            const otpData = await otpRes.json();
-            if (!otpRes.ok)
-                throw new Error(otpData.error || 'Failed to send verification code.');
+            const otpData = await otpRes.json().catch(() => ({}));
+            if (!otpRes.ok) {
+                throw new Error((otpData && otpData.error) || 'Failed to send verification code.');
+            }
             setStep('code');
             setResendCooldown(60);
             const timer = setInterval(() => {
@@ -63,7 +68,12 @@ export function Signup() {
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
         }
         catch (err) {
-            setError(err.message);
+            // Friendly fallback: hide raw JSON-parse / network errors from users.
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
         }
         finally {
             setIsLoading(false);
@@ -81,14 +91,22 @@ export function Signup() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim(), code: codeValue }),
             });
-            const data = await res.json();
-            if (!res.ok)
-                throw new Error(data.error || 'Verification failed.');
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error((data && data.error) || 'Verification failed. Please try again.');
+            }
+            if (!data || !data.sessionId) {
+                throw new Error('Verification succeeded but no session was returned. Please sign in.');
+            }
             setSessionId(data.sessionId);
             navigate('/onboarding');
         }
         catch (err) {
-            setError(err.message);
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
         }
         finally {
             setIsLoading(false);
@@ -157,7 +175,7 @@ export function Signup() {
     return (<AuthPageLayout>
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center font-black text-white text-sm">H</div>
+          <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg"/>
           <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
         </div>
         {step === 'form' ? (<>
