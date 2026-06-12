@@ -1,6 +1,7 @@
 import { HttpError, prisma } from 'wasp/server';
 import { createSession } from 'wasp/auth/session';
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth';
+import { hashPassword } from 'wasp/auth/password';
 import { emailSender } from 'wasp/server/email';
 import crypto from 'crypto';
 function generateOtp() {
@@ -64,7 +65,7 @@ export const requestOtp = async (req, res, context) => {
     res.json({ success: true });
 };
 export const verifyOtp = async (req, res, context) => {
-    const { email, code, pendingRequest } = req.body;
+    const { email, code, password, pendingRequest } = req.body;
     if (!email || !code) {
         res.status(400).json({ error: 'Email and code are required.' });
         return;
@@ -96,8 +97,14 @@ export const verifyOtp = async (req, res, context) => {
     let isNewUser = false;
     if (!authIdentity) {
         isNewUser = true;
+        // Hash the password the client supplied on signup. If absent, fall
+        // back to a random UUID (legacy OTP-only flow that doesn't support
+        // password login).
+        const hashedPassword = password
+            ? await hashPassword(password)
+            : crypto.randomUUID();
         const serializedProviderData = await sanitizeAndSerializeProviderData({
-            hashedPassword: crypto.randomUUID(),
+            hashedPassword,
             isEmailVerified: true,
             emailVerificationSentAt: null,
             passwordResetSentAt: null,

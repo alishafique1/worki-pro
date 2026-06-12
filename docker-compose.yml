@@ -12,7 +12,12 @@ services:
       PORT: "3001"
       DATABASE_URL: ${DATABASE_URL}
       WASP_WEB_CLIENT_URL: ${WASP_WEB_CLIENT_URL:-https://thehelper.ca}
-      JWT_SECRET: ${JWT_SECRET:-a38c66fc6385f943fbce7cbef5b7fb73e3d4c23ffbf0e33f8338637b8990d1bf}
+      # JWT_SECRET is REQUIRED. Generate with: openssl rand -hex 32
+      # The .env.server file MUST contain a real JWT_SECRET.
+      # We intentionally do NOT ship a fallback string here - the docker
+      # compose will fail to start if the env var is missing, which forces
+      # ops to set a real secret rather than reuse a leaked one.
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET env var is required - run openssl rand -hex 32}
       ADMIN_EMAILS: ${ADMIN_EMAILS}
       WASP_EMAIL_FROM_NAME: ${WASP_EMAIL_FROM_NAME:-TheHelper}
       MAILGUN_API_KEY: ${MAILGUN_API_KEY}

@@ -117,7 +117,7 @@ export default function HandymanLandingPage() {
             <h2 id="handyman-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our Handyman Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-                { title: 'Mounting & Installation', desc: 'Expert TV mounting on any wall type, shelf installation, mirror hanging, artwork mounting, and curtain rod installation.', icon: <Image className="size-7" /> },
+                { title: 'Mounting & Installation', desc: 'Expert TV mounting on any wall type, shelf installation, mirror hanging, artwork mounting, and curtain rod installation.', icon: <Wrench className="size-7" /> },
                 { title: 'Home Repairs', desc: 'Drywall patching, door adjustments, lock installation, weather stripping, caulking, and minor plumbing fixes like leaky faucets.', icon: <Wrench className="size-7" /> },
                 { title: 'Assembly & Painting', desc: 'Professional furniture assembly for IKEA, Wayfair, and all major brands. Interior painting touch-ups and small paint jobs.', icon: <Package className="size-7" /> }
               ].map((service) => (

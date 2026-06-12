@@ -1,0 +1,26 @@
+<svg width="580" height="150" viewBox="0 0 580 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="thehelper.ca — Tackling your to-do list">
+  <defs>
+    <linearGradient id="tileD" x1="0" y1="0" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="0.55" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="amberD" x1="72" y1="44" x2="95" y2="23" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(16,19)">
+    <rect x="0" y="0" width="112" height="112" rx="26" fill="url(#tileD)"/>
+    <rect x="0.8" y="0.8" width="110.4" height="110.4" rx="25.2" fill="none" stroke="#ffffff" stroke-opacity="0.18"/>
+    <rect x="66.8" y="34.5" width="7.4" height="17.5" rx="1.8" fill="#ffffff" fill-opacity="0.92"/>
+    <path d="M23.6 61.3 L54.3 33.3 L85 61.3 Z" fill="#ffffff"/>
+    <path d="M31.5 57.8 L54.3 36.8 L77 57.8 L77 82.3 C77 84.2 75.5 85.8 73.5 85.8 L63 85.8 L63 69.3 C63 67.8 61.8 66.5 60.2 66.5 L48.3 66.5 C46.7 66.5 45.5 67.8 45.5 69.3 L45.5 85.8 L35 85.8 C33 85.8 31.5 84.2 31.5 82.3 Z" fill="#ffffff"/>
+    <circle cx="58.8" cy="77" r="1.95" fill="#2563EB"/>
+    <path d="M72 45.5 L92 27 M81.6 24.8 L94.2 24.8 L94.2 37" fill="none" stroke="url(#amberD)" stroke-width="6.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="150" y="82" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="-1.5">
+    <tspan fill="#FFFFFF">the</tspan><tspan fill="#60A5FA">helper</tspan><tspan fill="#FFFFFF">.ca</tspan>
+  </text>
+  <text x="152" y="111" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="16.5" font-weight="700" letter-spacing="3.4" fill="#94A3B8">TACKLING YOUR TO-DO LIST</text>
+</svg>

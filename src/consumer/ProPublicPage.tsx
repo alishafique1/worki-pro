@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { MapPin, Zap } from 'lucide-react', Award from "lucide-react";
+
+import { MapPin, Zap, Award, Search } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
 import { getPublicProvider } from "wasp/client/operations";
 
@@ -234,7 +235,7 @@ export default function ProPublicPage() {
                   key={i}
                   className="flex items-center gap-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]"
                 >
-                  <span className="text-2xl"><Award</span>
+                  <span className="text-2xl"><Award /></span>
                   <div>
                     <p className="font-bold text-sm text-[#0F172A]">{acc.name}</p>
                     {acc.issuedBy && (

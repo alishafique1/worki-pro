@@ -474,10 +474,10 @@ export function CTASection() {
               Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Get matched with a verified pro today
+              Stop calling around. Get matched with a verified pro in 15 minutes.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              Join 500+ GTA homeowners who trust The Helper. 100% free to use. Earn $60+ back on your first job.
+              One request. Matched with a licensed, insured local pro. 100% free for homeowners. $60+ cash back on your first completed job.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link

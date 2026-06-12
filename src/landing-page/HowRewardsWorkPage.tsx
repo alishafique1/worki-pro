@@ -76,11 +76,10 @@ export default function HowRewardsWorkPage() {
             TheHelper Rewards
           </div>
           <h1 className='text-5xl sm:text-6xl font-black tracking-tighter mb-6 text-[#0F172A]'>
-            Earn <span className='text-[#2563EB]'>Real Cash Back</span><br />On Every Home Service Job.
+            Get Paid for Getting Things <span className='text-[#2563EB]'>Done.</span><br />
           </h1>
           <p className='text-xl text-[#475569] max-w-2xl mx-auto'>
-            Your credit card already earns points. TheHelper <strong className='text-[#0F172A]'>stacks cashback on top of that</strong>.
-            Earn <strong className='text-[#0F172A]'>$60 on your first job</strong>, then <strong className='text-[#0F172A]'>5% back</strong> on every job after. It never expires.
+            Your credit card earns points on purchases. The Helper <strong className='text-[#0F172A]'>pays you back on top of that</strong> for completing real home service jobs. <strong className='text-[#0F172A]'>$60 on your first job</strong>, then <strong className='text-[#0F172A]'>5% back</strong> on every job after. Never expires.
             <br /><span className='text-sm mt-2 inline-block text-[#94A3B8]'>100 pts = $1 · Cash out at $100 · Amazon, Starbucks, or service credits</span>
           </p>
         </div>

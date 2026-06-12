@@ -12,10 +12,11 @@ import {
   MapPin,
   MessageSquareText,
   Phone,
+  Search,
   Send,
   ShieldCheck,
   Wrench,
-} from 'lucide-react', CalendarClock from "lucide-react";
+} from 'lucide-react';
 
 const statusColor = (s: string) => {
   if (['COMPLETED', 'REWARD_APPROVED'].includes(s))
@@ -272,7 +273,7 @@ export default function RequestDetailPage() {
               to={`/book/${request.id}`}
               className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap'
             >
-              <CalendarClock Book Appointment
+              <CalendarClock className='size-4' /> Book Appointment
             </Link>
           )}
         </div>

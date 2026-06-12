@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import { HttpError, prisma } from 'wasp/server'
 import { createSession } from 'wasp/auth/session'
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth'
+import { hashPassword } from 'wasp/auth/password'
 import { emailSender } from 'wasp/server/email'
 import crypto from 'crypto'
 
@@ -86,9 +87,10 @@ type PendingRequest = {
 }
 
 export const verifyOtp = async (req: Request, res: Response, context: any): Promise<void> => {
-  const { email, code, pendingRequest } = req.body as {
+  const { email, code, password, pendingRequest } = req.body as {
     email?: string
     code?: string
+    password?: string
     pendingRequest?: PendingRequest
   }
 
@@ -131,8 +133,14 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
 
   if (!authIdentity) {
     isNewUser = true
+    // Hash the password the client supplied on signup. If absent, fall
+    // back to a random UUID (legacy OTP-only flow that doesn't support
+    // password login).
+    const hashedPassword = password
+      ? await hashPassword(password)
+      : crypto.randomUUID()
     const serializedProviderData = await sanitizeAndSerializeProviderData({
-      hashedPassword: crypto.randomUUID(),
+      hashedPassword,
       isEmailVerified: true,
       emailVerificationSentAt: null,
       passwordResetSentAt: null,

@@ -13,7 +13,7 @@ import {
   Users,
   Wrench,
   Zap,
-} from 'lucide-react', Gift, Home, Lightbulb, MapPin from "lucide-react";
+} from 'lucide-react';
 import PageSeo, { createLocalBusinessSchema } from './components/PageSeo';
 
 interface Testimonial {
@@ -272,7 +272,7 @@ export default function AreaLandingPage() {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-6">
         <div className="bg-white rounded-[40px] border border-[#E2E8F0] p-16 text-center max-w-md">
-          <div className="text-5xl mb-6"><MapPin</div>
+          <div className="text-5xl mb-6"><MapPin /></div>
           <h1 className="text-3xl font-black tracking-tighter mb-4 text-[#0F172A]">Area Coming Soon</h1>
           <p className="text-[#475569] mb-8">
             We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
@@ -499,7 +499,7 @@ export default function AreaLandingPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="font-bold text-[#0F172A] mb-3 flex items-center gap-2">
-                    <span className="text-xl"><MapPin</span> Neighbourhoods We Serve
+                    <span className="text-xl"><MapPin /></span> Neighbourhoods We Serve
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {area.localContent.neighborhoods.map((hood) => (
@@ -532,7 +532,7 @@ export default function AreaLandingPage() {
               {/* Seasonal Tip */}
               <div className="mt-8 p-6 bg-[#FEF3C7] border border-[#FDE68A] rounded-2xl">
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl"><Lightbulb</span>
+                  <span className="text-2xl"><Lightbulb /></span>
                   <div>
                     <div className="font-bold text-[#0F172A] mb-1">Local Tip</div>
                     <p className="text-sm text-[#475569]">{area.localContent.seasonalTip}</p>
@@ -658,7 +658,7 @@ export default function AreaLandingPage() {
           <div className="bg-[#0F172A] rounded-[40px] p-12 lg:p-16 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/10 to-transparent pointer-events-none rounded-[40px]" />
             <div className="relative">
-              <div className="text-5xl mb-6"><Home</div>
+              <div className="text-5xl mb-6"><Home /></div>
               <h2 className="text-4xl font-black tracking-tighter mb-4 text-white">
                 Ready for a pro in {area.name}?
               </h2>
@@ -671,7 +671,7 @@ export default function AreaLandingPage() {
               >
                 Get Help Now →
               </Link>
-              <p className="mt-4 text-xs text-[#94A3B8]"><Gift Plus earn cashback on every job booked</p>
+              <p className="mt-4 text-xs text-[#94A3B8]"><Gift className="inline size-3" /> Plus earn cashback on every job booked</p>
             </div>
           </div>
         </div>

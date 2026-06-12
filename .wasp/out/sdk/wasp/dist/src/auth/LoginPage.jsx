@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { setSessionId } from 'wasp/client/api';
+import { initSession } from 'wasp/auth/helpers/user';
 import { login } from 'wasp/client/auth';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
@@ -96,7 +96,9 @@ export default function Login() {
             if (!data || !data.sessionId) {
                 throw new Error('Verification succeeded but no session was returned. Please sign in.');
             }
-            setSessionId(data.sessionId);
+            // initSession (not setSessionId) — invalidates React Query cache so
+            // useAuth() refetches the user before /onboarding's auth check fires.
+            await initSession(data.sessionId);
             navigate(data.isNewUser ? '/onboarding' : '/dashboard');
         }
         catch (err) {

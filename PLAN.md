@@ -37,7 +37,7 @@ Product is 95% code-complete. 100% of remaining work is operational: infrastruct
 | D4 | Target 80%+ E2E pass rate | Dev | D3 |
 | D5 | Generate JWT_SECRET: `openssl rand -hex 32` | Dev | None |
 | A1 | Provision Hostinger VPS (KVM 2, 2 vCPU, 8GB RAM, Ubuntu 22.04) | Ali | None |
-| A2 | Provision PostgreSQL (Hostinger DB add-on or Supabase) | Ali | A1 |
+| A2 | ~~Provision PostgreSQL (Hostinger DB add-on or Supabase)~~ — DONE: Neon connected (`DATABASE_URL` → `ep-bitter-salad-aqcfmxkg-pooler.c-8.us-east-1.aws.neon.tech`) | — | A1 |
 | A3 | Point thehelper.ca DNS → VPS IP in Cloudflare | Ali | A1 |
 | A4 | Verify Mailgun domain (SPF/DKIM in Cloudflare) | Ali | None |
 | A5 | Purchase Twilio CA phone number | Ali | None |

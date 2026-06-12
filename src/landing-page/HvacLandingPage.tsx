@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { CalendarClock, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Zap } from 'lucide-react', Flame, Wind from "lucide-react";
+import { CalendarClock, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Zap, Flame, Wind } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 

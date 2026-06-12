@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp, FileText, Lightbulb, ShieldCheck, Zap } from 'lucide-react', Battery, Lightbulb, Plug from "lucide-react";
+import { ChevronDown, ChevronUp, FileText, Lightbulb, ShieldCheck, Zap, Battery, Plug } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 

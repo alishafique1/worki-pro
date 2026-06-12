@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { AlertTriangle, ChevronDown, ChevronUp, DollarSign, Wrench } from 'lucide-react', Home, RefreshCw, ShowerHead from "lucide-react";
+import { AlertTriangle, ChevronDown, ChevronUp, DollarSign, Wrench, Home, RefreshCw, ShowerHead } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 

@@ -7,10 +7,10 @@ export default function ProviderLandingPage() {
   return (
     <>
       <PageSeo
-        title="Get More Customers: Join The Helper Pro Network | GTA"
-        description="Stop chasing cold leads. The Helper delivers high-intent homeowners in Milton, Oakville, Burlington & GTA who are ready to book. No bidding wars, no commission — just verified jobs."
-        ogTitle="Get More Customers: Join The Helper Pro Network | GTA"
-        ogDescription="Stop chasing cold leads. The Helper delivers verified, booking-ready homeowners in Milton, Oakville & Burlington. No commission, no bidding wars."
+        title="Get Booking-Ready Leads. No Bidding Wars. | The Helper Pro Network"
+        description="Stop paying for leads that never convert. The Helper matches you with GTA homeowners who submitted a specific request and are ready to book. Pay only when the job closes."
+        ogTitle="Get Booking-Ready Leads. No Bidding Wars. | The Helper Pro Network"
+        ogDescription="Every lead is a homeowner who submitted a specific request and is ready to book. No bidding wars, no commission. GTA coverage. Pay only when the job closes."
         canonicalPath="/providers"
         keywords="home service leads GTA, contractor leads Milton, HVAC leads Oakville, plumber leads Burlington, get more customers trades, home service marketing"
         structuredData={{
@@ -35,10 +35,10 @@ export default function ProviderLandingPage() {
                 Partner with The Helper
               </div>
               <h1 className="text-5xl sm:text-6xl font-black tracking-tighter leading-[0.95] mb-6 text-[#0F172A]">
-                Grow Your<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Service Business.</span>
+                Stop Paying for<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Leads That Ghost.</span>
               </h1>
               <p className="text-lg text-[#475569] mb-8 max-w-lg leading-relaxed">
-                Get high-intent, qualified leads without the bidding wars. We match you with homeowners in your area who are ready to book.
+                Every lead is a homeowner who submitted a specific request and is ready to book. No bidding wars. No calling cold lists. You get matched with real jobs in your service area.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -65,8 +65,8 @@ export default function ProviderLandingPage() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur rounded-2xl px-4 py-3 shadow-lg">
-                <p className="text-sm font-bold text-[#0F172A]">Join 50+ verified GTA pros</p>
-                <p className="text-xs text-[#475569] mt-0.5">Get matched with homeowners ready to book today</p>
+                <p className="text-sm font-bold text-[#0F172A]">50+ verified GTA pros and growing</p>
+                <p className="text-xs text-[#475569] mt-0.5">Matched with homeowners who submitted a specific request</p>
               </div>
             </div>
           </div>
@@ -76,9 +76,9 @@ export default function ProviderLandingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { title: 'Qualified Leads', desc: 'Every request is vetted by our team. No more chasing cold leads or dead-ends.', icon: <Target className="size-7" /> },
-              { title: 'Local Focus', desc: 'Target specific areas in the GTA including Milton, Oakville, and Burlington.', icon: <MapPin className="size-7" /> },
-              { title: 'Transparent Fees', desc: 'Pay $45 per booked job, or $199/mo for priority routing. No annual contract, no dual fees.', icon: <DollarSign className="size-7" /> }
+              { title: 'Leads That Are Ready to Book', desc: 'Every lead comes from a homeowner who submitted a specific request. No cold calls. No tyre-kickers. No bidding against 10 other pros.', icon: <Target className="size-7" /> },
+              { title: 'Only Jobs in Your Area', desc: 'Set your service area and categories. You only receive requests from Milton, Oakville, Burlington, and surrounding GTA cities that match.', icon: <MapPin className="size-7" /> },
+              { title: 'Pay Only When the Job Closes', desc: '$45 per booked job, or $199/mo for priority routing and unlimited leads. No annual contract. Cancel anytime.', icon: <DollarSign className="size-7" /> }
             ].map((feature) => (
               <div key={feature.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:border-[#2563EB] transition-colors text-left shadow-sm">
                 <div className="text-[#2563EB] mb-6">{feature.icon}</div>

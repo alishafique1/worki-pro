@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { setSessionId } from 'wasp/client/api'
+import { initSession } from 'wasp/auth/helpers/user'
 import { config } from 'wasp/client'
 import type { WizardState } from '../../GuestRequestWizardPage'
 
@@ -88,7 +88,13 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Verification failed.')
-      setSessionId(data.sessionId)
+      if (!data || !data.sessionId) {
+        throw new Error('Verification succeeded but no session was returned. Please try again.')
+      }
+      // initSession invalidates the React Query cache so useAuth() refetches
+      // the user before any auth-guarded navigation. Plain setSessionId
+      // would race the auth check and bounce the user to /login.
+      await initSession(data.sessionId)
       onSuccess(data.requestId)
     } catch (err: any) {
       setError(err.message)

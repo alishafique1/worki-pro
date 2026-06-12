@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import { HttpError, prisma } from 'wasp/server'
 import { createSession } from 'wasp/auth/session'
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth'
+import { hashPassword } from 'wasp/auth/password'
 import { emailSender } from 'wasp/server/email'
 import crypto from 'crypto'
 
@@ -52,7 +53,7 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#fff;">
           <div style="text-align:center;margin-bottom:32px;">
             <div style="display:inline-flex;align-items:center;gap:10px;">
-              <div style="width:40px;height:40px;background:#2563EB;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;line-height:1;">H</div>
+              <img src="https://thehelper.ca/apple-touch-icon.png" alt="The Helper" width="40" height="40" style="border-radius:10px;display:inline-block;vertical-align:middle;" />
               <span style="font-size:22px;font-weight:900;color:#0F172A;">The Helper</span>
             </div>
           </div>
@@ -86,9 +87,10 @@ type PendingRequest = {
 }
 
 export const verifyOtp = async (req: Request, res: Response, context: any): Promise<void> => {
-  const { email, code, pendingRequest } = req.body as {
+  const { email, code, password, pendingRequest } = req.body as {
     email?: string
     code?: string
+    password?: string
     pendingRequest?: PendingRequest
   }
 
@@ -131,8 +133,14 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
 
   if (!authIdentity) {
     isNewUser = true
+    // Hash the password the client supplied on signup. If absent, fall
+    // back to a random UUID (legacy OTP-only flow that doesn't support
+    // password login).
+    const hashedPassword = password
+      ? await hashPassword(password)
+      : crypto.randomUUID()
     const serializedProviderData = await sanitizeAndSerializeProviderData({
-      hashedPassword: crypto.randomUUID(),
+      hashedPassword,
       isEmailVerified: true,
       emailVerificationSentAt: null,
       passwordResetSentAt: null,

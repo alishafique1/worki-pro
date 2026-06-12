@@ -125,29 +125,29 @@ const rewardTiers = [
 // ── Trust pillars ────────────────────────────────────────────────────────────
 
 const trustPillars = [
-  { icon: <ShieldCheck className="size-6 text-[#22C55E]" />, title: "Verified providers", body: "Credentials, insurance, and service areas reviewed before approval." },
-  { icon: <Star className="size-6 text-[#F59E0B]" />, title: "Real reviews", body: "Ratings from verified completed jobs. No fake reviews, ever." },
-  { icon: <MessageSquare className="size-6 text-[#2563EB]" />, title: "Secure messaging", body: "All communication stays connected to the job, in one place." },
-  { icon: <MapPin className="size-6 text-[#2563EB]" />, title: "Canadian owned", body: "Built for Canadian homeowners. GTA-first, growing city by city." },
+  { icon: <ShieldCheck className="size-6 text-[#22C55E]" />, title: "Every pro verified", body: "Licenses, insurance, and service area reviewed before they can accept jobs. No exceptions." },
+  { icon: <Star className="size-6 text-[#F59E0B]" />, title: "Real reviews only", body: "Ratings come from verified completed jobs. If a job is not done, the review does not post." },
+  { icon: <MessageSquare className="size-6 text-[#2563EB]" />, title: "All comms in one place", body: "Quotes, scheduling, and job updates stay connected to the job. No more scattered texts and voicemails." },
+  { icon: <MapPin className="size-6 text-[#2563EB]" />, title: "GTA built, GTA focused", body: "Built for Milton, Oakville, Burlington, Mississauga, and Brampton homeowners first. Expanding city by city." },
 ];
 
 // ── Testimonials ─────────────────────────────────────────────────────────────
 
 const testimonials = [
   {
-    quote: "Found an HVAC tech in 3 hours. AC fixed same day. And I earned reward points I didn't even expect.",
+    quote: "My AC broke on a Saturday afternoon. Submitted a request at 2pm. Had a tech booked by 4pm and the job was done by 6pm. First time I have not spent hours calling around.",
     name: "Sarah M.",
     city: "Milton",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
-    quote: "One request, no calling around. Matched, booked, done. The referral bonus was a nice touch too.",
+    quote: "Found an electrician in 45 minutes on a weeknight. The app sent me the quote, I booked, and it was fixed before the weekend. The rewards points are a bonus.",
     name: "James K.",
     city: "Oakville",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
-    quote: "A platform that actually vets who they send. The rewards program is a great bonus.",
+    quote: "Most platforms just connect you and disappear. This one tracks the whole job and makes it easy to get someone out here fast. The cash back adds up.",
     name: "Priya S.",
     city: "Burlington",
     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
@@ -162,10 +162,10 @@ export default function LandingPage() {
   return (
     <>
       <PageSeo
-        title="Find a Verified Home Pro in Minutes | The Helper"
-        description="Get matched with vetted HVAC, plumbing, electrical, handyman& smart home pros in Milton, Oakville & Burlington. One request — book, earn rewards, and save."
-        ogTitle="Find a Verified Home Pro in Minutes | The Helper"
-        ogDescription="One request. Matched with a verified local pro. Book same-day and earn cash back on every job. Serving Milton, Oakville & Burlington homeowners."
+        title="Book a Verified Home Pro in 15 Minutes | The Helper"
+        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back."
+        ogTitle="Book a Verified Home Pro in 15 Minutes | The Helper"
+        ogDescription="One request. Matched with a verified local pro in 15 minutes. Same-day service available. 100% free for homeowners. Earn $60+ cash back on your first job."
         canonicalPath="/"
         keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
@@ -196,14 +196,13 @@ export default function LandingPage() {
 
               {/* H1 - Conversion focused headline */}
               <h1 className="mt-5 text-[38px] font-bold leading-[1.1] text-[#0F172A] sm:text-5xl lg:text-[56px]">
-                Find a{" "}
-                <span className="text-[#2563EB]">verified pro</span>{" "}
-                <span className="whitespace-nowrap">in minutes.</span>
+                <span className="text-[#2563EB]">Book a verified pro</span>{" "}
+                <span className="whitespace-nowrap">in under 15 minutes.</span>
               </h1>
 
               {/* Subhead */}
               <p className="mt-4 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
-                Submit one request. Get matched with a local pro who's licensed, insured, and ready to help today.
+                Submit one request. Get matched with a local pro who's licensed, insured, and ready to help today. No calling around. No waiting until Monday.
               </p>
 
               {/* Amber reward pill */}
@@ -364,29 +363,29 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="HOW IT WORKS"
-              title="Submit. Match. Book. Done."
-              description="Get connected to a verified local pro in under 15 minutes. 100% free for homeowners."
+              title="One request. Matched in 15 minutes. Job done."
+              description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up. You handle the rest of your day."
             />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <StepCard
                 step="01"
                 title="Submit your request"
-                description="Takes under 2 minutes. 100% free, no credit card required."
+                description="Takes under 2 minutes. Tell us what's broken. We handle the rest."
               />
               <StepCard
                 step="02"
                 title="Get matched fast"
-                description="A verified local pro responds, typically within 15 minutes."
+                description="A verified local pro responds, typically within 15 minutes. No calling around."
               />
               <StepCard
                 step="03"
-                title="Book same-day or later"
-                description="Pick a time that works. Urgent? Same-day service available."
+                title="Book a time that works"
+                description="Same-day for urgent jobs. Or schedule a window that fits your week."
               />
               <StepCard
                 step="04"
-                title="Job done. Get rewarded."
-                description="Earn $60+ back on your first completed job. No extra steps."
+                title="Job done. Earn rewards."
+                description="$60+ cash back on your first completed job. Redeemable as gift cards."
               />
             </div>
             <div className="mt-8 text-center">
@@ -536,10 +535,10 @@ export default function LandingPage() {
             <div className="flex flex-col items-center gap-6 text-center lg:flex-row lg:text-left lg:justify-between">
               <div className="max-w-xl">
                 <h3 className="text-2xl font-bold text-[#0F172A] sm:text-3xl">
-                  Are you a local pro? Join The Helper network.
+                  Local pro? Stop paying for leads that never close.
                 </h3>
                 <p className="mt-3 text-base text-[#475569]">
-                  Get matched with qualified leads in your service area. Manage bookings, messages, and reviews, all in one place.
+                  Get matched with homeowners in your service area who are ready to book. Manage leads, jobs, and reviews in one dashboard. Pay only when the job closes.
                 </p>
                 <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {[

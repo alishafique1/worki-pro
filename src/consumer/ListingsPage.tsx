@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
-import { Wrench } from 'lucide-react', Wrench from "lucide-react";
+import { Wrench } from 'lucide-react';
 
 type ServiceListing = {
   id: string;
@@ -179,7 +179,7 @@ export default function ListingsPage() {
       ) : listings.length === 0 ? (
         <div className="text-center py-20">
           <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
-            <span className="text-3xl opacity-50"><Wrench️</span>
+            <span className="text-3xl opacity-50"><Wrench /></span>
           </div>
           <h3 className="text-xl font-bold mb-2 text-[#0F172A]">No listings found</h3>
           <p className="text-[#475569]">

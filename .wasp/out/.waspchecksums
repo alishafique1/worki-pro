@@ -1222,14 +1222,14 @@
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "c6c4e8491d4abb5b993166942e11b68b5a869538c13125f709b427e7e00a69b4"
+        "7cd405a6a436d00e6ee962775a5f0f3d5be8d496f4ffa002759ed050e43990f0"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
-        "b214a3fc94c9c03106fed6f63582c2a83ff6d12da113f854fb1f2a6f253d96ed"
+        "9eccddbe1ae1849c1bb1cf02b67681cb463d3e8e2611c80dbf66adaa1641459a"
     ],
     [
         [
@@ -1313,7 +1313,7 @@
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "348f03f83ac9620930aef7b5d83757a92f8ea11f0427adb488a1a69848dde315"
+        "441b824a38710e2ee58e5c11f5235447c277951b2823489d59de1381f0a35899"
     ],
     [
         [
@@ -1999,7 +1999,7 @@
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepVerifyEmail.tsx"
         ],
-        "415712967dc157d7825fa179201c5d4a02978220c9a65646cfefdc7aa5d99b44"
+        "f4d6fbd0f959805f6478c596ba955c52ae64513ef5b9965067bfc86b1ae2d771"
     ],
     [
         [

@@ -1,7 +1,7 @@
 // Signup page — dedicated create-account flow
 import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router';
-import { setSessionId } from 'wasp/client/api';
+import { initSession } from 'wasp/auth/helpers/user';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
 import logo from '../client/static/logo.webp';
@@ -32,27 +32,24 @@ export function Signup() {
         setIsLoading(true);
         setError(null);
         try {
-            // Use Wasp's built-in email-signup endpoint. It returns {success:true}
-            // and (with SKIP_EMAIL_VERIFICATION_IN_DEV=false) sends a verification email.
-            const res = await fetch(`${config.apiUrl}/auth/email/signup`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email.trim(), password }),
-            });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
-                const msg = (data && (data.message || data.error)) || 'Signup failed. Please try again.';
-                throw new Error(typeof msg === 'string' ? msg : 'Signup failed. Please try again.');
-            }
-            // After signup, send the 6-digit OTP code the user will enter next.
-            const otpRes = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
+            // Single-flow signup: ONLY request the OTP code. The /api/auth/verify-otp
+            // handler creates the User (via createUser) the first time this email is
+            // seen, then creates a session. We intentionally skip /auth/email/signup
+            // here — that endpoint also fires a separate "Verify your The Helper
+            // email" message via getVerificationEmailContent, which was producing
+            // duplicate emails on signup.
+            //
+            // The password is captured at signup so the account is created in
+            // "email + password" mode. verifyOtp persists it as hashedPassword
+            // (see the call inside otpApi.ts:135).
+            const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() }),
             });
-            const otpData = await otpRes.json().catch(() => ({}));
-            if (!otpRes.ok) {
-                throw new Error((otpData && otpData.error) || 'Failed to send verification code.');
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error((data && data.error) || 'Failed to send verification code.');
             }
             setStep('code');
             setResendCooldown(60);
@@ -68,7 +65,6 @@ export function Signup() {
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
         }
         catch (err) {
-            // Friendly fallback: hide raw JSON-parse / network errors from users.
             const raw = err && err.message ? String(err.message) : '';
             const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
                 ? 'Something went wrong reaching our server. Please try again in a moment.'
@@ -86,10 +82,13 @@ export function Signup() {
         setIsLoading(true);
         setError(null);
         try {
+            // Send the password the user typed at signup so the server can
+            // hash it and persist as the Wasp auth identity. This way the
+            // user can later sign in with the same password via login().
             const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email.trim(), code: codeValue }),
+                body: JSON.stringify({ email: email.trim(), code: codeValue, password }),
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
@@ -98,8 +97,12 @@ export function Signup() {
             if (!data || !data.sessionId) {
                 throw new Error('Verification succeeded but no session was returned. Please sign in.');
             }
-            setSessionId(data.sessionId);
-            navigate('/onboarding');
+            // initSession sets the session id AND invalidates the React Query
+            // cache so useAuth() refetches the user. Without this, navigating
+            // to /onboarding (which has authRequired: true) would race the
+            // auth check and bounce the user back to /login.
+            await initSession(data.sessionId);
+            navigate(data.isNewUser ? '/onboarding' : '/dashboard');
         }
         catch (err) {
             const raw = err && err.message ? String(err.message) : '';

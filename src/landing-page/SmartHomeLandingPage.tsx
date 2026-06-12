@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronDown, ChevronUp, Home, Lock } from 'lucide-react', Gamepad2, Home, Lock, Radio, Smartphone from "lucide-react";
+import { ChevronDown, ChevronUp, Home, Lock, Gamepad2, Radio, Smartphone } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 
