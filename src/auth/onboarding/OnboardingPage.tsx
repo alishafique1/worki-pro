@@ -250,7 +250,7 @@ export default function OnboardingPage() {
                       setIsSubmitting(false);
                     }
                   }}
-                  className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
+                  className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
                 >
                   {isSubmitting ? 'Saving…' : 'Find a local pro →'}
                 </button>
@@ -308,7 +308,7 @@ export default function OnboardingPage() {
                 type="button"
                 onClick={handleNext}
                 disabled={isSubmitting}
-                className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
+                className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
               >
                 {isSubmitting
                   ? 'Saving…'
