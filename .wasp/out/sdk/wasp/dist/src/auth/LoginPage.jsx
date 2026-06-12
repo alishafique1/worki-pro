@@ -172,7 +172,7 @@ export default function Login() {
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || !email.trim() || !password} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50">
+          <button type="submit" disabled={isLoading || !email.trim() || !password} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
             {isLoading ? 'Signing in…' : 'Sign in →'}
           </button>
 
@@ -189,7 +189,7 @@ export default function Login() {
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || !email.trim()} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50">
+          <button type="submit" disabled={isLoading || !email.trim()} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
             {isLoading ? 'Sending code…' : 'Send code →'}
           </button>
 
@@ -208,7 +208,7 @@ export default function Login() {
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || codeValue.length !== 6} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50">
+          <button type="submit" disabled={isLoading || codeValue.length !== 6} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
             {isLoading ? 'Verifying…' : 'Verify & sign in'}
           </button>
 

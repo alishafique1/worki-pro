@@ -1222,35 +1222,35 @@
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "7cd405a6a436d00e6ee962775a5f0f3d5be8d496f4ffa002759ed050e43990f0"
+        "06ab074fc236339bedbd3c2b708179fac66785ee2c70f04ca3fd47f211ae7ed1"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
-        "9eccddbe1ae1849c1bb1cf02b67681cb463d3e8e2611c80dbf66adaa1641459a"
+        "a35dc8c7d7fda105c53f3ebfa3687a50237476d435d83569ef15f1659085c998"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/EmailVerificationPage.tsx"
         ],
-        "1eece38724b23c0eafdcfdcd331cdc5f9cbee75a247b9a6b8682bfe2fc16a891"
+        "7c98253c60dd326132f1f8f947bfb918d3abe9c731bd0892628ad91f7786c9c9"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/PasswordResetPage.tsx"
         ],
-        "53789b3de916cb2738fae945ca11920f1560c733e421d00a7ec58c1be083929b"
+        "977e1d3da2cce45f3b119ad1f4d05d48d02962b3a775c807e83824e671031f9e"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/RequestPasswordResetPage.tsx"
         ],
-        "e36726a9d6a86155ce58b5e21944e13790313d88c59c56aafafac570b83bb69b"
+        "9bab0ebd4d1ad59b8d85608902b1fa21a8646b502d33c17b9ce037265bf697dc"
     ],
     [
         [
@@ -1264,7 +1264,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "f34bac5d6020f40dc0dedb6dd33ad35678175141fcdfc69a996a088dd4233da1"
+        "edb09d1d94d8b35828db88e9707c421a669fa3696f7e9c0623bf4819e36b4956"
     ],
     [
         [
@@ -1390,7 +1390,7 @@
             "file",
             "sdk/wasp/src/client/components/NotFoundPage.tsx"
         ],
-        "8261f29f724d2c8a87a5b169b7ce10127dd9be7baf1fd9b54f85f1044bfafbd6"
+        "5d6b1bfd8b50a0b061c029925fc4fbe853489cf1a6047df21b11a42773f7048c"
     ],
     [
         [
@@ -1831,7 +1831,7 @@
             "file",
             "sdk/wasp/src/consumer/DashboardPage.tsx"
         ],
-        "bf8bd1af909a4c40e189b63ee26c9389bbf2b380a1fbc68f73e073b7f77cb154"
+        "e7d8c8af8d640500aadedad0fd30c36e01551365fc77528810713f1d49329059"
     ],
     [
         [
@@ -1859,7 +1859,7 @@
             "file",
             "sdk/wasp/src/consumer/HowItWorksPage.tsx"
         ],
-        "77647a5b822f51f22ce9c13bbc18b02eacae761ce74a4dd811c80b09188e78aa"
+        "42e639ab12130fd4f4f1a2abf56250d2efc2ec276c32f8e59f2bfff2ead118a1"
     ],
     [
         [
@@ -1880,28 +1880,28 @@
             "file",
             "sdk/wasp/src/consumer/ProPublicPage.tsx"
         ],
-        "1fda3b0745453507c2bebd6dc06e89ce10e2db49077ed282d18318bf22cdae3a"
+        "2228bca45005eb60bdd23752dc85e16aa02922fe05c0b26a64c301c504126136"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/ProviderDetailPage.tsx"
         ],
-        "2c16337c0bd7a8de6f62f949269640e57cad3e122815e594e244d4adf4bb8023"
+        "fc5280192a0df340eddb51ca20e3067558f3c669f4eaa6bfb977026a567140c5"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/ReferralPage.tsx"
         ],
-        "6a2c01d517c65972921b343dffb50fca5c1cd0f1d6582699b171ab96ccd9fa5e"
+        "15aa746fe7ba550a182d47549eb48720de7a8a3c81d99dac5e4f80ad9d95058a"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/RequestDetailPage.tsx"
         ],
-        "57a8c141910dfe1ae97e0ba43064e76cda8480aa01ee9da232778db4efb27ef1"
+        "936e97d80cb3af61f654425a1a32307b6c56412598d3671b095930236463805b"
     ],
     [
         [
@@ -1922,7 +1922,7 @@
             "file",
             "sdk/wasp/src/consumer/RequestSuccessPage.tsx"
         ],
-        "512611ab6cc170264c3d174a970ccaceeecfb7eaed3c85ccb353c37a8a36fb93"
+        "2d5b0db556e3e45d03a69bac14c83a9dc70f86118b644e202a8628b4801f8b71"
     ],
     [
         [
@@ -2300,7 +2300,7 @@
             "file",
             "sdk/wasp/src/payment/CheckoutResultPage.tsx"
         ],
-        "a877091e27ab6f41b0b0f1df1ed538e587c8418e73ec5e6b0f4075687cc335db"
+        "fdd0e6a8e0360ea85d16cb7775186206b84df50a5cf11d2be9ec7a18715d77ca"
     ],
     [
         [

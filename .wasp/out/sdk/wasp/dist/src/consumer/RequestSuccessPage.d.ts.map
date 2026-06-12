@@ -1,1 +1,1 @@
-{"version":3,"file":"RequestSuccessPage.d.ts","sourceRoot":"","sources":["../../../src/consumer/RequestSuccessPage.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,MAAM,CAAC,OAAO,UAAU,kBAAkB,sBAsEzC"}
+{"version":3,"file":"RequestSuccessPage.d.ts","sourceRoot":"","sources":["../../../src/consumer/RequestSuccessPage.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAI1B,MAAM,CAAC,OAAO,UAAU,kBAAkB,sBAoEzC"}

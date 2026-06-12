@@ -22,11 +22,11 @@ export default function DashboardPage() {
             </h1>
             {rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
                 <Gift className="size-3.5 text-[#F59E0B]"/>
-                ${((rewards?.account?.pointsBalance ?? 0) / 100).toFixed(2)} in rewards
+                {(rewards?.account?.pointsBalance ?? 0).toLocaleString()} pts
               </span>)}
             {!rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
                 <Gift className="size-3.5 text-[#F59E0B]"/>
-                $12.50 in rewards
+                1,250 pts
               </span>)}
           </div>
           <p className="text-[#475569] mt-2 text-lg">
@@ -79,8 +79,8 @@ export default function DashboardPage() {
             </div>)}
 
           {!requestsLoading && !requestsError && requests?.length === 0 ? (<div className="bg-white border border-[#E2E8F0] rounded-[24px] p-12 text-center">
-              <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
-                <span className="text-3xl opacity-50">+</span>
+              <div className="w-20 h-20 bg-[#EFF6FF] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Wrench className="size-8 text-[#2563EB]"/>
               </div>
               <h3 className="text-xl font-bold mb-2">No active requests</h3>
               <p className="text-[#475569]">

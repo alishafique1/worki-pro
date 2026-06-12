@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviderById, getServiceCategories } from 'wasp/client/operations';
-import { Search, ShieldCheck } from 'lucide-react';
+import { Search, ShieldCheck, Phone, Mail, Globe, ArrowLeft } from 'lucide-react';
 
 export default function ProviderDetailPage() {
   const { providerId } = useParams<{ providerId: string }>();
@@ -55,9 +55,7 @@ export default function ProviderDetailPage() {
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-[#475569] hover:text-[#0F172A] transition-colors mb-8 text-sm font-medium"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
+        <ArrowLeft className="w-4 h-4" />
         Back to search
       </button>
 

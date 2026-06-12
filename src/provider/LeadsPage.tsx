@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { MapPin } from 'lucide-react';
-import { useQuery, useAction } from "wasp/client/operations";
-import { getPublicLeadFeed, claimLead, getServiceCategories } from "wasp/client/operations";
-import { AlertTriangle, Clock, Inbox, Search } from "lucide-react";
+import { MapPin, AlertTriangle, Clock, Inbox, Search, CheckCircle2 } from 'lucide-react';
 
 const URGENCY_LABELS: Record<string, { label: string; color: string }> = {
   EMERGENCY: { label: "Urgent", color: "text-red-600 bg-red-50 border-red-200" },
@@ -227,8 +224,8 @@ export default function ProviderLeadsPage() {
                     {urgencyInfo.label}
                   </span>
                   {isClaimed && (
-                    <span className="px-3 py-1 rounded-full border text-xs font-bold border-green-200 text-green-700 bg-green-50">
-                      Claimed
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold border-green-200 text-green-700 bg-green-50">
+                      <CheckCircle2 className="size-3" /> Claimed
                     </span>
                   )}
                 </div>
@@ -258,7 +255,7 @@ export default function ProviderLeadsPage() {
                   <button
                     onClick={() => handleClaim(lead.id)}
                     disabled={isClaiming}
-                    className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] disabled:opacity-50 transition-all"
+                    className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] disabled:opacity-50 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                   >
                     {isClaiming ? "Claiming…" : "Claim this lead"}
                   </button>

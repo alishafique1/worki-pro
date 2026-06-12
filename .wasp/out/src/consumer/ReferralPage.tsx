@@ -25,7 +25,7 @@ export default function ReferralPage() {
 
       <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-6 space-y-4">
         <p className="text-[#475569]">
-          Earn $5 for every friend you refer, and they earn $5 too. <span className="text-[#2563EB] font-semibold">500 reward points ($5)</span> credited after their first completed service.
+          Earn 500 points for every friend you refer, and they earn 500 points too. <span className="text-[#2563EB] font-semibold">500 reward points</span> credited after their first completed service.
         </p>
         {isLoading ? (
           <div className="h-12 bg-[#F8FAFC] rounded-[12px] animate-pulse" />
@@ -57,7 +57,7 @@ export default function ReferralPage() {
           {[
             'Share your unique referral code with friends.',
             'Your friend signs up and enters the code during onboarding.',
-            'You both earn 500 points ($5) automatically after their first service.',
+            'You both earn 500 points automatically after their first service.',
           ].map((step, i) => (
             <li key={i} className="flex items-start gap-3">
               <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#2563EB] text-white text-sm font-bold flex items-center justify-center">

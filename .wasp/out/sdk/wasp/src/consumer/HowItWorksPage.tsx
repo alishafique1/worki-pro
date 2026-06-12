@@ -49,7 +49,7 @@ const STEPS = [
     num: '04',
     icon: <ClipboardList className="size-5" />,
     title: 'Job done. Get rewarded.',
-    desc: 'Earn up to $60 back on your first job. Track everything from your dashboard.',
+    desc: 'Earn up to 6,000 points on your first job. Track everything from your dashboard.',
   },
 ];
 
@@ -213,7 +213,7 @@ export default function HowItWorksPage() {
         <section className="text-center">
           <h2 className="text-4xl font-black tracking-tight mb-4 text-[#0F172A]">Ready to get matched?</h2>
           <p className="text-[#475569] mb-4">Takes under 2 minutes. 100% free, no credit card required.</p>
-          <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to $60 back on your first completed job</p>
+          <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to 6,000 points on your first completed job</p>
           <Link
             to="/get-quotes"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"

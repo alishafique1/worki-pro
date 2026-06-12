@@ -208,7 +208,7 @@ export default function OnboardingPage() {
                 finally {
                     setIsSubmitting(false);
                 }
-            }} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+            }} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
                   {isSubmitting ? 'Saving…' : 'Find a local pro →'}
                 </button>
                 <button type="button" onClick={handleSkipOnboarding} disabled={isSubmitting} className="block mx-auto mt-3 text-sm text-[#475569] hover:text-[#0F172A] disabled:opacity-50">
@@ -231,7 +231,7 @@ export default function OnboardingPage() {
               {step > 1 ? (<button type="button" onClick={goBack} className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors">
                   ← Back
                 </button>) : (<div />)}
-              <button type="button" onClick={handleNext} disabled={isSubmitting} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+              <button type="button" onClick={handleNext} disabled={isSubmitting} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
                 {isSubmitting
                 ? 'Saving…'
                 : step === totalSteps

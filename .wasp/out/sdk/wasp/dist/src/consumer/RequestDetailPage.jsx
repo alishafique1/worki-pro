@@ -279,15 +279,15 @@ export default function RequestDetailPage() {
               <div className='space-y-1.5 text-sm'>
                 {['NEW', 'QUALIFYING', 'QUALIFIED', 'ASSIGNED', 'ACCEPTED_BY_PROVIDER'].includes(request.status) && (<div className='flex justify-between'>
                     <span className='text-[#475569]'>Request submitted</span>
-                    <span className='font-bold text-[#2563EB]'>+500 pts ($5)</span>
+                    <span className='font-bold text-[#2563EB]'>+500 pts</span>
                   </div>)}
                 {['BOOKED', 'ACCEPTED_BY_PROVIDER'].includes(request.status) && (<div className='flex justify-between'>
                     <span className='text-[#475569]'>Appointment booked</span>
-                    <span className='font-bold text-[#2563EB]'>+500 pts ($5)</span>
+                    <span className='font-bold text-[#2563EB]'>+500 pts</span>
                   </div>)}
                 {request.status === 'COMPLETED' && (<div className='flex justify-between'>
                     <span className='text-[#475569]'>First job completed</span>
-                    <span className='font-bold text-[#2563EB]'>+5,000 pts ($50)</span>
+                    <span className='font-bold text-[#2563EB]'>+5,000 pts</span>
                   </div>)}
                 <p className='text-xs text-[#94A3B8] pt-1'>
                   Reward status: {request.rewardStatus || 'Pending verification'}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { MapPin, Zap, Award, Search } from 'lucide-react';
+import { MapPin, Zap, Award, Search, ArrowLeft } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
 import { getPublicProvider } from "wasp/client/operations";
 function StarRating({ rating, count }) {
@@ -81,9 +81,7 @@ export default function ProPublicPage() {
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         {/* Back nav */}
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[#475569] hover:text-[#0F172A] transition-colors text-sm font-medium">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
-          </svg>
+          <ArrowLeft className="w-4 h-4"/>
           Back
         </button>
 
@@ -131,7 +129,7 @@ export default function ProPublicPage() {
 
             {/* CTA */}
             <div className="shrink-0">
-              <Link to={`/get-quotes?provider=${provider.id}`} className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors text-sm">
+              <Link to={`/get-quotes?provider=${provider.id}`} className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] shadow-[0_4px_16px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors text-sm">
                 Request a quote
               </Link>
             </div>
@@ -149,7 +147,9 @@ export default function ProPublicPage() {
             <h2 className="text-xl font-black mb-4 text-[#0F172A]">Certifications & Accreditations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {accreditations.map((acc, i) => (<div key={i} className="flex items-center gap-3 p-4 rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC]">
-                  <span className="text-2xl"><Award /></span>
+                  <div className="flex size-9 items-center justify-center rounded-[10px] bg-[#EFF6FF] text-[#2563EB]">
+                    <Award className="size-4"/>
+                  </div>
                   <div>
                     <p className="font-bold text-sm text-[#0F172A]">{acc.name}</p>
                     {acc.issuedBy && (<p className="text-xs text-[#475569]">
