@@ -155,7 +155,7 @@ export default function ProviderProfilePage() {
         {!isEditing && profile && (
           <button
             onClick={handleEdit}
-            className="px-5 py-2 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors"
+            className="px-5 py-2 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Edit Profile
           </button>
@@ -387,7 +387,7 @@ export default function ProviderProfilePage() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-6 py-2.5 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
+              className="px-6 py-2.5 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               {isSaving ? 'Saving…' : 'Save'}
             </button>
