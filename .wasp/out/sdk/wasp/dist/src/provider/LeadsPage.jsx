@@ -89,7 +89,7 @@ export default function ProviderLeadsPage() {
           <Link to="/provider/dashboard" className="rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-bold hover:border-[#2563EB] transition-colors">
             Dashboard
           </Link>
-          <Link to="/provider/appointments" className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors">
+          <Link to="/provider/appointments" className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             My Bookings
           </Link>
         </div>

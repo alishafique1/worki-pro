@@ -130,7 +130,7 @@ function MessageThread({ requestId, messages }) {
           Message provider
         </label>
         <input id={`message-${requestId}`} value={body} onChange={(e) => setBody(e.target.value)} placeholder='Ask a question or share an update...' maxLength={1000} className='min-w-0 flex-1 rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30'/>
-        <button type='submit' disabled={isSending || !body.trim()} className='inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-[#1D4ED8] transition-colors'>
+        <button type='submit' disabled={isSending || !body.trim()} className='inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
           <Send className='size-4'/> {isSending ? 'Sending...' : 'Send'}
         </button>
       </form>
@@ -158,7 +158,7 @@ export default function RequestDetailPage() {
           <p className='text-[#475569] mb-6'>
             This request may not exist or you may not have access to it.
           </p>
-          <Link to='/my-requests' className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors'>
+          <Link to='/my-requests' className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
             <ArrowLeft className='size-4'/> Back to My Requests
           </Link>
         </div>
@@ -193,7 +193,7 @@ export default function RequestDetailPage() {
           </div>
 
           {/* Book appointment CTA */}
-          {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (<Link to={`/book/${request.id}`} className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap'>
+          {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (<Link to={`/book/${request.id}`} className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
               <CalendarClock className='size-4'/> Book Appointment
             </Link>)}
         </div>

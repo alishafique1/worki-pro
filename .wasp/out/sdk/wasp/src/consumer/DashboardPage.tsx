@@ -69,7 +69,7 @@ export default function DashboardPage() {
         </div>
         <Link
           to="/get-quotes"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_16px_rgba(37,99,235,0.35)]"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           <Wrench className="size-4" /> Get Help
         </Link>
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                       ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (
                         <Link
                           to={`/book/${req.id}`}
-                          className="inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_12px_rgba(37,99,235,0.3)]"
+                          className="inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                         >
                           <Calendar className="size-3.5" /> Book Now
                         </Link>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
                   </div>
                   <Link
                     to="/how-rewards-work"
-                    className="px-4 py-2 bg-[#2563EB] text-white text-xs font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors"
+                    className="px-4 py-2 bg-[#2563EB] text-white text-xs font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                   >
                     Earn More →
                   </Link>

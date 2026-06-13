@@ -179,7 +179,7 @@ export default function RewardsPage() {
           <button
             type="submit"
             disabled={submitting || effectivePoints > balance}
-            className="w-full py-2.5 rounded-[22px] bg-[#2563EB] text-white font-bold text-sm hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors"
+            className="w-full py-2.5 rounded-[22px] bg-[#2563EB] text-white font-bold text-sm hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             {submitting
               ? 'Processing…'

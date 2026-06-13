@@ -109,7 +109,7 @@ export default function AdminMessages({ user }) {
                   {editingNotes === lead.id ? (<div className='flex flex-col gap-2'>
                       <textarea value={notesText} onChange={(e) => setNotesText(e.target.value)} placeholder='Add internal notes about this lead...' rows={2} className='w-full border border-[#E2E8F0] rounded-lg p-2 text-sm bg-[#F8FAFC] text-[#0F172A] focus:outline-none focus:border-[#2563EB]'/>
                       <div className='flex gap-2'>
-                        <button onClick={() => handleSaveNotes(lead.id)} className='px-3 py-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-lg transition-colors'>
+                        <button onClick={() => handleSaveNotes(lead.id)} className="px-3 py-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-lg transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                           Save
                         </button>
                         <button onClick={() => setEditingNotes(null)} className='px-3 py-1 bg-white border border-[#E2E8F0] text-[#475569] text-sm font-bold rounded-lg hover:border-[#2563EB] transition-colors'>

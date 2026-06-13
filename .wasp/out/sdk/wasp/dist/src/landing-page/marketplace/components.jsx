@@ -153,7 +153,7 @@ export function MarketplaceMockup() {
               <Search className="size-5 text-[#475569]"/>
               <span className="text-sm">What service do you need?</span>
             </div>
-            <button className="rounded-[22px] bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
+            <button className="rounded-[22px] bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB] shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Get Help
             </button>
           </div>
@@ -419,7 +419,7 @@ export function CategoryHero({ badge, title, highlightedWord, description, ctaTe
             </p>
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4">
-              <Link to={ctaLink} className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_4px_16px_rgba(37,99,235,0.35)]">
+              <Link to={ctaLink} className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                 {ctaText}
               </Link>
             </div>

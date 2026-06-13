@@ -136,7 +136,7 @@ export default function SubmitReviewPage() {
 
           {error && (<p className="text-sm text-red-600">{error}</p>)}
 
-          <button type="submit" disabled={submitting || !rating || !body.trim()} className="w-full py-4 bg-[#2563EB] text-white font-black rounded-[20px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          <button type="submit" disabled={submitting || !rating || !body.trim()} className="w-full py-4 bg-[#2563EB] text-white font-black rounded-[20px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             {submitting ? "Submitting…" : "Submit review"}
           </button>
         </form>

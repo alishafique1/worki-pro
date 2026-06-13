@@ -25,7 +25,7 @@ export default function ProviderDetailPage() {
           <p className="text-[#475569] mb-6">
             This pro may no longer be available or the link may be incorrect.
           </p>
-          <Link to="/discover" className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[16px] hover:bg-[#1D4ED8] transition-colors inline-block">
+          <Link to="/discover" className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[16px] hover:bg-[#1D4ED8] transition-colors inline-block shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Browse all pros
           </Link>
         </div>

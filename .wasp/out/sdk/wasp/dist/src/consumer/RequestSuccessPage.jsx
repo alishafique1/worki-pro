@@ -43,10 +43,10 @@ export default function RequestSuccessPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          {requestId && (<Link to={`/book/${requestId}`} className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] transition-colors">
+          {requestId && (<Link to={`/book/${requestId}`} className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Schedule Your Appointment Now
             </Link>)}
-          <Link to="/signup" className={`px-8 py-4 font-black rounded-2xl transition-colors ${requestId ? 'border border-[#E2E8F0] text-[#0F172A] hover:bg-[#F8FAFC]' : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8]'}`}>
+          <Link to="/signup" className={`px-8 py-4 font-black rounded-2xl transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)] ${requestId ? 'border border-[#E2E8F0] text-[#0F172A] hover:bg-[#F8FAFC]' : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8]'}`}>
             Create Free Account & Track Rewards
           </Link>
           <Link to="/" className="text-sm font-bold text-[#475569] hover:text-[#0F172A] transition-colors">

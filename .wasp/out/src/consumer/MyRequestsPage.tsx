@@ -144,7 +144,7 @@ function MessageComposer({ requestId }: { requestId: string }) {
         <button
           type="submit"
           disabled={isSending || !body.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
         </button>
@@ -220,7 +220,7 @@ function RequestCard({ req }: { req: any }) {
             ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(req.status) && (
               <a
                 href={`/book/${req.id}`}
-                className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-3 py-2 text-xs font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-[14px] bg-[#2563EB] px-3 py-2 text-xs font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
               >
                 Book Appointment
               </a>
@@ -332,7 +332,7 @@ export default function MyRequestsPage() {
         </div>
         <Link
           to="/get-quotes"
-          className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-[22px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           <Wrench className="size-4" /> Get Help
         </Link>
@@ -373,7 +373,7 @@ export default function MyRequestsPage() {
           </p>
           <Link
             to="/get-quotes"
-            className="mt-2 rounded-[22px] bg-[#2563EB] px-6 py-2.5 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+            className="mt-2 rounded-[22px] bg-[#2563EB] px-6 py-2.5 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get Help
           </Link>

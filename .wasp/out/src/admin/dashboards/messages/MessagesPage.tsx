@@ -150,7 +150,7 @@ export default function AdminMessages({ user }: { user: AuthUser }) {
                       <div className='flex gap-2'>
                         <button
                           onClick={() => handleSaveNotes(lead.id)}
-                          className='px-3 py-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-lg transition-colors'
+                          className="px-3 py-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-lg transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                         >
                           Save
                         </button>

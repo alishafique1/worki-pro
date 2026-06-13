@@ -170,7 +170,7 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
               {code.map((digit, i) => (<input key={i} ref={el => { inputRefs.current[i] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} onChange={e => handleCodeInput(i, e.target.value)} onKeyDown={e => handleCodeKeyDown(i, e)} className="w-12 h-14 text-center text-2xl font-black bg-white border-2 rounded-xl transition-colors focus:outline-none focus:border-[#2563EB]" style={{ borderColor: digit ? '#2563EB' : '#E2E8F0' }}/>))}
             </div>
           </div>
-          <button type="submit" disabled={isLoading || code.join('').length !== 6} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+          <button type="submit" disabled={isLoading || code.join('').length !== 6} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             {isLoading ? 'Verifying…' : 'Verify & get quotes →'}
           </button>
           <p className="text-center text-sm text-[#475569]">

@@ -104,7 +104,7 @@ export default function ProviderLeadsPage() {
           </Link>
           <Link
             to="/provider/appointments"
-            className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+            className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             My Bookings
           </Link>

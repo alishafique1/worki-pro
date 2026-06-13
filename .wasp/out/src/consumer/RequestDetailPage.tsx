@@ -186,7 +186,7 @@ function MessageThread({ requestId, messages }: { requestId: string; messages: a
         <button
           type='submit'
           disabled={isSending || !body.trim()}
-          className='inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-[#1D4ED8] transition-colors'
+          className='inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
         >
           <Send className='size-4' /> {isSending ? 'Sending...' : 'Send'}
         </button>
@@ -225,7 +225,7 @@ export default function RequestDetailPage() {
           </p>
           <Link
             to='/my-requests'
-            className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors'
+            className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
           >
             <ArrowLeft className='size-4' /> Back to My Requests
           </Link>
@@ -271,7 +271,7 @@ export default function RequestDetailPage() {
           {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (
             <Link
               to={`/book/${request.id}`}
-              className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap'
+              className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
             >
               <CalendarClock className='size-4' /> Book Appointment
             </Link>
