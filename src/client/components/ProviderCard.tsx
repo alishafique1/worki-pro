@@ -219,7 +219,7 @@ export function ProviderCard({
             )}
           </div>
 
-          <span className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm group-hover:bg-[#1D4ED8] transition-colors">
+          <span className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm group-hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             View Profile
           </span>
         </div>

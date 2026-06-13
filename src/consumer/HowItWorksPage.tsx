@@ -101,7 +101,7 @@ export default function HowItWorksPage() {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/get-quotes"
-              className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+              className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Get Help Now
             </Link>
@@ -216,7 +216,7 @@ export default function HowItWorksPage() {
           <p className="text-sm text-[#22C55E] font-semibold mb-8">Earn up to 6,000 points on your first completed job</p>
           <Link
             to="/get-quotes"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get Help Now <ArrowRight className="size-5" />
           </Link>
