@@ -54,7 +54,7 @@ export default function AdminRequestsPage() {
       <div className="flex flex-wrap gap-3 items-center">
         <div className="flex gap-1 bg-white p-1 rounded-lg border border-[#E2E8F0]">
           {STATUS_FILTERS.map(s => (<button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${statusFilter === s
-                ? 'bg-[#2563EB] text-white'
+                ? 'bg-[#2563EB] text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
                 : 'text-[#475569] hover:text-[#0F172A]'}`}>
               {s === 'All' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>))}
@@ -114,7 +114,7 @@ export default function AdminRequestsPage() {
                               <option value="">Unassigned</option>
                               {approvedProviders.map((p) => (<option key={p.id} value={p.id}>{p.businessName}</option>))}
                             </select>
-                            <button onClick={() => handleAssign(req.id)} disabled={isLoading || !selectedProviderId[req.id]} className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <button onClick={() => handleAssign(req.id)} disabled={isLoading || !selectedProviderId[req.id]} className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                               {isLoading ? 'Assigning…' : 'Assign'}
                             </button>
                             {isAssigning && (<button onClick={() => setAssigningId(null)} className="text-xs text-[#475569] underline">

@@ -40,7 +40,7 @@ export default function AdminReviewsPage() {
         <h1 className="text-3xl font-black text-[#0F172A]">Review Moderation</h1>
         <div className="flex gap-2">
           {["ALL", "PENDING", "PUBLISHED", "REJECTED"].map((s) => (<button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-[12px] text-sm font-bold border transition-all ${filterStatus === s
-                ? "bg-[#2563EB] text-white border-transparent"
+                ? "bg-[#2563EB] text-white border-transparent shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                 : "border-[#E2E8F0] text-[#475569] hover:border-[#2563EB]"}`}>
               {s === "ALL" ? "All" : s.charAt(0) + s.slice(1).toLowerCase()}
             </button>))}

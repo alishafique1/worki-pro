@@ -85,7 +85,7 @@ export default function AdminRewardsPage() {
                           <button
                             onClick={() => handleApprove(reward.id)}
                             disabled={loadingIds.has(reward.id)}
-                            className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                           >
                             {loadingIds.has(reward.id) ? '…' : 'Approve'}
                           </button>

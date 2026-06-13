@@ -91,7 +91,7 @@ export default function HandymanLandingPage() {
           <div className="flex flex-wrap justify-center gap-4 mb-4">
             <Link
               to="/get-quotes?service=handyman"
-              className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
+              className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Get Handyman Help
             </Link>

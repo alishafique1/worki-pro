@@ -1005,21 +1005,21 @@
             "file",
             "sdk/wasp/src/admin/RequestsPage.tsx"
         ],
-        "ca23c3b70da3e21420b29766498969a5d124c5cac51f9623710fc2a62cd01a42"
+        "5993b9a0fc75d10d411aca771ee99e6b02ceb929751a4c427bff7f9b80c386ca"
     ],
     [
         [
             "file",
             "sdk/wasp/src/admin/ReviewsPage.tsx"
         ],
-        "4da8e0fab2e408c74f0a060e22afcd68c54005626b9e0f80271ec8b2b0479664"
+        "31218c4c0c279e3e44091cf5fed04ee784952c35e9001418666189cefccc4508"
     ],
     [
         [
             "file",
             "sdk/wasp/src/admin/RewardsPage.tsx"
         ],
-        "00b5b404b51931583b2aa122060735a3fa5f3c443e3f8e6ce25b1be938640261"
+        "d6c4e00f03c979bd79dd73d4ba3d4f8513c6a34a41987d9c0a045e7078894e3b"
     ],
     [
         [
@@ -2076,14 +2076,14 @@
             "file",
             "sdk/wasp/src/landing-page/ApplianceLandingPage.tsx"
         ],
-        "cb525e6bec8de8c94a5b99523686b05d5e5dd4fbf126b014fb23e9a1a53aa5d6"
+        "1bae9291dbd6fd160963a7eedef6e9b40a4fc167fbdcdd5ce6a562a7eddaf3b1"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/AreaLandingPage.tsx"
         ],
-        "b42a8b94014cdee9a6e51455082074ba0c407db8c935261487511b1c4a3c15e4"
+        "9ef78c986e1696d003e6ccf67abaf9b60d4d2c2d5b622225d7c4a380315c5a43"
     ],
     [
         [
@@ -2097,7 +2097,7 @@
             "file",
             "sdk/wasp/src/landing-page/ElectricalLandingPage.tsx"
         ],
-        "a1b048e597473f6774aff5896dd585acdd29512fe4050170bbfffa5e4240ecfb"
+        "367e1790e8387d5c7138bd245f9e4f4b1e0c0f9eeec2f0860f03e17c23e249b4"
     ],
     [
         [
@@ -2111,7 +2111,7 @@
             "file",
             "sdk/wasp/src/landing-page/HandymanLandingPage.tsx"
         ],
-        "0e2d1c5ac5e8967916b9895c3f35eac245603c3f9c39ced90fc0bab3e27f2a84"
+        "4971b7eb88099b301609b64c20e563aa9f68e09e3237aa71f020804b043e2bf3"
     ],
     [
         [
@@ -2139,7 +2139,7 @@
             "file",
             "sdk/wasp/src/landing-page/PlumbingLandingPage.tsx"
         ],
-        "fa379687834947c07ed3d78abba2ed3884c3def06190aeeb9c504a6aa2b24454"
+        "e59e7480e78205ded9ebfb1c6101f18c091e62d502c14f8d545d4742f7160487"
     ],
     [
         [
@@ -2153,7 +2153,7 @@
             "file",
             "sdk/wasp/src/landing-page/SmartHomeLandingPage.tsx"
         ],
-        "d1d9e873f1f5723858e2f12c33126e7cae5ebaa92e7be6e5b8edee4384bae83b"
+        "bcffdaf32fd901df704ede5da612b9ef6c6d977eab85cb4deb15c779245cb1b6"
     ],
     [
         [
@@ -2454,7 +2454,7 @@
             "file",
             "sdk/wasp/src/provider/AppointmentsPage.tsx"
         ],
-        "000494dfdf6aa53211be88fb90c2ce6dd1da5bc16a0afc9df093b0fa505138e3"
+        "8798087c1ed65cc7567e017491ab175409ec2508757feca7749cb56c1a7a4697"
     ],
     [
         [
@@ -2496,14 +2496,14 @@
             "file",
             "sdk/wasp/src/provider/ProfilePage.tsx"
         ],
-        "3b097cc778263a120f14a5ce3574b5eed384c3b120c4d2f10659d4464b62bfee"
+        "56bf9f57c97c9a1bd9a82fa24126f1b92800c95cd766929a4819b7e2a985ce1d"
     ],
     [
         [
             "file",
             "sdk/wasp/src/provider/RequestMessagesPage.tsx"
         ],
-        "094d218d1549a1b9630fe8ef4e0d6daaae4d39366dd0ce667a4b6af797a8c5d1"
+        "7cb557aa8262c787dfea288e67e3a6dc742b0202a51eec3ebf461d9ffbfad740"
     ],
     [
         [

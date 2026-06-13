@@ -68,7 +68,7 @@ export default function AdminRewardsPage() {
                   <td className="py-3 space-y-1">
                     {approvedIds.has(reward.id) ? (<span className="text-xs text-[#22C55E] font-medium">✓ Approved</span>) : rejectedIds.has(reward.id) ? (<span className="text-xs text-red-600 font-medium">✗ Rejected</span>) : (<>
                         <div className="flex gap-2">
-                          <button onClick={() => handleApprove(reward.id)} disabled={loadingIds.has(reward.id)} className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                          <button onClick={() => handleApprove(reward.id)} disabled={loadingIds.has(reward.id)} className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                             {loadingIds.has(reward.id) ? '…' : 'Approve'}
                           </button>
                           <button onClick={() => handleReject(reward.id)} disabled={loadingIds.has(reward.id)} className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors">

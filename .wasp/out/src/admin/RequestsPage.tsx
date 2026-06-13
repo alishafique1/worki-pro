@@ -65,7 +65,7 @@ export default function AdminRequestsPage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 statusFilter === s
-                  ? 'bg-[#2563EB] text-white'
+                  ? 'bg-[#2563EB] text-white shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
                   : 'text-[#475569] hover:text-[#0F172A]'
               }`}
             >
@@ -160,7 +160,7 @@ export default function AdminRequestsPage() {
                             <button
                               onClick={() => handleAssign(req.id)}
                               disabled={isLoading || !selectedProviderId[req.id]}
-                              className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="text-xs bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-3 py-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                             >
                               {isLoading ? 'Assigning…' : 'Assign'}
                             </button>

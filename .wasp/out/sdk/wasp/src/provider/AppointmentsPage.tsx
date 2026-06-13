@@ -70,7 +70,7 @@ function ProviderMessageComposer({ requestId }: { requestId: string }) {
         <button
           type="submit"
           disabled={isSending || !body.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           <Send className="size-4" /> {isSending ? "Sending..." : "Send"}
         </button>
@@ -235,7 +235,7 @@ function AppointmentCard({ appt }: { appt: any }) {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="w-full rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               {isSaving ? "Saving..." : "Save booking update"}
             </button>
@@ -321,7 +321,7 @@ export default function ProviderAppointmentsPage() {
           </Link>
           <Link
             to="/provider/leads"
-            className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+            className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             View leads
           </Link>

@@ -117,7 +117,7 @@ export default function ProviderProfilePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-bold tracking-tight">Business Profile</h1>
-        {!isEditing && profile && (<button onClick={handleEdit} className="px-5 py-2 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors">
+        {!isEditing && profile && (<button onClick={handleEdit} className="px-5 py-2 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Edit Profile
           </button>)}
       </div>
@@ -259,7 +259,7 @@ export default function ProviderProfilePage() {
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button onClick={handleSave} disabled={isSaving} className="px-6 py-2.5 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+            <button onClick={handleSave} disabled={isSaving} className="px-6 py-2.5 rounded-[14px] bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {isSaving ? 'Saving…' : 'Save'}
             </button>
             <button onClick={handleCancel} disabled={isSaving} className="px-6 py-2.5 rounded-[14px] border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-50">

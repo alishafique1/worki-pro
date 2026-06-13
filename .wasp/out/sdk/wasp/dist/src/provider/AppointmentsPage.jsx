@@ -41,7 +41,7 @@ function ProviderMessageComposer({ requestId }) {
           Message customer
         </label>
         <input id={`provider-message-${requestId}`} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Send an update to the customer..." maxLength={1000} className="min-w-0 flex-1 rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A] placeholder:text-[#94A3B8]"/>
-        <button type="submit" disabled={isSending || !body.trim()} className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="submit" disabled={isSending || !body.trim()} className="inline-flex items-center justify-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           <Send className="size-4"/> {isSending ? "Sending..." : "Send"}
         </button>
       </form>
@@ -167,7 +167,7 @@ function AppointmentCard({ appt }) {
               Internal/provider notes
               <textarea rows={3} value={providerNotes} onChange={(event) => setProviderNotes(event.target.value)} className="mt-2 w-full resize-none rounded-[14px] border border-[#E2E8F0] bg-white px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 text-[#0F172A] placeholder:text-[#94A3B8]" placeholder="Parts needed, arrival window, access notes..."/>
             </label>
-            <button onClick={handleSave} disabled={isSaving} className="w-full rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50">
+            <button onClick={handleSave} disabled={isSaving} className="w-full rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {isSaving ? "Saving..." : "Save booking update"}
             </button>
             {saveStatus === 'success' && (<p className="text-xs text-[#15803D] text-center">✓ Appointment updated</p>)}
@@ -224,7 +224,7 @@ export default function ProviderAppointmentsPage() {
           <Link to="/provider/dashboard" className="rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors">
             Dashboard
           </Link>
-          <Link to="/provider/leads" className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors">
+          <Link to="/provider/leads" className="rounded-[18px] bg-[#2563EB] px-4 py-2 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             View leads
           </Link>
         </div>

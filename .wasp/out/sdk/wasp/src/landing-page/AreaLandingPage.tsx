@@ -279,7 +279,7 @@ export default function AreaLandingPage() {
           </p>
           <Link
             to="/get-quotes"
-            className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all"
+            className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get Help
           </Link>
@@ -377,7 +377,7 @@ export default function AreaLandingPage() {
 
           <Link
             to="/get-quotes"
-            className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
+            className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get Help in {area.name} →
           </Link>
@@ -667,7 +667,7 @@ export default function AreaLandingPage() {
               </p>
               <Link
                 to="/get-quotes"
-                className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1"
+                className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
               >
                 Get Help Now →
               </Link>

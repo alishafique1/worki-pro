@@ -111,7 +111,7 @@ export default function ProviderRequestMessagesPage() {
       {/* Composer */}
       <form onSubmit={handleSend} className="flex gap-3">
         <input type="text" placeholder="Send a message or quote…" value={body} onChange={(e) => setBody(e.target.value)} disabled={sending} className="flex-1 px-5 py-3.5 rounded-[16px] border-2 border-[#E2E8F0] bg-white text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:outline-none transition-colors"/>
-        <button type="submit" disabled={!body.trim() || sending} className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors">
+        <button type="submit" disabled={!body.trim() || sending} className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           {sending ? "…" : "Send"}
         </button>
       </form>

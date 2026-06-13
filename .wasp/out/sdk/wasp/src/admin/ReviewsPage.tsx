@@ -54,7 +54,7 @@ export default function AdminReviewsPage() {
               onClick={() => setFilterStatus(s)}
               className={`px-4 py-2 rounded-[12px] text-sm font-bold border transition-all ${
                 filterStatus === s
-                  ? "bg-[#2563EB] text-white border-transparent"
+                  ? "bg-[#2563EB] text-white border-transparent shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                   : "border-[#E2E8F0] text-[#475569] hover:border-[#2563EB]"
               }`}
             >

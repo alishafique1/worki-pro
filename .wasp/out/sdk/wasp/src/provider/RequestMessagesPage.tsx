@@ -162,7 +162,7 @@ export default function ProviderRequestMessagesPage() {
         <button
           type="submit"
           disabled={!body.trim() || sending}
-          className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors"
+          className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           {sending ? "…" : "Send"}
         </button>

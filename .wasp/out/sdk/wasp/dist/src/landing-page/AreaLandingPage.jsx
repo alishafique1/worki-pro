@@ -218,7 +218,7 @@ export default function AreaLandingPage() {
           <p className="text-[#475569] mb-8">
             We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
           </p>
-          <Link to="/get-quotes" className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all">
+          <Link to="/get-quotes" className="inline-block px-8 py-4 bg-[#2563EB] text-white font-black rounded-[22px] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Get Help
           </Link>
         </div>
@@ -292,7 +292,7 @@ export default function AreaLandingPage() {
             {area.localContent ? area.localContent.heroSubtext : `${area.tagline}. Expert, vetted pros matched to your job. Scheduling, coordination, and follow-up all handled for you.`}
           </p>
 
-          <Link to="/get-quotes" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+          <Link to="/get-quotes" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Get Help in {area.name} →
           </Link>
         </div>
@@ -525,7 +525,7 @@ export default function AreaLandingPage() {
               <p className="text-[#94A3B8] mb-8 max-w-lg mx-auto">
                 Describe your issue once. We'll match you with the right expert, manage scheduling, and follow up until the job is done.
               </p>
-              <Link to="/get-quotes" className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+              <Link to="/get-quotes" className="inline-block px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                 Get Help Now →
               </Link>
               <p className="mt-4 text-xs text-[#94A3B8]"><Gift className="inline size-3"/> Plus earn cashback on every job booked</p>
