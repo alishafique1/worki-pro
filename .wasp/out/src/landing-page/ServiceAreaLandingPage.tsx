@@ -144,7 +144,7 @@ export default function ServiceAreaLandingPage() {
         <div className="flex flex-wrap gap-3 mt-6">
           <Link
             to={`/get-quotes?service=${serviceSlug}`}
-            className="inline-block px-7 py-4 bg-[#2563EB] text-white font-black rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-base"
+            className="inline-block px-7 py-4 bg-[#2563EB] text-white font-black rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-base shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get quotes (it's free)
           </Link>
@@ -262,7 +262,7 @@ export default function ServiceAreaLandingPage() {
             </p>
             <Link
               to={`/get-quotes?service=${serviceSlug}`}
-              className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors"
+              className="inline-block px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Post a request
             </Link>
