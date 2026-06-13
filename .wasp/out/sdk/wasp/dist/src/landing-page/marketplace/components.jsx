@@ -59,8 +59,8 @@ export function Hero() {
           </p>
 
           {/* Reward pill */}
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-3 py-1.5 text-xs font-semibold text-[#92400E]">
-            <Trophy className="size-3.5 text-[#F59E0B]"/>
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#1D4ED8]">
+            <Trophy className="size-3.5 text-[#2563EB]"/>
             Earn reward points on every completed job
           </div>
 
@@ -118,8 +118,8 @@ export function Hero() {
             <div className="space-y-3">
               {[
             { service: "HVAC repair", area: "Milton", time: "12 min ago", status: "Done ✓", statusColor: "text-[#22C55E]" },
-            { service: "Plumbing", area: "Oakville", time: "8 min ago", status: "Active", statusColor: "text-[#F59E0B]" },
-            { service: "Handyman", area: "Burlington", time: "just now", status: "New", statusColor: "text-[#60A5FA]" },
+            { service: "Plumbing", area: "Oakville", time: "8 min ago", status: "Active", statusColor: "text-[#60A5FA]" },
+            { service: "Handyman", area: "Burlington", time: "just now", status: "New", statusColor: "text-[#93C5FD]" },
         ].map((row) => (<div key={row.service} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3">
                   <div>
                     <p className="text-sm font-medium text-white">{row.service}</p>
@@ -134,10 +134,10 @@ export function Hero() {
                 </div>))}
             </div>
 
-            {/* Amber callout */}
-            <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#FDE68A]/30 bg-[#FEF3C7]/10 px-4 py-3">
-              <Trophy className="size-4 text-[#F59E0B]"/>
-              <p className="text-xs font-medium text-[#FDE68A]">James earned $50 this month</p>
+            {/* Blue reward callout */}
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-3">
+              <Trophy className="size-4 text-[#60A5FA]"/>
+              <p className="text-xs font-medium text-[#BFDBFE]">James earned $50 this month</p>
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@ export function CategoryCard({ icon, name, description, href, imageUrl, comingSo
               {icon}
             </div>
             {/* Coming soon badge */}
-            {comingSoon && (<div className="absolute right-3 top-3 rounded-full bg-[#FEF3C7] px-2.5 py-1 text-[10px] font-semibold text-[#92400E]">
+            {comingSoon && (<div className="absolute right-3 top-3 rounded-full bg-[#EFF6FF] px-2.5 py-1 text-[10px] font-semibold text-[#2563EB]">
                 Coming Soon
               </div>)}
           </div>)}

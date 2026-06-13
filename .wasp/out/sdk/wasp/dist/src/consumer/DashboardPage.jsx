@@ -5,7 +5,7 @@ import { useRoleGuard } from '../shared/useRoleGuard';
 import { CalendarClock, CheckCircle2, Clock3, ShieldCheck, Wrench, TrendingUp, Gift, Star, ArrowRight, Zap, Calendar, } from "lucide-react";
 const urgencyConfig = {
     EMERGENCY: { label: "Emergency", className: "bg-red-50 text-red-600 border border-red-200", icon: <Zap className="size-3"/> },
-    URGENT: { label: "Urgent", className: "bg-amber-50 text-amber-700 border border-amber-200", icon: <Clock3 className="size-3"/> },
+    URGENT: { label: "Urgent", className: "bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]", icon: <Clock3 className="size-3"/> },
     SOON: { label: "Soon", className: "bg-blue-50 text-blue-600 border border-blue-200", icon: <Calendar className="size-3"/> },
     PLANNED: { label: "Planned", className: "bg-slate-50 text-slate-500 border border-slate-200", icon: <Calendar className="size-3"/> },
 };
@@ -20,12 +20,12 @@ export default function DashboardPage() {
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
               Welcome back
             </h1>
-            {rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
-                <Gift className="size-3.5 text-[#F59E0B]"/>
+            {rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] rounded-full px-3 py-1 text-xs font-semibold">
+                <Gift className="size-3.5 text-[#2563EB]"/>
                 {(rewards?.account?.pointsBalance ?? 0).toLocaleString()} pts
               </span>)}
-            {!rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] rounded-full px-3 py-1 text-xs font-semibold">
-                <Gift className="size-3.5 text-[#F59E0B]"/>
+            {!rewards && !rewardsLoading && (<span className="inline-flex items-center gap-1.5 bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] rounded-full px-3 py-1 text-xs font-semibold">
+                <Gift className="size-3.5 text-[#2563EB]"/>
                 1,250 pts
               </span>)}
           </div>
@@ -42,7 +42,7 @@ export default function DashboardPage() {
       {!requestsLoading && !requestsError && requests && requests.length > 0 && (<div className="grid grid-cols-3 gap-4">
           {[
                 { label: "Total Requests", value: requests.length, icon: <Wrench className="size-4 text-[#2563EB]"/> },
-                { label: "In Progress", value: requests.filter((r) => !['COMPLETED', 'LOST', 'INVALID', 'SPAM', 'CLOSED'].includes(r.status)).length, icon: <Clock3 className="size-4 text-[#F59E0B]"/> },
+                { label: "In Progress", value: requests.filter((r) => !['COMPLETED', 'LOST', 'INVALID', 'SPAM', 'CLOSED'].includes(r.status)).length, icon: <Clock3 className="size-4 text-[#3B82F6]"/> },
                 { label: "Completed", value: requests.filter((r) => r.status === 'COMPLETED').length, icon: <CheckCircle2 className="size-4 text-[#22C55E]"/> },
             ].map(({ label, value, icon }) => (<div key={label} className="bg-white border border-[#E2E8F0] rounded-[18px] p-4 flex items-center gap-4">
               <div className="size-10 shrink-0 flex items-center justify-center rounded-xl bg-[#EFF6FF]">{icon}</div>
@@ -107,7 +107,7 @@ export default function DashboardPage() {
                     <span className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${req.status === 'COMPLETED'
                         ? 'bg-green-50 text-green-700 border border-green-200'
                         : ['NEW', 'QUALIFYING', 'QUALIFIED'].includes(req.status)
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                            ? 'bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]'
                             : 'bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]'}`}>
                       {req.status.replace(/_/g, " ")}
                     </span>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-                <Gift className="size-5 text-[#F59E0B]"/> Rewards
+                <Gift className="size-5 text-[#2563EB]"/> Rewards
               </h3>
               <Link to="/rewards" className="text-xs font-bold text-[#2563EB] hover:underline flex items-center gap-1">
                 View History <ArrowRight className="size-3"/>
@@ -173,9 +173,9 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Cash equivalent */}
-                <div className="mb-6 inline-flex items-center gap-2 rounded-xl bg-[#FEF3C7] px-4 py-2.5">
-                  <TrendingUp className="size-4 text-[#F59E0B]"/>
-                  <span className="text-sm font-semibold text-[#92400E]">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] px-4 py-2.5">
+                  <TrendingUp className="size-4 text-[#2563EB]"/>
+                  <span className="text-sm font-semibold text-[#1D4ED8]">
                     Worth ${((rewards?.account?.pointsBalance || 0) / 100).toFixed(2)} in gift cards
                   </span>
                 </div>
@@ -186,7 +186,7 @@ export default function DashboardPage() {
                       Current Tier
                     </p>
                     <p className="font-bold text-lg flex items-center gap-1.5">
-                      <Star className="size-4 text-[#F59E0B] fill-[#F59E0B]"/>
+                      <Star className="size-4 text-[#2563EB] fill-[#2563EB]"/>
                       {rewards?.account?.level.replace(/_/g, " ") ||
                 "New Homeowner"}
                     </p>

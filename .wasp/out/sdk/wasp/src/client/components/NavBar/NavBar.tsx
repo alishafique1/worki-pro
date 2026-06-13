@@ -13,7 +13,7 @@ import {
 } from "../../../client/components/ui/sheet";
 import { UserDropdown } from "../../../user/UserDropdown";
 import { UserMenuItems } from "../../../user/UserMenuItems";
-import logo from "../../static/logo.webp";
+import logo from "../../static/logo-icon.svg";
 import { cn } from "../../utils";
 import type { ServiceCategory } from "wasp/entities";
 
@@ -55,8 +55,10 @@ export default function NavBar({
           to={routes.LandingPageRoute.to}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <img src={logo} alt="The Helper" className="size-8" />
-          <span className="text-sm font-extrabold text-[#0F172A]">The Helper</span>
+          <img src={logo} alt="The Helper" className="h-9 w-auto" />
+          <span className="text-sm font-extrabold text-[#0F172A] tracking-tight">
+            <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
+          </span>
         </WaspRouterLink>
 
         {/* Desktop nav links */}
@@ -180,10 +182,12 @@ function MobileMenu({
         <SheetContent side="right" className="w-[280px] sm:w-[360px]">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
-              <WaspRouterLink to={routes.LandingPageRoute.to} onClick={() => setOpen(false)}>
-                <img src={logo} alt="The Helper" className="size-8" />
+              <WaspRouterLink to={routes.LandingPageRoute.to} onClick={() => setOpen(false)} className="flex items-center gap-2">
+                <img src={logo} alt="The Helper" className="h-9 w-auto" />
+                <span className="text-sm font-extrabold text-[#0F172A] tracking-tight">
+                  <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
+                </span>
               </WaspRouterLink>
-              <span className="text-sm font-extrabold text-[#0F172A]">The Helper</span>
             </SheetTitle>
           </SheetHeader>
 

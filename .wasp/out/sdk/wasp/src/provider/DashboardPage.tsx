@@ -44,14 +44,14 @@ const STATUS_LABEL: Record<string, string> = {
 
 const urgencyBadge: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
   EMERGENCY: { label: 'Emergency', className: 'bg-red-50 text-red-600 border-red-200', icon: <Zap className="size-3" /> },
-  URGENT:    { label: 'Urgent',    className: 'bg-amber-50 text-amber-700 border-amber-200', icon: <Clock3 className="size-3" /> },
+  URGENT:    { label: 'Urgent',    className: 'bg-[#DBEAFE] text-[#1D4ED8] border-[#BFDBFE]', icon: <Clock3 className="size-3" /> },
   SOON:      { label: 'Soon',      className: 'bg-blue-50 text-blue-600 border-blue-200', icon: <CalendarClock className="size-3" /> },
   PLANNED:   { label: 'Planned',   className: 'bg-slate-50 text-slate-500 border-slate-200', icon: <CalendarClock className="size-3" /> },
 };
 
 const apptStatusBadge: Record<string, { label: string; className: string }> = {
   CONFIRMED:   { label: 'Confirmed',   className: 'bg-green-50 text-green-700 border-green-200' },
-  PENDING:     { label: 'Pending',    className: 'bg-amber-50 text-amber-700 border-amber-200' },
+  PENDING:     { label: 'Pending',    className: 'bg-[#DBEAFE] text-[#1D4ED8] border-[#BFDBFE]' },
   CANCELLED:   { label: 'Cancelled',  className: 'bg-red-50 text-red-600 border-red-200' },
   COMPLETED:   { label: 'Completed',  className: 'bg-green-50 text-green-700 border-green-200' },
 };
@@ -120,9 +120,9 @@ export default function ProviderDashboardPage() {
         <div className={`rounded-[16px] border px-5 py-4 flex items-start gap-3 ${
           verificationStatus === 'REJECTED'
             ? 'bg-red-500/10 border-red-400/30 text-red-600'
-            : 'bg-[#FEF3C7] border-[#FDE68A] text-amber-700'
+            : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
         }`}>
-          <span className="mt-0.5">{verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-500" /> : <Clock className="size-5 text-amber-500" />}</span>
+          <span className="mt-0.5">{verificationStatus === 'REJECTED' ? <AlertTriangle className="size-5 text-red-500" /> : <Clock className="size-5 text-[#2563EB]" />}</span>
           <div>
             <p className="font-bold text-sm">
               {verificationStatus === 'REJECTED' ? 'Application not approved' : 'Account pending verification'}
@@ -146,7 +146,7 @@ export default function ProviderDashboardPage() {
       <div className="grid grid-cols-3 gap-4">
         {[
           { label: "Active Leads", value: leads?.length ?? 0, icon: <Inbox className="size-5 text-[#2563EB]" />, color: "blue" },
-          { label: "Upcoming Bookings", value: appts?.filter((a: any) => a.scheduledAt && new Date(a.scheduledAt) >= new Date()).length ?? 0, icon: <CalendarClock className="size-5 text-[#F59E0B]" />, color: "amber" },
+          { label: "Upcoming Bookings", value: appts?.filter((a: any) => a.scheduledAt && new Date(a.scheduledAt) >= new Date()).length ?? 0, icon: <CalendarClock className="size-5 text-[#3B82F6]" />, color: "blue" },
           { label: "Completed Jobs", value: appts?.filter((a: any) => a.status === 'COMPLETED').length ?? 0, icon: <CheckCircle2 className="size-5 text-[#22C55E]" />, color: "green" },
         ].map(({ label, value, icon }) => (
           <div key={label} className="bg-white border border-[#E2E8F0] rounded-[18px] p-5 flex items-center gap-4">
