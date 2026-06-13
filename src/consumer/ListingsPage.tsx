@@ -224,7 +224,7 @@ export default function ListingsPage() {
                     </span>
                     <Link
                       to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`}
-                      className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors"
+                      className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                     >
                       Find Pros
                     </Link>

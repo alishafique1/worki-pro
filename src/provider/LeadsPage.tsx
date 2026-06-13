@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import { MapPin, AlertTriangle, Clock, Inbox, Search, CheckCircle2 } from 'lucide-react';
+import { useAction, useQuery } from "wasp/client/operations";
+import { getPublicLeadFeed, claimLead, getServiceCategories } from "wasp/client/operations";
 
 const URGENCY_LABELS: Record<string, { label: string; color: string }> = {
   EMERGENCY: { label: "Urgent", color: "text-red-600 bg-red-50 border-red-200" },

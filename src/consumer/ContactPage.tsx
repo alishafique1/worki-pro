@@ -70,7 +70,7 @@ export default function ContactPage() {
             </Link>
             <Link
               to="/discover"
-              className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+              className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Browse Service Pros
             </Link>
@@ -203,7 +203,7 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:hover:bg-[#2563EB]"
+            className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:hover:bg-[#2563EB] shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             {isSubmitting ? 'Sending...' : step < 2 ? 'Continue' : 'Send Message'}
           </button>
