@@ -68,12 +68,7 @@ export default function DiscoveryPage() {
       {/* Search + Filter Bar */}
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <div className="relative flex-1">
-          <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]"
-            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
           <input
             type="text"
             placeholder="Search by name or service..."
@@ -145,7 +140,7 @@ export default function DiscoveryPage() {
           {selectedArea && (
             <button
               onClick={() => setSelectedArea('')}
-              className="mt-4 px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm hover:bg-[#1D4ED8] transition-colors"
+              className="mt-4 px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Clear Area Filter
             </button>

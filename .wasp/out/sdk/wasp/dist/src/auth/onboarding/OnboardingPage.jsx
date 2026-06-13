@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'wasp/client/auth';
 import { completeOnboarding } from 'wasp/client/operations';
+import { ArrowLeft } from 'lucide-react';
 import ProgressBar from './components/ProgressBar';
 import StepRole from './components/StepRole';
 import StepProfile from './components/StepProfile';
@@ -228,8 +229,8 @@ export default function OnboardingPage() {
 
           {/* Navigation — hidden on step 3 for consumers (they have inline buttons) */}
           {!(step === 3 && !isProvider) && (<div className="flex items-center justify-between mt-8">
-              {step > 1 ? (<button type="button" onClick={goBack} className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors">
-                  ← Back
+              {step > 1 ? (<button type="button" onClick={goBack} className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors">
+                  <ArrowLeft className="size-4"/> Back
                 </button>) : (<div />)}
               <button type="button" onClick={handleNext} disabled={isSubmitting} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
                 {isSubmitting

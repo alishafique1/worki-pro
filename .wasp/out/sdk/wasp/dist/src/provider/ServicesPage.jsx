@@ -104,7 +104,7 @@ export default function ProviderServicesPage() {
           <h2 className="text-xl font-bold text-[#0F172A]">
             {existingServices.length} Service{existingServices.length !== 1 ? 's' : ''} Listed
           </h2>
-          <button onClick={() => setShowAddForm(true)} className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm">
+          <button onClick={() => setShowAddForm(true)} className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             + Add Service
           </button>
         </div>
@@ -170,7 +170,7 @@ export default function ProviderServicesPage() {
             <button onClick={() => { setShowAddForm(false); setErrorMsg(null); }} className="px-5 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] font-medium rounded-[14px] hover:border-[#2563EB] transition-colors text-sm">
               Cancel
             </button>
-            <button onClick={handleAddService} disabled={saving} className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm disabled:opacity-50">
+            <button onClick={handleAddService} disabled={saving} className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {saving ? 'Saving...' : 'Add Service'}
             </button>
           </div>
@@ -194,7 +194,7 @@ function ServiceEditForm({ service, categoryMap, onSave, onCancel }) {
       </div>
       <div className="flex gap-2 justify-end">
         <button onClick={onCancel} className="px-4 py-2 text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors">Cancel</button>
-        <button onClick={() => onSave({ ...service, name, description, price: price ? parseFloat(price) : null, categorySlug })} className="px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm">
+        <button onClick={() => onSave({ ...service, name, description, price: price ? parseFloat(price) : null, categorySlug })} className="px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           Save Changes
         </button>
       </div>

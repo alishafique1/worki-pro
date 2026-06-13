@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { CalendarClock, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Zap } from 'lucide-react';
+import { CalendarClock, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Zap, Flame, Wind } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
 const hvacFaqs = [
@@ -45,26 +45,26 @@ export default function HvacLandingPage() {
                 createFaqSchema(hvacFaqs),
             ],
         }}/>
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-slate-50">
       <LandingHeroBanner src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1600&q=80" alt="HVAC technician servicing a unit in a GTA home"/>
       <main className="pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-bold uppercase tracking-wider mb-6">
             Expert HVAC Services in Milton, Oakville & Burlington
           </div>
-          <h1 className="text-5xl sm:text-7xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl text-[#0F172A]">
-            HVAC Repair & Installation in the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">GTA</span>
+          <h1 className="text-5xl sm:text-7xl font-black tracking-tighter leading-[0.9] mb-8 max-w-4xl text-slate-900">
+            HVAC Repair & Installation in the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">GTA</span>
           </h1>
-          <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-12">
             Stay comfortable all year round. From furnace repairs to AC installations, we match you with vetted, TSSA-licensed HVAC pros in Milton, Oakville, and Burlington. Same-day emergency service available.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <Link to="/get-quotes?service=hvac" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1">
+            <Link to="/get-quotes?service=hvac" className="px-10 py-5 bg-blue-600 text-white font-black rounded-3xl text-lg hover:bg-blue-700 transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Request HVAC Quote
             </Link>
           </div>
-          <p className="text-sm text-[#475569] mt-2 mb-16">Licensed TSSA contractors. Earn rewards on every completed job.</p>
+          <p className="text-sm text-slate-600 mt-2 mb-16">Licensed TSSA contractors. Earn rewards on every completed job.</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
@@ -73,32 +73,32 @@ export default function HvacLandingPage() {
             { label: 'Fully Insured', icon: <ShieldCheck className="size-6"/>, alt: 'Fully insured pros' },
             { label: 'Same-Day Service', icon: <CalendarClock className="size-6"/>, alt: 'Same-day emergency service' }
         ].map((stat) => (<div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
-                <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>
-                <div className="text-sm font-black uppercase tracking-widest text-[#475569]">{stat.label}</div>
+                <div className="text-blue-600" aria-hidden="true">{stat.icon}</div>
+                <div className="text-sm font-black uppercase tracking-widest text-slate-600">{stat.label}</div>
               </div>))}
           </div>
 
           {/* Services Section */}
           <section className="w-full mb-24" aria-labelledby="hvac-services-heading">
-            <h2 id="hvac-services-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Our HVAC Services</h2>
+            <h2 id="hvac-services-heading" className="text-3xl font-black mb-8 text-slate-900">Our HVAC Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
               {[
-            { title: 'Heating Services', desc: 'Furnace repair, maintenance, tune-ups, and new high-efficiency installations. Heat pump and boiler services also available.', icon: '<Flame' },
+            { title: 'Heating Services', desc: 'Furnace repair, maintenance, tune-ups, and new high-efficiency installations. Heat pump and boiler services also available.', icon: <Flame className="size-7"/> },
             { title: 'Cooling Services', desc: 'AC repair, installation, and seasonal tune-ups. Mini-split systems and central air conditioning for homes of all sizes.', icon: <Zap className="size-7"/> },
-            { title: 'Air Quality', desc: 'Duct cleaning, humidifier installation, air purifiers, and HRV/ERV maintenance for a healthier home environment.', icon: '<Wind' }
-        ].map((service) => (<article key={service.title} className="p-10 bg-white rounded-[40px] border border-[#E2E8F0] hover:-translate-y-1 transition-transform text-left">
-                  <div className="text-[#2563EB] mb-6" aria-hidden="true">{service.icon}</div>
-                  <h3 className="text-2xl font-black mb-4 text-[#0F172A]">{service.title}</h3>
-                  <p className="text-[#475569] leading-relaxed">{service.desc}</p>
+            { title: 'Air Quality', desc: 'Duct cleaning, humidifier installation, air purifiers, and HRV/ERV maintenance for a healthier home environment.', icon: <Wind className="size-7"/> }
+        ].map((service) => (<article key={service.title} className="p-10 bg-white rounded-[40px] border border-slate-200 hover:-translate-y-1 transition-transform text-left">
+                  <div className="text-blue-600 mb-6" aria-hidden="true">{service.icon}</div>
+                  <h3 className="text-2xl font-black mb-4 text-slate-900">{service.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">{service.desc}</p>
                 </article>))}
             </div>
           </section>
 
           {/* Service Areas */}
           <section className="w-full mb-24" aria-labelledby="service-areas-heading">
-            <h2 id="service-areas-heading" className="text-3xl font-black mb-8 text-[#0F172A]">HVAC Service Areas</h2>
+            <h2 id="service-areas-heading" className="text-3xl font-black mb-8 text-slate-900">HVAC Service Areas</h2>
             <div className="flex flex-wrap justify-center gap-4">
-              {['Milton', 'Oakville', 'Burlington', 'Mississauga', 'Brampton', 'Halton Hills'].map((area) => (<Link key={area} to={`/areas/${area.toLowerCase().replace(' ', '-')}`} className="px-6 py-3 bg-white rounded-full border border-[#E2E8F0] text-[#0F172A] font-semibold hover:border-[#2563EB] hover:text-[#2563EB] transition-colors">
+              {['Milton', 'Oakville', 'Burlington', 'Mississauga', 'Brampton', 'Halton Hills'].map((area) => (<Link key={area} to={`/areas/${area.toLowerCase().replace(' ', '-')}`} className="px-6 py-3 bg-white rounded-full border border-slate-200 text-slate-900 font-semibold hover:border-blue-600 hover:text-blue-600 transition-colors">
                   HVAC in {area}
                 </Link>))}
             </div>
@@ -106,8 +106,8 @@ export default function HvacLandingPage() {
 
           {/* FAQ Section */}
           <section className="w-full max-w-2xl" aria-labelledby="faq-heading">
-            <h2 id="faq-heading" className="text-3xl font-black mb-8 text-[#0F172A]">Frequently Asked Questions</h2>
-            <div className="rounded-2xl border border-[#E2E8F0] bg-white px-6">
+            <h2 id="faq-heading" className="text-3xl font-black mb-8 text-slate-900">Frequently Asked Questions</h2>
+            <div className="rounded-2xl border border-slate-200 bg-white px-6">
               {hvacFaqs.map((faq) => (<FaqItem key={faq.question} question={faq.question} answer={faq.answer}/>))}
             </div>
           </section>

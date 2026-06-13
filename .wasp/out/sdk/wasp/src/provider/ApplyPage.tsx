@@ -74,7 +74,7 @@ export default function ProviderApplyPage() {
           </p>
           <button
             onClick={() => window.location.href = '/provider/dashboard'}
-            className="w-full py-4 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1D4ED8] transition-colors"
+            className="w-full py-4 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Go to Dashboard
           </button>
@@ -209,7 +209,7 @@ export default function ProviderApplyPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-5 bg-[#2563EB] text-white font-bold rounded-2xl text-xl hover:bg-[#1D4ED8] transition-colors mt-8 disabled:opacity-50"
+              className="w-full py-5 bg-[#2563EB] text-white font-bold rounded-2xl text-xl hover:bg-[#1D4ED8] transition-colors mt-8 disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </button>

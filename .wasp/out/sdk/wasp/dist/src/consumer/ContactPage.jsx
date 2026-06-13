@@ -4,6 +4,7 @@ import { submitLead } from 'wasp/client/operations';
 import { getServiceCategories } from 'wasp/client/operations';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router';
+import { CheckCircle2 } from 'lucide-react';
 export default function ContactPage() {
     const navigate = useNavigate();
     const categories = useQuery(getServiceCategories);
@@ -48,8 +49,8 @@ export default function ContactPage() {
     if (submitted) {
         return (<div className="p-8 max-w-2xl mx-auto min-h-[80vh] flex flex-col justify-center">
         <div className="text-center space-y-6">
-          <div className="w-20 h-20 bg-green-50 rounded-full mx-auto flex items-center justify-center">
-            <span className="text-4xl text-[#22C55E]">✓</span>
+          <div className="w-20 h-20 bg-[#DCFCE7] rounded-full mx-auto flex items-center justify-center">
+            <CheckCircle2 className="w-10 h-10 text-[#22C55E]"/>
           </div>
           <h1 className="text-4xl font-black tracking-tight text-[#0F172A]">Thanks, {formData.name.split(' ')[0]}!</h1>
           <p className="text-lg text-[#475569]">
@@ -57,10 +58,10 @@ export default function ContactPage() {
             A confirmation has been sent to <strong>{formData.email}</strong>.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Link to="/" className="px-8 py-4 bg-white border border-[#E2E8F0] rounded-[22px] font-bold hover:border-[#2563EB] transition-colors text-[#0F172A]">
+            <Link to="/" className="px-8 py-4 bg-white border border-[#E2E8F0] rounded-[22px] font-bold hover:border-[#2563EB] transition-colors text-[#0F172A] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] hover:text-white hover:border-transparent">
               Back to Home
             </Link>
-            <Link to="/discover" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
+            <Link to="/discover" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Browse Service Pros
             </Link>
           </div>
@@ -131,7 +132,7 @@ export default function ContactPage() {
           {step > 1 && (<button type="button" onClick={handlePrev} className="flex-1 px-6 py-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[22px] font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors">
               Back
             </button>)}
-          <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:hover:bg-[#2563EB]">
+          <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:hover:bg-[#2563EB] shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             {isSubmitting ? 'Sending...' : step < 2 ? 'Continue' : 'Send Message'}
           </button>
         </div>

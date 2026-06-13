@@ -102,7 +102,7 @@ export default function ListYourServicesPage() {
               </Link>
               <Link
                 to="/discover"
-                className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+                className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
               >
                 See How It Works
               </Link>
@@ -304,7 +304,7 @@ export default function ListYourServicesPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
+                  className="flex-1 px-6 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                 >
                   {submitting ? 'Submitting...' : step < 2 ? 'Continue' : 'Submit Application'}
                 </button>

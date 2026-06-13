@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router";
 import { useQuery, useAction } from "wasp/client/operations";
 import { getMessagesForRequest, sendCustomerMessage } from "wasp/client/operations";
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { ArrowLeft } from 'lucide-react';
 function timeStamp(date) {
     return new Date(date).toLocaleTimeString("en-CA", {
         hour: "2-digit",
@@ -63,9 +64,7 @@ export default function RequestMessagesPage() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link to={`/my-requests/${requestId}`} className="text-[#475569] hover:text-[#0F172A] transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
-          </svg>
+          <ArrowLeft className="w-5 h-5"/>
         </Link>
         <div>
           <p className="text-xs text-[#94A3B8] uppercase tracking-widest font-bold mb-0.5">
@@ -110,7 +109,7 @@ export default function RequestMessagesPage() {
       {/* Send box */}
       <form onSubmit={handleSend} className="flex gap-3">
         <input type="text" placeholder="Type a message…" value={body} onChange={(e) => setBody(e.target.value)} disabled={sending} className="flex-1 px-5 py-3.5 rounded-[16px] border border-[#E2E8F0] bg-white text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30 focus:outline-none transition-colors"/>
-        <button type="submit" disabled={!body.trim() || sending} className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors">
+        <button type="submit" disabled={!body.trim() || sending} className="px-5 py-3.5 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] disabled:opacity-40 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           {sending ? "…" : "Send"}
         </button>
       </form>

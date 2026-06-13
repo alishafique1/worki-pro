@@ -56,7 +56,7 @@ export default function ProviderDashboardPage() {
           <p className="text-sm text-[#475569] mb-6">
             Your provider profile isn't complete yet. Let's finish the setup so you can start receiving leads.
           </p>
-          <button onClick={() => navigate('/onboarding')} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors">
+          <button onClick={() => navigate('/onboarding')} className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Complete setup →
           </button>
         </div>
@@ -110,10 +110,10 @@ export default function ProviderDashboardPage() {
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link to="/provider/services" className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors">
+          <Link to="/provider/services" className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Manage listings
           </Link>
-          <Link to="/provider/leads" className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors">
+          <Link to="/provider/leads" className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Open lead inbox
           </Link>
           <Link to="/provider/appointments" className="rounded-[18px] border border-[#E2E8F0] bg-white px-5 py-3 text-sm font-bold text-[#0F172A] hover:border-[#2563EB] transition-colors">
@@ -143,7 +143,7 @@ export default function ProviderDashboardPage() {
             })()}
             </p>
           </div>
-          <Link to="/provider/services" className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-sm whitespace-nowrap">
+          <Link to="/provider/services" className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-sm whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             {(() => {
             const services = safeParseServices(profile?.servicesJson);
             return services.length === 0 ? 'Add your first listing' : 'Manage listings';
@@ -226,9 +226,9 @@ export default function ProviderDashboardPage() {
                       {lead.description}
                     </p>
                     <div className="flex gap-3">
-                      {lead.status === 'ASSIGNED' ? (<button onClick={() => handleAccept(lead.id)} className="flex-1 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors">
+                      {lead.status === 'ASSIGNED' ? (<button onClick={() => handleAccept(lead.id)} className="flex-1 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                           Accept
-                        </button>) : (<Link to={`/provider/requests/${lead.id}/messages`} className="flex-1 py-2 text-center bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors">
+                        </button>) : (<Link to={`/provider/requests/${lead.id}/messages`} className="flex-1 py-2 text-center bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                           Message customer →
                         </Link>)}
                       <Link to="/provider/leads" className="px-4 py-2 bg-white border border-[#E2E8F0] text-[#0F172A] font-bold rounded-[14px] hover:border-[#2563EB] transition-colors">

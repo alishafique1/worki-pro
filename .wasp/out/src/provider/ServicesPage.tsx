@@ -141,7 +141,7 @@ export default function ProviderServicesPage() {
           </h2>
           <button
             onClick={() => setShowAddForm(true)}
-            className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm"
+            className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             + Add Service
           </button>
@@ -266,7 +266,7 @@ export default function ProviderServicesPage() {
             <button
               onClick={handleAddService}
               disabled={saving}
-              className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm disabled:opacity-50"
+              className="px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               {saving ? 'Saving...' : 'Add Service'}
             </button>
@@ -331,7 +331,7 @@ function ServiceEditForm({ service, categoryMap, onSave, onCancel }: ServiceEdit
         <button onClick={onCancel} className="px-4 py-2 text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors">Cancel</button>
         <button
           onClick={() => onSave({ ...service, name, description, price: price ? parseFloat(price) : null, categorySlug })}
-          className="px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm"
+          className="px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors text-sm shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           Save Changes
         </button>

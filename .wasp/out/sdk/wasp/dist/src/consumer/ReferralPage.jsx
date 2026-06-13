@@ -23,7 +23,7 @@ export default function ReferralPage() {
         </p>
         {isLoading ? (<div className="h-12 bg-[#F8FAFC] rounded-[12px] animate-pulse"/>) : (<div className="bg-[#F8FAFC] rounded-[12px] border border-[#E2E8F0] flex items-center justify-between px-4 py-3">
             <code className="text-[#2563EB] text-lg font-mono tracking-widest">{referralCode}</code>
-            <button onClick={handleCopy} className="ml-4 px-4 py-2 bg-[#2563EB] text-white rounded-[22px] font-bold text-sm flex items-center gap-1.5 hover:bg-[#1D4ED8] transition-colors">
+            <button onClick={handleCopy} className="ml-4 px-4 py-2 bg-[#2563EB] text-white rounded-[22px] font-bold text-sm flex items-center gap-1.5 hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {copied ? <span>✓ Copied</span> : 'Copy Code'}
             </button>
           </div>)}

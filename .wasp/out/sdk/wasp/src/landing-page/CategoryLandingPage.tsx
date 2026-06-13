@@ -47,23 +47,23 @@ export default function CategoryLandingPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
-        <div className="animate-pulse text-[#475569]">Loading…</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-pulse text-slate-600">Loading…</div>
       </div>
     )
   }
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-black text-[#0F172A]">Service not found</h1>
-        <Link to="/" className="text-[#2563EB] hover:underline">← Back to home</Link>
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-black text-slate-900">Service not found</h1>
+        <Link to="/" className="text-blue-600 hover:underline">← Back to home</Link>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-slate-50">
       <PageSeo
         title={pageData?.seo?.title ?? `${category.name} in Milton, Oakville & Burlington | The Helper`}
         description={pageData?.seo?.description ?? `Get free quotes from verified ${category.name.toLowerCase()} professionals in Milton, Oakville, and Burlington.`}
@@ -90,20 +90,20 @@ export default function CategoryLandingPage() {
       />
 
       {/* Hero */}
-      <section className="bg-[#0F172A] text-white py-20 px-6">
+      <section className="bg-slate-900 text-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-[#60A5FA] mb-3">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-400 mb-3">
             {pageData?.badge ?? `${category.name} · GTA`}
           </span>
           <h1 className="text-4xl font-black mb-4">
             {category.name} in Milton, Oakville & Burlington
           </h1>
-          <p className="text-[#94A3B8] text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg mb-8 max-w-2xl mx-auto">
             {pageData?.description ?? `Get free quotes from verified local ${category.name.toLowerCase()} professionals — no commitment required.`}
           </p>
           <Link
             to={`/get-quotes?category=${category.id}&slug=${category.slug}`}
-            className="inline-block px-10 py-4 bg-[#2563EB] text-white font-bold rounded-full text-lg hover:bg-[#1D4ED8] transition-colors"
+            className="inline-block px-10 py-4 bg-blue-600 text-white font-bold rounded-full text-lg hover:bg-blue-700 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Get Help →
           </Link>
@@ -114,14 +114,14 @@ export default function CategoryLandingPage() {
       <section className="py-10 px-6 max-w-3xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           {[
-            { icon: <ShieldCheck className="size-6 text-[#22C55E]" />, label: 'Verified pros', desc: 'Every provider is background-checked', iconBg: 'bg-green-50 border-green-200' },
-            { icon: <BadgeDollarSign className="size-6 text-[#2563EB]" />, label: 'Free quotes', desc: 'No obligation, compare & choose', iconBg: 'bg-blue-50 border-blue-200' },
-            { icon: <CalendarClock className="size-6 text-[#F59E0B]" />, label: 'Fast response', desc: 'Most quotes arrive within hours', iconBg: 'bg-amber-50 border-amber-200' },
+            { icon: <ShieldCheck className="size-6 text-green-500" />, label: 'Verified pros', desc: 'Every provider is background-checked', iconBg: 'bg-green-50 border-green-200' },
+            { icon: <BadgeDollarSign className="size-6 text-blue-600" />, label: 'Free quotes', desc: 'No obligation, compare & choose', iconBg: 'bg-blue-50 border-blue-200' },
+            { icon: <CalendarClock className="size-6 text-amber-500" />, label: 'Fast response', desc: 'Most quotes arrive within hours', iconBg: 'bg-amber-50 border-amber-200' },
           ].map(item => (
-            <div key={item.label} className="bg-white border border-[#E2E8F0] rounded-2xl p-5">
+            <div key={item.label} className="bg-white border border-slate-200 rounded-2xl p-5">
               <div className={`w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center border ${item.iconBg}`}>{item.icon}</div>
-              <p className="font-semibold text-[#0F172A] text-sm">{item.label}</p>
-              <p className="text-xs text-[#64748B]">{item.desc}</p>
+              <p className="font-semibold text-slate-900 text-sm">{item.label}</p>
+              <p className="text-xs text-slate-500">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -130,24 +130,24 @@ export default function CategoryLandingPage() {
       {/* Service grid */}
       {pageData?.subCategories && pageData.subCategories.length > 0 && (
         <section className="py-16 px-6 max-w-5xl mx-auto">
-          <h2 className="text-2xl font-black text-[#0F172A] mb-8 text-center">
+          <h2 className="text-2xl font-black text-slate-900 mb-8 text-center">
             {category.name} services we cover
           </h2>
           <div className="space-y-10">
             {pageData.subCategories.map(sub => (
               <div key={sub.name}>
-                <h3 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#2563EB] rounded-full inline-block" />
+                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full inline-block" />
                   {sub.name}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {sub.services.map(s => (
                     <div
                       key={s.name}
-                      className="bg-white border border-[#E2E8F0] rounded-xl p-4 hover:border-[#2563EB]/30 transition-colors"
+                      className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-600/30 transition-colors"
                     >
-                      <h4 className="font-bold text-[#0F172A] text-sm mb-1">{s.name}</h4>
-                      <p className="text-xs text-[#475569] leading-relaxed">{s.description}</p>
+                      <h4 className="font-bold text-slate-900 text-sm mb-1">{s.name}</h4>
+                      <p className="text-xs text-slate-600 leading-relaxed">{s.description}</p>
                     </div>
                   ))}
                 </div>
@@ -159,17 +159,17 @@ export default function CategoryLandingPage() {
 
       {/* How it works */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-black text-[#0F172A] mb-8 text-center">How it works</h2>
+        <h2 className="text-2xl font-black text-slate-900 mb-8 text-center">How it works</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
             { n: '1', title: 'Describe your job', desc: 'Tell us what you need — takes 2 minutes.' },
             { n: '2', title: 'Get matched', desc: 'Verified local pros receive your request and send quotes.' },
             { n: '3', title: 'Choose your Helper', desc: 'Compare quotes, read reviews, book with confidence.' },
           ].map(step => (
-            <div key={step.n} className="bg-white border border-[#E2E8F0] rounded-2xl p-6 text-center">
-              <div className="w-10 h-10 bg-[#EFF6FF] text-[#2563EB] rounded-full flex items-center justify-center font-black text-lg mx-auto mb-4">{step.n}</div>
-              <h3 className="font-bold text-[#0F172A] mb-2">{step.title}</h3>
-              <p className="text-sm text-[#475569]">{step.desc}</p>
+            <div key={step.n} className="bg-white border border-slate-200 rounded-2xl p-6 text-center">
+              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-black text-lg mx-auto mb-4">{step.n}</div>
+              <h3 className="font-bold text-slate-900 mb-2">{step.title}</h3>
+              <p className="text-sm text-slate-600">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -178,20 +178,20 @@ export default function CategoryLandingPage() {
       {/* Pricing */}
       {pricing && (
         <section className="py-8 px-6 max-w-4xl mx-auto">
-          <div className="bg-[#FEF3C7] border border-[#F59E0B]/30 rounded-2xl p-6">
-            <h2 className="font-bold text-[#92400E] mb-1">Typical pricing</h2>
-            <p className="text-[#78350F]">{pricing}</p>
-            <p className="text-sm text-[#92400E] mt-2">Exact quotes depend on scope — get yours free in 2 minutes.</p>
+          <div className="bg-amber-50 border border-amber-200/50 rounded-2xl p-6">
+            <h2 className="font-bold text-amber-800 mb-1">Typical pricing</h2>
+            <p className="text-amber-900">{pricing}</p>
+            <p className="text-sm text-amber-700 mt-2">Exact quotes depend on scope — get yours free in 2 minutes.</p>
           </div>
         </section>
       )}
 
       {/* Service areas */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-black text-[#0F172A] mb-4 text-center">
+        <h2 className="text-2xl font-black text-slate-900 mb-4 text-center">
           {category.name} in your area
         </h2>
-        <p className="text-[#475569] text-center mb-8 max-w-xl mx-auto">
+        <p className="text-slate-600 text-center mb-8 max-w-xl mx-auto">
           We cover homes across the GTA. Select your area to see local {category.name.toLowerCase()} providers.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
@@ -199,7 +199,7 @@ export default function CategoryLandingPage() {
             <Link
               key={area.slug}
               to={`/services/${categorySlug}/${area.slug}`}
-              className="px-5 py-2.5 bg-white border border-[#E2E8F0] rounded-full text-sm font-semibold text-[#0F172A] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+              className="px-5 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-semibold text-slate-900 hover:border-blue-600 hover:text-blue-600 transition-colors"
             >
               {area.name}
             </Link>
@@ -209,23 +209,23 @@ export default function CategoryLandingPage() {
 
       {/* FAQs */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-black text-[#0F172A] mb-8">Common questions</h2>
+        <h2 className="text-2xl font-black text-slate-900 mb-8">Common questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div key={i} className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-              <h3 className="font-bold text-[#0F172A] mb-2">{faq.q}</h3>
-              <p className="text-[#475569] text-sm">{faq.a}</p>
+            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-6">
+              <h3 className="font-bold text-slate-900 mb-2">{faq.q}</h3>
+              <p className="text-slate-600 text-sm">{faq.a}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Trust + Footer CTA */}
-      <section className="py-16 px-6 bg-[#0F172A] text-white text-center">
-        <p className="text-[#94A3B8] mb-4">Verified {category.name.toLowerCase()} pros serving Milton · Oakville · Burlington</p>
+      <section className="py-16 px-6 bg-slate-900 text-white text-center">
+        <p className="text-slate-400 mb-4">Verified {category.name.toLowerCase()} pros serving Milton · Oakville · Burlington</p>
         <Link
           to={`/get-quotes?category=${category.id}&slug=${category.slug}`}
-          className="inline-block px-10 py-4 bg-[#2563EB] text-white font-bold rounded-full text-lg hover:bg-[#1D4ED8] transition-colors"
+          className="inline-block px-10 py-4 bg-blue-600 text-white font-bold rounded-full text-lg hover:bg-blue-700 transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           Get Help →
         </Link>

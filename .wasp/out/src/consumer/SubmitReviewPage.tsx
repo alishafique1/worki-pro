@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router";
 import { useQuery, useAction } from "wasp/client/operations";
 import { getMyRequests, submitReview } from "wasp/client/operations";
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { CheckCircle2, ArrowLeft } from 'lucide-react';
 
 function StarPicker({
   value,
@@ -103,10 +104,8 @@ export default function SubmitReviewPage() {
   if (done) {
     return (
       <div className="p-8 max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[60vh] bg-[#F8FAFC]">
-        <div className="w-20 h-20 rounded-full bg-[#F0FDF4] border-2 border-[#22C55E] flex items-center justify-center mb-6">
-          <svg className="w-10 h-10 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+        <div className="w-20 h-20 rounded-full bg-[#DCFCE7] border-2 border-[#22C55E] flex items-center justify-center mb-6">
+          <CheckCircle2 className="w-10 h-10 text-[#22C55E]" />
         </div>
         <h2 className="text-3xl font-black mb-3 text-[#0F172A]">Review submitted!</h2>
         <p className="text-[#475569] mb-8 text-center">
@@ -114,7 +113,7 @@ export default function SubmitReviewPage() {
         </p>
         <Link
           to="/my-requests"
-          className="px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
         >
           Back to my requests
         </Link>
@@ -126,11 +125,9 @@ export default function SubmitReviewPage() {
     <div className="p-8 max-w-2xl mx-auto min-h-[80vh] bg-[#F8FAFC]">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-[#475569] hover:text-[#0F172A] transition-colors text-sm font-medium mb-8"
+        className="inline-flex items-center gap-2 text-[#475569] hover:text-[#0F172A] transition-colors text-sm font-medium mb-8"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
+        <ArrowLeft className="w-4 h-4" />
         Back
       </button>
 

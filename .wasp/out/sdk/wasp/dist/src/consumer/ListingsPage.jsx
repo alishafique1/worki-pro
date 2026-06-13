@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
-import { Wrench } from 'lucide-react';
+import { Wrench, Search } from 'lucide-react';
 export default function ListingsPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -79,9 +79,7 @@ export default function ListingsPage() {
       {/* Controls bar */}
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
         <div className="relative flex-1">
-          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]"/>
           <input type="text" placeholder="Search for a service..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors"/>
         </div>
 
@@ -114,13 +112,13 @@ export default function ListingsPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (<div key={i} className="animate-pulse bg-white rounded-[24px] h-52 border border-[#E2E8F0]"/>))}
         </div>) : listings.length === 0 ? (<div className="text-center py-20">
           <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
-            <span className="text-3xl opacity-50"><Wrench /></span>
+            <span className="text-3xl opacity-50"><Wrench className="size-6"/></span>
           </div>
           <h3 className="text-xl font-bold mb-2 text-[#0F172A]">No listings found</h3>
           <p className="text-[#475569]">
             {searchQuery ? 'Try a different search term.' : 'Try a different category filter.'}
           </p>
-          {(searchQuery || selectedCategory) && (<button onClick={() => { setSearchQuery(''); setSelectedCategory(''); }} className="mt-4 px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm hover:bg-[#1D4ED8] transition-colors">
+          {(searchQuery || selectedCategory) && (<button onClick={() => { setSearchQuery(''); setSelectedCategory(''); }} className="mt-4 px-5 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Clear filters
             </button>)}
         </div>) : (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -147,7 +145,7 @@ export default function ListingsPage() {
                     <span className="text-xs text-[#94A3B8]">
                       {entry.providerCount} pro{entry.providerCount !== 1 ? 's' : ''} offering
                     </span>
-                    <Link to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`} className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors">
+                    <Link to={`/discover${selectedCategory ? `?category=${selectedCategory}` : ''}`} className="px-4 py-2 bg-[#2563EB] text-white font-bold rounded-[16px] text-xs hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
                       Find Pros
                     </Link>
                   </div>
@@ -188,7 +186,7 @@ export default function ListingsPage() {
         <p className="text-[#475569] mb-6">
           Submit a service request and The Helper will match you with the right pro.
         </p>
-        <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors inline-block">
+        <Link to="/get-quotes" className="px-8 py-4 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors inline-block shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           Submit a Request
         </Link>
       </div>

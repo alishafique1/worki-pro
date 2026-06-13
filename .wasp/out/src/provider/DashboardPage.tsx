@@ -102,7 +102,7 @@ export default function ProviderDashboardPage() {
           </p>
           <button
             onClick={() => navigate('/onboarding')}
-            className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors"
+            className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Complete setup →
           </button>
@@ -171,13 +171,13 @@ export default function ProviderDashboardPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             to="/provider/services"
-            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Manage listings
           </Link>
           <Link
             to="/provider/leads"
-            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors"
+            className="rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             Open lead inbox
           </Link>
@@ -213,7 +213,7 @@ export default function ProviderDashboardPage() {
           </div>
           <Link
             to="/provider/services"
-            className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-sm whitespace-nowrap"
+            className="px-6 py-3 bg-[#2563EB] text-white font-bold rounded-[18px] hover:bg-[#1D4ED8] transition-colors text-sm whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
           >
             {(() => {
               const services = safeParseServices((profile as any)?.servicesJson);
@@ -328,14 +328,14 @@ export default function ProviderDashboardPage() {
                       {(lead as any).status === 'ASSIGNED' ? (
                         <button
                           onClick={() => handleAccept(lead.id)}
-                          className="flex-1 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors"
+                          className="flex-1 py-2 bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                         >
                           Accept
                         </button>
                       ) : (
                         <Link
                           to={`/provider/requests/${lead.id}/messages`}
-                          className="flex-1 py-2 text-center bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors"
+                          className="flex-1 py-2 text-center bg-[#2563EB] text-white font-bold rounded-[14px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                         >
                           Message customer →
                         </Link>

@@ -65,7 +65,7 @@ export default function ProviderApplyPage() {
           <p className="text-[#475569] mb-8">
             Our team reviews every application within 24-48 hours. Once verified, you will start receiving leads from homeowners in your service area. We will email you as soon as your profile is approved.
           </p>
-          <button onClick={() => window.location.href = '/provider/dashboard'} className="w-full py-4 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1D4ED8] transition-colors">
+          <button onClick={() => window.location.href = '/provider/dashboard'} className="w-full py-4 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
             Go to Dashboard
           </button>
         </div>
@@ -127,7 +127,7 @@ export default function ProviderApplyPage() {
                   </label>))}
               </div>
             </fieldset>
-            <button type="submit" disabled={isSubmitting} className="w-full py-5 bg-[#2563EB] text-white font-bold rounded-2xl text-xl hover:bg-[#1D4ED8] transition-colors mt-8 disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="w-full py-5 bg-[#2563EB] text-white font-bold rounded-2xl text-xl hover:bg-[#1D4ED8] transition-colors mt-8 disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </button>
           </form>

@@ -57,7 +57,7 @@ export default function ServicesPage() {
             />
             <Link
               to={`/get-quotes${search ? `?q=${encodeURIComponent(search)}` : ''}`}
-              className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Get Help
             </Link>
@@ -120,7 +120,7 @@ export default function ServicesPage() {
             </p>
             <Link
               to={`/get-quotes?q=${encodeURIComponent(search)}`}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Get Help with this →
             </Link>
@@ -156,7 +156,7 @@ export default function ServicesPage() {
             </div>
             <Link
               to="/get-quotes"
-              className="shrink-0 px-7 py-4 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors"
+              className="shrink-0 px-7 py-4 bg-[#2563EB] text-white font-bold rounded-full text-sm hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Get Help →
             </Link>

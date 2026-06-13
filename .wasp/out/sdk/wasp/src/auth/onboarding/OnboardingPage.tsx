@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'wasp/client/auth';
 import { completeOnboarding } from 'wasp/client/operations';
+import { ArrowLeft } from 'lucide-react';
 import ProgressBar from './components/ProgressBar';
 import StepRole from './components/StepRole';
 import StepProfile from './components/StepProfile';
@@ -297,9 +298,9 @@ export default function OnboardingPage() {
                 <button
                   type="button"
                   onClick={goBack}
-                  className="px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
                 >
-                  ← Back
+                  <ArrowLeft className="size-4" /> Back
                 </button>
               ) : (
                 <div />
