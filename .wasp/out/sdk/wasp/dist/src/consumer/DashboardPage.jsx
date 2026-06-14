@@ -38,6 +38,17 @@ export default function DashboardPage() {
         </Link>
       </div>
 
+      {/* Stats strip skeleton */}
+      {requestsLoading && (<div className="grid grid-cols-3 gap-4">
+          {[0, 1, 2].map((i) => (<div key={i} className="animate-pulse bg-white border border-[#E2E8F0] rounded-[18px] p-4 flex items-center gap-4">
+              <div className="size-10 shrink-0 rounded-xl bg-[#E2E8F0]"/>
+              <div className="space-y-2">
+                <div className="h-6 w-10 rounded bg-[#E2E8F0]"/>
+                <div className="h-3 w-20 rounded bg-[#E2E8F0]"/>
+              </div>
+            </div>))}
+        </div>)}
+
       {/* Stats strip */}
       {!requestsLoading && !requestsError && requests && requests.length > 0 && (<div className="grid grid-cols-3 gap-4">
           {[
@@ -62,10 +73,26 @@ export default function DashboardPage() {
               View all requests →
             </Link>
           </div>
-          {requestsLoading && (<div className="rounded-[24px] border border-[#E2E8F0] bg-white p-6">
-              <div className="h-5 w-40 animate-pulse rounded bg-[#F8FAFC]"/>
-              <div className="mt-4 h-4 w-2/3 animate-pulse rounded bg-[#F8FAFC]"/>
-              <div className="mt-3 h-4 w-1/2 animate-pulse rounded bg-[#F8FAFC]"/>
+          {requestsLoading && (<div className="space-y-4">
+              {[0, 1, 2].map((i) => (<div key={i} className="animate-pulse rounded-[24px] border border-[#E2E8F0] bg-white p-6">
+                  {/* Status badge + title row */}
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="space-y-2 flex-1">
+                      <div className="h-5 w-24 rounded-full bg-[#E2E8F0]"/>
+                      <div className="h-5 w-3/4 rounded bg-[#E2E8F0]"/>
+                    </div>
+                    <div className="h-7 w-28 rounded-full bg-[#E2E8F0] shrink-0"/>
+                  </div>
+                  {/* Meta row */}
+                  <div className="flex gap-4 mb-4">
+                    <div className="h-4 w-24 rounded bg-[#E2E8F0]"/>
+                    <div className="h-4 w-32 rounded bg-[#E2E8F0]"/>
+                  </div>
+                  {/* Actions row */}
+                  <div className="flex gap-3">
+                    <div className="h-4 w-20 rounded bg-[#E2E8F0]"/>
+                  </div>
+                </div>))}
             </div>)}
 
           {!requestsLoading && requestsError && (<div className="rounded-[24px] border border-[#E2E8F0] bg-white p-6">
@@ -159,7 +186,18 @@ export default function DashboardPage() {
               </Link>
             </div>
 
-            {rewardsLoading ? (<div className="animate-pulse h-20 bg-[#F8FAFC] rounded-[14px]"></div>) : rewardsError ? (<div>
+            {rewardsLoading ? (<div className="animate-pulse space-y-3">
+                <div className="h-4 w-24 rounded bg-[#E2E8F0]"/>
+                <div className="h-14 w-32 rounded bg-[#E2E8F0]"/>
+                <div className="h-10 w-48 rounded-xl bg-[#E2E8F0]"/>
+                <div className="pt-4 border-t border-[#E2E8F0] flex justify-between">
+                  <div className="space-y-1.5">
+                    <div className="h-3 w-20 rounded bg-[#E2E8F0]"/>
+                    <div className="h-5 w-28 rounded bg-[#E2E8F0]"/>
+                  </div>
+                  <div className="h-8 w-20 rounded-[14px] bg-[#E2E8F0]"/>
+                </div>
+              </div>) : rewardsError ? (<div>
                 <p className="font-bold">Rewards could not load</p>
                 <p className="mt-2 text-sm text-[#475569]">
                   Open rewards to check your balance and history.

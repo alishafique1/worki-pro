@@ -18,6 +18,7 @@ import { createProviderProfile as createProviderProfile_ext } from 'wasp/src/pro
 import { updateProviderAppointment as updateProviderAppointment_ext } from 'wasp/src/provider/operations';
 import { sendProviderMessage as sendProviderMessage_ext } from 'wasp/src/provider/operations';
 import { updateProviderProfile as updateProviderProfile_ext } from 'wasp/src/provider/operations';
+import { resubmitProviderApplication as resubmitProviderApplication_ext } from 'wasp/src/provider/operations';
 import { claimLead as claimLead_ext } from 'wasp/src/provider/operations';
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations';
 import { updateIsUserAdminById as updateIsUserAdminById_ext } from 'wasp/src/user/operations';
@@ -146,6 +147,10 @@ export const sendProviderMessage = createAuthenticatedOperation(sendProviderMess
 });
 // PUBLIC API
 export const updateProviderProfile = createAuthenticatedOperation(updateProviderProfile_ext, {
+    Provider: prisma.provider,
+});
+// PUBLIC API
+export const resubmitProviderApplication = createAuthenticatedOperation(resubmitProviderApplication_ext, {
     Provider: prisma.provider,
 });
 // PUBLIC API

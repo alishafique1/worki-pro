@@ -94,6 +94,9 @@ export type SendProviderMessage<Input extends Payload = never, Output extends Pa
 export type UpdateProviderProfile<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Provider
 ], Input, Output>;
+export type ResubmitProviderApplication<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _Provider
+], Input, Output>;
 export type ClaimLead<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _ServiceRequest,
     _Provider,

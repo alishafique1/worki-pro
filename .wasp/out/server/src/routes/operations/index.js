@@ -20,6 +20,7 @@ import createProviderProfile from './createProviderProfile.js'
 import updateProviderAppointment from './updateProviderAppointment.js'
 import sendProviderMessage from './sendProviderMessage.js'
 import updateProviderProfile from './updateProviderProfile.js'
+import resubmitProviderApplication from './resubmitProviderApplication.js'
 import claimLead from './claimLead.js'
 import moderateReview from './moderateReview.js'
 import updateIsUserAdminById from './updateIsUserAdminById.js'
@@ -84,6 +85,7 @@ router.post('/create-provider-profile', auth, createProviderProfile)
 router.post('/update-provider-appointment', auth, updateProviderAppointment)
 router.post('/send-provider-message', auth, sendProviderMessage)
 router.post('/update-provider-profile', auth, updateProviderProfile)
+router.post('/resubmit-provider-application', auth, resubmitProviderApplication)
 router.post('/claim-lead', auth, claimLead)
 router.post('/moderate-review', auth, moderateReview)
 router.post('/update-is-user-admin-by-id', auth, updateIsUserAdminById)

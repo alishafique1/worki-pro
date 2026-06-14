@@ -17,6 +17,7 @@ import { CreateProviderProfile_ext } from 'wasp/server/operations/actions';
 import { UpdateProviderAppointment_ext } from 'wasp/server/operations/actions';
 import { SendProviderMessage_ext } from 'wasp/server/operations/actions';
 import { UpdateProviderProfile_ext } from 'wasp/server/operations/actions';
+import { ResubmitProviderApplication_ext } from 'wasp/server/operations/actions';
 import { ClaimLead_ext } from 'wasp/server/operations/actions';
 import { ModerateReview_ext } from 'wasp/server/operations/actions';
 import { UpdateIsUserAdminById_ext } from 'wasp/server/operations/actions';
@@ -52,6 +53,7 @@ export declare const createProviderProfile: ActionFor<CreateProviderProfile_ext>
 export declare const updateProviderAppointment: ActionFor<UpdateProviderAppointment_ext>;
 export declare const sendProviderMessage: ActionFor<SendProviderMessage_ext>;
 export declare const updateProviderProfile: ActionFor<UpdateProviderProfile_ext>;
+export declare const resubmitProviderApplication: ActionFor<ResubmitProviderApplication_ext>;
 export declare const claimLead: ActionFor<ClaimLead_ext>;
 export declare const moderateReview: ActionFor<ModerateReview_ext>;
 export declare const updateIsUserAdminById: ActionFor<UpdateIsUserAdminById_ext>;
