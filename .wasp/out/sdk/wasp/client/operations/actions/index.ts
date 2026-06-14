@@ -17,6 +17,7 @@ import { CreateProviderProfile_ext } from 'wasp/server/operations/actions'
 import { UpdateProviderAppointment_ext } from 'wasp/server/operations/actions'
 import { SendProviderMessage_ext } from 'wasp/server/operations/actions'
 import { UpdateProviderProfile_ext } from 'wasp/server/operations/actions'
+import { ResubmitProviderApplication_ext } from 'wasp/server/operations/actions'
 import { ClaimLead_ext } from 'wasp/server/operations/actions'
 import { ModerateReview_ext } from 'wasp/server/operations/actions'
 import { UpdateIsUserAdminById_ext } from 'wasp/server/operations/actions'
@@ -140,6 +141,12 @@ export const sendProviderMessage: ActionFor<SendProviderMessage_ext> = createAct
 // PUBLIC API
 export const updateProviderProfile: ActionFor<UpdateProviderProfile_ext> = createAction<UpdateProviderProfile_ext>(
   'operations/update-provider-profile',
+  ['Provider'],
+)
+
+// PUBLIC API
+export const resubmitProviderApplication: ActionFor<ResubmitProviderApplication_ext> = createAction<ResubmitProviderApplication_ext>(
+  'operations/resubmit-provider-application',
   ['Provider'],
 )
 

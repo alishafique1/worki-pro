@@ -340,14 +340,49 @@ export default function MyRequestsPage() {
 
       {isLoading && (
         <div className="space-y-4">
-          {[0, 1].map((item) => (
+          {[0, 1, 2].map((item) => (
             <div
               key={item}
-              className="rounded-[24px] border border-[#E2E8F0] bg-white p-5"
+              className="animate-pulse rounded-[24px] border border-[#E2E8F0] bg-white p-5 space-y-5"
             >
-              <div className="h-5 w-1/2 animate-pulse rounded bg-[#F8FAFC]" />
-              <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-[#F8FAFC]" />
-              <div className="mt-6 h-16 animate-pulse rounded-[18px] bg-[#F8FAFC]" />
+              {/* Header: description + status badge */}
+              <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+                <div className="min-w-0 space-y-2">
+                  <div className="h-4 w-full rounded bg-[#E2E8F0]" />
+                  <div className="h-4 w-3/4 rounded bg-[#E2E8F0]" />
+                  <div className="flex gap-2 mt-3">
+                    <div className="h-6 w-20 rounded-full bg-[#E2E8F0]" />
+                    <div className="h-6 w-16 rounded-full bg-[#E2E8F0]" />
+                  </div>
+                </div>
+                {/* Booking block */}
+                <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 md:min-w-[260px] space-y-2">
+                  <div className="h-4 w-24 rounded bg-[#E2E8F0]" />
+                  <div className="h-4 w-36 rounded bg-[#E2E8F0]" />
+                </div>
+              </div>
+              {/* Timeline row */}
+              <div className="grid gap-3 sm:grid-cols-4">
+                {[0, 1, 2, 3].map((s) => (
+                  <div key={s} className="flex items-center gap-2">
+                    <div className="size-6 rounded-full bg-[#E2E8F0] shrink-0" />
+                    <div className="h-3 w-20 rounded bg-[#E2E8F0]" />
+                  </div>
+                ))}
+              </div>
+              {/* Provider + Details blocks */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 space-y-2">
+                  <div className="h-4 w-16 rounded bg-[#E2E8F0]" />
+                  <div className="h-4 w-32 rounded bg-[#E2E8F0]" />
+                  <div className="h-3 w-24 rounded bg-[#E2E8F0]" />
+                </div>
+                <div className="rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 space-y-2">
+                  <div className="h-4 w-24 rounded bg-[#E2E8F0]" />
+                  <div className="h-3 w-28 rounded bg-[#E2E8F0]" />
+                  <div className="h-3 w-20 rounded bg-[#E2E8F0]" />
+                </div>
+              </div>
             </div>
           ))}
         </div>

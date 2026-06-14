@@ -44,6 +44,7 @@ export { createProviderProfile } from './actions/index.js';
 export { updateProviderAppointment } from './actions/index.js';
 export { sendProviderMessage } from './actions/index.js';
 export { updateProviderProfile } from './actions/index.js';
+export { resubmitProviderApplication } from './actions/index.js';
 export { claimLead } from './actions/index.js';
 export { moderateReview } from './actions/index.js';
 export { updateIsUserAdminById } from './actions/index.js';

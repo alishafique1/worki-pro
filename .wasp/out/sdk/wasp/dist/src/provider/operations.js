@@ -563,4 +563,32 @@ export const getPublicProvider = async ({ slug }, context) => {
     });
     return provider;
 };
+// ─── Issue 3: Resubmit rejected application ─────────────────────────────────
+export const resubmitProviderApplication = async (args, context) => {
+    if (!context.user)
+        throw new HttpError(401);
+    const provider = await context.entities.Provider.findUnique({
+        where: { userId: context.user.id },
+    });
+    if (!provider)
+        throw new HttpError(404, "Provider profile not found.");
+    if (provider.verificationStatus !== "REJECTED") {
+        throw new HttpError(400, "Only rejected applications can be resubmitted.");
+    }
+    const updated = await context.entities.Provider.update({
+        where: { id: provider.id },
+        data: { verificationStatus: "PENDING" },
+    });
+    // Notify admin of resubmission
+    const adminEmails = (process.env.ADMIN_EMAILS ?? '').split(',').map((e) => e.trim()).filter(Boolean);
+    for (const adminEmail of adminEmails) {
+        emailSender.send({
+            to: adminEmail,
+            subject: `Provider resubmission: ${provider.businessName}`,
+            text: `A provider has resubmitted their application.\n\nBusiness: ${provider.businessName}\nEmail: ${context.user.email ?? 'N/A'}\n\nReview: https://thehelper.ca/admin/providers`,
+            html: `<p>A provider has resubmitted their application.</p><p><strong>Business:</strong> ${provider.businessName}</p><p><strong>Email:</strong> ${context.user.email ?? 'N/A'}</p><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
+        }).catch(() => { });
+    }
+    return updated;
+};
 //# sourceMappingURL=operations.js.map

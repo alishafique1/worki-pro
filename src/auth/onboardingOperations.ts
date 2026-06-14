@@ -1,5 +1,6 @@
 import { HttpError, prisma } from 'wasp/server';
 import { type CompleteOnboarding } from 'wasp/server/operations';
+import { emailSender } from 'wasp/server/email';
 import { REWARD_POINTS } from '../shared/rewardConstants';
 
 type CompleteOnboardingInput = {
@@ -60,17 +61,17 @@ export const completeOnboarding: CompleteOnboarding<
     });
 
     if (serviceCategoryIds && serviceCategoryIds.length > 0) {
+      const provider = await context.entities.Provider.findUnique({ where: { userId } });
       await context.entities.ProviderCategory.deleteMany({
         where: { provider: { userId } },
       });
-      for (const catId of serviceCategoryIds) {
-        await context.entities.ProviderCategory.create({
-          data: {
-            providerId: (await context.entities.Provider.findUnique({ where: { userId } }))!.id,
-            serviceCategoryId: catId,
-          },
-        });
-      }
+      await context.entities.ProviderCategory.createMany({
+        data: serviceCategoryIds.map(serviceCategoryId => ({
+          providerId: provider!.id,
+          serviceCategoryId,
+        })),
+        skipDuplicates: true,
+      });
     }
   }
 
@@ -78,11 +79,13 @@ export const completeOnboarding: CompleteOnboarding<
     await context.entities.ConsumerInterest.deleteMany({
       where: { consumerId: userId },
     });
-    for (const catId of interestCategoryIds) {
-      await context.entities.ConsumerInterest.create({
-        data: { consumerId: userId, serviceCategoryId: catId },
-      });
-    }
+    await context.entities.ConsumerInterest.createMany({
+      data: interestCategoryIds.map(serviceCategoryId => ({
+        consumerId: userId,
+        serviceCategoryId,
+      })),
+      skipDuplicates: true,
+    });
   }
 
   if (role === 'CONSUMER') {
@@ -154,7 +157,7 @@ export const completeOnboarding: CompleteOnboarding<
           },
         });
       }
-    }, { isolationLevel: 'Serializable' });
+    }, { isolationLevel: 'ReadCommitted' });
   }
 
   if (referralCode && role === 'CONSUMER') {
@@ -167,6 +170,41 @@ export const completeOnboarding: CompleteOnboarding<
         where: { id: referral.id },
         data: { referredUserId: userId, status: 'SIGNED_UP' },
       });
+    }
+  }
+
+  // ─── Issue 2+7: Email notifications (fire-and-forget) ──────────────────────
+  const consumerEmail = context.user.email;
+  if (role === 'CONSUMER' && consumerEmail) {
+    emailSender.send({
+      to: consumerEmail,
+      subject: 'Welcome to The Helper!',
+      text: `Hi ${firstName},\n\nWelcome to The Helper! Here's how it works:\n\n1. Tell us what you need — describe your problem\n2. We match you with vetted local pros\n3. Compare, choose, and earn rewards on every job\n\nReady to start? Submit your first request:\nhttps://thehelper.ca/get-quotes\n\nThe TheHelper Team`,
+      html: `<p>Hi ${firstName},</p><p>Welcome to The Helper! Here's how it works:</p><ol><li>Tell us what you need</li><li>We match you with vetted local pros</li><li>Earn rewards on every job</li></ol><p><a href="https://thehelper.ca/get-quotes" style="display:inline-block;padding:12px 24px;background:#2563EB;color:#fff;border-radius:22px;text-decoration:none;font-weight:bold">Submit your first request →</a></p><p>The TheHelper Team</p>`,
+    }).catch(() => {/* non-blocking */});
+  }
+
+  if (role === 'PROVIDER') {
+    const providerEmail = context.user.email;
+    // Provider confirmation email
+    if (providerEmail) {
+      emailSender.send({
+        to: providerEmail,
+        subject: 'Application received — The Helper',
+        text: `Hi ${firstName},\n\nThanks for applying to join The Helper as a service pro.\n\nYour application is under review. Our team is verifying your information. You can browse leads in the meantime but won't be able to claim them until your account is verified.\n\nWe'll notify you once the review is complete.\n\nGo to your dashboard:\nhttps://thehelper.ca/provider/dashboard\n\nThe TheHelper Team`,
+        html: `<p>Hi ${firstName},</p><p>Thanks for applying to join The Helper as a service pro.</p><p>Your application is under review. Our team is verifying your information. You can browse leads in the meantime but won't be able to claim them until your account is verified.</p><p>We'll notify you once the review is complete.</p><p><a href="https://thehelper.ca/provider/dashboard" style="display:inline-block;padding:12px 24px;background:#2563EB;color:#fff;border-radius:22px;text-decoration:none;font-weight:bold">Go to dashboard →</a></p><p>The TheHelper Team</p>`,
+      }).catch(() => {/* non-blocking */});
+    }
+
+    // Issue 7: Notify admins of new provider onboarding (same pattern as submitProviderApplication)
+    const adminEmails = (process.env.ADMIN_EMAILS ?? '').split(',').map((e: string) => e.trim()).filter(Boolean);
+    for (const adminEmail of adminEmails) {
+      emailSender.send({
+        to: adminEmail,
+        subject: `New provider onboarding: ${businessName ?? 'Unknown'}`,
+        text: `A new provider completed onboarding.\n\nBusiness: ${businessName ?? 'Unknown'}\nPhone: ${phone}\nEmail: ${consumerEmail ?? 'N/A'}\nAreas: ${(serviceAreas ?? []).join(', ')}\nCategories: ${(serviceCategoryIds ?? []).length} selected\n\nReview: https://thehelper.ca/admin/providers`,
+        html: `<p>A new provider completed onboarding.</p><ul><li><strong>Business:</strong> ${businessName ?? 'Unknown'}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${consumerEmail ?? 'N/A'}</li><li><strong>Areas:</strong> ${(serviceAreas ?? []).join(', ')}</li><li><strong>Categories:</strong> ${(serviceCategoryIds ?? []).length} selected</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
+      }).catch(() => {/* non-blocking */});
     }
   }
 

@@ -10,7 +10,25 @@ function generateOtp() {
 function hashCode(code) {
     return crypto.createHash('sha256').update(code).digest('hex');
 }
+function isAllowedOrigin(req) {
+    const origin = req.headers.origin;
+    if (!origin)
+        return true; // non-browser / same-origin server calls have no Origin header
+    const allowed = [
+        process.env.WASP_WEB_CLIENT_URL,
+        'https://thehelper.ca',
+        'https://www.thehelper.ca',
+    ].filter(Boolean);
+    // also allow localhost dev origins
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
+        return true;
+    return allowed.includes(origin);
+}
 export const requestOtp = async (req, res, context) => {
+    if (!isAllowedOrigin(req)) {
+        res.status(403).json({ error: 'Forbidden.' });
+        return;
+    }
     const { email } = req.body;
     if (!email || typeof email !== 'string' || !email.includes('@')) {
         res.status(400).json({ error: 'A valid email address is required.' });
@@ -73,9 +91,17 @@ export const requestOtp = async (req, res, context) => {
     res.json({ success: true });
 };
 export const verifyOtp = async (req, res, context) => {
+    if (!isAllowedOrigin(req)) {
+        res.status(403).json({ error: 'Forbidden.' });
+        return;
+    }
     const { email, code, password, pendingRequest } = req.body;
     if (!email || !code) {
         res.status(400).json({ error: 'Email and code are required.' });
+        return;
+    }
+    if (password && password.length < 8) {
+        res.status(400).json({ error: 'Password must be at least 8 characters.' });
         return;
     }
     const normalizedEmail = email.toLowerCase().trim();
@@ -91,10 +117,12 @@ export const verifyOtp = async (req, res, context) => {
     if (!otpRecord) {
         throw new HttpError(400, 'No valid OTP found. Please request a new code.');
     }
-    await prisma.otpCode.update({
-        where: { id: otpRecord.id },
+    const bumped = await prisma.otpCode.updateMany({
+        where: { id: otpRecord.id, attempts: { lt: 5 } },
         data: { attempts: { increment: 1 } },
     });
+    if (bumped.count === 0)
+        throw new HttpError(429, 'Too many incorrect attempts. Please request a new code.');
     if (otpRecord.code !== hashCode(code.trim())) {
         throw new HttpError(400, 'Incorrect verification code.');
     }

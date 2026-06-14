@@ -17,6 +17,7 @@ import { createProviderProfile as createProviderProfile_ext } from 'wasp/src/pro
 import { updateProviderAppointment as updateProviderAppointment_ext } from 'wasp/src/provider/operations';
 import { sendProviderMessage as sendProviderMessage_ext } from 'wasp/src/provider/operations';
 import { updateProviderProfile as updateProviderProfile_ext } from 'wasp/src/provider/operations';
+import { resubmitProviderApplication as resubmitProviderApplication_ext } from 'wasp/src/provider/operations';
 import { claimLead as claimLead_ext } from 'wasp/src/provider/operations';
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations';
 import { updateIsUserAdminById as updateIsUserAdminById_ext } from 'wasp/src/user/operations';
@@ -70,6 +71,8 @@ export type SendProviderMessage_ext = typeof sendProviderMessage_ext;
 export declare const sendProviderMessage: AuthenticatedOperationFor<SendProviderMessage_ext>;
 export type UpdateProviderProfile_ext = typeof updateProviderProfile_ext;
 export declare const updateProviderProfile: AuthenticatedOperationFor<UpdateProviderProfile_ext>;
+export type ResubmitProviderApplication_ext = typeof resubmitProviderApplication_ext;
+export declare const resubmitProviderApplication: AuthenticatedOperationFor<ResubmitProviderApplication_ext>;
 export type ClaimLead_ext = typeof claimLead_ext;
 export declare const claimLead: AuthenticatedOperationFor<ClaimLead_ext>;
 export type ModerateReview_ext = typeof moderateReview_ext;

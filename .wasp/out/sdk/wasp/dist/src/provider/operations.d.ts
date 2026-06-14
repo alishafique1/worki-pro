@@ -1,5 +1,5 @@
 import type { ServiceRequest, Provider, Appointment, ProviderFee, ProviderCategory, ServiceCategory, CommunicationLog, Review } from "wasp/entities";
-import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider } from "wasp/server/operations";
+import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, ResubmitProviderApplication } from "wasp/server/operations";
 export declare const getProviderLeads: GetProviderLeads<void, ServiceRequest[]>;
 export declare const getProviderAppointments: GetProviderAppointments<void, any[]>;
 export declare const getProviderProfile: GetProviderProfile<void, Provider & {
@@ -108,5 +108,6 @@ type PublicProviderProfile = Provider & {
 export declare const getPublicProvider: GetPublicProvider<{
     slug: string;
 }, PublicProviderProfile | null>;
+export declare const resubmitProviderApplication: ResubmitProviderApplication<void, Provider>;
 export {};
 //# sourceMappingURL=operations.d.ts.map

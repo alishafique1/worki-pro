@@ -3,14 +3,18 @@ import { Link } from 'react-router';
 import { useQuery } from 'wasp/client/operations';
 import { getProviders, getServiceCategories } from 'wasp/client/operations';
 import { Wrench, Search } from 'lucide-react';
+import useDebounce from '../client/hooks/useDebounce';
 export default function ListingsPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('name-asc');
+    // Debounce the search so the query only fires 300ms after the user stops typing.
+    // The raw `searchQuery` value keeps the input field snappy.
+    const debouncedSearch = useDebounce(searchQuery, 300);
     const { data: categories } = useQuery(getServiceCategories);
     const { data: providers, isLoading } = useQuery(getProviders, {
         categorySlug: selectedCategory || undefined,
-        search: searchQuery || undefined,
+        search: debouncedSearch || undefined,
     });
     // Extract all individual service listings from all providers
     const allListingsMap = useMemo(() => {
@@ -49,9 +53,9 @@ export default function ListingsPage() {
     }, [providers]);
     // Apply category filter
     let listings = Array.from(allListingsMap.values()).filter((entry) => selectedCategory ? entry.service.categorySlug === selectedCategory : true);
-    // Apply search
-    if (searchQuery) {
-        const q = searchQuery.toLowerCase();
+    // Apply search (use debounced value so filtering is in sync with the query)
+    if (debouncedSearch) {
+        const q = debouncedSearch.toLowerCase();
         listings = listings.filter((s) => s.service.name.toLowerCase().includes(q) ||
             s.service.description.toLowerCase().includes(q));
     }
@@ -109,7 +113,25 @@ export default function ListingsPage() {
 
       {/* Listings grid */}
       {isLoading ? (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (<div key={i} className="animate-pulse bg-white rounded-[24px] h-52 border border-[#E2E8F0]"/>))}
+          {[1, 2, 3, 4, 5, 6].map((i) => (<div key={i} className="animate-pulse bg-white rounded-[24px] border border-[#E2E8F0] p-6 flex flex-col">
+              {/* Icon + price badge row */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="w-10 h-10 rounded-full bg-[#E2E8F0]"/>
+                <div className="h-6 w-16 rounded-full bg-[#E2E8F0]"/>
+              </div>
+              {/* Title */}
+              <div className="h-5 w-3/4 rounded bg-[#E2E8F0] mb-2"/>
+              {/* Description lines */}
+              <div className="space-y-1.5 flex-grow">
+                <div className="h-4 w-full rounded bg-[#E2E8F0]"/>
+                <div className="h-4 w-4/5 rounded bg-[#E2E8F0]"/>
+              </div>
+              {/* Footer */}
+              <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex items-center justify-between">
+                <div className="h-4 w-20 rounded bg-[#E2E8F0]"/>
+                <div className="h-8 w-20 rounded-[16px] bg-[#E2E8F0]"/>
+              </div>
+            </div>))}
         </div>) : listings.length === 0 ? (<div className="text-center py-20">
           <div className="w-20 h-20 bg-[#F8FAFC] rounded-full mx-auto mb-6 flex items-center justify-center">
             <span className="text-3xl opacity-50"><Wrench className="size-6"/></span>

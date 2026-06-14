@@ -3,7 +3,12 @@
     "allow": [
       "Bash(gh run *)",
       "Bash(dig thehelper.ca @1.1.1.1 +short)",
-      "Bash(dig thehelper.ca @8.8.8.8 +short)"
+      "Bash(dig thehelper.ca @8.8.8.8 +short)",
+      "Skill(connect-chrome)",
+      "Skill(connect-chrome:*)",
+      "Bash(/Users/alishafique/.claude/skills/gstack/browse/dist/browse status *)",
+      "Skill(qa)",
+      "Skill(qa:*)"
     ]
   }
 }
