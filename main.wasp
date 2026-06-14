@@ -438,6 +438,11 @@ action updateProviderProfile {
   entities: [Provider]
 }
 
+action resubmitProviderApplication {
+  fn: import { resubmitProviderApplication } from "@src/provider/operations",
+  entities: [Provider]
+}
+
 // Bark-style lead feed + claim
 query getPublicLeadFeed {
   fn: import { getPublicLeadFeed } from "@src/provider/operations",

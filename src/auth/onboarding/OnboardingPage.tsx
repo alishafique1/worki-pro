@@ -39,6 +39,9 @@ const PROVIDER_LABELS: Record<number, string> = {
   4: 'Services',
 };
 
+const CANADIAN_PHONE = /^(\+1)?[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$/;
+const GTA_POSTAL_PREFIXES = /^[LM]/i;
+
 export default function OnboardingPage() {
   const { data: user } = useAuth();
   const navigate = useNavigate();
@@ -64,8 +67,30 @@ export default function OnboardingPage() {
   const getDashboardPath = (role?: Role | null) =>
     role === 'PROVIDER' ? '/provider/dashboard' : '/dashboard';
 
+  // ─── Issue 11: Persist progress across refresh via sessionStorage ──────────
+  useEffect(() => {
+    const savedForm = sessionStorage.getItem('onboardingForm');
+    const savedStep = sessionStorage.getItem('onboardingStep');
+    if (savedForm) {
+      try {
+        setForm(JSON.parse(savedForm));
+      } catch { /* ignore corrupt data */ }
+    }
+    if (savedStep) {
+      const parsed = parseInt(savedStep, 10);
+      if (parsed >= 1 && parsed <= totalSteps) setStep(parsed);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    sessionStorage.setItem('onboardingForm', JSON.stringify(form));
+    sessionStorage.setItem('onboardingStep', String(step));
+  }, [form, step]);
+
   useEffect(() => {
     if (user && user.firstName) {
+      sessionStorage.removeItem('onboardingForm');
+      sessionStorage.removeItem('onboardingStep');
       navigate(getDashboardPath((user.role as Role | undefined) ?? null));
     }
   }, [user, navigate]);
@@ -93,11 +118,17 @@ export default function OnboardingPage() {
     if (step === 2) {
       if (!form.firstName.trim()) return 'First name is required.';
       if (!form.phone.trim()) return 'Phone number is required.';
+      if (!CANADIAN_PHONE.test(form.phone.trim())) return 'Enter a valid Canadian phone number (e.g. (416) 555-0100).';
       if (!form.postalCode.trim()) return 'Postal code is required.';
       if (!CA_POSTAL.test(form.postalCode.trim())) return 'Enter a valid Canadian postal code (e.g. L9T 2X5).';
+      if (!GTA_POSTAL_PREFIXES.test(form.postalCode.trim())) return 'We currently serve the GTA (postal codes starting with L or M). Other areas coming soon.';
     }
     if (step === 3 && isProvider) {
       if (!form.businessName.trim()) return 'Business name is required.';
+    }
+    // Issue 4: Require at least one category for providers
+    if (step === 4 && isProvider && form.serviceCategoryIds.length === 0) {
+      return 'Please select at least one service category to continue.';
     }
     return null;
   }
@@ -116,7 +147,10 @@ export default function OnboardingPage() {
         referralCode: form.referralCode.trim() || undefined,
         interestCategoryIds: [],
       });
-      navigate(getDashboardPath(form.role));
+      sessionStorage.removeItem('onboardingForm');
+      sessionStorage.removeItem('onboardingStep');
+      // Issue 10: Consumer skip goes to get-quotes, not dashboard
+      navigate(form.role === 'PROVIDER' ? '/provider/dashboard' : '/get-quotes');
     } catch (e: any) {
       setError(e.message ?? 'Something went wrong. Please try again.');
     } finally {
@@ -149,12 +183,14 @@ export default function OnboardingPage() {
         businessName: isProvider ? form.businessName.trim() : undefined,
         serviceAreas:
           isProvider && form.serviceAreas.trim()
-            ? form.serviceAreas.split(',').map(s => s.trim()).filter(Boolean)
+            ? form.serviceAreas.split(',').map(s => s.trim().toUpperCase()).filter(Boolean) // Issue 9: normalize to uppercase
             : undefined,
         referralCode: form.referralCode.trim() || undefined,
         interestCategoryIds: !isProvider ? form.interestCategoryIds : undefined,
         serviceCategoryIds: isProvider ? form.serviceCategoryIds : undefined,
       });
+      sessionStorage.removeItem('onboardingForm');
+      sessionStorage.removeItem('onboardingStep');
       navigate(getDashboardPath(form.role));
     } catch (e: any) {
       setError(e.message ?? 'Something went wrong. Please try again.');
@@ -244,6 +280,8 @@ export default function OnboardingPage() {
                         referralCode: form.referralCode.trim() || undefined,
                         interestCategoryIds: [],
                       });
+                      sessionStorage.removeItem('onboardingForm');
+                      sessionStorage.removeItem('onboardingStep');
                       navigate('/get-quotes');
                     } catch (e: any) {
                       setError(e.message ?? 'Something went wrong. Please try again.');
