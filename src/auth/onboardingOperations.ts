@@ -61,17 +61,17 @@ export const completeOnboarding: CompleteOnboarding<
     });
 
     if (serviceCategoryIds && serviceCategoryIds.length > 0) {
+      const provider = await context.entities.Provider.findUnique({ where: { userId } });
       await context.entities.ProviderCategory.deleteMany({
         where: { provider: { userId } },
       });
-      for (const catId of serviceCategoryIds) {
-        await context.entities.ProviderCategory.create({
-          data: {
-            providerId: (await context.entities.Provider.findUnique({ where: { userId } }))!.id,
-            serviceCategoryId: catId,
-          },
-        });
-      }
+      await context.entities.ProviderCategory.createMany({
+        data: serviceCategoryIds.map(serviceCategoryId => ({
+          providerId: provider!.id,
+          serviceCategoryId,
+        })),
+        skipDuplicates: true,
+      });
     }
   }
 
@@ -79,11 +79,13 @@ export const completeOnboarding: CompleteOnboarding<
     await context.entities.ConsumerInterest.deleteMany({
       where: { consumerId: userId },
     });
-    for (const catId of interestCategoryIds) {
-      await context.entities.ConsumerInterest.create({
-        data: { consumerId: userId, serviceCategoryId: catId },
-      });
-    }
+    await context.entities.ConsumerInterest.createMany({
+      data: interestCategoryIds.map(serviceCategoryId => ({
+        consumerId: userId,
+        serviceCategoryId,
+      })),
+      skipDuplicates: true,
+    });
   }
 
   if (role === 'CONSUMER') {
@@ -155,7 +157,7 @@ export const completeOnboarding: CompleteOnboarding<
           },
         });
       }
-    }, { isolationLevel: 'Serializable' });
+    }, { isolationLevel: 'ReadCommitted' });
   }
 
   if (referralCode && role === 'CONSUMER') {

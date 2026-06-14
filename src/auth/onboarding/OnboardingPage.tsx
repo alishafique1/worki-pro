@@ -49,6 +49,7 @@ export default function OnboardingPage() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   const [form, setForm] = useState<FormData>({
     role: null,
@@ -88,12 +89,14 @@ export default function OnboardingPage() {
   }, [form, step]);
 
   useEffect(() => {
-    if (user && user.firstName) {
+    // `!done` keeps the post-onboarding success screen visible — without it,
+    // the auth refetch (which now sees user.firstName) would redirect away.
+    if (user && user.firstName && !done) {
       sessionStorage.removeItem('onboardingForm');
       sessionStorage.removeItem('onboardingStep');
       navigate(getDashboardPath((user.role as Role | undefined) ?? null));
     }
-  }, [user, navigate]);
+  }, [user, navigate, done]);
 
   const isProvider = form.role === 'PROVIDER';
   const totalSteps = isProvider ? 4 : 3;
@@ -191,7 +194,11 @@ export default function OnboardingPage() {
       });
       sessionStorage.removeItem('onboardingForm');
       sessionStorage.removeItem('onboardingStep');
-      navigate(getDashboardPath(form.role));
+      if (isProvider) {
+        navigate('/provider/dashboard');
+      } else {
+        setDone(true);
+      }
     } catch (e: any) {
       setError(e.message ?? 'Something went wrong. Please try again.');
     } finally {
@@ -217,6 +224,59 @@ export default function OnboardingPage() {
         : [...prev.serviceCategoryIds, id],
     }));
     setError(null);
+  }
+
+  if (done) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
+        <div className="w-full max-w-lg text-center">
+          <div className="inline-flex items-center gap-2 mb-6">
+            <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
+            <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
+          </div>
+          <h2 className="text-3xl font-black tracking-tight text-[#0F172A] mb-2">You're all set!</h2>
+          <p className="text-[#475569] mb-10">Your account is ready. Here's what you can do next.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <a
+              href="/get-quotes"
+              className="bg-white border border-[#E2E8F0] rounded-[20px] p-6 text-left hover:border-[#2563EB] hover:shadow-md transition-all group"
+            >
+              <div className="size-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-3">
+                <span className="text-[#2563EB] text-lg font-black">1</span>
+              </div>
+              <p className="font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors">Get quotes</p>
+              <p className="text-xs text-[#475569] mt-1">Submit a request and get matched with local pros.</p>
+            </a>
+            <a
+              href="/services"
+              className="bg-white border border-[#E2E8F0] rounded-[20px] p-6 text-left hover:border-[#2563EB] hover:shadow-md transition-all group"
+            >
+              <div className="size-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-3">
+                <span className="text-[#2563EB] text-lg font-black">2</span>
+              </div>
+              <p className="font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors">Browse services</p>
+              <p className="text-xs text-[#475569] mt-1">Explore the categories we cover in your area.</p>
+            </a>
+            <a
+              href="/how-rewards-work"
+              className="bg-white border border-[#E2E8F0] rounded-[20px] p-6 text-left hover:border-[#2563EB] hover:shadow-md transition-all group"
+            >
+              <div className="size-10 rounded-xl bg-[#FEF3C7] flex items-center justify-center mb-3">
+                <span className="text-[#F59E0B] text-lg font-black">$</span>
+              </div>
+              <p className="font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors">See how rewards work</p>
+              <p className="text-xs text-[#475569] mt-1">Earn points on every job and redeem for discounts.</p>
+            </a>
+          </div>
+          <a
+            href="/get-quotes"
+            className="inline-block px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors"
+          >
+            Find a local pro →
+          </a>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -260,48 +320,12 @@ export default function OnboardingPage() {
             )}
 
             {step === 3 && !isProvider && (
-              <div className="text-center py-4">
-                <h3 className="text-xl font-black mb-2 text-[#0F172A]">Ready to get quotes?</h3>
-                <p className="text-[#475569] text-sm mb-6">Tell us what you need and we'll match you with local pros.</p>
-                <button
-                  type="button"
-                  disabled={isSubmitting}
-                  onClick={async () => {
-                    setIsSubmitting(true);
-                    setError(null);
-                    try {
-                      await completeOnboarding({
-                        role: form.role!,
-                        firstName: form.firstName.trim(),
-                        lastName: form.lastName.trim() || undefined,
-                        phone: form.phone.trim(),
-                        postalCode: form.postalCode.trim(),
-                        smsConsent: form.smsConsent,
-                        referralCode: form.referralCode.trim() || undefined,
-                        interestCategoryIds: [],
-                      });
-                      sessionStorage.removeItem('onboardingForm');
-                      sessionStorage.removeItem('onboardingStep');
-                      navigate('/get-quotes');
-                    } catch (e: any) {
-                      setError(e.message ?? 'Something went wrong. Please try again.');
-                    } finally {
-                      setIsSubmitting(false);
-                    }
-                  }}
-                  className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-[22px] shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
-                >
-                  {isSubmitting ? 'Saving…' : 'Find a local pro →'}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSkipOnboarding}
-                  disabled={isSubmitting}
-                  className="block mx-auto mt-3 text-sm text-[#475569] hover:text-[#0F172A] disabled:opacity-50"
-                >
-                  {isSubmitting ? '' : 'Skip for now'}
-                </button>
-              </div>
+              <CategoryCardGrid
+                title="What are you interested in?"
+                subtitle="Pick the services you might need. We'll personalize your dashboard. (Optional)"
+                selectedIds={form.interestCategoryIds}
+                onToggle={toggleInterest}
+              />
             )}
 
             {step === 3 && isProvider && (
@@ -329,20 +353,20 @@ export default function OnboardingPage() {
             </p>
           )}
 
-          {/* Navigation — hidden on step 3 for consumers (they have inline buttons) */}
-          {!(step === 3 && !isProvider) && (
-            <div className="flex items-center justify-between mt-8">
-              {step > 1 ? (
-                <button
-                  type="button"
-                  onClick={goBack}
-                  className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
-                >
-                  <ArrowLeft className="size-4" /> Back
-                </button>
-              ) : (
-                <div />
-              )}
+          {/* Navigation */}
+          <div className="flex items-center justify-between mt-8">
+            {step > 1 ? (
+              <button
+                type="button"
+                onClick={goBack}
+                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-[#475569] hover:text-[#0F172A] transition-colors"
+              >
+                <ArrowLeft className="size-4" /> Back
+              </button>
+            ) : (
+              <div />
+            )}
+            <div className="flex flex-col items-end gap-1">
               <button
                 type="button"
                 onClick={handleNext}
@@ -355,8 +379,18 @@ export default function OnboardingPage() {
                   ? 'Complete Setup'
                   : 'Next →'}
               </button>
+              {step === 3 && !isProvider && (
+                <button
+                  type="button"
+                  onClick={handleSkipOnboarding}
+                  disabled={isSubmitting}
+                  className="text-xs text-[#475569] hover:text-[#0F172A] transition-colors disabled:opacity-50"
+                >
+                  Skip for now
+                </button>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
