@@ -129,8 +129,8 @@ export default function ProviderDashboardPage() {
             </p>
             <p className="text-xs mt-0.5 opacity-80">
               {verificationStatus === 'REJECTED'
-                ? 'Contact support to appeal or reapply.'
-                : 'Our team is reviewing your profile. You can browse leads but cannot claim them until approved by an admin.'}
+                ? 'Your application was not approved. Visit your profile page to update your information and resubmit for review.'
+                : 'Our team is reviewing your profile. You can browse leads but cannot claim them until approved. We\'ll notify you once the review is complete.'}
             </p>
           </div>
         </div>

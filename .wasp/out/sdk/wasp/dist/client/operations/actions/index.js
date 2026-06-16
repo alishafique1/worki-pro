@@ -36,6 +36,8 @@ export const sendProviderMessage = createAction('operations/send-provider-messag
 // PUBLIC API
 export const updateProviderProfile = createAction('operations/update-provider-profile', ['Provider']);
 // PUBLIC API
+export const resubmitProviderApplication = createAction('operations/resubmit-provider-application', ['Provider']);
+// PUBLIC API
 export const claimLead = createAction('operations/claim-lead', ['ServiceRequest', 'Provider', 'ProviderFee', 'CommunicationLog']);
 // PUBLIC API
 export const moderateReview = createAction('operations/moderate-review', ['Review', 'Provider']);

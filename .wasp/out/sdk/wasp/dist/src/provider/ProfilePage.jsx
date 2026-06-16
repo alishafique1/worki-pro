@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useAction, getProviderProfile, updateProviderProfile } from 'wasp/client/operations';
+import { resubmitProviderApplication } from 'wasp/client/operations';
+import { AlertTriangle, Clock, RefreshCcw } from 'lucide-react';
 const statusBadgeClass = {
     VERIFIED: 'bg-[#22C55E] text-white',
     PENDING: 'bg-[#FEF3C7] text-amber-700',
@@ -69,6 +71,23 @@ export default function ProviderProfilePage() {
         setErrorMsg(null);
         setIsEditing(false);
     };
+    const resubmitFn = useAction(resubmitProviderApplication);
+    const [isResubmitting, setIsResubmitting] = useState(false);
+    const handleResubmit = async () => {
+        setErrorMsg(null);
+        setSuccessMsg(null);
+        setIsResubmitting(true);
+        try {
+            await resubmitFn({});
+            setSuccessMsg('Application resubmitted for review ✓');
+        }
+        catch (e) {
+            setErrorMsg(e?.message ?? 'Failed to resubmit application.');
+        }
+        finally {
+            setIsResubmitting(false);
+        }
+    };
     const handleSave = async () => {
         setErrorMsg(null);
         setSuccessMsg(null);
@@ -128,6 +147,30 @@ export default function ProviderProfilePage() {
         </div>)}
       {errorMsg && (<div className="px-4 py-3 rounded-[14px] bg-red-500/10 text-red-400 border border-red-500/30 text-sm font-medium">
           {errorMsg}
+        </div>)}
+
+      {/* Issue 1: Status banners for PENDING/REJECTED providers */}
+      {profile && profile.verificationStatus === 'PENDING' && (<div className="flex items-start gap-3 px-5 py-4 rounded-[16px] bg-amber-50 border border-amber-200 text-amber-700">
+          <Clock className="size-5 mt-0.5 shrink-0"/>
+          <div>
+            <p className="font-bold text-sm">Application under review</p>
+            <p className="text-xs mt-0.5 opacity-80">
+              You can still edit your information below while you wait. We'll notify you once the review is complete.
+            </p>
+          </div>
+        </div>)}
+      {profile && profile.verificationStatus === 'REJECTED' && (<div className="flex items-start gap-3 px-5 py-4 rounded-[16px] bg-red-50 border border-red-200 text-red-600">
+          <AlertTriangle className="size-5 mt-0.5 shrink-0"/>
+          <div className="flex-1">
+            <p className="font-bold text-sm">Application not approved</p>
+            <p className="text-xs mt-0.5 opacity-80">
+              Update your information below and resubmit for review.
+            </p>
+            <button onClick={handleResubmit} disabled={isResubmitting} className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-[12px] bg-[#2563EB] text-white text-xs font-semibold hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+              <RefreshCcw className="size-3.5"/>
+              {isResubmitting ? 'Resubmitting…' : 'Resubmit for Review'}
+            </button>
+          </div>
         </div>)}
 
       {isLoading && <p className="text-[#475569]">Loading profile…</p>}

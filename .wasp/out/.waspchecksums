@@ -452,7 +452,7 @@
             "file",
             "sdk/wasp/client/operations/actions/index.ts"
         ],
-        "38d4aa6b0a90e93b1065b12d46e8d47f2cd1b35b1f247b0b9a4bfece5e1e80c5"
+        "01287ee0f9df5da056304aa91e64c3f4eb364aaacef3b85cec6e3abc381a59cf"
     ],
     [
         [
@@ -942,21 +942,21 @@
             "file",
             "sdk/wasp/server/operations/actions/index.ts"
         ],
-        "b24847d72d35af4639fd28517afcbd8d09632d2ee8ecb529d97da399e4bc332a"
+        "e43c883efcfabafa50c13cf272a9d064896decdc3621a04535d92640b0621df7"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/actions/types.ts"
         ],
-        "03fc94bc73afaa2524c5ff01ddcc5dd8acae6534698ac794ea8a20550d1e7daf"
+        "e5cf6e0b38802ebc2cf99bc2ef24068423e0697d526bc510eb9ee7f42b9ff633"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/index.ts"
         ],
-        "fbedafb95e02252b9de0320049f181ec5e43ffdd9592388fcea0098fc9ce0245"
+        "1e7834a6005b0b137e4c99732bd1f7e1a60c00a9aa126cea10056a68b44837d8"
     ],
     [
         [
@@ -1264,7 +1264,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "1428f44e92ec0ec0e8313b5215ffec0fa741ccbdbcdbeaf34ff6a3078e5d9e70"
+        "d82b188786add144037e1c83aa1a3da3c2435d4a27be226bd8e47e48c4b08d45"
     ],
     [
         [
@@ -1306,14 +1306,14 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "056ad51abc992831deb69000dea06357e075041eda0c18488179cec660e1b24b"
+        "3b28ac36e8c531a56385b0ae2aeaa4b48aaa5fd1df6d8cc911ca6697f7f7ce2e"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "d91f96dc771f12575597fcdeb6433689fb6a4aeb8225fa8bb7c016aa59e59105"
+        "d87236d7d00d906e6ac68167c0948db74f38cb8ce62ae9db8776daf51229c78e"
     ],
     [
         [
@@ -1390,7 +1390,7 @@
             "file",
             "sdk/wasp/src/client/components/NotFoundPage.tsx"
         ],
-        "5d6b1bfd8b50a0b061c029925fc4fbe853489cf1a6047df21b11a42773f7048c"
+        "1078e72317c757d2534f8900cb690339026572edcee65e6101a5acf39599d1e4"
     ],
     [
         [
@@ -1831,7 +1831,7 @@
             "file",
             "sdk/wasp/src/consumer/DashboardPage.tsx"
         ],
-        "bb62d1104c84dd1339120f250112271c2da198c57f16338f854847baf8c59c71"
+        "25583a05019e3530243d19f9c7bdde9af5e6e740093856101d2d2cb07d8f0753"
     ],
     [
         [
@@ -1866,14 +1866,14 @@
             "file",
             "sdk/wasp/src/consumer/ListingsPage.tsx"
         ],
-        "e9307abb82e700c4f5d18d04671e9acf4805b36bca818daebe37132a2f4a6b5c"
+        "88c700f92dea2cfac88183911473639cd717e511eda73ee613c140fdd2d78008"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/MyRequestsPage.tsx"
         ],
-        "f8a051a4dae044ab499b6a42bd9db9846d290bed1ff55480bb751b7517755d76"
+        "7f31b5cb1b26c35be671477f40fd88b7bf944fc7113178a82864949b2fa3624f"
     ],
     [
         [
@@ -2468,7 +2468,7 @@
             "file",
             "sdk/wasp/src/provider/DashboardPage.tsx"
         ],
-        "6abe32d097a6118737d2330817563062165bbbcab782f56feeeac38fd7fbc585"
+        "ae4f6f883da5d7932d26fdc289f9c6eac455e0bf133107ef0da4101d7a9c5539"
     ],
     [
         [
@@ -2496,7 +2496,7 @@
             "file",
             "sdk/wasp/src/provider/ProfilePage.tsx"
         ],
-        "56bf9f57c97c9a1bd9a82fa24126f1b92800c95cd766929a4819b7e2a985ce1d"
+        "652e59735e0f13b5b5b69aeb311474416a90b546039f3cb571b1621c43aa91dc"
     ],
     [
         [
@@ -2517,7 +2517,7 @@
             "file",
             "sdk/wasp/src/provider/operations.ts"
         ],
-        "7587907527de3603781947aca172cc34e5b97883e1e84a0f753fe066439eb390"
+        "7c395a0da6d5ab3d9bacde75f187d8db9d1f3405fc5dd37c4bce487423ed4932"
     ],
     [
         [
@@ -2903,6 +2903,13 @@
             "server/src/actions/rejectRewardTransaction.ts"
         ],
         "3c8833e8abe5ed5ef31c736fd457f410bea1962f1a6918b2cbd08bc5252fd692"
+    ],
+    [
+        [
+            "file",
+            "server/src/actions/resubmitProviderApplication.ts"
+        ],
+        "dde6102b2ab6f7ab3b60f76391ef4fd470736ef42e1bf994b009ef29f0418d16"
     ],
     [
         [
@@ -3623,7 +3630,7 @@
             "file",
             "server/src/routes/operations/index.js"
         ],
-        "75b548fba00e90d945e8b995af74a92277e369181da4067e7801417296a995d0"
+        "1895b3afc3d8be1ebd320975ee4c08b3c0d792e301c6a6179fc54b2ddeb7d9b8"
     ],
     [
         [
@@ -3659,6 +3666,13 @@
             "server/src/routes/operations/rejectRewardTransaction.js"
         ],
         "496cab1cda94b3da880472d86c64bea72966a80f1c59faeba6f85ca3e399f80a"
+    ],
+    [
+        [
+            "file",
+            "server/src/routes/operations/resubmitProviderApplication.js"
+        ],
+        "fff3bda3be19fcc3923cceb22a73e908622e0722510439d1dc4256a74cad9bc8"
     ],
     [
         [

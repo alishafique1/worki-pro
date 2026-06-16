@@ -49,13 +49,22 @@ cd .wasp/out/db && npx prisma db push --accept-data-loss
 
 ## Architecture
 
-**Stack**: Wasp 0.21 (full-stack DSL) → React 19 + Tailwind CSS 4 (frontend) + Node.js/Express (backend) + Prisma v5 + PostgreSQL.
+**Stack**: Wasp 0.21 (full-stack DSL) → React 19 + **Tailwind CSS v4** (frontend) + Node.js/Express (backend) + Prisma v5 + PostgreSQL.
 
-**External integrations**: Twilio (SMS/OTP), Cal.com (scheduling webhooks), GoHighLevel CRM (`src/server/services/ghl.ts`), Stripe (`ProviderFee` model), AWS S3 (file uploads), Mailgun (email), Google Analytics Data API.
+**Fonts**: Fraunces (headings, 300–900 weight) + DM Sans (body, 300–700 weight) — loaded via Google Fonts in `main.wasp` head.
 
-**`main.wasp`** is the single source of truth for the app graph — every page, route, query, action, job, and webhook must be declared there. The framework code-generates the React Router wiring, RPC layer, and Express routes from it.
+**`main.wasp`** is the single source of truth for the app graph — every page, route, query, action, job, and webhook must be declared there. The framework code-generates the React Router wiring, RPC layer, and Express routes from it. Use `//#region FeatureName` / `//#endregion` to group related declarations.
 
 **`schema.prisma`** lives at the project root (not inside `src/`).
+
+**API endpoints (declared in `main.wasp`, handled manually)**:
+- `POST /api/auth/request-otp` / `verify-otp` — passwordless email OTP login
+- `POST /webhooks/twilio` — inbound SMS handling
+- `POST /webhooks/ghl` — GoHighLevel webhooks
+- `POST /calcom-webhook` — Cal.com scheduling events
+- `GET /api/health` — health check
+
+**Background jobs**: `dailyStatsJob` runs hourly via PgBoss, calls `calculateDailyStats` in `src/analytics/stats`.
 
 ## Source Structure
 
@@ -65,20 +74,24 @@ Code is organized by feature domain, not by layer:
 src/
 ├── admin/          # Admin dashboard: users, leads, providers, reviews, analytics
 ├── analytics/      # Daily stats calculations and background jobs
-├── auth/           # OTP verification, email templates, signup field customization
-├── consumer/       # Request wizard, dashboard, rewards, referrals
-├── provider/       # Lead feed, appointments, profile editing
+├── auth/           # OTP verification, email templates, signup field customization, onboarding
+├── consumer/       # Request wizard, dashboard, rewards, referrals, messages
+├── provider/       # Lead feed, appointments, profile editing, billing, messages
 ├── landing-page/   # Marketing and SEO pages (area/category based)
-│   └── marketplace/
-│       ├── content.tsx     # All copy, categories, FAQs (edit here first)
-│       └── components.tsx  # Reusable marketing section components
+│   ├── marketplace/     content.tsx (all copy), components.tsx (reusable sections)
+│   ├── HvacLandingPage  (one per live category + /services/:categorySlug dynamic)
+│   └── AreaLandingPage, ServiceAreaLandingPage, CategoryLandingPage
 ├── server/
 │   ├── webhooks/   # Twilio, Cal.com, GoHighLevel webhook handlers
 │   ├── services/   # Business logic services (ghl.ts, etc.)
 │   └── scripts/    # DB seeding (dbSeeds.ts — DEFAULT_VENDOR_CATEGORIES here)
 ├── client/
 │   └── components/
-│       └── NavBar/ # constants.ts (nav items), NavBar.tsx, Announcement.tsx
+│       ├── NavBar/  # constants.ts (nav items), NavBar.tsx, Announcement.tsx
+│       └── ui/      # shadcn/ui components (button, card, dialog, toast, etc.)
+├── file-upload/    # AWS S3 upload operations
+├── demo-ai-app/    # Demo app with GPT responses + tasks
+├── user/           # Account page, profile editing
 └── shared/         # Terms, Privacy, Help pages
 ```
 
@@ -127,15 +140,50 @@ export const getMyRequests: GetMyRequests = async (args, context) => { ... }
 ```
 
 **Import paths** (critical — do not mix these up):
-- In `.ts`/`.tsx` files: `import { User } from 'wasp/entities'`, `import { useQuery } from 'wasp/client/operations'`
-- In `main.wasp`: `@src/feature/file` (no leading slash, relative to `src/`)
-- Prisma enums at runtime: `import { RequestStatus } from '@prisma/client'`
+| Context | Prefix | Example |
+|---------|--------|---------|
+| `.ts`/`.tsx` files | `wasp/...` | `import { User } from 'wasp/entities'` |
+| `.ts`/`.tsx` files (client ops) | `wasp/client/operations` | `import { useQuery, myAction } from 'wasp/client/operations'` |
+| `.ts`/`.tsx` files (server ops) | `wasp/server/operations` | `import type { GetMyRequests } from 'wasp/server/operations'` |
+| `.ts`/`.tsx` files (auth) | `wasp/client/auth` | `import { useAuth } from 'wasp/client/auth'` |
+| `.ts`/`.tsx` files (server errors) | `wasp/server` | `import { HttpError } from 'wasp/server'` |
+| `main.wasp` | `@src/...` | `import { getMyRequests } from "@src/consumer/operations"` |
+| Prisma enum *values* | `@prisma/client` | `import { RequestStatus } from '@prisma/client'` |
+| `.ts`/`.tsx` relative paths | `./` or `../` | `import { utils } from './lib/utils'` |
+
+**Never use** `@wasp/...` (undescore prefix), `@src/...` in `.ts`/`.tsx` files, or `wasp/...` in `main.wasp`.
 
 **Client data fetching**:
 ```ts
-const { data, isLoading } = useQuery(myQuery, args)   // queries
-await myAction(args)                                   // actions (call directly, not via useAction)
+const { data, isLoading } = useQuery(myQuery, args)  // queries — useQuery hook
+await myAction(args)                                  // actions — call directly, NOT via useAction
 ```
+**Do NOT use** `useAction` unless implementing optimistic updates. Call actions with `await` directly.
+
+**Server error handling** — throw `HttpError` from `wasp/server`:
+```ts
+import { HttpError } from 'wasp/server'
+if (!context.user) throw new HttpError(401, 'Not authorized')
+```
+
+## shadcn/ui Components
+
+All shadcn UI components live in `src/client/components/ui/`. Currently available:
+`accordion`, `alert`, `avatar`, `button`, `card`, `checkbox`, `dialog`, `dropdown-menu`, `form`, `input`, `label`, `progress`, `select`, `separator`, `sheet`, `switch`, `textarea`, `toast`, `toaster`.
+
+**To add a new shadcn component**, run `npx shadcn@latest add <component>` — then manually fix the `utils` import path to `../../utils` (from the `src/client/components/ui/` dir).
+
+**Tailwind CSS v4**: This project uses Tailwind v4, not v3. Configuration differs (CSS-based config, not `tailwind.config.js`). The app uses **custom Dribbble-inspired tokens** (listed in the Design System table above) — do not introduce new colours beyond the token set.
+
+## External Integrations — Webhook Flow
+
+| Integration | Direction | Handler | Route |
+|-------------|-----------|---------|-------|
+| Twilio SMS | Inbound SMS → App | `src/server/webhooks/twilio.ts` | `POST /webhooks/twilio` |
+| Cal.com | Booking events → App | `src/server/webhooks/calcom.ts` | `POST /calcom-webhook` |
+| GoHighLevel | Lead/contact → App | `src/server/webhooks/ghl.ts` | `POST /webhooks/ghl` |
+
+All webhook handlers are declared in `main.wasp` as `api` blocks (not `action`/`query`) and receive raw HTTP requests. Log webhook payloads via `WebhookLog` entities where possible.
 
 ## Key Domain Rules
 
@@ -143,9 +191,19 @@ await myAction(args)                                   // actions (call directly
 
 **Claim lead** is idempotent: calling twice returns `{ alreadyClaimed: true }`. It requires provider status `VERIFIED`, creates a `ProviderFee(QUALIFIED_LEAD, $5.00)`, and sends the consumer an email notification.
 
+**Request status lifecycle**: `NEW → SMS_STARTED → QUALIFYING → QUALIFIED → ASSIGNED → ACCEPTED_BY_PROVIDER → BOOKED → COMPLETED → REWARD_PENDING → REWARD_APPROVED → CLOSED`. Also: `LOST`, `INVALID`, `SPAM` for dead ends.
+
 **OTP flow**: `sendOtp(phone)` → Twilio SMS → `verifyOtp(phone, code)` (SHA-256 hash, 5 attempt max, 3 sends per 5 minutes per phone, 10-minute TTL).
 
-**Reviews**: One review per `serviceRequestId` per consumer. After submission, recompute `Provider.ratingInternal` via Prisma `aggregate(_avg.rating)`. Admin moderates PENDING → PUBLISHED or REJECTED.
+**Provider onboarding**: Signup → `completeOnboarding` action → role selection (CONSUMER/PROVIDER) → if PROVIDER: fill business info, select service categories → `submitProviderApplication` → status `PENDING`. Admin approves → status `VERIFIED`. Provider then sees lead feed and can claim leads.
+
+**Public provider profile**: Consumers and search engines can view `/pro-public/:slug` — a Bark-style public profile with bio, portfolio photos, accreditations, and reviews. The slug is set on the Provider model and is unique.
+
+**Reviews**: One review per `serviceRequestId` per consumer. After submission, recompute `Provider.ratingInternal` via Prisma `aggregate(_avg.rating)`. Admin moderates `PENDING → PUBLISHED` or `REJECTED`.
+
+**Role guards**: Admin routes check `user.isAdmin`. Provider portal routes check `context.user.role === 'PROVIDER'`. Consumer routes check `context.user.role === 'CONSUMER'`. The auth guard (`authRequired: true`) is declared per page in `main.wasp`.
+
+**Email OTP (passwordless)**: Users can request an OTP code at `/api/auth/request-otp` → emailed via Mailgun → verify at `/api/auth/verify-otp` → creates or retrieves user session.
 
 ## Key Data Models
 

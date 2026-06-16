@@ -67,12 +67,8 @@ test.describe('Consumer — authenticated flow', () => {
     await page.goto('/my-requests');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
-    // Should show either the requests heading or an empty state message
-    await expect(
-      page.locator('h1, h2').first()
-        .or(page.getByText(/no.*request/i))
-        .or(page.getByText(/empty/i))
-    ).toBeVisible();
+    // h1 always present on this page — avoid strict mode from .or() matching multiple elements
+    await expect(page.locator('h1').first()).toBeVisible();
   });
 
   test('/rewards — loads and shows balance or rewards section', async ({ page }) => {

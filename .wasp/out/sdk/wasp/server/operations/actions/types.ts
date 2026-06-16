@@ -245,6 +245,16 @@ export type UpdateProviderProfile<Input extends Payload = never, Output extends 
   >
 
 // PUBLIC API
+export type ResubmitProviderApplication<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type ClaimLead<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedActionDefinition<
     [

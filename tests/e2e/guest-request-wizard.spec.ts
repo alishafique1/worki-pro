@@ -58,14 +58,14 @@ test.describe('Guest Wizard — Landing to Start', () => {
     await dismissCookieConsent(page);
     await waitForPageReady(page);
 
+    // Wizard renders an h2 heading (e.g. "Get matched with a pro")
     await expect(
-      page.getByText(/get free quotes/i).first()
-        .or(page.getByText(/get quotes/i).first())
+      page.locator('h2').first()
     ).toBeVisible({ timeout: 10000 });
 
-    // Step progress indicator should be present (4 steps)
+    // Step progress indicator — WizardProgress renders step labels inline
     await expect(
-      page.locator('[class*="step"], [class*="progress"], [role="progressbar"]').first()
+      page.getByText(/^Service$/).first()
     ).toBeVisible({ timeout: 5000 });
   });
 });
@@ -96,18 +96,16 @@ test.describe('Guest Wizard — Step 1: Category Selection', () => {
     await dismissCookieConsent(page);
     await waitForPageReady(page);
 
-    // Click the first visible category card
-    const firstCat = page.locator('button[class*="rounded-2xl"]').or(
-      page.locator('button').filter({ hasText: /.+/ })
-    ).first();
+    // Wait for StepCategory to render, then click the first category card
+    // Category buttons have class "border-2 rounded-2xl p-5" — be specific to avoid nav buttons
+    const firstCat = page.locator('button[class*="rounded-2xl"][class*="border-2"]').first();
 
     await expect(firstCat).toBeVisible({ timeout: 10000 });
     await firstCat.click();
 
-    // Should advance — expect to see qualifier questions or next heading
+    // Should advance — StepQualifiers renders "Tell us more" heading
     await expect(
-      page.getByText(/describe|question|tell us|qualif|problem/i).first()
-        .or(page.getByText(/repair|maintenance/i).first())
+      page.getByText(/tell us more|describe|qualif/i).first()
     ).toBeVisible({ timeout: 8000 });
   });
 });
@@ -315,9 +313,9 @@ test.describe('Guest Wizard — Auth-aware routing', () => {
     await dismissCookieConsent(page);
     await waitForPageReady(page);
 
+    // Wizard page loads with an h2 heading
     await expect(
-      page.getByText(/get free quotes/i).first()
-        .or(page.getByText(/what do you need/i).first())
+      page.locator('h2').first()
     ).toBeVisible({ timeout: 10000 });
 
     // Guest should NOT be redirected to /login

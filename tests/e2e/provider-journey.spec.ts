@@ -197,10 +197,8 @@ test.describe('Provider — Authenticated Dashboard', () => {
     await page.goto('/provider/leads');
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(
-      page.locator('h1, h2').first()
-        .or(page.getByText(/no.*lead|empty|check back/i))
-    ).toBeVisible();
+    // h1 ("Lead Feed") or the empty-state paragraph — use h1 directly to avoid strict-mode
+    await expect(page.locator('h1').first()).toBeVisible();
   });
 
   test('/provider/leads — masks PII in feed', async ({ page }) => {
@@ -239,7 +237,10 @@ test.describe('Provider — Authenticated Dashboard', () => {
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
-    await expect(page.locator('input, textarea').first()).toBeVisible();
+    // Profile page starts in read-only view — Edit button should be present
+    await expect(
+      page.getByRole('button', { name: /edit|update|save/i }).first()
+    ).toBeVisible({ timeout: 5000 });
   });
 
   test('/provider/billing — shows billing/fees', async ({ page }) => {
@@ -290,7 +291,9 @@ test.describe('Provider — Lead Claim Flow (revenue path)', () => {
     await page.goto('/provider/leads');
     await waitForPageReady(page);
 
-    const messagesLink = page.getByRole('link', { name: /message|contact|reply/i }).first();
+    // Scope to main content area to avoid matching footer "Contact" nav link
+    const mainArea = page.locator('main, [role="main"], #root > div').first();
+    const messagesLink = mainArea.getByRole('link', { name: /message|reply/i }).first();
     if (await messagesLink.isVisible({ timeout: 5000 }).catch(() => false)) {
       await messagesLink.click();
       await expect(page).toHaveURL(/messages|requests/, { timeout: 8000 });

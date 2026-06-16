@@ -480,10 +480,8 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
     await page.goto('/my-requests');
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(
-      page.locator('h1, h2').first()
-        .or(page.getByText(/no.*request|empty/i))
-    ).toBeVisible();
+    // h1 heading always renders on this page; avoid strict-mode from .or() matching both
+    await expect(page.locator('h1').first()).toBeVisible();
   });
 
   test('/rewards — shows rewards section', async ({ page }) => {
