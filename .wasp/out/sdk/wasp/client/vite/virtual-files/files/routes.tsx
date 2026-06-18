@@ -53,7 +53,6 @@ import ProviderBillingPage from './src/provider/BillingPage'
 import ProviderServicesPage from './src/provider/ServicesPage'
 import ProviderRequestMessagesPage from './src/provider/RequestMessagesPage'
 import AccountPage from './src/user/AccountPage'
-import DemoAppPage from './src/demo-ai-app/DemoAppPage'
 import FileUploadPage from './src/file-upload/FileUploadPage'
 import AnalyticsDashboardPage from './src/admin/dashboards/analytics/AnalyticsDashboardPage'
 import AdminUsersPage from './src/admin/dashboards/users/UsersDashboardPage'
@@ -118,7 +117,6 @@ export const routesMapping = {
   ProviderServicesRoute: createAuthRequiredPage(ProviderServicesPage),
   ProviderRequestMessagesRoute: createAuthRequiredPage(ProviderRequestMessagesPage),
   AccountRoute: createAuthRequiredPage(AccountPage),
-  DemoAppRoute: createAuthRequiredPage(DemoAppPage),
   FileUploadRoute: createAuthRequiredPage(FileUploadPage),
   AdminRoute: createAuthRequiredPage(AnalyticsDashboardPage),
   AdminUsersRoute: createAuthRequiredPage(AdminUsersPage),

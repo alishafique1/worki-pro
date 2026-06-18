@@ -86,7 +86,7 @@ async function handleOrderPaid(
   userDelegate: PrismaClient["user"],
 ): Promise<void> {
   const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(
-    order.productId,
+    order.productId ?? "",
   );
 
   switch (paymentPlanId) {
@@ -127,7 +127,7 @@ async function handleSubscriptionUpdated(
   }
 
   const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(
-    subscription.productId,
+    subscription.productId ?? "",
   );
 
   await updateUserSubscription(

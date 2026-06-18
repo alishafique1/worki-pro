@@ -452,7 +452,7 @@
             "file",
             "sdk/wasp/client/operations/actions/index.ts"
         ],
-        "01287ee0f9df5da056304aa91e64c3f4eb364aaacef3b85cec6e3abc381a59cf"
+        "9523591b19c743576fb4445bb4ad924fe7a5bbc0e0c1312e1f9008b0af3e8d7d"
     ],
     [
         [
@@ -501,7 +501,7 @@
             "file",
             "sdk/wasp/client/operations/queries/index.ts"
         ],
-        "28fa814d6a8c9f03b87ada98d0bfaffc3c531265827cb167144edcb440fde4c2"
+        "2e83480269693cab3bd3b51422ff2e8b86ffda3a21e8c27e1eb6b9f6f44e0750"
     ],
     [
         [
@@ -529,7 +529,7 @@
             "file",
             "sdk/wasp/client/router/index.ts"
         ],
-        "4b0a3b170f00e63f6d0902f5410c66c373d0065ab9c034529ccbb131314b38ab"
+        "2c55dd0e9293e7fe094fd6d49ee0c9e0abde8387b850648d049ae69fe980f1bd"
     ],
     [
         [
@@ -655,7 +655,7 @@
             "file",
             "sdk/wasp/client/vite/virtual-files/files/routes.tsx"
         ],
-        "8d0c85abd3ac8b08010f0dbda62d703a093e78321d4d684b6acd7a100e05e105"
+        "1afa7dcd2842e94fb17b99323923952c13134261c04dda3c7cfe3cd3b45b6059"
     ],
     [
         [
@@ -942,35 +942,35 @@
             "file",
             "sdk/wasp/server/operations/actions/index.ts"
         ],
-        "e43c883efcfabafa50c13cf272a9d064896decdc3621a04535d92640b0621df7"
+        "6ea1296c4559a6a5b1db5adfa523c0ca85d0f7d372eabf97d631c60d8eff8bec"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/actions/types.ts"
         ],
-        "e5cf6e0b38802ebc2cf99bc2ef24068423e0697d526bc510eb9ee7f42b9ff633"
+        "ef67e66bcde2fd9296cebbd899c411bcc62f22771a0d1c325b5cceac064b486d"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/index.ts"
         ],
-        "1e7834a6005b0b137e4c99732bd1f7e1a60c00a9aa126cea10056a68b44837d8"
+        "abb3597df240f605e50a4ddd8efcefa51601d5e2a70510fcefb03f5fde3f973a"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/index.ts"
         ],
-        "620de0744cd940acb3892e21b9f39396e748273a79fc9a983e2b04437b60fb2f"
+        "ff173a3c2084cc66c180f8076623fb07ddd3977f0d591151ffed6686382dd29c"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/types.ts"
         ],
-        "6c09da06fb321c3867a0cfd53d1d2cf3fac958d8d15ba5d89f1d893003d3d6ff"
+        "0e984c6c465997fd784b921c65950c5e0c31d64c01058ece8a8699bb5c193a66"
     ],
     [
         [
@@ -1866,7 +1866,7 @@
             "file",
             "sdk/wasp/src/consumer/ListingsPage.tsx"
         ],
-        "88c700f92dea2cfac88183911473639cd717e511eda73ee613c140fdd2d78008"
+        "2f4b6c55b3e0a227565e8d65cf411450156ef49137d4c693c6ef5fe2cd6d7e8d"
     ],
     [
         [
@@ -2018,27 +2018,6 @@
     [
         [
             "file",
-            "sdk/wasp/src/demo-ai-app/DemoAppPage.tsx"
-        ],
-        "120de7d07f54a018329ef17b30991e815aff7d616ad1c7659614f02d4effd785"
-    ],
-    [
-        [
-            "file",
-            "sdk/wasp/src/demo-ai-app/operations.ts"
-        ],
-        "9bd76a8d314bc4b1afcad0fd629dd5672542a8d49dd2aa55cc3293d7fd800e71"
-    ],
-    [
-        [
-            "file",
-            "sdk/wasp/src/demo-ai-app/schedule.ts"
-        ],
-        "1bad73d1c9b4e0866b3b2fa8b96aa85a0e3608d8c40f8436bfeb8129ed8b674a"
-    ],
-    [
-        [
-            "file",
             "sdk/wasp/src/file-upload/FileUploadPage.tsx"
         ],
         "f6c8f540d16433d75164039c53396ccfea3316143b436781e049450dd824c1d6"
@@ -2132,7 +2111,7 @@
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "9145064392927ca5c06dadc7310e6379df6957eb7f3815955dbab419db40fee5"
+        "0d5ae5359b59655a4bc12cc98f9d8da7c649faccc652444287885cd1b205bcf3"
     ],
     [
         [
@@ -2279,14 +2258,14 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/components.tsx"
         ],
-        "e08cd614db53561020b4fe65bf27c3c96a71efc798cadb452a6e06a2e027ecc4"
+        "a0e52dfffc1d08953cf94e05760eea10bc95a1114de090956d1a8a11cb37b052"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
-        "16b90a23b53ee68859361e3664a5c6121f1cd783aeed6fe53ddc2beb5e60be7e"
+        "6c51cc34030154f15d39fe40e1bb6c04f1b34ebacf41256d1e0e20e4a891ca3e"
     ],
     [
         [
@@ -2398,7 +2377,7 @@
             "file",
             "sdk/wasp/src/payment/polar/webhook.ts"
         ],
-        "d4450d3f2ecdee3894a817f38e3f43e2d264b3ac12d9c39ad4cd00b8fd854185"
+        "06c7c704273812a9d4d19242335564686bd26aab34e1ef30cee65a72711438aa"
     ],
     [
         [
@@ -2517,7 +2496,7 @@
             "file",
             "sdk/wasp/src/provider/operations.ts"
         ],
-        "7c395a0da6d5ab3d9bacde75f187d8db9d1f3405fc5dd37c4bce487423ed4932"
+        "7f5b3f75f37656a90288ba7bce6bd571371bee446560e3f2a635d124499ef62e"
     ],
     [
         [
@@ -2538,14 +2517,14 @@
             "file",
             "sdk/wasp/src/server/scripts/dbSeeds.ts"
         ],
-        "19f327990c14029ef9ee5bee4d88d4c9ef5d66360b062b9b45979f851d972cdb"
+        "6720f28df283ab678a45ea6a0d461899aa8cc28d5ef5d928a2c4246af9b02484"
     ],
     [
         [
             "file",
             "sdk/wasp/src/server/services/ghl.ts"
         ],
-        "bb73e5e674fd59c55a759ec2c772f62da7b477dc9522fd86fe57e16ca174f754"
+        "bd113806231833fde98dbb33048973430ae37566e19d847004f4222f7432b69f"
     ],
     [
         [
@@ -2573,7 +2552,7 @@
             "file",
             "sdk/wasp/src/server/webhooks/calcom.ts"
         ],
-        "b08c42249017e1765391d444ab311f5fcde4edf652f99428812b6ad52a32f107"
+        "72a18f96d4cd6efc34e5f1429c354805c34807a98407a3c8fa74bdbdc36fc147"
     ],
     [
         [
@@ -2664,7 +2643,14 @@
             "file",
             "sdk/wasp/src/user/constants.ts"
         ],
-        "1ef03788e1b2a78632a33735a156a46394bc2681ad05a67c8b6e9c10d0215cec"
+        "b9bb025e44493ec530eb39872a2d71a9e6f4172f8ffcf4f3e0220fcbbb1b1eac"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/user/constants.ts.bak"
+        ],
+        "86d81c2c6c228adddfce594a78318fcf75c8e61c83bf8b4778575577cd544a95"
     ],
     [
         [
@@ -2732,16 +2718,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "91dc1fdb260dee56c0275adb0b6dec36d2bc4267e1dde406c160fb921f162dbe"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -2844,30 +2830,9 @@
     [
         [
             "file",
-            "server/src/actions/createTask.ts"
-        ],
-        "4fbcdf48df09c30c2ebb3f7ccef2ad158fae6a5dcfb1a84b66f40daa8852f908"
-    ],
-    [
-        [
-            "file",
             "server/src/actions/deleteFile.ts"
         ],
         "2f85c12b7058d459f5546c86274dd8f484427b00cd76631ba7f86ac33746f58a"
-    ],
-    [
-        [
-            "file",
-            "server/src/actions/deleteTask.ts"
-        ],
-        "580329728368b5973402651aeb5c2ce38c4acbc45225650c40b4939d642744da"
-    ],
-    [
-        [
-            "file",
-            "server/src/actions/generateGptResponse.ts"
-        ],
-        "0f70fc2a361e4571dff52d6758674417bf7abb79d51006f52e086ffad17fff75"
     ],
     [
         [
@@ -3005,13 +2970,6 @@
     [
         [
             "file",
-            "server/src/actions/updateTask.ts"
-        ],
-        "7b7d5786005667318ae1ced60272583ca70df1f0e34068798558f71468940ea0"
-    ],
-    [
-        [
-            "file",
             "server/src/actions/updateUserProfile.ts"
         ],
         "ef0df6af958777f2a710d35e2d77c25e83b528bb69d3210abb33232d8754a94e"
@@ -3042,7 +3000,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3173,13 +3131,6 @@
     [
         [
             "file",
-            "server/src/queries/getAllTasksByUser.ts"
-        ],
-        "f813a0fbd77ab99bd2ac805af0e1e2c2686a52ec6b4c09584572c05d432de505"
-    ],
-    [
-        [
-            "file",
             "server/src/queries/getConsumerStats.ts"
         ],
         "42f4b2b3a221f359561502d85c4119e242d353f824a301bf72e018b289d2c15f"
@@ -3197,13 +3148,6 @@
             "server/src/queries/getDownloadFileSignedURL.ts"
         ],
         "03e940bd87da75073d8fc5ba886a701e1f23f75e975118d9f273512adc7616f1"
-    ],
-    [
-        [
-            "file",
-            "server/src/queries/getGptResponses.ts"
-        ],
-        "970d27451f5be60619d0b1e8885694e7b16596be4fbf9cd1f9def61e71183a3c"
     ],
     [
         [
@@ -3343,7 +3287,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3418,30 +3362,9 @@
     [
         [
             "file",
-            "server/src/routes/operations/createTask.js"
-        ],
-        "dfb31f9e7dedaa8b4d722a5fef219ebb00eb09df89d190308b9772fe97317289"
-    ],
-    [
-        [
-            "file",
             "server/src/routes/operations/deleteFile.js"
         ],
         "7cf1d53318b910ad1904f7af76c0e0b62e3530e4ae57fae236bbd5cd68ce5db3"
-    ],
-    [
-        [
-            "file",
-            "server/src/routes/operations/deleteTask.js"
-        ],
-        "36c3237cb6606e9df1e0ca4c7e7bb6443bffc9529c64271c2e5d90eea97d183c"
-    ],
-    [
-        [
-            "file",
-            "server/src/routes/operations/generateGptResponse.js"
-        ],
-        "458b34928a51f4d97ecf92842e67d68d684e80092934680752fb5ff67bca162c"
     ],
     [
         [
@@ -3488,13 +3411,6 @@
     [
         [
             "file",
-            "server/src/routes/operations/getAllTasksByUser.js"
-        ],
-        "ae828e417e390a2316e66380e281b981cd11f9a6fc3c1ba02fe2d22f4f0f6668"
-    ],
-    [
-        [
-            "file",
             "server/src/routes/operations/getConsumerStats.js"
         ],
         "39db1f0cb6c9bca6b6730e28d2dead8314548b6e601770991ad4e1cd13de257d"
@@ -3512,13 +3428,6 @@
             "server/src/routes/operations/getDownloadFileSignedURL.js"
         ],
         "7c4bff3995934bac515b2996f1cb9ac03f3349935e532d3dc21f59c2dda59690"
-    ],
-    [
-        [
-            "file",
-            "server/src/routes/operations/getGptResponses.js"
-        ],
-        "565fa9ac104b704fdaac92fe4741b2f595179926f14607f9d9c9790c8e401e83"
     ],
     [
         [
@@ -3630,7 +3539,7 @@
             "file",
             "server/src/routes/operations/index.js"
         ],
-        "1895b3afc3d8be1ebd320975ee4c08b3c0d792e301c6a6179fc54b2ddeb7d9b8"
+        "ca29354f2c1cd91980d3858b6a1618aea5e359b3fcbdee1451858577710b51f4"
     ],
     [
         [
@@ -3768,13 +3677,6 @@
     [
         [
             "file",
-            "server/src/routes/operations/updateTask.js"
-        ],
-        "0854e685781ef9d999469700b6c9c7bd658a82e84cba5a66e977ab0fe0c0d17d"
-    ],
-    [
-        [
-            "file",
             "server/src/routes/operations/updateUserProfile.js"
         ],
         "a7607de4be175d2920f2a46e4482a06c873561c8b521984e40799f61e7ba439b"
@@ -3792,6 +3694,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

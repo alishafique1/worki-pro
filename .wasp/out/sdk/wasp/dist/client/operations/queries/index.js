@@ -34,10 +34,6 @@ export const getAdminReviews = createQuery('operations/get-admin-reviews', ['Rev
 // PUBLIC API
 export const getPaginatedUsers = createQuery('operations/get-paginated-users', ['User']);
 // PUBLIC API
-export const getGptResponses = createQuery('operations/get-gpt-responses', ['User', 'GptResponse']);
-// PUBLIC API
-export const getAllTasksByUser = createQuery('operations/get-all-tasks-by-user', ['Task']);
-// PUBLIC API
 export const getAllFilesByUser = createQuery('operations/get-all-files-by-user', ['User', 'File']);
 // PUBLIC API
 export const getDownloadFileSignedURL = createQuery('operations/get-download-file-signed-url', ['User', 'File']);

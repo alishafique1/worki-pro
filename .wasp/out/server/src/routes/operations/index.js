@@ -25,10 +25,6 @@ import claimLead from './claimLead.js'
 import moderateReview from './moderateReview.js'
 import updateIsUserAdminById from './updateIsUserAdminById.js'
 import updateUserProfile from './updateUserProfile.js'
-import generateGptResponse from './generateGptResponse.js'
-import createTask from './createTask.js'
-import deleteTask from './deleteTask.js'
-import updateTask from './updateTask.js'
 import createFileUploadUrl from './createFileUploadUrl.js'
 import addFileToDb from './addFileToDb.js'
 import deleteFile from './deleteFile.js'
@@ -55,8 +51,6 @@ import getPublicLeadFeed from './getPublicLeadFeed.js'
 import getPublicProvider from './getPublicProvider.js'
 import getAdminReviews from './getAdminReviews.js'
 import getPaginatedUsers from './getPaginatedUsers.js'
-import getGptResponses from './getGptResponses.js'
-import getAllTasksByUser from './getAllTasksByUser.js'
 import getAllFilesByUser from './getAllFilesByUser.js'
 import getDownloadFileSignedURL from './getDownloadFileSignedURL.js'
 import getDailyStats from './getDailyStats.js'
@@ -90,10 +84,6 @@ router.post('/claim-lead', auth, claimLead)
 router.post('/moderate-review', auth, moderateReview)
 router.post('/update-is-user-admin-by-id', auth, updateIsUserAdminById)
 router.post('/update-user-profile', auth, updateUserProfile)
-router.post('/generate-gpt-response', auth, generateGptResponse)
-router.post('/create-task', auth, createTask)
-router.post('/delete-task', auth, deleteTask)
-router.post('/update-task', auth, updateTask)
 router.post('/create-file-upload-url', auth, createFileUploadUrl)
 router.post('/add-file-to-db', auth, addFileToDb)
 router.post('/delete-file', auth, deleteFile)
@@ -120,8 +110,6 @@ router.post('/get-public-lead-feed', auth, getPublicLeadFeed)
 router.post('/get-public-provider', auth, getPublicProvider)
 router.post('/get-admin-reviews', auth, getAdminReviews)
 router.post('/get-paginated-users', auth, getPaginatedUsers)
-router.post('/get-gpt-responses', auth, getGptResponses)
-router.post('/get-all-tasks-by-user', auth, getAllTasksByUser)
 router.post('/get-all-files-by-user', auth, getAllFilesByUser)
 router.post('/get-download-file-signed-url', auth, getDownloadFileSignedURL)
 router.post('/get-daily-stats', auth, getDailyStats)

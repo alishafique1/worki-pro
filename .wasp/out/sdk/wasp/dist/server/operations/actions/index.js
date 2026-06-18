@@ -23,10 +23,6 @@ import { claimLead as claimLead_ext } from 'wasp/src/provider/operations';
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations';
 import { updateIsUserAdminById as updateIsUserAdminById_ext } from 'wasp/src/user/operations';
 import { updateUserProfile as updateUserProfile_ext } from 'wasp/src/user/operations';
-import { generateGptResponse as generateGptResponse_ext } from 'wasp/src/demo-ai-app/operations';
-import { createTask as createTask_ext } from 'wasp/src/demo-ai-app/operations';
-import { deleteTask as deleteTask_ext } from 'wasp/src/demo-ai-app/operations';
-import { updateTask as updateTask_ext } from 'wasp/src/demo-ai-app/operations';
 import { createFileUploadUrl as createFileUploadUrl_ext } from 'wasp/src/file-upload/operations';
 import { addFileToDb as addFileToDb_ext } from 'wasp/src/file-upload/operations';
 import { deleteFile as deleteFile_ext } from 'wasp/src/file-upload/operations';
@@ -172,24 +168,6 @@ export const updateIsUserAdminById = createAuthenticatedOperation(updateIsUserAd
 // PUBLIC API
 export const updateUserProfile = createAuthenticatedOperation(updateUserProfile_ext, {
     User: prisma.user,
-});
-// PUBLIC API
-export const generateGptResponse = createAuthenticatedOperation(generateGptResponse_ext, {
-    User: prisma.user,
-    Task: prisma.task,
-    GptResponse: prisma.gptResponse,
-});
-// PUBLIC API
-export const createTask = createAuthenticatedOperation(createTask_ext, {
-    Task: prisma.task,
-});
-// PUBLIC API
-export const deleteTask = createAuthenticatedOperation(deleteTask_ext, {
-    Task: prisma.task,
-});
-// PUBLIC API
-export const updateTask = createAuthenticatedOperation(updateTask_ext, {
-    Task: prisma.task,
 });
 // PUBLIC API
 export const createFileUploadUrl = createAuthenticatedOperation(createFileUploadUrl_ext, {

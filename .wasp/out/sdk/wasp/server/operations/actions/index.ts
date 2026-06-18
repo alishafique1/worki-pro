@@ -29,10 +29,6 @@ import { claimLead as claimLead_ext } from 'wasp/src/provider/operations'
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations'
 import { updateIsUserAdminById as updateIsUserAdminById_ext } from 'wasp/src/user/operations'
 import { updateUserProfile as updateUserProfile_ext } from 'wasp/src/user/operations'
-import { generateGptResponse as generateGptResponse_ext } from 'wasp/src/demo-ai-app/operations'
-import { createTask as createTask_ext } from 'wasp/src/demo-ai-app/operations'
-import { deleteTask as deleteTask_ext } from 'wasp/src/demo-ai-app/operations'
-import { updateTask as updateTask_ext } from 'wasp/src/demo-ai-app/operations'
 import { createFileUploadUrl as createFileUploadUrl_ext } from 'wasp/src/file-upload/operations'
 import { addFileToDb as addFileToDb_ext } from 'wasp/src/file-upload/operations'
 import { deleteFile as deleteFile_ext } from 'wasp/src/file-upload/operations'
@@ -361,56 +357,6 @@ export const updateUserProfile: AuthenticatedOperationFor<UpdateUserProfile_ext>
     updateUserProfile_ext,
     {
       User: prisma.user,
-    },
-  )
-
-// PRIVATE API
-export type GenerateGptResponse_ext = typeof generateGptResponse_ext
-
-// PUBLIC API
-export const generateGptResponse: AuthenticatedOperationFor<GenerateGptResponse_ext> =
-  createAuthenticatedOperation(
-    generateGptResponse_ext,
-    {
-      User: prisma.user,
-      Task: prisma.task,
-      GptResponse: prisma.gptResponse,
-    },
-  )
-
-// PRIVATE API
-export type CreateTask_ext = typeof createTask_ext
-
-// PUBLIC API
-export const createTask: AuthenticatedOperationFor<CreateTask_ext> =
-  createAuthenticatedOperation(
-    createTask_ext,
-    {
-      Task: prisma.task,
-    },
-  )
-
-// PRIVATE API
-export type DeleteTask_ext = typeof deleteTask_ext
-
-// PUBLIC API
-export const deleteTask: AuthenticatedOperationFor<DeleteTask_ext> =
-  createAuthenticatedOperation(
-    deleteTask_ext,
-    {
-      Task: prisma.task,
-    },
-  )
-
-// PRIVATE API
-export type UpdateTask_ext = typeof updateTask_ext
-
-// PUBLIC API
-export const updateTask: AuthenticatedOperationFor<UpdateTask_ext> =
-  createAuthenticatedOperation(
-    updateTask_ext,
-    {
-      Task: prisma.task,
     },
   )
 

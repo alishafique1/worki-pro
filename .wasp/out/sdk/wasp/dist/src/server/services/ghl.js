@@ -54,16 +54,14 @@ export async function sendLeadToGHL(payload, prisma) {
     // Log regardless of success/failure — never throw
     try {
         const logData = {
-            direction: 'OUTBOUND',
-            source: 'GHL',
+            direction: 'OUTBOUND', source: 'GHL',
             event: 'lead.created',
             serviceRequestId: payload.serviceRequestId,
             payload: body,
             statusCode,
             error,
         };
-        const webhookLogDelegate = prisma.WebhookLog ?? prisma.webhookLog;
-        await webhookLogDelegate.create({ data: logData });
+        await prisma.webhookLog.create({ data: logData });
     }
     catch (logErr) {
         console.error('[GHL] Failed to write WebhookLog:', logErr);

@@ -1,4 +1,4 @@
-import { type _ServiceRequest, type _Appointment, type _Provider, type _CommunicationLog, type _ServiceCategory, type _ProviderCategory, type _RewardAccount, type _RewardTransaction, type _Redemption, type _Review, type _Referral, type _ProviderFee, type _User, type _GptResponse, type _Task, type _File, type _DailyStats, type _Lead, type AuthenticatedQueryDefinition, type Payload } from 'wasp/server/_types';
+import { type _ServiceRequest, type _Appointment, type _Provider, type _CommunicationLog, type _ServiceCategory, type _ProviderCategory, type _RewardAccount, type _RewardTransaction, type _Redemption, type _Review, type _Referral, type _ProviderFee, type _User, type _File, type _DailyStats, type _Lead, type AuthenticatedQueryDefinition, type Payload } from 'wasp/server/_types';
 export type GetMyRequests<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _ServiceRequest,
     _Appointment,
@@ -79,13 +79,6 @@ export type GetAdminReviews<Input extends Payload = never, Output extends Payloa
 ], Input, Output>;
 export type GetPaginatedUsers<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _User
-], Input, Output>;
-export type GetGptResponses<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
-    _User,
-    _GptResponse
-], Input, Output>;
-export type GetAllTasksByUser<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
-    _Task
 ], Input, Output>;
 export type GetAllFilesByUser<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _User,

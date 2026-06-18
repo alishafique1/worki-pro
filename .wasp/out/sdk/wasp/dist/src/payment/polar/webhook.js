@@ -53,7 +53,7 @@ export const polarWebhook = async (request, response, context) => {
     }
 };
 async function handleOrderPaid({ data: order }, userDelegate) {
-    const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(order.productId);
+    const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(order.productId ?? "");
     switch (paymentPlanId) {
         case PaymentPlanId.Credits10:
             await updateUserCredits({
@@ -80,7 +80,7 @@ async function handleSubscriptionUpdated({ data: subscription }, userDelegate) {
     if (!newSubscriptionStatus) {
         return;
     }
-    const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(subscription.productId);
+    const paymentPlanId = getPaymentPlanIdByPaymentProcessorPlanId(subscription.productId ?? "");
     await updateUserSubscription({
         paymentProcessorUserId: subscription.customer.id,
         subscriptionStatus: newSubscriptionStatus,

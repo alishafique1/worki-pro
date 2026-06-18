@@ -33,9 +33,9 @@ export declare const categories: ({
     slug: string;
     description: string;
     href: string;
+    comingSoon: boolean;
     imageUrl?: undefined;
     live?: undefined;
-    comingSoon?: undefined;
 })[];
 export declare const customerSteps: {
     step: string;

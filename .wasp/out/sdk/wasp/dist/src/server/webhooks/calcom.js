@@ -83,7 +83,7 @@ const sendBookingEmails = async ({ consumerEmail, consumerName, providerEmail, p
                 : `Your ${serviceLabel} appointment is ${actionLabel} for ${formattedTime}${providerName ? ` with ${providerName}` : ''}${providerPhone ? ` (${providerPhone})` : ''}.`,
             html: actionLabel === 'cancelled'
                 ? `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment has been cancelled.</p><p>If you want, reply to this email and The Helper will help you rebook.</p>`
-                : `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment is <strong>${actionLabel}</strong> for <strong>${formattedTime}</strong>${providerName ? ` with <strong>${providerName}</strong>` : ''}${providerPhone ? ` (${providerPhone})` : ''}.</p><p>We will keep you updated if anything changes.</p><p style="margin-top: 16px;">An .ics calendar file is attached to this email. Open it to add this appointment to your calendar.</p>`,
+                : `<p>Hi ${consumerName || 'there'},</p><p>Your <strong>${serviceLabel}</strong> appointment is <strong>${actionLabel}</strong> for <strong>${formattedTime}</strong>${providerName ? ` with <strong>${providerName}</strong>` : ''}${providerPhone ? ` (${providerPhone})` : ''}.</p><p>We will keep you updated if anything changes.</p><p style=\"margin-top: 16px;\">An .ics calendar file is attached to this email. Open it to add this appointment to your calendar.</p>`,
             icsContent: consumerICS,
             icsFilename: 'the-helper-appointment.ics',
         });
@@ -97,7 +97,7 @@ const sendBookingEmails = async ({ consumerEmail, consumerName, providerEmail, p
                 : `A ${serviceLabel} appointment was ${actionLabel} for ${formattedTime}.${consumerName ? ` Customer: ${consumerName}.` : ''}`,
             html: actionLabel === 'cancelled'
                 ? `<p>A <strong>${serviceLabel}</strong> appointment was cancelled.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p>`
-                : `<p>A <strong>${serviceLabel}</strong> appointment was ${actionLabel} for <strong>${formattedTime}</strong>.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p><p style="margin-top: 16px;">An .ics calendar file is attached. Open it to add this appointment to your calendar.</p>`,
+                : `<p>A <strong>${serviceLabel}</strong> appointment was ${actionLabel} for <strong>${formattedTime}</strong>.${consumerName ? ` Customer: <strong>${consumerName}</strong>.` : ''}</p><p style=\"margin-top: 16px;\">An .ics calendar file is attached. Open it to add this appointment to your calendar.</p>`,
             icsContent: providerICS,
             icsFilename: 'the-helper-appointment.ics',
         });
@@ -168,7 +168,7 @@ export const calcomWebhook = async (req, res, context) => {
                                 where: { id: serviceRequest.id },
                                 data: { status: 'BOOKED', bookedAt: new Date() },
                             });
-                            await sendBookingEmails({
+                            sendBookingEmails({
                                 consumerEmail: serviceRequest.email,
                                 consumerName: serviceRequest.name,
                                 providerEmail: provider?.email,
@@ -179,6 +179,8 @@ export const calcomWebhook = async (req, res, context) => {
                                 appointmentEndTime: payload.endTime,
                                 location: serviceRequest.postalCode || serviceRequest.city || undefined,
                                 actionLabel: 'booked',
+                            }).catch((err) => {
+                                console.error('[Cal.com] sendBookingEmails failed:', err.message);
                             });
                             console.log(`[Cal.com] Appointment created for request ${serviceRequest.id}`);
                         }
@@ -231,7 +233,7 @@ export const calcomWebhook = async (req, res, context) => {
                     data: { status: 'CANCELLED' },
                 });
                 if (appointment) {
-                    await sendBookingEmails({
+                    sendBookingEmails({
                         consumerEmail: appointment.serviceRequest.email,
                         consumerName: appointment.serviceRequest.name,
                         providerEmail: appointment.provider.email,
@@ -240,6 +242,8 @@ export const calcomWebhook = async (req, res, context) => {
                         serviceLabel: payload.title ?? 'service',
                         appointmentTime: appointment.scheduledAt?.toISOString() ?? payload.startTime,
                         actionLabel: 'cancelled',
+                    }).catch((err) => {
+                        console.error('[Cal.com] sendBookingEmails failed:', err.message);
                     });
                 }
                 console.log(`[Cal.com] Appointment cancelled: ${bookingUid}`);

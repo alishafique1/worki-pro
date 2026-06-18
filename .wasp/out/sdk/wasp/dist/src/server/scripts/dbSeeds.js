@@ -2,6 +2,8 @@ import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/ut
 const LEGACY_TEST_PASSWORD = "Password123!";
 const QA_TEST_PASSWORD = "HelperQA123";
 const TEST_PASSWORD = "HelperTest123";
+// Categories live at launch — everything else gets active: false
+const LAUNCH_SLUGS = new Set(["hvac", "plumbing", "smart-home", "events-celebrations"]);
 async function ensureEmailAuthIdentity(prisma, email, password) {
     const providerId = createProviderId("email", email);
     const existingIdentity = await prisma.authIdentity.findUnique({
@@ -114,11 +116,15 @@ export const DEFAULT_VENDOR_CATEGORIES = [
 export async function seedVendorCategories(prisma) {
     console.log("Seeding vendor service categories...");
     for (const cat of DEFAULT_VENDOR_CATEGORIES) {
+        // Only HVAC, Plumbing, Smart Home, Events are live at launch.
+        // All other categories (and their children) are marked coming-soon.
+        const isActive = LAUNCH_SLUGS.has(cat.slug);
         await prisma.serviceCategory.upsert({
             where: { slug: cat.slug },
             update: {
                 icon: cat.icon,
                 imageUrl: cat.imageUrl,
+                active: isActive,
             },
             create: {
                 name: cat.name,
@@ -126,9 +132,31 @@ export async function seedVendorCategories(prisma) {
                 description: cat.description,
                 icon: cat.icon,
                 imageUrl: cat.imageUrl,
-                active: true,
+                active: isActive,
             },
         });
+        // Seed children with same active flag
+        if (cat.children) {
+            for (const child of cat.children) {
+                const parentCat = await prisma.serviceCategory.findFirst({
+                    where: { slug: cat.slug },
+                    select: { id: true },
+                });
+                await prisma.serviceCategory.upsert({
+                    where: { slug: child.slug },
+                    update: { active: isActive, parentCategoryId: parentCat?.id ?? null },
+                    create: {
+                        name: child.name,
+                        slug: child.slug,
+                        description: child.description,
+                        icon: child.icon,
+                        imageUrl: child.imageUrl,
+                        active: isActive,
+                        parentCategoryId: parentCat?.id ?? null,
+                    },
+                });
+            }
+        }
     }
     console.log(`Seeded ${DEFAULT_VENDOR_CATEGORIES.length} vendor categories.`);
 }

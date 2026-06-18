@@ -338,7 +338,10 @@ export const updateProviderProfile: UpdateProviderProfile<
   if (args.calComUsername !== undefined) data.calComUsername = args.calComUsername || null;
   // Bark-style profile fields
   if (args.slug !== undefined) {
-    const slug = args.slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    const slug = args.slug.trim().toLowerCase()
+      .replace(/[^a-z0-9-]/g, "-")
+      .replace(/-{2,}/g, "-")
+      .replace(/^-+|-+$/g, "");
     data.slug = slug || null;
   }
   if (args.bio !== undefined) data.bio = args.bio || null;
@@ -633,6 +636,11 @@ export const getPublicLeadFeed: GetPublicLeadFeed<
 
   if (urgency) {
     where.urgency = urgency;
+  }
+
+  // Guard: provider with no registered categories sees no leads
+  if (proSlugs.length === 0 && !categorySlug) {
+    return [];
   }
 
   const requests = await context.entities.ServiceRequest.findMany({

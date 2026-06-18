@@ -37,10 +37,6 @@ export { getAdminReviews } from './queries/index.js'
 
 export { getPaginatedUsers } from './queries/index.js'
 
-export { getGptResponses } from './queries/index.js'
-
-export { getAllTasksByUser } from './queries/index.js'
-
 export { getAllFilesByUser } from './queries/index.js'
 
 export { getDownloadFileSignedURL } from './queries/index.js'
@@ -100,14 +96,6 @@ export { moderateReview } from './actions/index.js'
 export { updateIsUserAdminById } from './actions/index.js'
 
 export { updateUserProfile } from './actions/index.js'
-
-export { generateGptResponse } from './actions/index.js'
-
-export { createTask } from './actions/index.js'
-
-export { deleteTask } from './actions/index.js'
-
-export { updateTask } from './actions/index.js'
 
 export { createFileUploadUrl } from './actions/index.js'
 

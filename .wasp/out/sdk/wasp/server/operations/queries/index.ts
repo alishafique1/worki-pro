@@ -23,8 +23,6 @@ import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/op
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations'
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations'
 import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operations'
-import { getGptResponses as getGptResponses_ext } from 'wasp/src/demo-ai-app/operations'
-import { getAllTasksByUser as getAllTasksByUser_ext } from 'wasp/src/demo-ai-app/operations'
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations'
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations'
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations'
@@ -280,33 +278,6 @@ export const getPaginatedUsers: AuthenticatedOperationFor<GetPaginatedUsers_ext>
     getPaginatedUsers_ext,
     {
       User: prisma.user,
-    },
-  )
-
-
-// PRIVATE API
-export type GetGptResponses_ext = typeof getGptResponses_ext
-
-// PUBLIC API
-export const getGptResponses: AuthenticatedOperationFor<GetGptResponses_ext> =
-  createAuthenticatedOperation(
-    getGptResponses_ext,
-    {
-      User: prisma.user,
-      GptResponse: prisma.gptResponse,
-    },
-  )
-
-
-// PRIVATE API
-export type GetAllTasksByUser_ext = typeof getAllTasksByUser_ext
-
-// PUBLIC API
-export const getAllTasksByUser: AuthenticatedOperationFor<GetAllTasksByUser_ext> =
-  createAuthenticatedOperation(
-    getAllTasksByUser_ext,
-    {
-      Task: prisma.task,
     },
   )
 

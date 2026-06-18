@@ -17,8 +17,6 @@ import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/op
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations';
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations';
 import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operations';
-import { getGptResponses as getGptResponses_ext } from 'wasp/src/demo-ai-app/operations';
-import { getAllTasksByUser as getAllTasksByUser_ext } from 'wasp/src/demo-ai-app/operations';
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations';
@@ -123,15 +121,6 @@ export const getAdminReviews = createAuthenticatedOperation(getAdminReviews_ext,
 // PUBLIC API
 export const getPaginatedUsers = createAuthenticatedOperation(getPaginatedUsers_ext, {
     User: prisma.user,
-});
-// PUBLIC API
-export const getGptResponses = createAuthenticatedOperation(getGptResponses_ext, {
-    User: prisma.user,
-    GptResponse: prisma.gptResponse,
-});
-// PUBLIC API
-export const getAllTasksByUser = createAuthenticatedOperation(getAllTasksByUser_ext, {
-    Task: prisma.task,
 });
 // PUBLIC API
 export const getAllFilesByUser = createAuthenticatedOperation(getAllFilesByUser_ext, {

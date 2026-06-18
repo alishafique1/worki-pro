@@ -104,7 +104,7 @@ export const categories = [
         description: "Panels, outlets, fixtures, safety checks, and installations.",
         href: "/services/electrical",
         imageUrl: categoryImages.electrical,
-        live: true,
+        comingSoon: true,
     },
     {
         icon: <WashingMachine className="size-5"/>,
@@ -113,7 +113,7 @@ export const categories = [
         description: "Kitchen, laundry, diagnosis, repair, and replacement support.",
         href: "/services/appliance-repair",
         imageUrl: categoryImages["appliance-repair"],
-        live: true,
+        comingSoon: true,
     },
     {
         icon: <Hammer className="size-5"/>,
@@ -122,7 +122,7 @@ export const categories = [
         description: "Repairs, mounting, assembly, small projects, and punch lists.",
         href: "/services/handyman",
         imageUrl: categoryImages.handyman,
-        live: true,
+        comingSoon: true,
     },
     {
         icon: <Wrench className="size-5"/>,
@@ -243,12 +243,12 @@ export const categories = [
     },
     {
         icon: <PartyPopper className="size-5"/>,
-        name: "Events",
-        slug: "events",
-        description: "Event setup, rentals, photography, and day-of coordination.",
-        href: "/services/events",
+        name: "Events & Celebrations",
+        slug: "events-celebrations",
+        description: "Decorators, caterers, entertainment, venues, and event vendors across the GTA.",
+        href: "/services/events-celebrations",
         imageUrl: categoryImages.events,
-        comingSoon: true,
+        live: true,
     },
     {
         icon: <Plus className="size-5"/>,
@@ -256,6 +256,7 @@ export const categories = [
         slug: "more",
         description: "Pest control, renovation, pool, waterproofing, and more.",
         href: "/get-quotes",
+        comingSoon: true,
     },
 ];
 export const customerSteps = [

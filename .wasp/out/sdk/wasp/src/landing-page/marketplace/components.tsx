@@ -474,7 +474,7 @@ export function CTASection() {
               Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Stop calling around. Get matched with a verified pro in 15 minutes.
+              Stop calling around. Get matched with a verified pro quickly.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
               One request. Matched with a licensed, insured local pro. 100% free for homeowners. $60+ cash back on your first completed job.
@@ -502,11 +502,11 @@ export function CTASection() {
 
 const footerLinks = {
   services: [
-    { label: "HVAC", to: "/hvac" },
-    { label: "Plumbing", to: "/plumbing" },
-    { label: "Electrical", to: "/electrical" },
-    { label: "Handyman", to: "/handyman" },
-    { label: "Smart Home", to: "/smart-home" },
+    { label: "HVAC", to: "/services/hvac" },
+    { label: "Plumbing", to: "/services/plumbing" },
+    { label: "Electrical", to: "/services/electrical" },
+    { label: "Handyman", to: "/services/handyman" },
+    { label: "Smart Home", to: "/services/smart-home" },
   ],
   company: [
     { label: "How it works", to: "/how-it-works" },

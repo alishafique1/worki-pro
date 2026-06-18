@@ -16,8 +16,6 @@ import { GetPublicLeadFeed_ext } from 'wasp/server/operations/queries'
 import { GetPublicProvider_ext } from 'wasp/server/operations/queries'
 import { GetAdminReviews_ext } from 'wasp/server/operations/queries'
 import { GetPaginatedUsers_ext } from 'wasp/server/operations/queries'
-import { GetGptResponses_ext } from 'wasp/server/operations/queries'
-import { GetAllTasksByUser_ext } from 'wasp/server/operations/queries'
 import { GetAllFilesByUser_ext } from 'wasp/server/operations/queries'
 import { GetDownloadFileSignedURL_ext } from 'wasp/server/operations/queries'
 import { GetDailyStats_ext } from 'wasp/server/operations/queries'
@@ -126,18 +124,6 @@ export const getAdminReviews: QueryFor<GetAdminReviews_ext> = createQuery<GetAdm
 export const getPaginatedUsers: QueryFor<GetPaginatedUsers_ext> = createQuery<GetPaginatedUsers_ext>(
   'operations/get-paginated-users',
   ['User'],
-)
-
-// PUBLIC API
-export const getGptResponses: QueryFor<GetGptResponses_ext> = createQuery<GetGptResponses_ext>(
-  'operations/get-gpt-responses',
-  ['User', 'GptResponse'],
-)
-
-// PUBLIC API
-export const getAllTasksByUser: QueryFor<GetAllTasksByUser_ext> = createQuery<GetAllTasksByUser_ext>(
-  'operations/get-all-tasks-by-user',
-  ['Task'],
 )
 
 // PUBLIC API

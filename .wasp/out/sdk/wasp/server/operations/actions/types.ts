@@ -16,8 +16,6 @@ import {
   type _Review,
   type _Appointment,
   type _ProviderFee,
-  type _Task,
-  type _GptResponse,
   type _File,
   type AuthenticatedActionDefinition,
   type Payload,
@@ -293,48 +291,6 @@ export type UpdateUserProfile<Input extends Payload = never, Output extends Payl
   AuthenticatedActionDefinition<
     [
       _User,
-    ],
-    Input,
-    Output
-  >
-
-// PUBLIC API
-export type GenerateGptResponse<Input extends Payload = never, Output extends Payload = Payload> = 
-  AuthenticatedActionDefinition<
-    [
-      _User,
-      _Task,
-      _GptResponse,
-    ],
-    Input,
-    Output
-  >
-
-// PUBLIC API
-export type CreateTask<Input extends Payload = never, Output extends Payload = Payload> = 
-  AuthenticatedActionDefinition<
-    [
-      _Task,
-    ],
-    Input,
-    Output
-  >
-
-// PUBLIC API
-export type DeleteTask<Input extends Payload = never, Output extends Payload = Payload> = 
-  AuthenticatedActionDefinition<
-    [
-      _Task,
-    ],
-    Input,
-    Output
-  >
-
-// PUBLIC API
-export type UpdateTask<Input extends Payload = never, Output extends Payload = Payload> = 
-  AuthenticatedActionDefinition<
-    [
-      _Task,
     ],
     Input,
     Output

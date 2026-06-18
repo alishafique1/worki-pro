@@ -658,19 +658,6 @@ export const routes = {
         options?.hash
       ),
   },
-  DemoAppRoute: {
-    to: "/demo-app",
-    build: (
-      options?:
-      OptionalRouteOptions
-    ) => interpolatePath(
-        
-        "/demo-app",
-        undefined,
-        options?.search,
-        options?.hash
-      ),
-  },
   FileUploadRoute: {
     to: "/file-upload",
     build: (

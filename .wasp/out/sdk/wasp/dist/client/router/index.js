@@ -201,10 +201,6 @@ export const routes = {
         to: "/account",
         build: (options) => interpolatePath("/account", undefined, options?.search, options?.hash),
     },
-    DemoAppRoute: {
-        to: "/demo-app",
-        build: (options) => interpolatePath("/demo-app", undefined, options?.search, options?.hash),
-    },
     FileUploadRoute: {
         to: "/file-upload",
         build: (options) => interpolatePath("/file-upload", undefined, options?.search, options?.hash),

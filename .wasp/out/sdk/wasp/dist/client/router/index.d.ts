@@ -241,10 +241,6 @@ export declare const routes: {
         readonly to: "/account";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
-    readonly DemoAppRoute: {
-        readonly to: "/demo-app";
-        readonly build: (options?: OptionalRouteOptions) => string;
-    };
     readonly FileUploadRoute: {
         readonly to: "/file-upload";
         readonly build: (options?: OptionalRouteOptions) => string;

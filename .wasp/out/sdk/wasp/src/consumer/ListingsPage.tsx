@@ -29,6 +29,9 @@ export default function ListingsPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('name-asc');
+  const [page, setPage] = useState(1);
+
+  const PAGE_SIZE = 12;
 
   // Debounce the search so the query only fires 300ms after the user stops typing.
   // The raw `searchQuery` value keeps the input field snappy.
@@ -110,6 +113,14 @@ export default function ListingsPage() {
     return 0;
   });
 
+  const totalPages = Math.max(1, Math.ceil(listings.length / PAGE_SIZE));
+  const paginatedListings = listings.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleFilterChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (val: string) => {
+    setter(val);
+    setPage(1);
+  };
+
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-[80vh]">
       {/* Header */}
@@ -128,14 +139,14 @@ export default function ListingsPage() {
             type="text"
             placeholder="Search for a service..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleFilterChange(setSearchQuery)(e.target.value)}
             className="w-full pl-12 pr-4 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors"
           />
         </div>
 
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => handleFilterChange(setSelectedCategory)(e.target.value)}
           className="px-5 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors cursor-pointer min-w-[200px]"
         >
           <option value="">All Categories</option>
@@ -146,7 +157,7 @@ export default function ListingsPage() {
 
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortOption)}
+          onChange={(e) => { setSortBy(e.target.value as SortOption); setPage(1); }}
           className="px-5 py-4 bg-white border border-[#E2E8F0] rounded-[20px] text-base focus:outline-none focus:border-[#2563EB] transition-colors cursor-pointer min-w-[160px]"
         >
           <option value="name-asc">Name A–Z</option>
@@ -214,7 +225,7 @@ export default function ListingsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {listings.map((entry) => {
+          {paginatedListings.map((entry) => {
             const key = `${entry.service.name}-${entry.service.categorySlug}`;
             return (
               <div
@@ -282,6 +293,43 @@ export default function ListingsPage() {
         </div>
       )}
 
+
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-3">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="px-4 py-2 rounded-[16px] border border-[#E2E8F0] text-sm font-medium text-[#475569] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+              >
+                Previous
+              </button>
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
+                      p === page
+                        ? 'bg-[#2563EB] text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)]'
+                        : 'text-[#475569] hover:bg-[#EFF6FF] hover:text-[#2563EB]'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="px-4 py-2 rounded-[16px] border border-[#E2E8F0] text-sm font-medium text-[#475569] disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          )}
+
       {/* Category quick-links */}
       <div className="mt-12 pt-8 border-t border-[#E2E8F0]">
         <h2 className="text-lg font-bold mb-4 text-[#0F172A]">Browse by Category</h2>
@@ -290,8 +338,7 @@ export default function ListingsPage() {
             <button
               key={cat.id}
               onClick={() => {
-                setSelectedCategory(cat.slug);
-                setSearchQuery('');
+                handleFilterChange(setSelectedCategory)(cat.slug);
               }}
               className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-colors ${
                 selectedCategory === cat.slug
