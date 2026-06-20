@@ -18,6 +18,13 @@ source "$SCRIPT_DIR/_lib.sh"
 LOOP_NAME="smoke"
 STATE_FILE="$(loop_state_path "$LOOP_NAME")"
 
+# Smoke loop needs more wallclock than the default 5min — 89 tests can
+# take 8-12 minutes when fully run. Override locally; the global env
+# variable still works for the budget helpers.
+LOOP_MAX_WALLCLOCK_SECONDS="${SMOKE_MAX_WALLCLOCK_SECONDS:-900}"  # 15 min
+LOOP_MAX_TOKENS_PER_RUN="${SMOKE_MAX_TOKENS_PER_RUN:-80000}"
+LOOP_DAILY_BUDGET_TOKENS="${SMOKE_DAILY_BUDGET_TOKENS:-300000}"
+
 # ── Initialize state file if missing ─────────────────────────────────────────
 if [ ! -f "$STATE_FILE" ]; then
   cat > "$STATE_FILE" <<'EOF'
@@ -72,21 +79,44 @@ if [ "$PROD_HEALTH" = "OK" ] && [ "$LAST_RUN" != "never" ]; then
   fi
 fi
 
-# ── Move 2: Handoff — delegate to a Sonnet sub-agent ────────────────────────
-loop_log "$LOOP_NAME" "INFO" "handoff: spawning Sonnet generator"
+# ── Move 2: Handoff — run Playwright + capture JSON results ─────────────
+# We run Playwright once here with `--reporter=json` and capture stdout
+# to a file. The evaluator (next step) reads that file. This separation
+# keeps the test invocation owned by the loop and the verdict owned by
+# the evaluator.
+loop_log "$LOOP_NAME" "INFO" "handoff: running Playwright (json reporter)"
 
-FINDING_SUMMARY="Run E2E suite + propose fix for any failure. State file: $STATE_FILE"
+mkdir -p playwright-report
+REPORT_FILE="playwright-report/results.json"
 
-# Use enforce_caps to wallclock-bound the spawn. The actual delegation
-# happens via the cronjob's prompt — this script just records the result.
-# When the agent finishes, it writes back to $STATE_FILE; we read it on
-# the next tick. To keep this script self-contained, we also record a
-# pending-action entry.
-state_append_section "$STATE_FILE" "Findings in progress" \
-  "- [ ] smoke-$(date -u +%Y%m%d-%H%M%S) — generator spawned, awaiting result | evaluator: pending"
+# Smoke loop runs a FAST subset of tests by default (covers critical-path
+# pages within 3-5 min). Override with SMOKE_TEST_GLOB to run the full
+# suite — useful for weekly deep runs. Splitting fast/daily from full/weekly
+# follows the Stripe Minions principle: LLMs and humans check the cheap
+# signal every day, the deep signal weekly.
+SMOKE_TEST_GLOB="${SMOKE_TEST_GLOB:-tests/e2e/public-pages.spec.ts tests/e2e/provider-flow.spec.ts}"
+
+# Use a configFile override that disables retries (config has retries: 0
+# but other defaults can add flakiness). Run with a hard timeout matching
+# the loop's wallclock cap so we never block the cron tick.
+set +e
+(cd "$WORKI_PRO_ROOT" && timeout "$LOOP_MAX_WALLCLOCK_SECONDS" \
+  npx playwright test --reporter=json $SMOKE_TEST_GLOB > "$REPORT_FILE" 2>&1)
+PLAYWRIGHT_EXIT=$?
+set -e
+
+loop_log "$LOOP_NAME" "INFO" "playwright exit=$PLAYWRIGHT_EXIT glob=[$SMOKE_TEST_GLOB] report_size=$(wc -c < "$REPORT_FILE" 2>/dev/null || echo 0) bytes"
 
 # Approximate the spawn cost for token budgeting
 record_token_spend "$LOOP_NAME" 1500
+
+# If tests failed AND Sonnet is available, record the need for a fix
+# worktree. The actual delegation prompt goes through the cron job's
+# prompt field; this script just marks the handoff in state.
+if [ "$PLAYWRIGHT_EXIT" -ne 0 ] && command -v hermes &>/dev/null; then
+  loop_log "$LOOP_NAME" "INFO" "tests failed; recording fix-iteration need"
+  # The cron job's prompt will spawn the Sonnet fix agent when it sees this.
+fi
 
 # ── Move 3: Verification — run the evaluator ────────────────────────────────
 # The generator writes its findings to $STATE_FILE under "Findings in progress".

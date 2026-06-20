@@ -159,7 +159,12 @@ run_evaluator() {
 
   local output exit_code
   set +e
-  output="$($evaluator "$finding_summary" 2>&1)"
+  # Forward loop-relevant env vars to the evaluator so it knows which
+  # subset / config the parent loop used. Add new vars here as needed.
+  output="$(SMOKE_TEST_GLOB="${SMOKE_TEST_GLOB:-}" \
+            EXPECTED_TESTS="${EXPECTED_TESTS:-}" \
+            PRODUCTION_BASE_URL="${PRODUCTION_BASE_URL:-}" \
+            "$evaluator" "$finding_summary" 2>&1)"
   exit_code=$?
   set -e
 
