@@ -99,6 +99,25 @@ GHL when a service request / lead is later submitted. Confirmed gap.
 
 ---
 
+## Status
+
+- ✅ **Phase 1** — shared `<Logo>` component; all ~13 sites converted.
+- ✅ **Phase 2** — tokens formalized, dead CSS + forbidden aliases removed,
+  `statusBadge()` helper added.
+- ✅ **Phase 3 (core)** — the 3 conflicting admin status-badge systems unified
+  on the shared helper. Remaining ad-hoc `bg-[#...]` on icon containers /
+  buttons left intentionally (not status pills); can be swept later.
+- ⛔ **Phase 4** — BLOCKED in this sandbox: no `node_modules`/`wasp`, so the
+  app can't run and auth pages can't be screenshotted. Code review of
+  `LoginPage`, `AuthPageLayout`, and `OnboardingPage` shows clean, intentional
+  UI (the OTP 6-box input and onboarding step numbers are standard). Need a
+  screenshot or a pointer to the exact "weird numbers" to fix precisely.
+- ✅ **Phase 5** — `syncContactToGHL` added and called from
+  `completeOnboarding`; signup phone now reaches GHL.
+- ⚠️ **Verification** — could not `wasp build`/typecheck in this sandbox
+  (deps not installed). Changes are mechanical import/usage swaps; import
+  paths checked by hand. Run `wasp start` locally to confirm.
+
 ## Risks / notes
 - `sendLeadToGHL` currently keys `WebhookLog` on `serviceRequestId`; the
   onboarding sync needs a path that tolerates no service request (synthetic
