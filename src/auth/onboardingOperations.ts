@@ -3,6 +3,7 @@ import { type CompleteOnboarding } from 'wasp/server/operations';
 import { emailSender } from 'wasp/server/email';
 import { REWARD_POINTS } from '../shared/rewardConstants';
 import { validateOnboarding } from './onboarding/validation';
+import { syncContactToGHL } from '../server/services/ghl';
 
 type CompleteOnboardingInput = {
   role: 'CONSUMER' | 'PROVIDER';
@@ -190,6 +191,22 @@ export const completeOnboarding: CompleteOnboarding<
     },
     { isolationLevel: 'Serializable' },
   );
+
+  // ─── Sync the new contact (incl. phone) to GoHighLevel ──────────────────────
+  // The phone is captured here at onboarding; previously it only reached GHL if
+  // the user later filed a service request. Fire-and-forget, after commit.
+  syncContactToGHL(
+    {
+      firstName,
+      lastName,
+      phone,
+      email: userEmail ?? undefined,
+      postalCode,
+      role,
+      businessName,
+    },
+    prisma,
+  ).catch(() => {/* non-blocking — already logged to WebhookLog */});
 
   // ─── Email notifications (fire-and-forget, AFTER commit) ────────────────────
   // Sending only after the transaction commits means we never email a user
