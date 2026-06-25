@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router'
 import { initSession } from 'wasp/auth/helpers/user'
 import { config } from 'wasp/client'
 import { AuthPageLayout } from './AuthPageLayout'
-import logo from '../client/static/logo.webp'
+import { Logo } from '../client/components/Logo/Logo'
 
 export function Signup() {
   const navigate = useNavigate()
@@ -175,10 +175,7 @@ export function Signup() {
   return (
     <AuthPageLayout>
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-6">
-          <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
-          <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
-        </div>
+        <Logo variant="light" size="md" className="mb-6" />
         {step === 'form' ? (
           <>
             <h2 className="text-2xl font-black tracking-tight mb-1 text-[#0F172A]">Create your account</h2>
