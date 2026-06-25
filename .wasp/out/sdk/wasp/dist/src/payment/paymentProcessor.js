@@ -5,5 +5,4 @@ import { stripePaymentProcessor } from "./stripe/paymentProcessor";
  */
 export const paymentProcessor = stripePaymentProcessor;
 // export const paymentProcessor: PaymentProcessor = lemonSqueezyPaymentProcessor;
-// export const paymentProcessor: PaymentProcessor = polarPaymentProcessor;
 //# sourceMappingURL=paymentProcessor.js.map

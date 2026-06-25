@@ -17,7 +17,7 @@ const DefaultLayout: FC<Props> = ({ children, user }) => {
   }
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-[#F8FAFC] text-[#0F172A]">
       <div className="flex h-screen overflow-hidden">
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">

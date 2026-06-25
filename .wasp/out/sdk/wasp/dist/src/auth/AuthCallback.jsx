@@ -15,7 +15,7 @@ export default function AuthCallback() {
             navigate("/login", { replace: true });
             return;
         }
-        const destination = user.role === "PROVIDER" ? "/provider/dashboard" : "/dashboard";
+        const destination = user.role === "PROVIDER" ? "/provider/dashboard" : "/account";
         navigate(destination, { replace: true });
     }, [user, isLoading, navigate]);
     return (<div className="flex min-h-screen items-center justify-center">

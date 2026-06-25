@@ -16,6 +16,9 @@ import { sendOtp as sendOtp_ext } from 'wasp/src/consumer/operations'
 import { verifyOtp as verifyOtp_ext } from 'wasp/src/consumer/operations'
 import { submitReview as submitReview_ext } from 'wasp/src/consumer/operations'
 import { applyReferralCode as applyReferralCode_ext } from 'wasp/src/consumer/operations'
+import { addPortfolioPhoto as addPortfolioPhoto_ext } from 'wasp/src/provider/operations'
+import { removePortfolioPhoto as removePortfolioPhoto_ext } from 'wasp/src/provider/operations'
+import { setProfilePhoto as setProfilePhoto_ext } from 'wasp/src/provider/operations'
 import { acceptServiceRequest as acceptServiceRequest_ext } from 'wasp/src/provider/operations'
 import { markJobCompleted as markJobCompleted_ext } from 'wasp/src/provider/operations'
 import { submitProviderApplication as submitProviderApplication_ext } from 'wasp/src/provider/operations'
@@ -27,6 +30,8 @@ import { updateProviderProfile as updateProviderProfile_ext } from 'wasp/src/pro
 import { resubmitProviderApplication as resubmitProviderApplication_ext } from 'wasp/src/provider/operations'
 import { claimLead as claimLead_ext } from 'wasp/src/provider/operations'
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations'
+import { upsertAdminCategory as upsertAdminCategory_ext } from 'wasp/src/admin/operations'
+import { deleteAdminCategory as deleteAdminCategory_ext } from 'wasp/src/admin/operations'
 import { updateIsUserAdminById as updateIsUserAdminById_ext } from 'wasp/src/user/operations'
 import { updateUserProfile as updateUserProfile_ext } from 'wasp/src/user/operations'
 import { createFileUploadUrl as createFileUploadUrl_ext } from 'wasp/src/file-upload/operations'
@@ -183,6 +188,42 @@ export const applyReferralCode: AuthenticatedOperationFor<ApplyReferralCode_ext>
   )
 
 // PRIVATE API
+export type AddPortfolioPhoto_ext = typeof addPortfolioPhoto_ext
+
+// PUBLIC API
+export const addPortfolioPhoto: AuthenticatedOperationFor<AddPortfolioPhoto_ext> =
+  createAuthenticatedOperation(
+    addPortfolioPhoto_ext,
+    {
+      Provider: prisma.provider,
+    },
+  )
+
+// PRIVATE API
+export type RemovePortfolioPhoto_ext = typeof removePortfolioPhoto_ext
+
+// PUBLIC API
+export const removePortfolioPhoto: AuthenticatedOperationFor<RemovePortfolioPhoto_ext> =
+  createAuthenticatedOperation(
+    removePortfolioPhoto_ext,
+    {
+      Provider: prisma.provider,
+    },
+  )
+
+// PRIVATE API
+export type SetProfilePhoto_ext = typeof setProfilePhoto_ext
+
+// PUBLIC API
+export const setProfilePhoto: AuthenticatedOperationFor<SetProfilePhoto_ext> =
+  createAuthenticatedOperation(
+    setProfilePhoto_ext,
+    {
+      Provider: prisma.provider,
+    },
+  )
+
+// PRIVATE API
 export type AcceptServiceRequest_ext = typeof acceptServiceRequest_ext
 
 // PUBLIC API
@@ -333,6 +374,30 @@ export const moderateReview: AuthenticatedOperationFor<ModerateReview_ext> =
     {
       Review: prisma.review,
       Provider: prisma.provider,
+    },
+  )
+
+// PRIVATE API
+export type UpsertAdminCategory_ext = typeof upsertAdminCategory_ext
+
+// PUBLIC API
+export const upsertAdminCategory: AuthenticatedOperationFor<UpsertAdminCategory_ext> =
+  createAuthenticatedOperation(
+    upsertAdminCategory_ext,
+    {
+      ServiceCategory: prisma.serviceCategory,
+    },
+  )
+
+// PRIVATE API
+export type DeleteAdminCategory_ext = typeof deleteAdminCategory_ext
+
+// PUBLIC API
+export const deleteAdminCategory: AuthenticatedOperationFor<DeleteAdminCategory_ext> =
+  createAuthenticatedOperation(
+    deleteAdminCategory_ext,
+    {
+      ServiceCategory: prisma.serviceCategory,
     },
   )
 

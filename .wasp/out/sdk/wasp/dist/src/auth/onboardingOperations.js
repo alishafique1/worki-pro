@@ -1,111 +1,123 @@
 import { HttpError, prisma } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
 import { REWARD_POINTS } from '../shared/rewardConstants';
+import { validateOnboarding } from './onboarding/validation';
 export const completeOnboarding = async (args, context) => {
     if (!context.user) {
         throw new HttpError(401, 'Not authenticated');
     }
     const userId = context.user.id;
+    const userEmail = context.user.email;
     const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds } = args;
-    await context.entities.User.update({
-        where: { id: userId },
-        data: {
-            firstName,
-            lastName,
-            phone,
-            postalCode,
-            role,
-            smsConsent: smsConsent ?? false,
-            smsConsentAt: smsConsent ? new Date() : undefined,
-        },
-    });
-    if (role === 'PROVIDER') {
-        await context.entities.Provider.upsert({
-            where: { userId },
-            update: {
-                businessName: businessName ?? '',
-                phone,
-                serviceAreas: serviceAreas ?? [],
-            },
-            create: {
-                userId,
-                businessName: businessName ?? '',
-                phone,
-                serviceAreas: serviceAreas ?? [],
-                email: context.user.email ?? undefined,
-            },
-        });
-        if (serviceCategoryIds && serviceCategoryIds.length > 0) {
-            const provider = await context.entities.Provider.findUnique({ where: { userId } });
-            await context.entities.ProviderCategory.deleteMany({
-                where: { provider: { userId } },
-            });
-            await context.entities.ProviderCategory.createMany({
-                data: serviceCategoryIds.map(serviceCategoryId => ({
-                    providerId: provider.id,
-                    serviceCategoryId,
-                })),
-                skipDuplicates: true,
-            });
-        }
+    // ─── Server-side validation ────────────────────────────────────────────────
+    // The browser form validates too, but the action is the trust boundary: a
+    // direct API call bypasses the UI entirely. Same rules, one source of truth.
+    const validationError = validateOnboarding({ role, firstName, phone, postalCode, businessName, serviceCategoryIds }, { requireProviderServices: true });
+    if (validationError) {
+        throw new HttpError(400, validationError);
     }
-    if (role === 'CONSUMER' && interestCategoryIds && interestCategoryIds.length > 0) {
-        await context.entities.ConsumerInterest.deleteMany({
-            where: { consumerId: userId },
+    // ─── All writes in ONE transaction ──────────────────────────────────────────
+    // Previously the user update, provider upsert, category writes, guest-request
+    // matching, and signup bonus were separate writes. A failure partway through
+    // left an inconsistent account (e.g. role=PROVIDER with no business/categories,
+    // or guest requests claimed but no reward row). Serializable isolation also
+    // makes the SIGNUP_BONUS existence-check actually safe against a concurrent
+    // retry (a network double-submit can't mint two welcome bonuses).
+    await prisma.$transaction(async (tx) => {
+        await tx.user.update({
+            where: { id: userId },
+            data: {
+                firstName,
+                lastName,
+                phone,
+                postalCode,
+                role,
+                smsConsent: smsConsent ?? false,
+                smsConsentAt: smsConsent ? new Date() : undefined,
+            },
         });
-        await context.entities.ConsumerInterest.createMany({
-            data: interestCategoryIds.map(serviceCategoryId => ({
-                consumerId: userId,
-                serviceCategoryId,
-            })),
-            skipDuplicates: true,
-        });
-    }
-    if (role === 'CONSUMER') {
-        await context.entities.RewardAccount.upsert({
-            where: { consumerId: userId },
-            update: {},
-            create: { consumerId: userId },
-        });
-        // Match any guest requests submitted before the user had an account (email-only — phone is not unique)
-        if (context.user.email) {
-            const pendingGuestRequests = await context.entities.ServiceRequest.findMany({
-                where: { consumerId: null, email: context.user.email },
-                orderBy: { createdAt: 'asc' },
+        if (role === 'PROVIDER') {
+            const provider = await tx.provider.upsert({
+                where: { userId },
+                update: {
+                    businessName: businessName ?? '',
+                    phone,
+                    serviceAreas: serviceAreas ?? [],
+                },
+                create: {
+                    userId,
+                    businessName: businessName ?? '',
+                    phone,
+                    serviceAreas: serviceAreas ?? [],
+                    email: userEmail ?? undefined,
+                },
             });
-            if (pendingGuestRequests.length > 0) {
-                const requestIds = pendingGuestRequests.map(r => r.id);
-                // Batch-fetch existing reward transactions for all matched requests in one query
-                const existingRewards = await context.entities.RewardTransaction.findMany({
-                    where: { consumerId: userId, serviceRequestId: { in: requestIds }, type: 'SERVICE_REQUEST' },
-                    select: { serviceRequestId: true },
-                });
-                const rewardedRequestIds = new Set(existingRewards.map(r => r.serviceRequestId));
-                const newRewards = requestIds
-                    .filter(id => !rewardedRequestIds.has(id))
-                    .map(id => ({
-                    consumerId: userId,
-                    serviceRequestId: id,
-                    type: 'SERVICE_REQUEST',
-                    points: REWARD_POINTS.SERVICE_REQUEST,
-                    status: 'PENDING',
-                    reason: 'Request submitted — $5 reward pending verification',
-                }));
-                if (newRewards.length > 0) {
-                    await context.entities.RewardTransaction.createMany({ data: newRewards, skipDuplicates: true });
-                }
-                await context.entities.ServiceRequest.updateMany({
-                    where: { id: { in: requestIds }, consumerId: null },
-                    data: { consumerId: userId, rewardStatus: 'PENDING_VERIFICATION' },
+            if (serviceCategoryIds && serviceCategoryIds.length > 0) {
+                await tx.providerCategory.deleteMany({ where: { providerId: provider.id } });
+                await tx.providerCategory.createMany({
+                    data: serviceCategoryIds.map((serviceCategoryId) => ({
+                        providerId: provider.id,
+                        serviceCategoryId,
+                    })),
+                    skipDuplicates: true,
                 });
             }
         }
-        // Serializable transaction prevents duplicate SIGNUP_BONUS on concurrent calls (e.g. network retry)
-        await prisma.$transaction(async (tx) => {
-            const existing = await tx.rewardTransaction.findFirst({
+        if (role === 'CONSUMER') {
+            if (interestCategoryIds && interestCategoryIds.length > 0) {
+                await tx.consumerInterest.deleteMany({ where: { consumerId: userId } });
+                await tx.consumerInterest.createMany({
+                    data: interestCategoryIds.map((serviceCategoryId) => ({
+                        consumerId: userId,
+                        serviceCategoryId,
+                    })),
+                    skipDuplicates: true,
+                });
+            }
+            await tx.rewardAccount.upsert({
+                where: { consumerId: userId },
+                update: {},
+                create: { consumerId: userId },
+            });
+            // Match any guest requests submitted before the user had an account
+            // (email-only — phone is not unique).
+            if (userEmail) {
+                const pendingGuestRequests = await tx.serviceRequest.findMany({
+                    where: { consumerId: null, email: userEmail },
+                    orderBy: { createdAt: 'asc' },
+                    select: { id: true },
+                });
+                if (pendingGuestRequests.length > 0) {
+                    const requestIds = pendingGuestRequests.map((r) => r.id);
+                    const existingRewards = await tx.rewardTransaction.findMany({
+                        where: { consumerId: userId, serviceRequestId: { in: requestIds }, type: 'SERVICE_REQUEST' },
+                        select: { serviceRequestId: true },
+                    });
+                    const rewardedRequestIds = new Set(existingRewards.map((r) => r.serviceRequestId));
+                    const newRewards = requestIds
+                        .filter((id) => !rewardedRequestIds.has(id))
+                        .map((id) => ({
+                        consumerId: userId,
+                        serviceRequestId: id,
+                        type: 'SERVICE_REQUEST',
+                        points: REWARD_POINTS.SERVICE_REQUEST,
+                        status: 'PENDING',
+                        reason: 'Request submitted — $5 reward pending verification',
+                    }));
+                    if (newRewards.length > 0) {
+                        await tx.rewardTransaction.createMany({ data: newRewards, skipDuplicates: true });
+                    }
+                    await tx.serviceRequest.updateMany({
+                        where: { id: { in: requestIds }, consumerId: null },
+                        data: { consumerId: userId, rewardStatus: 'PENDING_VERIFICATION' },
+                    });
+                }
+            }
+            // Signup bonus (deduped — see transaction note above).
+            const existingBonus = await tx.rewardTransaction.findFirst({
                 where: { consumerId: userId, type: 'SIGNUP_BONUS' },
             });
-            if (!existing) {
+            if (!existingBonus) {
                 await tx.rewardTransaction.create({
                     data: {
                         consumerId: userId,
@@ -123,49 +135,48 @@ export const completeOnboarding = async (args, context) => {
                     },
                 });
             }
-        }, { isolationLevel: 'ReadCommitted' });
-    }
-    if (referralCode && role === 'CONSUMER') {
-        const code = referralCode.trim().toUpperCase();
-        const referral = await context.entities.Referral.findUnique({
-            where: { referralCode: code },
-        });
-        if (referral && referral.referrerUserId !== userId && !referral.referredUserId) {
-            await context.entities.Referral.update({
-                where: { id: referral.id },
-                data: { referredUserId: userId, status: 'SIGNED_UP' },
-            });
+            // Referral linkage
+            if (referralCode) {
+                const code = referralCode.trim().toUpperCase();
+                const referral = await tx.referral.findUnique({ where: { referralCode: code } });
+                if (referral && referral.referrerUserId !== userId && !referral.referredUserId) {
+                    await tx.referral.update({
+                        where: { id: referral.id },
+                        data: { referredUserId: userId, status: 'SIGNED_UP' },
+                    });
+                }
+            }
         }
-    }
-    // ─── Issue 2+7: Email notifications (fire-and-forget) ──────────────────────
-    const consumerEmail = context.user.email;
-    if (role === 'CONSUMER' && consumerEmail) {
+    }, { isolationLevel: 'Serializable' });
+    // ─── Email notifications (fire-and-forget, AFTER commit) ────────────────────
+    // Sending only after the transaction commits means we never email a user
+    // about an account state that was rolled back.
+    if (role === 'CONSUMER' && userEmail) {
         emailSender.send({
-            to: consumerEmail,
+            to: userEmail,
             subject: 'Welcome to The Helper!',
             text: `Hi ${firstName},\n\nWelcome to The Helper! Here's how it works:\n\n1. Tell us what you need — describe your problem\n2. We match you with vetted local pros\n3. Compare, choose, and earn rewards on every job\n\nReady to start? Submit your first request:\nhttps://thehelper.ca/get-quotes\n\nThe TheHelper Team`,
             html: `<p>Hi ${firstName},</p><p>Welcome to The Helper! Here's how it works:</p><ol><li>Tell us what you need</li><li>We match you with vetted local pros</li><li>Earn rewards on every job</li></ol><p><a href="https://thehelper.ca/get-quotes" style="display:inline-block;padding:12px 24px;background:#2563EB;color:#fff;border-radius:22px;text-decoration:none;font-weight:bold">Submit your first request →</a></p><p>The TheHelper Team</p>`,
         }).catch(() => { });
     }
     if (role === 'PROVIDER') {
-        const providerEmail = context.user.email;
         // Provider confirmation email
-        if (providerEmail) {
+        if (userEmail) {
             emailSender.send({
-                to: providerEmail,
+                to: userEmail,
                 subject: 'Application received — The Helper',
                 text: `Hi ${firstName},\n\nThanks for applying to join The Helper as a service pro.\n\nYour application is under review. Our team is verifying your information. You can browse leads in the meantime but won't be able to claim them until your account is verified.\n\nWe'll notify you once the review is complete.\n\nGo to your dashboard:\nhttps://thehelper.ca/provider/dashboard\n\nThe TheHelper Team`,
                 html: `<p>Hi ${firstName},</p><p>Thanks for applying to join The Helper as a service pro.</p><p>Your application is under review. Our team is verifying your information. You can browse leads in the meantime but won't be able to claim them until your account is verified.</p><p>We'll notify you once the review is complete.</p><p><a href="https://thehelper.ca/provider/dashboard" style="display:inline-block;padding:12px 24px;background:#2563EB;color:#fff;border-radius:22px;text-decoration:none;font-weight:bold">Go to dashboard →</a></p><p>The TheHelper Team</p>`,
             }).catch(() => { });
         }
-        // Issue 7: Notify admins of new provider onboarding (same pattern as submitProviderApplication)
+        // Notify admins of new provider onboarding
         const adminEmails = (process.env.ADMIN_EMAILS ?? '').split(',').map((e) => e.trim()).filter(Boolean);
         for (const adminEmail of adminEmails) {
             emailSender.send({
                 to: adminEmail,
                 subject: `New provider onboarding: ${businessName ?? 'Unknown'}`,
-                text: `A new provider completed onboarding.\n\nBusiness: ${businessName ?? 'Unknown'}\nPhone: ${phone}\nEmail: ${consumerEmail ?? 'N/A'}\nAreas: ${(serviceAreas ?? []).join(', ')}\nCategories: ${(serviceCategoryIds ?? []).length} selected\n\nReview: https://thehelper.ca/admin/providers`,
-                html: `<p>A new provider completed onboarding.</p><ul><li><strong>Business:</strong> ${businessName ?? 'Unknown'}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${consumerEmail ?? 'N/A'}</li><li><strong>Areas:</strong> ${(serviceAreas ?? []).join(', ')}</li><li><strong>Categories:</strong> ${(serviceCategoryIds ?? []).length} selected</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
+                text: `A new provider completed onboarding.\n\nBusiness: ${businessName ?? 'Unknown'}\nPhone: ${phone}\nEmail: ${userEmail ?? 'N/A'}\nAreas: ${(serviceAreas ?? []).join(', ')}\nCategories: ${(serviceCategoryIds ?? []).length} selected\n\nReview: https://thehelper.ca/admin/providers`,
+                html: `<p>A new provider completed onboarding.</p><ul><li><strong>Business:</strong> ${businessName ?? 'Unknown'}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${userEmail ?? 'N/A'}</li><li><strong>Areas:</strong> ${(serviceAreas ?? []).join(', ')}</li><li><strong>Categories:</strong> ${(serviceCategoryIds ?? []).length} selected</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
             }).catch(() => { });
         }
     }

@@ -167,7 +167,7 @@ export default function ServiceAreaLandingPage() {
           </div>)}
 
         {!isLoading && providers && providers.length > 0 && (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {providers.map((pro) => (<Link key={pro.id} to={`/pro/${pro.id}`} className="block rounded-[18px] border border-[#E2E8F0] bg-white p-5 hover:border-[#BFDBFE] transition-all group">
+            {providers.map((pro) => (<Link key={pro.id} to={pro.slug ? `/pro-public/${pro.slug}` : `/pro/${pro.id}`} className="block rounded-[18px] border border-[#E2E8F0] bg-white p-5 hover:border-[#BFDBFE] transition-all group">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-[12px] bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center">
                     <span className="text-xl font-black text-[#2563EB]">

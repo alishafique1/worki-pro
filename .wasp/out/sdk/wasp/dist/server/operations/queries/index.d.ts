@@ -1,4 +1,5 @@
 import { type AuthenticatedOperationFor } from '../wrappers.js';
+import { getProviderSlugById as getProviderSlugById_ext } from 'wasp/src/consumer/operations';
 import { getMyRequests as getMyRequests_ext } from 'wasp/src/consumer/operations';
 import { getServiceCategories as getServiceCategories_ext } from 'wasp/src/consumer/operations';
 import { getProviders as getProviders_ext } from 'wasp/src/consumer/operations';
@@ -15,6 +16,7 @@ import { getProviderFees as getProviderFees_ext } from 'wasp/src/provider/operat
 import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/operations';
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations';
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations';
+import { getAdminCategories as getAdminCategories_ext } from 'wasp/src/admin/operations';
 import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operations';
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
@@ -23,6 +25,8 @@ import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operati
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations';
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations';
 import { getAdminLeads as getAdminLeads_ext } from 'wasp/src/admin/operations';
+export type GetProviderSlugById_ext = typeof getProviderSlugById_ext;
+export declare const getProviderSlugById: AuthenticatedOperationFor<GetProviderSlugById_ext>;
 export type GetMyRequests_ext = typeof getMyRequests_ext;
 export declare const getMyRequests: AuthenticatedOperationFor<GetMyRequests_ext>;
 export type GetServiceCategories_ext = typeof getServiceCategories_ext;
@@ -55,6 +59,8 @@ export type GetPublicProvider_ext = typeof getPublicProvider_ext;
 export declare const getPublicProvider: AuthenticatedOperationFor<GetPublicProvider_ext>;
 export type GetAdminReviews_ext = typeof getAdminReviews_ext;
 export declare const getAdminReviews: AuthenticatedOperationFor<GetAdminReviews_ext>;
+export type GetAdminCategories_ext = typeof getAdminCategories_ext;
+export declare const getAdminCategories: AuthenticatedOperationFor<GetAdminCategories_ext>;
 export type GetPaginatedUsers_ext = typeof getPaginatedUsers_ext;
 export declare const getPaginatedUsers: AuthenticatedOperationFor<GetPaginatedUsers_ext>;
 export type GetAllFilesByUser_ext = typeof getAllFilesByUser_ext;

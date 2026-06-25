@@ -9,6 +9,9 @@ import { SendOtp_ext } from 'wasp/server/operations/actions'
 import { VerifyOtp_ext } from 'wasp/server/operations/actions'
 import { SubmitReview_ext } from 'wasp/server/operations/actions'
 import { ApplyReferralCode_ext } from 'wasp/server/operations/actions'
+import { AddPortfolioPhoto_ext } from 'wasp/server/operations/actions'
+import { RemovePortfolioPhoto_ext } from 'wasp/server/operations/actions'
+import { SetProfilePhoto_ext } from 'wasp/server/operations/actions'
 import { AcceptServiceRequest_ext } from 'wasp/server/operations/actions'
 import { MarkJobCompleted_ext } from 'wasp/server/operations/actions'
 import { SubmitProviderApplication_ext } from 'wasp/server/operations/actions'
@@ -20,6 +23,8 @@ import { UpdateProviderProfile_ext } from 'wasp/server/operations/actions'
 import { ResubmitProviderApplication_ext } from 'wasp/server/operations/actions'
 import { ClaimLead_ext } from 'wasp/server/operations/actions'
 import { ModerateReview_ext } from 'wasp/server/operations/actions'
+import { UpsertAdminCategory_ext } from 'wasp/server/operations/actions'
+import { DeleteAdminCategory_ext } from 'wasp/server/operations/actions'
 import { UpdateIsUserAdminById_ext } from 'wasp/server/operations/actions'
 import { UpdateUserProfile_ext } from 'wasp/server/operations/actions'
 import { CreateFileUploadUrl_ext } from 'wasp/server/operations/actions'
@@ -93,6 +98,24 @@ export const applyReferralCode: ActionFor<ApplyReferralCode_ext> = createAction<
 )
 
 // PUBLIC API
+export const addPortfolioPhoto: ActionFor<AddPortfolioPhoto_ext> = createAction<AddPortfolioPhoto_ext>(
+  'operations/add-portfolio-photo',
+  ['Provider'],
+)
+
+// PUBLIC API
+export const removePortfolioPhoto: ActionFor<RemovePortfolioPhoto_ext> = createAction<RemovePortfolioPhoto_ext>(
+  'operations/remove-portfolio-photo',
+  ['Provider'],
+)
+
+// PUBLIC API
+export const setProfilePhoto: ActionFor<SetProfilePhoto_ext> = createAction<SetProfilePhoto_ext>(
+  'operations/set-profile-photo',
+  ['Provider'],
+)
+
+// PUBLIC API
 export const acceptServiceRequest: ActionFor<AcceptServiceRequest_ext> = createAction<AcceptServiceRequest_ext>(
   'operations/accept-service-request',
   ['ServiceRequest', 'Appointment', 'ProviderFee', 'Provider', 'RewardTransaction', 'RewardAccount'],
@@ -156,6 +179,18 @@ export const claimLead: ActionFor<ClaimLead_ext> = createAction<ClaimLead_ext>(
 export const moderateReview: ActionFor<ModerateReview_ext> = createAction<ModerateReview_ext>(
   'operations/moderate-review',
   ['Review', 'Provider'],
+)
+
+// PUBLIC API
+export const upsertAdminCategory: ActionFor<UpsertAdminCategory_ext> = createAction<UpsertAdminCategory_ext>(
+  'operations/upsert-admin-category',
+  ['ServiceCategory'],
+)
+
+// PUBLIC API
+export const deleteAdminCategory: ActionFor<DeleteAdminCategory_ext> = createAction<DeleteAdminCategory_ext>(
+  'operations/delete-admin-category',
+  ['ServiceCategory'],
 )
 
 // PUBLIC API

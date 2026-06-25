@@ -1,4 +1,7 @@
-import { type _ServiceRequest, type _Appointment, type _Provider, type _CommunicationLog, type _ServiceCategory, type _ProviderCategory, type _RewardAccount, type _RewardTransaction, type _Redemption, type _Review, type _Referral, type _ProviderFee, type _User, type _File, type _DailyStats, type _Lead, type AuthenticatedQueryDefinition, type Payload } from 'wasp/server/_types';
+import { type _Provider, type _ServiceRequest, type _Appointment, type _CommunicationLog, type _ServiceCategory, type _ProviderCategory, type _RewardAccount, type _RewardTransaction, type _Redemption, type _Review, type _Referral, type _ProviderFee, type _User, type _File, type _DailyStats, type _Lead, type AuthenticatedQueryDefinition, type Payload } from 'wasp/server/_types';
+export type GetProviderSlugById<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
+    _Provider
+], Input, Output>;
 export type GetMyRequests<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _ServiceRequest,
     _Appointment,
@@ -76,6 +79,9 @@ export type GetPublicProvider<Input extends Payload = never, Output extends Payl
 export type GetAdminReviews<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _Review,
     _Provider
+], Input, Output>;
+export type GetAdminCategories<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
+    _ServiceCategory
 ], Input, Output>;
 export type GetPaginatedUsers<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _User

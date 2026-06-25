@@ -1,5 +1,7 @@
 import { createQuery } from './core';
 // PUBLIC API
+export const getProviderSlugById = createQuery('operations/get-provider-slug-by-id', ['Provider']);
+// PUBLIC API
 export const getMyRequests = createQuery('operations/get-my-requests', ['ServiceRequest', 'Appointment', 'Provider', 'CommunicationLog', 'ServiceCategory']);
 // PUBLIC API
 export const getServiceCategories = createQuery('operations/get-service-categories', ['ServiceCategory']);
@@ -31,6 +33,8 @@ export const getPublicLeadFeed = createQuery('operations/get-public-lead-feed', 
 export const getPublicProvider = createQuery('operations/get-public-provider', ['Provider', 'Review', 'ProviderCategory', 'ServiceCategory']);
 // PUBLIC API
 export const getAdminReviews = createQuery('operations/get-admin-reviews', ['Review', 'Provider']);
+// PUBLIC API
+export const getAdminCategories = createQuery('operations/get-admin-categories', ['ServiceCategory']);
 // PUBLIC API
 export const getPaginatedUsers = createQuery('operations/get-paginated-users', ['User']);
 // PUBLIC API

@@ -29,6 +29,20 @@ type UpdateLeadInput = {
     notes?: string;
 };
 export declare const updateLead: UpdateLead<UpdateLeadInput, Lead>;
+export declare const getAdminCategories: (_args: void, context: any) => Promise<any>;
+type UpsertCategoryInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    description?: string;
+    icon?: string;
+    imageUrl?: string;
+    active?: boolean;
+};
+export declare const upsertAdminCategory: (args: UpsertCategoryInput, context: any) => Promise<any>;
+export declare const deleteAdminCategory: ({ id }: {
+    id: string;
+}, context: any) => Promise<any>;
 export declare const getAdminReviews: GetAdminReviews<void, Review[]>;
 export declare const moderateReview: ModerateReview<{
     reviewId: string;

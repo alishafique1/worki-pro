@@ -71,13 +71,13 @@ const quickLinks = [
         icon: <CreditCard className="w-5 h-5 text-[#2563EB]"/>,
         label: 'Rewards',
         description: 'Check your points & redemption options',
-        href: '/rewards',
+        href: '/account/rewards',
     },
     {
         icon: <Users className="w-5 h-5 text-[#2563EB]"/>,
         label: 'Refer a Friend',
         description: 'Earn points when friends complete a job',
-        href: '/referral',
+        href: '/account/referrals',
     },
 ];
 const trustItems = [

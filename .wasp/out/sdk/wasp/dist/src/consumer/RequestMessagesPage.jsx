@@ -54,7 +54,7 @@ export default function RequestMessagesPage() {
     if (error || !data?.request) {
         return (<div className="p-8 max-w-3xl mx-auto text-center text-[#475569] bg-[#F8FAFC] min-h-screen">
         Request not found.{" "}
-        <Link to="/my-requests" className="underline font-bold text-[#2563EB]">
+        <Link to="/account/requests" className="underline font-bold text-[#2563EB]">
           Back
         </Link>
       </div>);
@@ -63,7 +63,7 @@ export default function RequestMessagesPage() {
     return (<div className="flex flex-col max-w-3xl mx-auto min-h-[90vh] px-4 py-6 bg-[#F8FAFC]">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Link to={`/my-requests/${requestId}`} className="text-[#475569] hover:text-[#0F172A] transition-colors">
+        <Link to={`/account/requests/${requestId}`} className="text-[#475569] hover:text-[#0F172A] transition-colors">
           <ArrowLeft className="w-5 h-5"/>
         </Link>
         <div>
@@ -117,7 +117,7 @@ export default function RequestMessagesPage() {
       {sendError && (<p className="text-sm text-red-600 mt-2">{sendError}</p>)}
 
       {/* Quick action: leave review */}
-      {request.status === "COMPLETED" && (<Link to={`/my-requests/${requestId}/review`} className="mt-4 text-center text-sm font-bold underline text-[#2563EB] hover:text-[#1D4ED8] transition-colors">
+      {request.status === "COMPLETED" && (<Link to={`/account/requests/${requestId}/review`} className="mt-4 text-center text-sm font-bold underline text-[#2563EB] hover:text-[#1D4ED8] transition-colors">
           Leave a review for {request.assignedProvider?.businessName} →
         </Link>)}
     </div>);

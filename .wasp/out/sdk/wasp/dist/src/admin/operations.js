@@ -175,6 +175,26 @@ export const updateLead = async ({ leadId, status, assignedTo, notes }, context)
         data,
     });
 };
+// ─── Category Management ──────────────────────────────────────────────────────
+export const getAdminCategories = async (_args, context) => {
+    requireAdmin(context);
+    return context.entities.ServiceCategory.findMany({
+        where: { parentCategoryId: null },
+        orderBy: { name: 'asc' },
+    });
+};
+export const upsertAdminCategory = async (args, context) => {
+    requireAdmin(context);
+    const { id, ...data } = args;
+    if (id) {
+        return context.entities.ServiceCategory.update({ where: { id }, data });
+    }
+    return context.entities.ServiceCategory.create({ data: { ...data, active: data.active ?? true } });
+};
+export const deleteAdminCategory = async ({ id }, context) => {
+    requireAdmin(context);
+    return context.entities.ServiceCategory.delete({ where: { id } });
+};
 // ─── Review Moderation ────────────────────────────────────────────────────────
 export const getAdminReviews = async (_args, context) => {
     requireAdmin(context);

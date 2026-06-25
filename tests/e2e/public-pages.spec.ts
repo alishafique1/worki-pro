@@ -178,8 +178,14 @@ test.describe('Public pages', () => {
     await expect(page.locator('h1, h2').first()).toBeVisible();
   });
 
-  test('/services/hvac — dynamic category page loads', async ({ page }) => {
-    await gotoAndDismiss(page, '/services/hvac');
+  test('/services/handyman — dynamic category page loads', async ({ page }) => {
+    await gotoAndDismiss(page, '/services/handyman');
+    await expect(page).not.toHaveURL(/\/login/);
+    await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('/services/events — dynamic category page loads', async ({ page }) => {
+    await gotoAndDismiss(page, '/services/events');
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
   });

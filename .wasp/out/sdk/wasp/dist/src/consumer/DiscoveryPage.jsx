@@ -102,7 +102,7 @@ export default function DiscoveryPage() {
                 <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Top Rated Near You</h2>
               </div>
               <FeaturedProviderGrid>
-                {featuredProviders.map((provider, index) => (<ProviderCard key={provider.id} id={provider.id} businessName={provider.businessName} contactName={provider.contactName} ratingInternal={provider.ratingInternal} verificationStatus={provider.verificationStatus} serviceAreas={provider.serviceAreas} categories={provider.categories} profilePhotoUrl={provider.profilePhotoUrl} bio={provider.bio} completedJobsCount={provider.completedJobsCount} reviewCount={provider.reviewCount} featured rank={index + 1}/>))}
+                {featuredProviders.map((provider, index) => (<ProviderCard key={provider.id} id={provider.id} slug={provider.slug} businessName={provider.businessName} contactName={provider.contactName} ratingInternal={provider.ratingInternal} verificationStatus={provider.verificationStatus} serviceAreas={provider.serviceAreas} categories={provider.categories} profilePhotoUrl={provider.profilePhotoUrl} bio={provider.bio} completedJobsCount={provider.completedJobsCount} reviewCount={provider.reviewCount} featured rank={index + 1}/>))}
               </FeaturedProviderGrid>
             </div>)}
 
@@ -116,7 +116,7 @@ export default function DiscoveryPage() {
               </h2>
             </div>
             <ProviderCardGrid>
-              {(featuredProviders.length > 0 ? remainingProviders : sortedProviders)?.map((provider) => (<ProviderCard key={provider.id} id={provider.id} businessName={provider.businessName} contactName={provider.contactName} ratingInternal={provider.ratingInternal} verificationStatus={provider.verificationStatus} serviceAreas={provider.serviceAreas} categories={provider.categories} profilePhotoUrl={provider.profilePhotoUrl} bio={provider.bio} completedJobsCount={provider.completedJobsCount} reviewCount={provider.reviewCount}/>))}
+              {(featuredProviders.length > 0 ? remainingProviders : sortedProviders)?.map((provider) => (<ProviderCard key={provider.id} id={provider.id} slug={provider.slug} businessName={provider.businessName} contactName={provider.contactName} ratingInternal={provider.ratingInternal} verificationStatus={provider.verificationStatus} serviceAreas={provider.serviceAreas} categories={provider.categories} profilePhotoUrl={provider.profilePhotoUrl} bio={provider.bio} completedJobsCount={provider.completedJobsCount} reviewCount={provider.reviewCount}/>))}
             </ProviderCardGrid>
           </div>
         </>)}

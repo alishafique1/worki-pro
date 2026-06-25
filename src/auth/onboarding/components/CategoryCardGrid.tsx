@@ -25,6 +25,11 @@ import {
   Leaf,
   Cat,
   Shield,
+  CalendarCheck,
+  UtensilsCrossed,
+  Flame,
+  Bot,
+  Globe,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -53,6 +58,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Leaf,
   Cat,
   Shield,
+  CalendarCheck,
+  UtensilsCrossed,
+  Flame,
+  Bot,
+  Globe,
 };
 
 function getIcon(iconName: string | null | undefined): LucideIcon {

@@ -10,6 +10,10 @@ const PRICING = {
     handyman: 'Handyman jobs usually cost $80–$250',
     'smart-home': 'Smart home installs typically cost $150–$600',
     'appliance-repair': 'Appliance repairs usually cost $100–$300',
+    'digital-marketing': 'Most digital marketing retainers start at $500–$2,000/month',
+    'software-development': 'Project rates typically range from $1,500–$10,000+ depending on scope',
+    'video-editing': 'Short-form video edits typically cost $50–$300 per video',
+    'driving-school': 'In-car lessons typically cost $60–$90 per hour in the GTA',
 };
 const DEFAULT_FAQS = [
     { q: 'Is it free to get quotes?', a: 'Yes — getting quotes through The Helper is completely free for homeowners.' },
@@ -28,12 +32,24 @@ export default function CategoryLandingPage() {
     const { categorySlug } = useParams();
     const { data: categories, isLoading } = useQuery(getServiceCategories);
     const category = categories?.find(c => c.slug === categorySlug && !c.parentCategoryId);
-    const pageData = categoryPages.find(p => p.slug === categorySlug);
+    const pageData = categoryPages.find(p => p.slug === categorySlug) ?? {
+        slug: categorySlug ?? '',
+        name: category?.name ?? 'Service',
+        tagline: `${category?.name ?? 'Service'} pros in the GTA.`,
+        description: `Get free quotes from verified local ${category?.name?.toLowerCase() ?? 'service'} professionals — no commitment required.`,
+        badge: `${category?.name ?? 'Service'} · GTA`,
+        subCategories: [],
+        faqs: [],
+        seo: {
+            title: `${category?.name ?? 'Service'} in Milton, Oakville & Burlington | The Helper`,
+            description: `Get free quotes from verified ${category?.name?.toLowerCase() ?? 'service'} professionals in Milton, Oakville, and Burlington.`,
+        },
+    };
     const faqs = pageData?.faqs?.length
         ? pageData.faqs.map(f => ({ q: f.question, a: f.answer }))
         : DEFAULT_FAQS;
     const faqSchemaItems = faqs.map(f => ({ question: f.q, answer: f.a }));
-    const pricing = PRICING[categorySlug ?? ''];
+    const pricing = PRICING[categorySlug ?? ''] ?? null;
     const areas = GTA_AREAS;
     if (isLoading) {
         return (<div className="min-h-screen bg-slate-50 flex items-center justify-center">

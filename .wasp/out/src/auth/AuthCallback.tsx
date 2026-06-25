@@ -17,7 +17,7 @@ export default function AuthCallback() {
       return;
     }
     const destination =
-      user.role === "PROVIDER" ? "/provider/dashboard" : "/dashboard";
+      user.role === "PROVIDER" ? "/provider/dashboard" : "/account";
     navigate(destination, { replace: true });
   }, [user, isLoading, navigate]);
 

@@ -81,7 +81,7 @@ export default function GuestRequestWizardPage() {
                 state={state}
                 update={update}
                 onBack={back}
-                onSuccess={(requestId) => navigate(`/dashboard${requestId ? `?newRequest=${requestId}` : ''}`)}
+                onSuccess={(requestId) => navigate(`/account${requestId ? `?newRequest=${requestId}` : ''}`)}
                 setError={setError}
               />
             )}

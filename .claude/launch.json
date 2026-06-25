@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "autoPort": false,
+  "configurations": [
+    {
+      "name": "The Helper — Full Stack (wasp start)",
+      "runtimeExecutable": "wasp",
+      "runtimeArgs": ["start"],
+      "port": 3002,
+      "note": "Wasp Vite client. Port 3000 occupied by Docker so Vite falls back to 3002. API runs on PORT=3200 (set in .env.server)."
+    },
+    {
+      "name": "The Helper — API Server",
+      "runtimeExecutable": "wasp",
+      "runtimeArgs": ["start"],
+      "port": 3200,
+      "note": "Express API server, port set via PORT=3200 in .env.server"
+    },
+    {
+      "name": "Playwright E2E Tests",
+      "runtimeExecutable": "wasp",
+      "runtimeArgs": ["test"],
+      "port": 3002
+    }
+  ]
+}

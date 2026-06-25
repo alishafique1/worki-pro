@@ -53,7 +53,7 @@ export default function GuestRequestWizardPage() {
             {step === 1 && <StepCategory state={state} update={update} onNext={next}/>}
             {step === 2 && <StepQualifiers state={state} update={update} onNext={next} onBack={back}/>}
             {step === 3 && <StepInfoAndVerify state={state} update={update} onBack={back} onNext={next}/>}
-            {step === 4 && (<StepVerifyEmail state={state} update={update} onBack={back} onSuccess={(requestId) => navigate(`/dashboard${requestId ? `?newRequest=${requestId}` : ''}`)} setError={setError}/>)}
+            {step === 4 && (<StepVerifyEmail state={state} update={update} onBack={back} onSuccess={(requestId) => navigate(`/account${requestId ? `?newRequest=${requestId}` : ''}`)} setError={setError}/>)}
           </div>
 
           {error && (<p className="mt-4 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-[10px] px-4 py-3">

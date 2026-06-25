@@ -16,7 +16,8 @@ function NavCtaButton({ role, onClick, className }) {
         My Dashboard
       </ReactRouterLink>);
     }
-    return (<ReactRouterLink to="/get-quotes" className={cn(base, className)} onClick={onClick}>
+    // Logged-in consumers use the authenticated request flow, not the guest funnel.
+    return (<ReactRouterLink to="/request-service" className={cn(base, className)} onClick={onClick}>
       Get Help
     </ReactRouterLink>);
 }

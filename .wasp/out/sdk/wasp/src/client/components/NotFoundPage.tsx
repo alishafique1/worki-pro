@@ -8,12 +8,12 @@ export function NotFoundPage() {
 
   // Determine the correct "home" path for the primary button:
   // - Provider → /provider/dashboard
-  // - Consumer (or any other logged-in role) → /dashboard
+  // - Consumer (or any other logged-in role) → /account
   // - Anonymous → landing page
   const homePath = user
     ? user.role === "PROVIDER"
       ? "/provider/dashboard"
-      : "/dashboard"
+      : "/account"
     : routes.LandingPageRoute.to;
 
   return (

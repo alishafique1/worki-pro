@@ -1,8 +1,8 @@
 
 import {
+  type _Provider,
   type _ServiceRequest,
   type _Appointment,
-  type _Provider,
   type _CommunicationLog,
   type _ServiceCategory,
   type _ProviderCategory,
@@ -19,6 +19,16 @@ import {
   type AuthenticatedQueryDefinition,
   type Payload,
 } from 'wasp/server/_types'
+
+// PUBLIC API
+export type GetProviderSlugById<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedQueryDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
 
 // PUBLIC API
 export type GetMyRequests<Input extends Payload = never, Output extends Payload = Payload> = 
@@ -205,6 +215,16 @@ export type GetAdminReviews<Input extends Payload = never, Output extends Payloa
     [
       _Review,
       _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type GetAdminCategories<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedQueryDefinition<
+    [
+      _ServiceCategory,
     ],
     Input,
     Output

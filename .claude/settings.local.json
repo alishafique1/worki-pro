@@ -28,7 +28,16 @@
       "Bash(wasp db *)",
       "Bash(curl -s http://localhost:3100/)",
       "Bash(kill 41338)",
-      "Bash(docker exec multica-postgres-1 *)"
+      "Bash(docker exec multica-postgres-1 *)",
+      "Bash(wasp version *)",
+      "Bash(lsof -iTCP:3000 -iTCP:3001 -sTCP:LISTEN)",
+      "Skill(design-review)",
+      "Skill(design-review:*)",
+      "Skill(plan-ceo-review)",
+      "Skill(plan-ceo-review:*)",
+      "Bash(timeout 35 ssh -o BatchMode=yes -o ConnectTimeout=12 vps ' *)",
+      "Bash(timeout 40 ssh -o BatchMode=yes -o ConnectTimeout=12 vps ' *)",
+      "Bash(timeout 45 ssh -o BatchMode=yes -o ConnectTimeout=12 vps ' *)"
     ]
   }
 }

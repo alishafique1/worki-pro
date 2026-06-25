@@ -8,6 +8,7 @@ type ProviderCategory = {
 };
 export type ProviderCardProps = {
     id: string;
+    slug?: string | null;
     businessName: string;
     contactName?: string | null;
     ratingInternal?: number | null;
@@ -21,7 +22,7 @@ export type ProviderCardProps = {
     featured?: boolean;
     rank?: number;
 };
-export declare function ProviderCard({ id, businessName, contactName, ratingInternal, verificationStatus, serviceAreas, categories, profilePhotoUrl, bio, completedJobsCount, reviewCount, featured, rank, }: ProviderCardProps): React.JSX.Element;
+export declare function ProviderCard({ id, slug, businessName, contactName, ratingInternal, verificationStatus, serviceAreas, categories, profilePhotoUrl, bio, completedJobsCount, reviewCount, featured, rank, }: ProviderCardProps): React.JSX.Element;
 export declare function ProviderCardSkeleton({ featured }: {
     featured?: boolean;
 }): React.JSX.Element;

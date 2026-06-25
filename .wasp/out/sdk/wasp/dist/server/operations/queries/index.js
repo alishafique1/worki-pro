@@ -1,5 +1,6 @@
 import { prisma } from 'wasp/server';
 import { createAuthenticatedOperation, } from '../wrappers.js';
+import { getProviderSlugById as getProviderSlugById_ext } from 'wasp/src/consumer/operations';
 import { getMyRequests as getMyRequests_ext } from 'wasp/src/consumer/operations';
 import { getServiceCategories as getServiceCategories_ext } from 'wasp/src/consumer/operations';
 import { getProviders as getProviders_ext } from 'wasp/src/consumer/operations';
@@ -16,6 +17,7 @@ import { getProviderFees as getProviderFees_ext } from 'wasp/src/provider/operat
 import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/operations';
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations';
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations';
+import { getAdminCategories as getAdminCategories_ext } from 'wasp/src/admin/operations';
 import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operations';
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
@@ -24,6 +26,10 @@ import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operati
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations';
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations';
 import { getAdminLeads as getAdminLeads_ext } from 'wasp/src/admin/operations';
+// PUBLIC API
+export const getProviderSlugById = createAuthenticatedOperation(getProviderSlugById_ext, {
+    Provider: prisma.provider,
+});
 // PUBLIC API
 export const getMyRequests = createAuthenticatedOperation(getMyRequests_ext, {
     ServiceRequest: prisma.serviceRequest,
@@ -117,6 +123,10 @@ export const getPublicProvider = createAuthenticatedOperation(getPublicProvider_
 export const getAdminReviews = createAuthenticatedOperation(getAdminReviews_ext, {
     Review: prisma.review,
     Provider: prisma.provider,
+});
+// PUBLIC API
+export const getAdminCategories = createAuthenticatedOperation(getAdminCategories_ext, {
+    ServiceCategory: prisma.serviceCategory,
 });
 // PUBLIC API
 export const getPaginatedUsers = createAuthenticatedOperation(getPaginatedUsers_ext, {

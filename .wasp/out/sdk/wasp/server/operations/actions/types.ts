@@ -145,6 +145,36 @@ export type ApplyReferralCode<Input extends Payload = never, Output extends Payl
   >
 
 // PUBLIC API
+export type AddPortfolioPhoto<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type RemovePortfolioPhoto<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type SetProfilePhoto<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type AcceptServiceRequest<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedActionDefinition<
     [
@@ -271,6 +301,26 @@ export type ModerateReview<Input extends Payload = never, Output extends Payload
     [
       _Review,
       _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type UpsertAdminCategory<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _ServiceCategory,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type DeleteAdminCategory<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _ServiceCategory,
     ],
     Input,
     Output

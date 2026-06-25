@@ -1,4 +1,5 @@
 import { type QueryFor, createQuery } from './core'
+import { GetProviderSlugById_ext } from 'wasp/server/operations/queries'
 import { GetMyRequests_ext } from 'wasp/server/operations/queries'
 import { GetServiceCategories_ext } from 'wasp/server/operations/queries'
 import { GetProviders_ext } from 'wasp/server/operations/queries'
@@ -15,6 +16,7 @@ import { GetProviderFees_ext } from 'wasp/server/operations/queries'
 import { GetPublicLeadFeed_ext } from 'wasp/server/operations/queries'
 import { GetPublicProvider_ext } from 'wasp/server/operations/queries'
 import { GetAdminReviews_ext } from 'wasp/server/operations/queries'
+import { GetAdminCategories_ext } from 'wasp/server/operations/queries'
 import { GetPaginatedUsers_ext } from 'wasp/server/operations/queries'
 import { GetAllFilesByUser_ext } from 'wasp/server/operations/queries'
 import { GetDownloadFileSignedURL_ext } from 'wasp/server/operations/queries'
@@ -23,6 +25,12 @@ import { GetAdminRequests_ext } from 'wasp/server/operations/queries'
 import { GetAdminProviders_ext } from 'wasp/server/operations/queries'
 import { GetAdminRewards_ext } from 'wasp/server/operations/queries'
 import { GetAdminLeads_ext } from 'wasp/server/operations/queries'
+
+// PUBLIC API
+export const getProviderSlugById: QueryFor<GetProviderSlugById_ext> = createQuery<GetProviderSlugById_ext>(
+  'operations/get-provider-slug-by-id',
+  ['Provider'],
+)
 
 // PUBLIC API
 export const getMyRequests: QueryFor<GetMyRequests_ext> = createQuery<GetMyRequests_ext>(
@@ -118,6 +126,12 @@ export const getPublicProvider: QueryFor<GetPublicProvider_ext> = createQuery<Ge
 export const getAdminReviews: QueryFor<GetAdminReviews_ext> = createQuery<GetAdminReviews_ext>(
   'operations/get-admin-reviews',
   ['Review', 'Provider'],
+)
+
+// PUBLIC API
+export const getAdminCategories: QueryFor<GetAdminCategories_ext> = createQuery<GetAdminCategories_ext>(
+  'operations/get-admin-categories',
+  ['ServiceCategory'],
 )
 
 // PUBLIC API

@@ -1,5 +1,5 @@
 import { useQuery, getServiceCategories } from 'wasp/client/operations';
-import { AirVent, Hammer, WashingMachine, ShowerHead, PlugZap, Wifi, PaintBucket, SprayCan, TreePine, Bug, Lock, GlassWater, Truck, ChevronRight, Building2, Home, Warehouse, Wind, Droplets, Sun, Snowflake, Leaf, Cat, Shield, } from 'lucide-react';
+import { AirVent, Hammer, WashingMachine, ShowerHead, PlugZap, Wifi, PaintBucket, SprayCan, TreePine, Bug, Lock, GlassWater, Truck, ChevronRight, Building2, Home, Warehouse, Wind, Droplets, Sun, Snowflake, Leaf, Cat, Shield, CalendarCheck, UtensilsCrossed, Flame, Bot, Globe, } from 'lucide-react';
 const ICON_MAP = {
     AirVent,
     Hammer,
@@ -25,6 +25,11 @@ const ICON_MAP = {
     Leaf,
     Cat,
     Shield,
+    CalendarCheck,
+    UtensilsCrossed,
+    Flame,
+    Bot,
+    Globe,
 };
 function getIcon(iconName) {
     if (iconName && ICON_MAP[iconName])

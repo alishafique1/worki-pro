@@ -1,4 +1,4 @@
-import { Settings, Shield, Briefcase, Home } from "lucide-react";
+import { Settings, Shield, Briefcase, Home, LayoutDashboard, Gift } from "lucide-react";
 import { routes } from "wasp/client/router";
 
 type UserMenuItem = {
@@ -13,10 +13,24 @@ type UserMenuItem = {
 
 export const userMenuItems: UserMenuItem[] = [
   {
+    name: "Dashboard",
+    to: "/account",
+    icon: LayoutDashboard,
+    isConsumerOnly: true,
+    isAuthRequired: true,
+  },
+  {
     name: "My Requests",
-    to: routes.MyRequestsRoute.to,
+    to: "/account/requests",
     icon: Home,
     isProviderOnly: false,
+    isConsumerOnly: true,
+    isAuthRequired: true,
+  },
+  {
+    name: "Rewards",
+    to: "/account/rewards",
+    icon: Gift,
     isConsumerOnly: true,
     isAuthRequired: true,
   },
@@ -29,7 +43,7 @@ export const userMenuItems: UserMenuItem[] = [
   },
   {
     name: "Account Settings",
-    to: routes.AccountRoute.to,
+    to: "/account/profile",
     icon: Settings,
     isAuthRequired: false,
     isAdminOnly: false,

@@ -160,6 +160,7 @@ export default function DiscoveryPage() {
                   <ProviderCard
                     key={provider.id}
                     id={provider.id}
+                    slug={provider.slug}
                     businessName={provider.businessName}
                     contactName={provider.contactName}
                     ratingInternal={provider.ratingInternal}
@@ -192,6 +193,7 @@ export default function DiscoveryPage() {
                 <ProviderCard
                   key={provider.id}
                   id={provider.id}
+                  slug={provider.slug}
                   businessName={provider.businessName}
                   contactName={provider.contactName}
                   ratingInternal={provider.ratingInternal}

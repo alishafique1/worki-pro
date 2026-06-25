@@ -6,12 +6,12 @@ export function NotFoundPage() {
     const { data: user } = useAuth();
     // Determine the correct "home" path for the primary button:
     // - Provider → /provider/dashboard
-    // - Consumer (or any other logged-in role) → /dashboard
+    // - Consumer (or any other logged-in role) → /account
     // - Anonymous → landing page
     const homePath = user
         ? user.role === "PROVIDER"
             ? "/provider/dashboard"
-            : "/dashboard"
+            : "/account"
         : routes.LandingPageRoute.to;
     return (<div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
       <div className="text-center">

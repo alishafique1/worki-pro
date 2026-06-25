@@ -3,6 +3,8 @@ export * from './queries/types.js'
 // PUBLIC API
 export * from './actions/types.js'
 
+export { getProviderSlugById } from './queries/index.js'
+
 export { getMyRequests } from './queries/index.js'
 
 export { getServiceCategories } from './queries/index.js'
@@ -34,6 +36,8 @@ export { getPublicLeadFeed } from './queries/index.js'
 export { getPublicProvider } from './queries/index.js'
 
 export { getAdminReviews } from './queries/index.js'
+
+export { getAdminCategories } from './queries/index.js'
 
 export { getPaginatedUsers } from './queries/index.js'
 
@@ -71,6 +75,12 @@ export { submitReview } from './actions/index.js'
 
 export { applyReferralCode } from './actions/index.js'
 
+export { addPortfolioPhoto } from './actions/index.js'
+
+export { removePortfolioPhoto } from './actions/index.js'
+
+export { setProfilePhoto } from './actions/index.js'
+
 export { acceptServiceRequest } from './actions/index.js'
 
 export { markJobCompleted } from './actions/index.js'
@@ -92,6 +102,10 @@ export { resubmitProviderApplication } from './actions/index.js'
 export { claimLead } from './actions/index.js'
 
 export { moderateReview } from './actions/index.js'
+
+export { upsertAdminCategory } from './actions/index.js'
+
+export { deleteAdminCategory } from './actions/index.js'
 
 export { updateIsUserAdminById } from './actions/index.js'
 

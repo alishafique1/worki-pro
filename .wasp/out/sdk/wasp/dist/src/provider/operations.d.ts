@@ -1,5 +1,5 @@
 import type { ServiceRequest, Provider, Appointment, ProviderFee, ProviderCategory, ServiceCategory, CommunicationLog, Review } from "wasp/entities";
-import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, ResubmitProviderApplication } from "wasp/server/operations";
+import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, ResubmitProviderApplication, AddPortfolioPhoto, RemovePortfolioPhoto, SetProfilePhoto } from "wasp/server/operations";
 export declare const getProviderLeads: GetProviderLeads<void, ServiceRequest[]>;
 export declare const getProviderAppointments: GetProviderAppointments<void, any[]>;
 export declare const getProviderProfile: GetProviderProfile<void, Provider & {
@@ -109,5 +109,21 @@ export declare const getPublicProvider: GetPublicProvider<{
     slug: string;
 }, PublicProviderProfile | null>;
 export declare const resubmitProviderApplication: ResubmitProviderApplication<void, Provider>;
+type PortfolioItem = {
+    url: string;
+    caption?: string;
+};
+export declare const addPortfolioPhoto: AddPortfolioPhoto<{
+    s3Key: string;
+    caption?: string;
+}, PortfolioItem[]>;
+export declare const removePortfolioPhoto: RemovePortfolioPhoto<{
+    url: string;
+}, PortfolioItem[]>;
+export declare const setProfilePhoto: SetProfilePhoto<{
+    url: string;
+}, {
+    profilePhotoUrl: string;
+}>;
 export {};
 //# sourceMappingURL=operations.d.ts.map

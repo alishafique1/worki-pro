@@ -101,7 +101,7 @@ export default function BookingPage() {
     <div className="min-h-screen bg-[#F8FAFC] p-6 max-w-4xl mx-auto">
       <div className="mb-8">
         <Link
-          to={requestId ? `/my-requests` : '/dashboard'}
+          to={requestId ? `/account/requests` : '/account'}
           className="text-sm text-[#475569] hover:text-[#0F172A] transition-colors"
         >
           ← Back

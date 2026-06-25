@@ -12,6 +12,9 @@ import sendOtp from './sendOtp.js'
 import verifyOtp from './verifyOtp.js'
 import submitReview from './submitReview.js'
 import applyReferralCode from './applyReferralCode.js'
+import addPortfolioPhoto from './addPortfolioPhoto.js'
+import removePortfolioPhoto from './removePortfolioPhoto.js'
+import setProfilePhoto from './setProfilePhoto.js'
 import acceptServiceRequest from './acceptServiceRequest.js'
 import markJobCompleted from './markJobCompleted.js'
 import submitProviderApplication from './submitProviderApplication.js'
@@ -23,6 +26,8 @@ import updateProviderProfile from './updateProviderProfile.js'
 import resubmitProviderApplication from './resubmitProviderApplication.js'
 import claimLead from './claimLead.js'
 import moderateReview from './moderateReview.js'
+import upsertAdminCategory from './upsertAdminCategory.js'
+import deleteAdminCategory from './deleteAdminCategory.js'
 import updateIsUserAdminById from './updateIsUserAdminById.js'
 import updateUserProfile from './updateUserProfile.js'
 import createFileUploadUrl from './createFileUploadUrl.js'
@@ -34,6 +39,7 @@ import rejectProvider from './rejectProvider.js'
 import assignRequestToProvider from './assignRequestToProvider.js'
 import approveRewardTransaction from './approveRewardTransaction.js'
 import rejectRewardTransaction from './rejectRewardTransaction.js'
+import getProviderSlugById from './getProviderSlugById.js'
 import getMyRequests from './getMyRequests.js'
 import getServiceCategories from './getServiceCategories.js'
 import getProviders from './getProviders.js'
@@ -50,6 +56,7 @@ import getProviderFees from './getProviderFees.js'
 import getPublicLeadFeed from './getPublicLeadFeed.js'
 import getPublicProvider from './getPublicProvider.js'
 import getAdminReviews from './getAdminReviews.js'
+import getAdminCategories from './getAdminCategories.js'
 import getPaginatedUsers from './getPaginatedUsers.js'
 import getAllFilesByUser from './getAllFilesByUser.js'
 import getDownloadFileSignedURL from './getDownloadFileSignedURL.js'
@@ -71,6 +78,9 @@ router.post('/send-otp', auth, sendOtp)
 router.post('/verify-otp', auth, verifyOtp)
 router.post('/submit-review', auth, submitReview)
 router.post('/apply-referral-code', auth, applyReferralCode)
+router.post('/add-portfolio-photo', auth, addPortfolioPhoto)
+router.post('/remove-portfolio-photo', auth, removePortfolioPhoto)
+router.post('/set-profile-photo', auth, setProfilePhoto)
 router.post('/accept-service-request', auth, acceptServiceRequest)
 router.post('/mark-job-completed', auth, markJobCompleted)
 router.post('/submit-provider-application', auth, submitProviderApplication)
@@ -82,6 +92,8 @@ router.post('/update-provider-profile', auth, updateProviderProfile)
 router.post('/resubmit-provider-application', auth, resubmitProviderApplication)
 router.post('/claim-lead', auth, claimLead)
 router.post('/moderate-review', auth, moderateReview)
+router.post('/upsert-admin-category', auth, upsertAdminCategory)
+router.post('/delete-admin-category', auth, deleteAdminCategory)
 router.post('/update-is-user-admin-by-id', auth, updateIsUserAdminById)
 router.post('/update-user-profile', auth, updateUserProfile)
 router.post('/create-file-upload-url', auth, createFileUploadUrl)
@@ -93,6 +105,7 @@ router.post('/reject-provider', auth, rejectProvider)
 router.post('/assign-request-to-provider', auth, assignRequestToProvider)
 router.post('/approve-reward-transaction', auth, approveRewardTransaction)
 router.post('/reject-reward-transaction', auth, rejectRewardTransaction)
+router.post('/get-provider-slug-by-id', auth, getProviderSlugById)
 router.post('/get-my-requests', auth, getMyRequests)
 router.post('/get-service-categories', auth, getServiceCategories)
 router.post('/get-providers', auth, getProviders)
@@ -109,6 +122,7 @@ router.post('/get-provider-fees', auth, getProviderFees)
 router.post('/get-public-lead-feed', auth, getPublicLeadFeed)
 router.post('/get-public-provider', auth, getPublicProvider)
 router.post('/get-admin-reviews', auth, getAdminReviews)
+router.post('/get-admin-categories', auth, getAdminCategories)
 router.post('/get-paginated-users', auth, getPaginatedUsers)
 router.post('/get-all-files-by-user', auth, getAllFilesByUser)
 router.post('/get-download-file-signed-url', auth, getDownloadFileSignedURL)

@@ -2,10 +2,8 @@ import { listOrders } from "@lemonsqueezy/lemonsqueezy.js";
 import { stripeClient } from "../payment/stripe/stripeClient";
 import { getDailyPageViews, getSources, } from "./providers/plausibleAnalyticsUtils";
 // import { getDailyPageViews, getSources } from './providers/googleAnalyticsUtils';
-import { OrderStatus } from "@polar-sh/sdk/models/components/orderstatus.js";
 import { paymentProcessor } from "../payment/paymentProcessor";
 import { SubscriptionStatus } from "../payment/plans";
-import { polarClient } from "../payment/polar/polarClient";
 import { assertUnreachable } from "../shared/utils";
 export const calculateDailyStats = async (_args, context) => {
     const nowUTC = new Date(Date.now());
@@ -41,9 +39,6 @@ export const calculateDailyStats = async (_args, context) => {
                 break;
             case "lemonsqueezy":
                 totalRevenue = await fetchTotalLemonSqueezyRevenue();
-                break;
-            case "polar":
-                totalRevenue = await fetchTotalPolarRevenue();
                 break;
             default:
                 assertUnreachable(paymentProcessor.id);
@@ -182,21 +177,5 @@ async function fetchTotalLemonSqueezyRevenue() {
         console.error("Error fetching Lemon Squeezy revenue:", error);
         throw error;
     }
-}
-async function fetchTotalPolarRevenue() {
-    let totalRevenue = 0;
-    const result = await polarClient.orders.list({
-        limit: 100,
-    });
-    for await (const page of result) {
-        const orders = page.result.items || [];
-        for (const order of orders) {
-            if (order.status === OrderStatus.Paid && order.totalAmount > 0) {
-                totalRevenue += order.totalAmount;
-            }
-        }
-    }
-    // Revenue is in cents so we convert to dollars
-    return totalRevenue / 100;
 }
 //# sourceMappingURL=stats.js.map

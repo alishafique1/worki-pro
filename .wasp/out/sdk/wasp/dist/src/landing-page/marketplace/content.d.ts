@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 export declare const painPoints: {
     icon: import("react").JSX.Element;
     title: string;
@@ -9,34 +10,17 @@ export declare const solutionSteps: {
     description: string;
 }[];
 export declare const categoryImages: Record<string, string>;
-export declare const categories: ({
-    icon: import("react").JSX.Element;
+export interface Category {
+    icon: ReactNode;
     name: string;
     slug: string;
     description: string;
     href: string;
-    imageUrl: string;
-    live: boolean;
-    comingSoon?: undefined;
-} | {
-    icon: import("react").JSX.Element;
-    name: string;
-    slug: string;
-    description: string;
-    href: string;
-    imageUrl: string;
-    comingSoon: boolean;
-    live?: undefined;
-} | {
-    icon: import("react").JSX.Element;
-    name: string;
-    slug: string;
-    description: string;
-    href: string;
-    comingSoon: boolean;
-    imageUrl?: undefined;
-    live?: undefined;
-})[];
+    imageUrl?: string;
+    live?: boolean;
+    comingSoon?: boolean;
+}
+export declare const categories: Category[];
 export declare const customerSteps: {
     step: string;
     title: string;

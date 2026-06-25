@@ -158,7 +158,7 @@ export default function RequestDetailPage() {
           <p className='text-[#475569] mb-6'>
             This request may not exist or you may not have access to it.
           </p>
-          <Link to='/my-requests' className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
+          <Link to='/account/requests' className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
             <ArrowLeft className='size-4'/> Back to My Requests
           </Link>
         </div>
@@ -168,7 +168,7 @@ export default function RequestDetailPage() {
     const provider = appointment?.provider || request.assignedProvider;
     return (<div className='p-6 max-w-4xl mx-auto min-h-[80vh] bg-[#F8FAFC]'>
       {/* Back nav */}
-      <Link to='/my-requests' className='inline-flex items-center gap-2 text-sm text-[#475569] hover:text-[#0F172A] mb-6 transition-colors'>
+      <Link to='/account/requests' className='inline-flex items-center gap-2 text-sm text-[#475569] hover:text-[#0F172A] mb-6 transition-colors'>
         <ArrowLeft className='size-4'/> My Requests
       </Link>
 
@@ -193,7 +193,7 @@ export default function RequestDetailPage() {
           </div>
 
           {/* Book appointment CTA */}
-          {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (<Link to={`/book/${request.id}`} className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
+          {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (<Link to={`/account/book/${request.id}`} className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]'>
               <CalendarClock className='size-4'/> Book Appointment
             </Link>)}
         </div>
@@ -262,7 +262,7 @@ export default function RequestDetailPage() {
                       <Mail className='size-3.5'/> {provider.email}
                     </a>)}
                 </div>
-                <Link to={`/pro/${provider.id}`} className='inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] hover:underline'>
+                <Link to={provider.slug ? `/pro-public/${provider.slug}` : `/pro/${provider.id}`} className='inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] hover:underline'>
                   View Pro Profile →
                 </Link>
               </div>) : (<p className='text-sm text-[#475569]'>

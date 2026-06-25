@@ -8,9 +8,11 @@
 import { prisma, DbSeedFn } from 'wasp/server'
 
 import { seedMockUsers } from '../../../../src/server/scripts/dbSeeds'
+import { seedRealProviders } from '../../../../src/server/scripts/seedRealProviders'
 
 const seeds = {
   seedMockUsers,
+  seedRealProviders,
 }
 
 async function main() {

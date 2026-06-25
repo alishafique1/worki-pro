@@ -7,7 +7,7 @@ const DefaultLayout = ({ children, user }) => {
     if (!user.isAdmin) {
         return <Navigate to="/" replace/>;
     }
-    return (<div className="bg-background text-foreground">
+    return (<div className="bg-[#F8FAFC] text-[#0F172A]">
       <div className="flex h-screen overflow-hidden">
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         <div className="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">

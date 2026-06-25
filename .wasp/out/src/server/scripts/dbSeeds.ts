@@ -7,9 +7,6 @@ const LEGACY_TEST_PASSWORD = "Password123!";
 const QA_TEST_PASSWORD = "HelperQA123";
 const TEST_PASSWORD = "HelperTest123";
 
-// Categories live at launch — everything else gets active: false
-const LAUNCH_SLUGS = new Set(["hvac", "plumbing", "smart-home", "events-celebrations"]);
-
 async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, password: string) {
   const providerId = createProviderId("email", email);
   const existingIdentity = await prisma.authIdentity.findUnique({
@@ -46,13 +43,12 @@ async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, pass
 
 // ─── Default Service Categories ────────────────────────────────────────────
 export const DEFAULT_VENDOR_CATEGORIES = [
-  // Live on marketplace
   {
-    name: "HVAC",
-    slug: "hvac",
-    description: "Heating, ventilation, and air conditioning repairs, tune-ups, and installs",
-    icon: "AirVent",
-    imageUrl: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop",
+    name: "Handyman",
+    slug: "handyman",
+    description: "General repairs, mounting, assembly, painting, and home maintenance",
+    icon: "Hammer",
+    imageUrl: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800&h=600&fit=crop",
   },
   {
     name: "Plumbing",
@@ -62,80 +58,85 @@ export const DEFAULT_VENDOR_CATEGORIES = [
     imageUrl: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&h=600&fit=crop",
   },
   {
-    name: "Electrical",
-    slug: "electrical",
-    description: "Wiring, panels, outlets, lighting, and safety inspections",
-    icon: "PlugZap",
-    imageUrl: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop",
-  },
-  {
-    name: "Handyman",
-    slug: "handyman",
-    description: "General home repairs, mounting, assembly, and maintenance",
-    icon: "Hammer",
-    imageUrl: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800&h=600&fit=crop",
-  },
-  {
-    name: "Appliance Repair",
-    slug: "appliance-repair",
-    description: "Washer, dryer, fridge, stove, dishwasher — diagnosis and repair",
-    icon: "WashingMachine",
-    imageUrl: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&h=600&fit=crop",
-  },
-  {
     name: "Smart Home",
     slug: "smart-home",
     description: "Smart thermostats, cameras, locks, sensors, and home automation",
     icon: "Wifi",
     imageUrl: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=600&fit=crop",
   },
-  // Coming soon — accepting provider applications
   {
-    name: "Cleaning",
-    slug: "cleaning",
-    description: "Regular, deep clean, move-in/out, post-construction, and Airbnb cleans",
-    icon: "Sparkles",
-    imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop",
+    name: "Events",
+    slug: "events",
+    description: "Event planning, setup, coordination, and day-of management for any occasion",
+    icon: "CalendarCheck",
+    imageUrl: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&h=600&fit=crop",
   },
   {
-    name: "Events & Celebrations",
-    slug: "events-celebrations",
-    description: "Make any occasion unforgettable. Decorators, caterers, entertainment, and event vendors across the GTA.",
-    icon: "🎉",
-    imageUrl: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1280&q=80&auto=format",
-    sortOrder: 7,
-    children: [
-      { name: "Event Decorating", slug: "event-decorating", description: "Balloons, florals, backdrops, and full venue styling.", icon: "🎊", imageUrl: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1280&q=80&auto=format", sortOrder: 1 },
-      { name: "Catering & Food Stalls", slug: "catering", description: "Full catering, food trucks, dessert tables, and bar service.", icon: "🍽️", imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1280&q=80&auto=format", sortOrder: 2 },
-      { name: "Photography & Video", slug: "photography", description: "Event photographers, videographers, and photo booths.", icon: "📸", imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1280&q=80&auto=format", sortOrder: 3 },
-      { name: "DJ & Entertainment", slug: "entertainment-dj", description: "DJs, live bands, MCs, kids entertainers, and performers.", icon: "🎵", imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1280&q=80&auto=format", sortOrder: 4 },
-      { name: "Party Rentals", slug: "party-rentals", description: "Tents, tables, chairs, linens, bounce houses, and more.", icon: "⛺", imageUrl: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1280&q=80&auto=format", sortOrder: 5 },
-      { name: "Floral Arrangements", slug: "floral", description: "Wedding flowers, centrepieces, bouquets, and fresh arrangements.", icon: "💐", imageUrl: "https://images.unsplash.com/photo-1487530811015-780df8fddc50?w=1280&q=80&auto=format", sortOrder: 6 },
-      { name: "Venue Booking", slug: "venue-booking", description: "Halls, banquet spaces, gardens, and unique event venues.", icon: "🏛️", imageUrl: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&q=80&auto=format", sortOrder: 7 },
-      { name: "Videography", slug: "videography", description: "Cinematic event films, highlight reels, drone footage, and same-day edits.", icon: "🎥", imageUrl: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1280&q=80&auto=format", sortOrder: 8 },
-      { name: "Music", slug: "music", description: "Live bands, solo artists, string ensembles, and instrumentalists for ceremonies and receptions.", icon: "🎶", imageUrl: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=1280&q=80&auto=format", sortOrder: 9 },
-      { name: "Decor", slug: "decor", description: "Custom backdrops, drapery, centrepieces, lighting, and full venue transformations.", icon: "🎭", imageUrl: "https://images.unsplash.com/photo-1478146059778-8fad5e1a4e0e?w=1280&q=80&auto=format", sortOrder: 10 },
-      { name: "Venue", slug: "venue", description: "Outdoor gardens, banquet halls, community centres, and unique wedding ceremony spaces.", icon: "🏰", imageUrl: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1280&q=80&auto=format", sortOrder: 11 },
-      { name: "Beauty & Makeup", slug: "beauty", description: "Bridal makeup, hairstyling, mehendi artists, skincare, and grooming for the wedding party.", icon: "💄", imageUrl: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1280&q=80&auto=format", sortOrder: 12 },
-      { name: "Mehendi", slug: "mehendi", description: "Traditional henna art for brides, bridal party, and guests — intricate and contemporary designs.", icon: "🌺", imageUrl: "https://images.unsplash.com/photo-1565464026194-e5b1cdb8f9b5?w=1280&q=80&auto=format", sortOrder: 13 },
-      { name: "Entertainment", slug: "entertainment", description: "MC services, interactive performers, photo booths, and kids' entertainment for events.", icon: "🎪", imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1280&q=80&auto=format", sortOrder: 14 },
-      { name: "Bakery & Desserts", slug: "bakery", description: "Custom wedding cakes, dessert tables, cupcakes, traditional sweets, and pastry catering.", icon: "🎂", imageUrl: "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?w=1280&q=80&auto=format", sortOrder: 15 },
-    ],
+    name: "Food Catering",
+    slug: "food-catering",
+    description: "Full catering, food trucks, private dining, and custom menus for events",
+    icon: "UtensilsCrossed",
+    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Shisha Lounge",
+    slug: "shisha-lounge",
+    description: "Shisha setup and rental for events, private gatherings, and lounges",
+    icon: "Flame",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=600&fit=crop",
+  },
+  {
+    name: "AI Services",
+    slug: "ai-services",
+    description: "AI automation, chatbots, workflow tools, and digital assistants for your business",
+    icon: "Bot",
+    imageUrl: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Website Design",
+    slug: "website-design",
+    description: "Custom websites, landing pages, e-commerce stores, and brand design",
+    icon: "Globe",
+    imageUrl: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Digital Marketing",
+    slug: "digital-marketing",
+    description: "SEO, paid ads, social media management, and growth marketing for local businesses",
+    icon: "Megaphone",
+    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Software Development",
+    slug: "software-development",
+    description: "Custom software, web apps, integrations, and automation built for your business",
+    icon: "Code",
+    imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Video Editing",
+    slug: "video-editing",
+    description: "Short-form video, reels, promos, and professional video editing and production",
+    icon: "Clapperboard",
+    imageUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&h=600&fit=crop",
+  },
+  {
+    name: "Driving School",
+    slug: "driving-school",
+    description: "Licensed driving instruction, in-car lessons, and MTO-approved beginner courses",
+    icon: "Car",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&h=600&fit=crop",
   },
 ];
 
 export async function seedVendorCategories(prisma: PrismaClient) {
   console.log("Seeding vendor service categories...");
   for (const cat of DEFAULT_VENDOR_CATEGORIES) {
-    // Only HVAC, Plumbing, Smart Home, Events are live at launch.
-    // All other categories (and their children) are marked coming-soon.
-    const isActive = LAUNCH_SLUGS.has(cat.slug);
     await prisma.serviceCategory.upsert({
       where: { slug: cat.slug },
       update: {
         icon: cat.icon,
         imageUrl: cat.imageUrl,
-        active: isActive,
       },
       create: {
         name: cat.name,
@@ -143,32 +144,9 @@ export async function seedVendorCategories(prisma: PrismaClient) {
         description: cat.description,
         icon: cat.icon,
         imageUrl: cat.imageUrl,
-        active: isActive,
+        active: true,
       },
     });
-
-    // Seed children with same active flag
-    if (cat.children) {
-      for (const child of cat.children) {
-        const parentCat = await prisma.serviceCategory.findFirst({
-          where: { slug: cat.slug },
-          select: { id: true },
-        });
-        await prisma.serviceCategory.upsert({
-          where: { slug: child.slug },
-          update: { active: isActive, parentCategoryId: parentCat?.id ?? null },
-          create: {
-            name: child.name,
-            slug: child.slug,
-            description: child.description,
-            icon: child.icon,
-            imageUrl: child.imageUrl,
-            active: isActive,
-            parentCategoryId: parentCat?.id ?? null,
-          },
-        });
-      }
-    }
   }
   console.log(`Seeded ${DEFAULT_VENDOR_CATEGORIES.length} vendor categories.`);
 }
@@ -239,7 +217,7 @@ export async function seedMockUsers(prisma: PrismaClient) {
   }
   await ensureEmailAuthIdentity(prisma, "consumer2@thehelper.ca", TEST_PASSWORD);
 
-  // ─── 4. Provider: Mike Torres — Comfort Zone HVAC ──────────────────────────
+  // ─── 4. Provider: Mike Torres — Comfort Zone Handyman ─────────────────────
   let mikeProviderUser = await prisma.user.findUnique({ where: { email: "hvac@thehelper.ca" } });
   if (!mikeProviderUser) {
     mikeProviderUser = await prisma.user.create({
@@ -262,34 +240,33 @@ export async function seedMockUsers(prisma: PrismaClient) {
     mikeProvider = await prisma.provider.create({
       data: {
         userId: mikeProviderUser.id,
-        businessName: "Comfort Zone HVAC",
+        businessName: "Comfort Zone Handyman",
         contactName: "Mike Torres",
         phone: "905-878-1155",
         email: "hvac@thehelper.ca",
-        slug: "comfort-zone-hvac",
-        bio: "Family-owned HVAC company serving Milton, Oakville, and Burlington since 2009. We specialize in central air conditioning, furnace repair and replacement, heat pumps, and seasonal tune-ups. All technicians are TSSA-certified and carry $2M liability insurance. Same-day service available for emergencies.",
+        slug: "comfort-zone-handyman",
+        bio: "Family-run handyman service covering Milton, Oakville, and Burlington since 2009. We handle everything from drywall and door repairs to furniture assembly, TV mounting, caulking, and general maintenance. Fully insured, upfront pricing, same-day service available.",
         serviceAreas: GTA_SERVICE_AREAS,
         verificationStatus: "VERIFIED",
         plan: "EXCLUSIVE",
         ratingInternal: 4.9,
         responseTimeMins: 30,
         insuranceStatus: true,
-        tssaVerified: true,
         referencesChecked: true,
         onboardingCallDone: true,
       },
     });
   }
 
-  // Link Mike to HVAC category
-  const hvacCategory = await prisma.serviceCategory.findFirst({ where: { slug: "hvac" } });
-  if (hvacCategory) {
-    const existingHvacLink = await prisma.providerCategory.findFirst({
-      where: { providerId: mikeProvider.id, serviceCategoryId: hvacCategory.id },
+  // Link Mike to Handyman category
+  const handymanCategory = await prisma.serviceCategory.findFirst({ where: { slug: "handyman" } });
+  if (handymanCategory) {
+    const existingHandymanLink = await prisma.providerCategory.findFirst({
+      where: { providerId: mikeProvider.id, serviceCategoryId: handymanCategory.id },
     });
-    if (!existingHvacLink) {
+    if (!existingHandymanLink) {
       await prisma.providerCategory.create({
-        data: { providerId: mikeProvider.id, serviceCategoryId: hvacCategory.id },
+        data: { providerId: mikeProvider.id, serviceCategoryId: handymanCategory.id },
       });
     }
   }
@@ -393,19 +370,19 @@ export async function seedMockUsers(prisma: PrismaClient) {
 
   // ─── 7. Service Requests for Sarah Chen ────────────────────────────────────
 
-  // 7a. COMPLETED HVAC request
-  let hvacReq = await prisma.serviceRequest.findFirst({
+  // 7a. COMPLETED Handyman request
+  let handymanReq = await prisma.serviceRequest.findFirst({
     where: { consumerId: sarahUser.id, status: "COMPLETED" },
   });
-  if (!hvacReq) {
-    hvacReq = await prisma.serviceRequest.create({
+  if (!handymanReq) {
+    handymanReq = await prisma.serviceRequest.create({
       data: {
         consumerId: sarahUser.id,
         name: "Sarah Chen",
         phone: "905-876-4421",
         postalCode: "L9T 3L2",
         city: "Milton",
-        description: "AC not cooling — unit is 8 years old, stops after 20 min",
+        description: "TV mounting and shelving — 65 inch TV, need 3 floating shelves in living room",
         urgency: "STANDARD",
         status: "COMPLETED",
         assignedProviderId: mikeProvider.id,
@@ -433,19 +410,19 @@ export async function seedMockUsers(prisma: PrismaClient) {
     });
   }
 
-  // 7c. ASSIGNED Electrical request
-  let electricalReq = await prisma.serviceRequest.findFirst({
+  // 7c. ASSIGNED Smart Home request
+  let smartHomeReq = await prisma.serviceRequest.findFirst({
     where: { consumerId: sarahUser.id, status: "ASSIGNED" },
   });
-  if (!electricalReq) {
-    electricalReq = await prisma.serviceRequest.create({
+  if (!smartHomeReq) {
+    smartHomeReq = await prisma.serviceRequest.create({
       data: {
         consumerId: sarahUser.id,
         name: "Sarah Chen",
         phone: "905-876-4421",
         postalCode: "L9T 3L2",
         city: "Milton",
-        description: "Install 3 pot lights in living room, existing wiring available",
+        description: "Install 3 smart cameras and a video doorbell, existing Wi-Fi available",
         urgency: "PLANNED",
         status: "ASSIGNED",
         assignedProviderId: mikeProvider.id,
@@ -460,19 +437,19 @@ export async function seedMockUsers(prisma: PrismaClient) {
       data: [
         {
           consumerId: sarahUser.id,
-          serviceRequestId: hvacReq.id,
+          serviceRequestId: handymanReq.id,
           type: "SERVICE_REQUEST",
           points: 500,
           status: "APPROVED",
-          reason: "Submitted HVAC request",
+          reason: "Submitted handyman request",
         },
         {
           consumerId: sarahUser.id,
-          serviceRequestId: hvacReq.id,
+          serviceRequestId: handymanReq.id,
           type: "COMPLETED_SERVICE",
           points: 5000,
           status: "APPROVED",
-          reason: "AC repair job completed",
+          reason: "TV mounting and shelving job completed",
         },
         {
           consumerId: sarahUser.id,
@@ -486,14 +463,14 @@ export async function seedMockUsers(prisma: PrismaClient) {
     });
   }
 
-  // ─── 9. Appointment for the completed HVAC request ─────────────────────────
+  // ─── 9. Appointment for the completed Handyman request ─────────────────────
   const existingAppt = await prisma.appointment.findFirst({
-    where: { serviceRequestId: hvacReq.id, providerId: mikeProvider.id },
+    where: { serviceRequestId: handymanReq.id, providerId: mikeProvider.id },
   });
   if (!existingAppt) {
     await prisma.appointment.create({
       data: {
-        serviceRequestId: hvacReq.id,
+        serviceRequestId: handymanReq.id,
         providerId: mikeProvider.id,
         consumerId: sarahUser.id,
         status: "COMPLETED",
@@ -503,18 +480,18 @@ export async function seedMockUsers(prisma: PrismaClient) {
     });
   }
 
-  // ─── 10. Review for the completed HVAC request ─────────────────────────────
+  // ─── 10. Review for the completed Handyman request ─────────────────────────
   const existingReview = await prisma.review.findFirst({
-    where: { providerId: mikeProvider.id, consumerId: sarahUser.id, serviceRequestId: hvacReq.id },
+    where: { providerId: mikeProvider.id, consumerId: sarahUser.id, serviceRequestId: handymanReq.id },
   });
   if (!existingReview) {
     await prisma.review.create({
       data: {
         providerId: mikeProvider.id,
         consumerId: sarahUser.id,
-        serviceRequestId: hvacReq.id,
+        serviceRequestId: handymanReq.id,
         rating: 5,
-        body: "Mike diagnosed the issue within 10 minutes and had the AC running the same day. Very professional, explained everything clearly.",
+        body: "Mike mounted the TV perfectly and built the shelves exactly how I wanted. Showed up on time, cleaned up after, very professional.",
         status: "PUBLISHED",
       },
     });
@@ -525,25 +502,25 @@ export async function seedMockUsers(prisma: PrismaClient) {
     });
   }
 
-  // ─── 11. Communication Logs on the electrical (assigned) request ────────────
+  // ─── 11. Communication Logs on the smart home (assigned) request ────────────
   const existingLogs = await prisma.communicationLog.count({
-    where: { serviceRequestId: electricalReq.id },
+    where: { serviceRequestId: smartHomeReq.id },
   });
   if (existingLogs === 0) {
     await prisma.communicationLog.createMany({
       data: [
         {
           userId: sarahUser.id,
-          serviceRequestId: electricalReq.id,
+          serviceRequestId: smartHomeReq.id,
           channel: "INTERNAL_NOTE",
           direction: "OUTBOUND",
           from: sarahUser.email ?? "consumer@thehelper.ca",
           to: mikeProviderUser.email ?? "hvac@thehelper.ca",
-          body: "Hi, when can you come by for the pot lights?",
+          body: "Hi, when can you come by to install the cameras and doorbell?",
         },
         {
           userId: mikeProviderUser.id,
-          serviceRequestId: electricalReq.id,
+          serviceRequestId: smartHomeReq.id,
           providerId: mikeProvider.id,
           channel: "INTERNAL_NOTE",
           direction: "OUTBOUND",
@@ -558,7 +535,7 @@ export async function seedMockUsers(prisma: PrismaClient) {
   console.log("✓ GTA test accounts and sample data seeded successfully.");
   console.log("  consumer@thehelper.ca  / HelperTest123  (Sarah Chen, Milton)");
   console.log("  consumer2@thehelper.ca / HelperTest123  (James Kowalski, Oakville)");
-  console.log("  hvac@thehelper.ca      / HelperTest123  (Mike Torres, Comfort Zone HVAC)");
+  console.log("  hvac@thehelper.ca      / HelperTest123  (Mike Torres, Comfort Zone Handyman)");
   console.log("  plumber@thehelper.ca   / HelperTest123  (Dave Singh, Singh Plumbing Co.)");
   console.log("  admin@thehelper.ca     / HelperTest123  (Admin)");
 

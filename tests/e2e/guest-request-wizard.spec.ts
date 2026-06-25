@@ -86,7 +86,7 @@ test.describe('Guest Wizard — Step 1: Category Selection', () => {
     ).toBeVisible({ timeout: 10000 });
 
     // Category cards should be present
-    const categoryBtns = page.locator('button').filter({ hasText: /hvac|plumbing|electrical|handyman/i });
+    const categoryBtns = page.locator('button').filter({ hasText: /handyman|plumbing|smart.home|events/i });
     const count = await categoryBtns.count();
     expect(count).toBeGreaterThan(0);
   });

@@ -32,6 +32,7 @@ type ProviderCategory = {
 
 export type ProviderCardProps = {
   id: string;
+  slug?: string | null;
   businessName: string;
   contactName?: string | null;
   ratingInternal?: number | null;
@@ -95,6 +96,7 @@ function CategoryBadge({ category }: { category: ProviderCategory }) {
 
 export function ProviderCard({
   id,
+  slug,
   businessName,
   contactName,
   ratingInternal,
@@ -112,7 +114,7 @@ export function ProviderCard({
 
   return (
     <Link
-      to={`/pro/${id}`}
+      to={slug ? `/pro-public/${slug}` : `/pro/${id}`}
       className={`
         block bg-white rounded-[24px] overflow-hidden transition-all duration-300 group
         ${

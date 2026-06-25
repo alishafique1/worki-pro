@@ -3,12 +3,14 @@ import { useAction } from 'wasp/client/operations';
 import { submitProviderApplication } from 'wasp/client/operations';
 import PageSeo from '../landing-page/components/PageSeo';
 const serviceCategoryOptions = [
-    { slug: 'hvac', label: 'HVAC' },
     { slug: 'handyman', label: 'Handyman' },
     { slug: 'plumbing', label: 'Plumbing' },
-    { slug: 'electrical', label: 'Electrical' },
-    { slug: 'appliance-repair', label: 'Appliance Repair' },
     { slug: 'smart-home', label: 'Smart Home' },
+    { slug: 'events', label: 'Events' },
+    { slug: 'food-catering', label: 'Food Catering' },
+    { slug: 'shisha-lounge', label: 'Shisha Lounge' },
+    { slug: 'ai-services', label: 'AI Services' },
+    { slug: 'website-design', label: 'Website Design' },
 ];
 export default function ProviderApplyPage() {
     const [businessName, setBusinessName] = useState('');
@@ -72,12 +74,12 @@ export default function ProviderApplyPage() {
       </div>);
     }
     return (<>
-      <PageSeo title="Apply as a Service Pro | Join The Helper Network" description="Join 50+ verified GTA pros. Get matched with homeowners in Milton, Oakville, Burlington who are ready to book. No bidding wars, no commission. Apply in 3 minutes." canonicalPath="/providers/apply" keywords="join contractor network, become service provider, HVAC contractor apply, plumber apply GTA, get more service leads"/>
+      <PageSeo title="Apply as a Service Pro | Join The Helper Network" description="Join 50+ verified GTA pros. Get matched with homeowners in Milton, Oakville, Burlington who are ready to book. No bidding wars, no commission. Apply in 3 minutes." canonicalPath="/providers/apply" keywords="join contractor network, become service provider, plumber apply GTA, handyman apply, event services, website design apply, get more service leads"/>
     <div className="min-h-screen bg-[#F8FAFC] py-20 px-6">
       <div className="max-w-xl mx-auto">
         <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Apply in 3 minutes. Get matched with real jobs.</h1>
         <p className="text-[#475569] mb-12">
-          Tell us about your business and service area. We review every application within 24-48 hours. Currently accepting HVAC, plumbing, electrical, handyman, and appliance repair pros across the GTA.
+          Tell us about your business and service area. We review every application within 24-48 hours. Currently accepting handyman, plumbing, smart home, events, food catering, shisha lounge, AI services, and website design providers.
         </p>
 
         <div className="bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-sm">

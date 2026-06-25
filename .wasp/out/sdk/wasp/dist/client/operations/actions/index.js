@@ -20,6 +20,12 @@ export const submitReview = createAction('operations/submit-review', ['Review', 
 // PUBLIC API
 export const applyReferralCode = createAction('operations/apply-referral-code', ['Referral']);
 // PUBLIC API
+export const addPortfolioPhoto = createAction('operations/add-portfolio-photo', ['Provider']);
+// PUBLIC API
+export const removePortfolioPhoto = createAction('operations/remove-portfolio-photo', ['Provider']);
+// PUBLIC API
+export const setProfilePhoto = createAction('operations/set-profile-photo', ['Provider']);
+// PUBLIC API
 export const acceptServiceRequest = createAction('operations/accept-service-request', ['ServiceRequest', 'Appointment', 'ProviderFee', 'Provider', 'RewardTransaction', 'RewardAccount']);
 // PUBLIC API
 export const markJobCompleted = createAction('operations/mark-job-completed', ['Appointment', 'ServiceRequest', 'RewardTransaction', 'RewardAccount', 'ProviderFee', 'Provider', 'Referral']);
@@ -41,6 +47,10 @@ export const resubmitProviderApplication = createAction('operations/resubmit-pro
 export const claimLead = createAction('operations/claim-lead', ['ServiceRequest', 'Provider', 'ProviderFee', 'CommunicationLog']);
 // PUBLIC API
 export const moderateReview = createAction('operations/moderate-review', ['Review', 'Provider']);
+// PUBLIC API
+export const upsertAdminCategory = createAction('operations/upsert-admin-category', ['ServiceCategory']);
+// PUBLIC API
+export const deleteAdminCategory = createAction('operations/delete-admin-category', ['ServiceCategory']);
 // PUBLIC API
 export const updateIsUserAdminById = createAction('operations/update-is-user-admin-by-id', ['User']);
 // PUBLIC API

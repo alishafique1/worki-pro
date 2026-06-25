@@ -102,7 +102,7 @@ export function Signup() {
             // to /onboarding (which has authRequired: true) would race the
             // auth check and bounce the user back to /login.
             await initSession(data.sessionId);
-            navigate(data.isNewUser ? '/onboarding' : '/dashboard');
+            navigate(data.isNewUser ? '/onboarding' : '/account');
         }
         catch (err) {
             const raw = err && err.message ? String(err.message) : '';

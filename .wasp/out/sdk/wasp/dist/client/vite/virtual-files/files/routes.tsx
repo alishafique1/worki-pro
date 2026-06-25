@@ -15,7 +15,6 @@ import HowRewardsWorkPage from './src/landing-page/HowRewardsWorkPage'
 import AreaLandingPage from './src/landing-page/AreaLandingPage'
 import ProviderLandingPage from './src/provider/LandingPage'
 import ProviderApplyPage from './src/provider/ApplyPage'
-import ListYourServicesPage from './src/provider/ListYourServicesPage'
 import TermsPage from './src/shared/TermsPage'
 import PrivacyPage from './src/shared/PrivacyPage'
 import OnboardingPage from './src/auth/onboarding/OnboardingPage'
@@ -24,22 +23,29 @@ import { Signup as SignupPage } from './src/auth/SignupPage'
 import { RequestPasswordResetPage } from './src/auth/email-and-pass/RequestPasswordResetPage'
 import { PasswordResetPage } from './src/auth/email-and-pass/PasswordResetPage'
 import { EmailVerificationPage } from './src/auth/email-and-pass/EmailVerificationPage'
-import RequestServicePage from './src/consumer/RequestServicePage'
+import { RequestServiceRedirect as RequestServicePage } from './src/consumer/portalRedirects'
+import AccountRequestServicePage from './src/consumer/RequestServicePage'
 import GuestRequestWizardPage from './src/consumer/GuestRequestWizardPage'
 import CategoryLandingPage from './src/landing-page/CategoryLandingPage'
-import BookingPage from './src/consumer/BookingPage'
-import DashboardPage from './src/consumer/DashboardPage'
-import MyRequestsPage from './src/consumer/MyRequestsPage'
-import RequestDetailPage from './src/consumer/RequestDetailPage'
-import RewardsPage from './src/consumer/RewardsPage'
+import { BookingRedirect as BookingPage } from './src/consumer/portalRedirects'
+import AccountBookPage from './src/consumer/BookingPage'
+import { DashboardRedirect as DashboardPage } from './src/consumer/portalRedirects'
+import AccountHomePage from './src/consumer/DashboardPage'
+import { MyRequestsRedirect as MyRequestsPage } from './src/consumer/portalRedirects'
+import AccountRequestsPage from './src/consumer/MyRequestsPage'
+import { RequestDetailRedirect as RequestDetailPage } from './src/consumer/portalRedirects'
+import AccountRequestDetailPage from './src/consumer/RequestDetailPage'
+import { RewardsRedirect as RewardsPage } from './src/consumer/portalRedirects'
+import AccountRewardsPage from './src/consumer/RewardsPage'
 import HelpPage from './src/consumer/HelpPage'
-import ReferralPage from './src/consumer/ReferralPage'
-import AnalyticsPage from './src/consumer/AnalyticsPage'
+import { ReferralRedirect as ReferralPage } from './src/consumer/portalRedirects'
+import AccountReferralsPage from './src/consumer/ReferralPage'
+import { AnalyticsRedirect as AnalyticsPage } from './src/consumer/portalRedirects'
+import AccountActivityPage from './src/consumer/AnalyticsPage'
 import DiscoveryPage from './src/consumer/DiscoveryPage'
 import ConsumerServicesPage from './src/consumer/ServicesPage'
-import ListingsPage from './src/consumer/ListingsPage'
 import HowItWorksPage from './src/consumer/HowItWorksPage'
-import ProviderDetailPage from './src/consumer/ProviderDetailPage'
+import ProviderDetailPage from './src/consumer/ProviderRedirectPage'
 import ContactPage from './src/consumer/ContactPage'
 import RequestMessagesPage from './src/consumer/RequestMessagesPage'
 import SubmitReviewPage from './src/consumer/SubmitReviewPage'
@@ -53,13 +59,13 @@ import ProviderBillingPage from './src/provider/BillingPage'
 import ProviderServicesPage from './src/provider/ServicesPage'
 import ProviderRequestMessagesPage from './src/provider/RequestMessagesPage'
 import AccountPage from './src/user/AccountPage'
-import FileUploadPage from './src/file-upload/FileUploadPage'
 import AnalyticsDashboardPage from './src/admin/dashboards/analytics/AnalyticsDashboardPage'
 import AdminUsersPage from './src/admin/dashboards/users/UsersDashboardPage'
 import AdminRequestsPage from './src/admin/RequestsPage'
 import AdminProvidersPage from './src/admin/ProvidersPage'
 import AdminRewardsPage from './src/admin/RewardsPage'
 import AdminReviewsPage from './src/admin/ReviewsPage'
+import AdminCategoriesPage from './src/admin/CategoriesPage'
 import AdminSettingsPage from './src/admin/elements/settings/SettingsPage'
 import AdminCalendarPage from './src/admin/elements/calendar/CalendarPage'
 import AdminUIButtonsPage from './src/admin/elements/ui-elements/ButtonsPage'
@@ -79,7 +85,6 @@ export const routesMapping = {
   AreaRoute: AreaLandingPage,
   ProviderLandingRoute: ProviderLandingPage,
   ProviderApplyRoute: ProviderApplyPage,
-  ListYourServicesRoute: ListYourServicesPage,
   TermsRoute: TermsPage,
   PrivacyRoute: PrivacyPage,
   OnboardingRoute: createAuthRequiredPage(OnboardingPage),
@@ -89,24 +94,33 @@ export const routesMapping = {
   PasswordResetRoute: PasswordResetPage,
   EmailVerificationRoute: EmailVerificationPage,
   RequestServiceRoute: RequestServicePage,
+  AccountRequestServiceRoute: createAuthRequiredPage(AccountRequestServicePage),
   GuestRequestWizardRoute: GuestRequestWizardPage,
   CategoryLandingRoute: CategoryLandingPage,
-  BookingRoute: createAuthRequiredPage(BookingPage),
-  DashboardRoute: createAuthRequiredPage(DashboardPage),
-  MyRequestsRoute: createAuthRequiredPage(MyRequestsPage),
-  RequestDetailRoute: createAuthRequiredPage(RequestDetailPage),
-  RewardsRoute: createAuthRequiredPage(RewardsPage),
+  BookingRoute: BookingPage,
+  AccountBookRoute: createAuthRequiredPage(AccountBookPage),
+  DashboardRoute: DashboardPage,
+  AccountHomeRoute: createAuthRequiredPage(AccountHomePage),
+  MyRequestsRoute: MyRequestsPage,
+  AccountRequestsRoute: createAuthRequiredPage(AccountRequestsPage),
+  RequestDetailRoute: RequestDetailPage,
+  AccountRequestDetailRoute: createAuthRequiredPage(AccountRequestDetailPage),
+  RewardsRoute: RewardsPage,
+  AccountRewardsRoute: createAuthRequiredPage(AccountRewardsPage),
   HelpRoute: HelpPage,
-  ReferralRoute: createAuthRequiredPage(ReferralPage),
-  AnalyticsRoute: createAuthRequiredPage(AnalyticsPage),
+  ReferralRoute: ReferralPage,
+  AccountReferralsRoute: createAuthRequiredPage(AccountReferralsPage),
+  AnalyticsRoute: AnalyticsPage,
+  AccountActivityRoute: createAuthRequiredPage(AccountActivityPage),
   DiscoveryRoute: DiscoveryPage,
   ConsumerServicesRoute: ConsumerServicesPage,
-  ListingsRoute: ListingsPage,
   HowItWorksRoute: HowItWorksPage,
   ProviderDetailRoute: ProviderDetailPage,
   ContactRoute: ContactPage,
   RequestMessagesRoute: createAuthRequiredPage(RequestMessagesPage),
+  AccountRequestMessagesRoute: createAuthRequiredPage(RequestMessagesPage),
   SubmitReviewRoute: createAuthRequiredPage(SubmitReviewPage),
+  AccountRequestReviewRoute: createAuthRequiredPage(SubmitReviewPage),
   ServiceAreaRoute: ServiceAreaLandingPage,
   ProPublicRoute: ProPublicPage,
   ProviderDashboardRoute: createAuthRequiredPage(ProviderDashboardPage),
@@ -117,13 +131,13 @@ export const routesMapping = {
   ProviderServicesRoute: createAuthRequiredPage(ProviderServicesPage),
   ProviderRequestMessagesRoute: createAuthRequiredPage(ProviderRequestMessagesPage),
   AccountRoute: createAuthRequiredPage(AccountPage),
-  FileUploadRoute: createAuthRequiredPage(FileUploadPage),
   AdminRoute: createAuthRequiredPage(AnalyticsDashboardPage),
   AdminUsersRoute: createAuthRequiredPage(AdminUsersPage),
   AdminRequestsRoute: createAuthRequiredPage(AdminRequestsPage),
   AdminProvidersRoute: createAuthRequiredPage(AdminProvidersPage),
   AdminRewardsRoute: createAuthRequiredPage(AdminRewardsPage),
   AdminReviewsRoute: createAuthRequiredPage(AdminReviewsPage),
+  AdminCategoriesRoute: createAuthRequiredPage(AdminCategoriesPage),
   AdminSettingsRoute: createAuthRequiredPage(AdminSettingsPage),
   AdminCalendarRoute: createAuthRequiredPage(AdminCalendarPage),
   AdminUIButtonsRoute: createAuthRequiredPage(AdminUIButtonsPage),

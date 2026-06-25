@@ -38,9 +38,9 @@ function CategoryBadge({ category }) {
       {category.serviceCategory.name}
     </span>);
 }
-export function ProviderCard({ id, businessName, contactName, ratingInternal, verificationStatus, serviceAreas = [], categories, profilePhotoUrl, bio, completedJobsCount = 0, reviewCount = 0, featured = false, rank, }) {
+export function ProviderCard({ id, slug, businessName, contactName, ratingInternal, verificationStatus, serviceAreas = [], categories, profilePhotoUrl, bio, completedJobsCount = 0, reviewCount = 0, featured = false, rank, }) {
     const isVerified = verificationStatus === "VERIFIED";
-    return (<Link to={`/pro/${id}`} className={`
+    return (<Link to={slug ? `/pro-public/${slug}` : `/pro/${id}`} className={`
         block bg-white rounded-[24px] overflow-hidden transition-all duration-300 group
         ${featured
             ? "border-2 border-[#2563EB] shadow-lg hover:shadow-xl hover:scale-[1.02]"

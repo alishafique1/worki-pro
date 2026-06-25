@@ -52,6 +52,15 @@ export type SubmitReview<Input extends Payload = never, Output extends Payload =
 export type ApplyReferralCode<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Referral
 ], Input, Output>;
+export type AddPortfolioPhoto<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _Provider
+], Input, Output>;
+export type RemovePortfolioPhoto<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _Provider
+], Input, Output>;
+export type SetProfilePhoto<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _Provider
+], Input, Output>;
 export type AcceptServiceRequest<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _ServiceRequest,
     _Appointment,
@@ -106,6 +115,12 @@ export type ClaimLead<Input extends Payload = never, Output extends Payload = Pa
 export type ModerateReview<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Review,
     _Provider
+], Input, Output>;
+export type UpsertAdminCategory<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _ServiceCategory
+], Input, Output>;
+export type DeleteAdminCategory<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _ServiceCategory
 ], Input, Output>;
 export type UpdateIsUserAdminById<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _User

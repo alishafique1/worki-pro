@@ -1,258 +1,176 @@
 import {
-  Calendar,
-  ChevronDown,
-  ChevronUp,
   LayoutDashboard,
-  LayoutTemplate,
+  ClipboardList,
+  Briefcase,
+  Users,
+  Star,
+  Gift,
+  Layers,
+  MessageSquare,
   Settings,
-  Sheet,
+  Calendar,
   X,
-} from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router";
-import Logo from "../../client/static/logo.webp";
-import { cn } from "../../client/utils";
-import SidebarLinkGroup from "./SidebarLinkGroup";
+  ChevronRight,
+} from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { NavLink } from 'react-router';
+import Logo from '../../client/static/logo.webp';
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 
+interface NavItem {
+  to: string;
+  label: string;
+  Icon: typeof LayoutDashboard;
+  end?: boolean;
+}
+
+interface NavSection {
+  label: string;
+  items: NavItem[];
+}
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    label: 'Overview',
+    items: [
+      { to: '/admin', label: 'Dashboard', Icon: LayoutDashboard, end: true },
+    ],
+  },
+  {
+    label: 'CRM',
+    items: [
+      { to: '/admin/requests', label: 'Requests', Icon: ClipboardList },
+      { to: '/admin/providers', label: 'Providers', Icon: Briefcase },
+      { to: '/admin/users', label: 'Users', Icon: Users },
+    ],
+  },
+  {
+    label: 'Quality',
+    items: [
+      { to: '/admin/reviews', label: 'Reviews', Icon: Star },
+      { to: '/admin/rewards', label: 'Rewards', Icon: Gift },
+    ],
+  },
+  {
+    label: 'Catalog',
+    items: [
+      { to: '/admin/categories', label: 'Categories', Icon: Layers },
+      { to: '/admin/messages', label: 'Messages', Icon: MessageSquare },
+    ],
+  },
+  {
+    label: 'System',
+    items: [
+      { to: '/admin/settings', label: 'Settings', Icon: Settings },
+      { to: '/admin/calendar', label: 'Calendar', Icon: Calendar },
+    ],
+  },
+];
+
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const location = useLocation();
-  const { pathname } = location;
+  const trigger = useRef<HTMLButtonElement>(null);
+  const sidebar = useRef<HTMLElement>(null);
 
-  const trigger = useRef<any>(null);
-  const sidebar = useRef<any>(null);
-
-  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === "true",
-  );
-
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
-      if (
-        !sidebarOpen ||
-        sidebar.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
+      if (!sidebarOpen || sidebar.current.contains(target as Node) || trigger.current.contains(target as Node)) return;
       setSidebarOpen(false);
     };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  });
+    document.addEventListener('click', clickHandler);
+    return () => document.removeEventListener('click', clickHandler);
+  }, [sidebarOpen, setSidebarOpen]);
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!sidebarOpen || keyCode !== 27) return;
       setSidebarOpen(false);
     };
-    document.addEventListener("keydown", keyHandler);
-    return () => document.removeEventListener("keydown", keyHandler);
-  });
-
-  useEffect(() => {
-    localStorage.setItem("sidebar-expanded", sidebarExpanded.toString());
-    if (sidebarExpanded) {
-      document.querySelector("body")?.classList.add("sidebar-expanded");
-    } else {
-      document.querySelector("body")?.classList.remove("sidebar-expanded");
-    }
-  }, [sidebarExpanded]);
+    document.addEventListener('keydown', keyHandler);
+    return () => document.removeEventListener('keydown', keyHandler);
+  }, [sidebarOpen, setSidebarOpen]);
 
   return (
     <aside
       ref={sidebar}
-      className={cn(
-        "bg-muted absolute top-0 left-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden border-r duration-300 ease-linear lg:static lg:translate-x-0",
-        {
-          "translate-x-0": sidebarOpen,
-          "-translate-x-full": !sidebarOpen,
-        },
-      )}
+      className={`absolute top-0 left-0 z-50 flex h-screen w-64 flex-col bg-[#0F172A] overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
     >
-      {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/">
-          <img src={Logo} alt="Logo" width={50} />
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+        <NavLink to="/" className="flex items-center gap-2.5">
+          <img src={Logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
+          <span className="text-white font-black text-base tracking-tight">The Helper</span>
         </NavLink>
-
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-controls="sidebar"
-          aria-expanded={sidebarOpen}
-          className="block lg:hidden"
+          className="block lg:hidden text-white/60 hover:text-white transition-colors"
         >
-          <X />
+          <X className="size-5" />
         </button>
       </div>
-      {/* <!-- SIDEBAR HEADER --> */}
 
-      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-        {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
-          {/* <!-- Menu Group --> */}
-          <div>
-            <h3 className="text-muted-foreground mb-4 ml-4 text-sm font-semibold">
-              MENU
-            </h3>
+      {/* Admin badge */}
+      <div className="px-6 pt-4 pb-2">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#2563EB]/20 border border-[#2563EB]/30 text-[#93C5FD] text-xs font-bold uppercase tracking-widest">
+          <span className="size-1.5 rounded-full bg-[#2563EB]" />
+          Admin
+        </span>
+      </div>
 
-            <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <!-- Menu Item Dashboard --> */}
-              <NavLink
-                to="/admin"
-                end
-                className={({ isActive }) =>
-                  cn(
-                    "text-muted-foreground hover:bg-accent hover:text-accent-foreground group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out",
-                    {
-                      "bg-accent text-accent-foreground": isActive,
-                    },
-                  )
-                }
-              >
-                <LayoutDashboard />
-                Dashboard
-              </NavLink>
-
-              {/* <!-- Menu Item Dashboard --> */}
-
-              {/* <!-- Menu Item Users --> */}
-              <li>
-                <NavLink
-                  to="/admin/users"
-                  end
-                  className={({ isActive }) =>
-                    cn(
-                      "text-muted-foreground hover:bg-accent hover:text-accent-foreground group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out",
-                      {
-                        "bg-accent text-accent-foreground": isActive,
-                      },
-                    )
-                  }
-                >
-                  <Sheet />
-                  Users
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Users --> */}
-
-              {/* <!-- Menu Item Settings --> */}
-              <li>
-                <NavLink
-                  to="/admin/settings"
-                  end
-                  className={({ isActive }) =>
-                    cn(
-                      "text-muted-foreground hover:bg-accent hover:text-accent-foreground group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out",
-                      {
-                        "bg-accent text-accent-foreground": isActive,
-                      },
-                    )
-                  }
-                >
-                  <Settings />
-                  Settings
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Settings --> */}
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+        {NAV_SECTIONS.map((section) => (
+          <div key={section.label}>
+            <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-white/30">
+              {section.label}
+            </p>
+            <ul className="space-y-0.5">
+              {section.items.map(({ to, label, Icon, end }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    end={end}
+                    className={({ isActive }) =>
+                      `group flex items-center justify-between gap-3 rounded-[10px] px-3 py-2.5 text-sm font-semibold transition-all ${
+                        isActive
+                          ? 'bg-[#2563EB] text-white shadow-[0_4px_12px_rgba(37,99,235,0.4)]'
+                          : 'text-white/60 hover:bg-white/5 hover:text-white'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <span className="flex items-center gap-3">
+                          <Icon className={`size-4 ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`} strokeWidth={2} />
+                          {label}
+                        </span>
+                        {isActive && <ChevronRight className="size-3.5 text-white/60" />}
+                      </>
+                    )}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
+        ))}
+      </nav>
 
-          {/* <!-- Others Group --> */}
-          <div>
-            <h3 className="text-muted-foreground mb-4 ml-4 text-sm font-semibold">
-              Extra Components
-            </h3>
-
-            <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <!-- Menu Item Calendar --> */}
-              <li>
-                <NavLink
-                  to="/admin/calendar"
-                  end
-                  className={({ isActive }) =>
-                    cn(
-                      "text-muted-foreground hover:bg-accent hover:text-accent-foreground group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out",
-                      {
-                        "bg-accent text-accent-foreground": isActive,
-                      },
-                    )
-                  }
-                >
-                  <Calendar />
-                  Calendar
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Calendar --> */}
-
-              {/* <!-- Menu Item Ui Elements --> */}
-              <SidebarLinkGroup
-                activeCondition={pathname === "/ui" || pathname.includes("ui")}
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={cn(
-                          "text-muted-foreground hover:bg-accent hover:text-accent-foreground group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out",
-                          {
-                            "bg-accent text-accent-foreground":
-                              pathname.includes("ui"),
-                          },
-                        )}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <LayoutTemplate />
-                        UI Elements
-                        {open ? <ChevronUp /> : <ChevronDown />}
-                      </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={cn("translate transform overflow-hidden", {
-                          hidden: !open,
-                        })}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/admin/ui/buttons"
-                              end
-                              className={({ isActive }) =>
-                                cn(
-                                  "text-muted-foreground hover:text-accent group relative flex items-center gap-2.5 rounded-md px-4 font-medium duration-300 ease-in-out",
-                                  { "text-accent!": isActive },
-                                )
-                              }
-                            >
-                              Buttons
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Ui Elements --> */}
-            </ul>
-          </div>
-        </nav>
-        {/* <!-- Sidebar Menu --> */}
+      {/* Footer */}
+      <div className="px-6 py-4 border-t border-white/10">
+        <NavLink
+          to="/"
+          className="flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors"
+        >
+          <ChevronRight className="size-3.5 rotate-180" />
+          Back to site
+        </NavLink>
       </div>
     </aside>
   );

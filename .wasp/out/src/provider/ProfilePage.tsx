@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useAction, getProviderProfile, updateProviderProfile } from 'wasp/client/operations';
-import { resubmitProviderApplication } from 'wasp/client/operations';
+import { resubmitProviderApplication, createFileUploadUrl, addPortfolioPhoto, removePortfolioPhoto, setProfilePhoto } from 'wasp/client/operations';
 import type { Provider, ProviderCategory, ServiceCategory } from 'wasp/entities';
-import { AlertTriangle, Clock, RefreshCcw } from 'lucide-react';
+import { AlertTriangle, Clock, RefreshCcw, Upload, Trash2, Star } from 'lucide-react';
 
 type ProfileWithCategories = Provider & {
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
@@ -55,6 +55,12 @@ export default function ProviderProfilePage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  // Portfolio photo state
+  const [portfolio, setPortfolio] = useState<{ url: string; caption?: string }[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [photoMsg, setPhotoMsg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (profile) {
       setFormData({
@@ -70,6 +76,14 @@ export default function ProviderProfilePage() {
         profilePhotoUrl: (profile as any).profilePhotoUrl ?? '',
         responseTimeMins: (profile as any).responseTimeMins?.toString() ?? '',
       });
+      try {
+        const parsed = (profile as any).portfolioJson
+          ? JSON.parse((profile as any).portfolioJson)
+          : [];
+        setPortfolio(Array.isArray(parsed) ? parsed : []);
+      } catch {
+        setPortfolio([]);
+      }
     }
   }, [profile]);
 
@@ -113,6 +127,63 @@ const handleResubmit = async () => {
     setErrorMsg(e?.message ?? 'Failed to resubmit application.');
   } finally {
     setIsResubmitting(false);
+  }
+};
+
+const handlePhotoUpload = async (file: File) => {
+  const okTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  if (!okTypes.includes(file.type)) {
+    setPhotoMsg('Please use a JPG, PNG, or WEBP file.');
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    setPhotoMsg('File must be 5MB or smaller.');
+    return;
+  }
+  setIsUploading(true);
+  setPhotoMsg(null);
+  try {
+    const { s3UploadUrl, s3UploadFields, s3Key } = await createFileUploadUrl({
+      fileType: file.type as 'image/jpeg' | 'image/png' | 'image/webp',
+      fileName: file.name,
+    });
+    const form = new FormData();
+    Object.entries(s3UploadFields).forEach(([k, v]) => form.append(k, v as string));
+    form.append('file', file);
+    const res = await fetch(s3UploadUrl, { method: 'POST', body: form });
+    if (!res.ok) {
+      setPhotoMsg('Upload failed. Please try again.');
+      return;
+    }
+    const updated = await addPortfolioPhoto({ s3Key });
+    setPortfolio(updated as { url: string; caption?: string }[]);
+    setPhotoMsg('Photo uploaded successfully.');
+  } catch (e: any) {
+    setPhotoMsg(e?.message ?? 'Upload failed.');
+  } finally {
+    setIsUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }
+};
+
+const handleRemovePhoto = async (url: string) => {
+  setPhotoMsg(null);
+  try {
+    const updated = await removePortfolioPhoto({ url });
+    setPortfolio(updated as { url: string; caption?: string }[]);
+  } catch (e: any) {
+    setPhotoMsg(e?.message ?? 'Could not remove photo.');
+  }
+};
+
+const handleSetProfilePhoto = async (url: string) => {
+  setPhotoMsg(null);
+  try {
+    await setProfilePhoto({ url });
+    setFormData((prev) => ({ ...prev, profilePhotoUrl: url }));
+    setPhotoMsg('Profile photo updated.');
+  } catch (e: any) {
+    setPhotoMsg(e?.message ?? 'Could not set profile photo.');
   }
 };
 
@@ -316,6 +387,91 @@ const handleSave = async () => {
               </div>
             ) : (
               <p className="text-[#94A3B8] text-sm">No categories assigned.</p>
+            )}
+          </div>
+
+          {/* Business Photos */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-[#0F172A]">Business Photos</h2>
+              <span className="text-xs text-[#475569]">{portfolio.length}/12</span>
+            </div>
+
+            {photoMsg && (
+              <p className="text-sm text-[#475569] bg-[#F8FAFC] border border-[#E2E8F0] rounded-[12px] px-4 py-2">
+                {photoMsg}
+              </p>
+            )}
+
+            {/* Upload button */}
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handlePhotoUpload(file);
+                }}
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading || portfolio.length >= 12}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[14px] bg-[#2563EB] text-white text-sm font-semibold hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.2)]"
+              >
+                <Upload className="size-4" />
+                {isUploading ? 'Uploading…' : 'Upload Photo'}
+              </button>
+              <p className="text-xs text-[#94A3B8] mt-2">JPG, PNG, or WEBP · max 5MB · up to 12 photos</p>
+            </div>
+
+            {/* Thumbnail grid */}
+            {portfolio.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {portfolio.map((item) => (
+                  <div
+                    key={item.url}
+                    className="relative group rounded-[14px] overflow-hidden border border-[#E2E8F0] aspect-square bg-[#F8FAFC]"
+                  >
+                    <img
+                      src={item.url}
+                      alt={item.caption ?? 'Business photo'}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Overlay actions */}
+                    <div className="absolute inset-0 bg-[#0F172A]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-2 gap-1">
+                      <button
+                        onClick={() => handleSetProfilePhoto(item.url)}
+                        title="Set as profile photo"
+                        className="flex items-center gap-1 px-2 py-1 rounded-[8px] bg-[#F59E0B] text-white text-xs font-semibold hover:bg-amber-600 transition-colors"
+                      >
+                        <Star className="size-3" />
+                        Profile
+                      </button>
+                      <button
+                        onClick={() => handleRemovePhoto(item.url)}
+                        title="Remove photo"
+                        className="p-1.5 rounded-[8px] bg-red-500 text-white hover:bg-red-600 transition-colors"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                    {/* Profile photo indicator */}
+                    {item.url === formData.profilePhotoUrl && (
+                      <div className="absolute top-1.5 left-1.5">
+                        <span className="px-2 py-0.5 rounded-full bg-[#F59E0B] text-white text-[10px] font-bold">
+                          Profile
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {portfolio.length === 0 && !isUploading && (
+              <p className="text-[#94A3B8] text-sm">No photos yet. Upload your first business photo above.</p>
             )}
           </div>
         </>

@@ -70,7 +70,7 @@ export default function BookingPage() {
         : undefined;
     return (<div className="min-h-screen bg-[#F8FAFC] p-6 max-w-4xl mx-auto">
       <div className="mb-8">
-        <Link to={requestId ? `/my-requests` : '/dashboard'} className="text-sm text-[#475569] hover:text-[#0F172A] transition-colors">
+        <Link to={requestId ? `/account/requests` : '/account'} className="text-sm text-[#475569] hover:text-[#0F172A] transition-colors">
           ← Back
         </Link>
         <h1 className="text-3xl font-black tracking-tight mt-3 mb-1 text-[#0F172A]">Book Your Appointment</h1>

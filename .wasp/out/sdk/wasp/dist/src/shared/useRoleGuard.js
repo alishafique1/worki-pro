@@ -4,7 +4,7 @@ import { useAuth } from 'wasp/client/auth';
 /**
  * Redirects the current user if they don't have the required role.
  * - useRoleGuard('CONSUMER') → non-consumers (providers) are sent to /provider/dashboard
- * - useRoleGuard('PROVIDER') → non-providers are sent to /dashboard
+ * - useRoleGuard('PROVIDER') → non-providers are sent to /account
  * - useRoleGuard('ADMIN')    → non-admins are sent to /
  */
 export function useRoleGuard(role) {
@@ -17,7 +17,7 @@ export function useRoleGuard(role) {
             navigate('/provider/dashboard', { replace: true });
         }
         if (role === 'PROVIDER' && user.role !== 'PROVIDER') {
-            navigate('/dashboard', { replace: true });
+            navigate('/account', { replace: true });
         }
         if (role === 'ADMIN' && !user.isAdmin) {
             navigate('/', { replace: true });

@@ -1,4 +1,5 @@
-import { HttpError } from "wasp/server";
+import { checkFileExistsInS3, deleteFileFromS3 } from '../file-upload/s3Utils';
+import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
 const requireProvider = async (context) => {
     if (!context.user)
@@ -233,10 +234,7 @@ export const updateProviderProfile = async (args, context) => {
         data.calComUsername = args.calComUsername || null;
     // Bark-style profile fields
     if (args.slug !== undefined) {
-        const slug = args.slug.trim().toLowerCase()
-            .replace(/[^a-z0-9-]/g, "-")
-            .replace(/-{2,}/g, "-")
-            .replace(/^-+|-+$/g, "");
+        const slug = args.slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
         data.slug = slug || null;
     }
     if (args.bio !== undefined)
@@ -465,10 +463,6 @@ export const getPublicLeadFeed = async ({ categorySlug, urgency, limit = 20, off
     if (urgency) {
         where.urgency = urgency;
     }
-    // Guard: provider with no registered categories sees no leads
-    if (proSlugs.length === 0 && !categorySlug) {
-        return [];
-    }
     const requests = await context.entities.ServiceRequest.findMany({
         where,
         orderBy: { createdAt: "desc" },
@@ -513,35 +507,38 @@ export const claimLead = async ({ requestId }, context) => {
     if (req.assignedProviderId && req.assignedProviderId !== provider.id) {
         throw new HttpError(409, "This lead has already been claimed by another provider.");
     }
-    const updated = await context.entities.ServiceRequest.update({
-        where: { id: requestId },
-        data: {
-            assignedProviderId: provider.id,
-            status: "ASSIGNED",
-        },
-    });
-    // Create a fee record for this lead claim
-    await context.entities.ProviderFee.create({
-        data: {
-            providerId: provider.id,
-            serviceRequestId: requestId,
-            feeType: "QUALIFIED_LEAD",
-            amount: 5.0,
-            status: "PENDING",
-        },
-    });
-    // Open an internal thread note so messaging is seeded
-    await context.entities.CommunicationLog.create({
-        data: {
-            providerId: provider.id,
-            serviceRequestId: requestId,
-            channel: "INTERNAL_NOTE",
-            direction: "OUTBOUND",
-            from: provider.businessName,
-            to: req.email || req.name || "Customer",
-            body: "Lead claimed — contact details now available.",
-            status: "DELIVERED",
-        },
+    // All three writes must succeed together: if the fee write fails after
+    // the lead is assigned, the provider has contact info with no revenue record.
+    const [updated] = await prisma.$transaction(async (tx) => {
+        const updateResult = await tx.serviceRequest.update({
+            where: { id: requestId },
+            data: {
+                assignedProviderId: provider.id,
+                status: "ASSIGNED",
+            },
+        });
+        await tx.providerFee.create({
+            data: {
+                providerId: provider.id,
+                serviceRequestId: requestId,
+                feeType: "QUALIFIED_LEAD",
+                amount: 5.0,
+                status: "PENDING",
+            },
+        });
+        await tx.communicationLog.create({
+            data: {
+                providerId: provider.id,
+                serviceRequestId: requestId,
+                channel: "INTERNAL_NOTE",
+                direction: "OUTBOUND",
+                from: provider.businessName,
+                to: req.email || req.name || "Customer",
+                body: "Lead claimed — contact details now available.",
+                status: "DELIVERED",
+            },
+        });
+        return [updateResult];
     });
     // Notify consumer by email (fire-and-forget)
     if (req.email) {
@@ -597,5 +594,62 @@ export const resubmitProviderApplication = async (args, context) => {
         }).catch(() => { });
     }
     return updated;
+};
+// ─── Portfolio & profile photo actions ───────────────────────────────────────
+const MAX_PORTFOLIO = 12;
+const publicUrl = (s3Key) => `${process.env.R2_PUBLIC_URL}/${s3Key}`;
+async function getMyProvider(context) {
+    if (!context.user)
+        throw new HttpError(401, 'Not authorized');
+    const provider = await context.entities.Provider.findFirst({ where: { userId: context.user.id } });
+    if (!provider)
+        throw new HttpError(404, 'Provider profile not found');
+    return provider;
+}
+export const addPortfolioPhoto = async ({ s3Key, caption }, context) => {
+    const provider = await getMyProvider(context);
+    const exists = await checkFileExistsInS3({ s3Key });
+    if (!exists)
+        throw new HttpError(404, 'Uploaded file not found in storage');
+    const portfolio = provider.portfolioJson
+        ? JSON.parse(provider.portfolioJson)
+        : [];
+    if (portfolio.length >= MAX_PORTFOLIO) {
+        throw new HttpError(400, `Maximum ${MAX_PORTFOLIO} photos allowed`);
+    }
+    portfolio.push({ url: publicUrl(s3Key), ...(caption ? { caption } : {}) });
+    await context.entities.Provider.update({
+        where: { id: provider.id },
+        data: { portfolioJson: JSON.stringify(portfolio) },
+    });
+    return portfolio;
+};
+export const removePortfolioPhoto = async ({ url }, context) => {
+    const provider = await getMyProvider(context);
+    const portfolio = provider.portfolioJson
+        ? JSON.parse(provider.portfolioJson)
+        : [];
+    const next = portfolio.filter((p) => p.url !== url);
+    await context.entities.Provider.update({
+        where: { id: provider.id },
+        data: { portfolioJson: JSON.stringify(next) },
+    });
+    // Best-effort deletion from R2
+    if (process.env.R2_PUBLIC_URL && url.startsWith(process.env.R2_PUBLIC_URL)) {
+        const s3Key = url.slice(process.env.R2_PUBLIC_URL.length + 1);
+        try {
+            await deleteFileFromS3({ s3Key });
+        }
+        catch { /* non-blocking */ }
+    }
+    return next;
+};
+export const setProfilePhoto = async ({ url }, context) => {
+    const provider = await getMyProvider(context);
+    await context.entities.Provider.update({
+        where: { id: provider.id },
+        data: { profilePhotoUrl: url },
+    });
+    return { profilePhotoUrl: url };
 };
 //# sourceMappingURL=operations.js.map

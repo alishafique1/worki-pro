@@ -202,6 +202,40 @@ export const updateLead: UpdateLead<UpdateLeadInput, Lead> = async ({ leadId, st
   });
 };
 
+// ─── Category Management ──────────────────────────────────────────────────────
+
+export const getAdminCategories = async (_args: void, context: any) => {
+  requireAdmin(context);
+  return context.entities.ServiceCategory.findMany({
+    where: { parentCategoryId: null },
+    orderBy: { name: 'asc' },
+  });
+};
+
+type UpsertCategoryInput = {
+  id?: string;
+  name: string;
+  slug: string;
+  description?: string;
+  icon?: string;
+  imageUrl?: string;
+  active?: boolean;
+};
+
+export const upsertAdminCategory = async (args: UpsertCategoryInput, context: any) => {
+  requireAdmin(context);
+  const { id, ...data } = args;
+  if (id) {
+    return context.entities.ServiceCategory.update({ where: { id }, data });
+  }
+  return context.entities.ServiceCategory.create({ data: { ...data, active: data.active ?? true } });
+};
+
+export const deleteAdminCategory = async ({ id }: { id: string }, context: any) => {
+  requireAdmin(context);
+  return context.entities.ServiceCategory.delete({ where: { id } });
+};
+
 // ─── Review Moderation ────────────────────────────────────────────────────────
 
 export const getAdminReviews: GetAdminReviews<void, Review[]> = async (_args, context) => {

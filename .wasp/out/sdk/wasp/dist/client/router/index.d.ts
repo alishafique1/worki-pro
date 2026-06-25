@@ -52,10 +52,6 @@ export declare const routes: {
         readonly to: "/providers/apply";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
-    readonly ListYourServicesRoute: {
-        readonly to: "/list-your-services";
-        readonly build: (options?: OptionalRouteOptions) => string;
-    };
     readonly TermsRoute: {
         readonly to: "/terms";
         readonly build: (options?: OptionalRouteOptions) => string;
@@ -92,6 +88,10 @@ export declare const routes: {
         readonly to: "/request-service";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
+    readonly AccountRequestServiceRoute: {
+        readonly to: "/account/request-service";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
     readonly GuestRequestWizardRoute: {
         readonly to: "/get-quotes";
         readonly build: (options?: OptionalRouteOptions) => string;
@@ -112,12 +112,28 @@ export declare const routes: {
             };
         }) => string;
     };
+    readonly AccountBookRoute: {
+        readonly to: "/account/book/:requestId";
+        readonly build: (options: OptionalRouteOptions & {
+            params: {
+                "requestId": ParamValue;
+            };
+        }) => string;
+    };
     readonly DashboardRoute: {
         readonly to: "/dashboard";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
+    readonly AccountHomeRoute: {
+        readonly to: "/account";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
     readonly MyRequestsRoute: {
         readonly to: "/my-requests";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly AccountRequestsRoute: {
+        readonly to: "/account/requests";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly RequestDetailRoute: {
@@ -128,8 +144,20 @@ export declare const routes: {
             };
         }) => string;
     };
+    readonly AccountRequestDetailRoute: {
+        readonly to: "/account/requests/:requestId";
+        readonly build: (options: OptionalRouteOptions & {
+            params: {
+                "requestId": ParamValue;
+            };
+        }) => string;
+    };
     readonly RewardsRoute: {
         readonly to: "/rewards";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly AccountRewardsRoute: {
+        readonly to: "/account/rewards";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly HelpRoute: {
@@ -140,8 +168,16 @@ export declare const routes: {
         readonly to: "/referral";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
+    readonly AccountReferralsRoute: {
+        readonly to: "/account/referrals";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
     readonly AnalyticsRoute: {
         readonly to: "/analytics";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly AccountActivityRoute: {
+        readonly to: "/account/activity";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly DiscoveryRoute: {
@@ -150,10 +186,6 @@ export declare const routes: {
     };
     readonly ConsumerServicesRoute: {
         readonly to: "/services";
-        readonly build: (options?: OptionalRouteOptions) => string;
-    };
-    readonly ListingsRoute: {
-        readonly to: "/listings";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly HowItWorksRoute: {
@@ -180,8 +212,24 @@ export declare const routes: {
             };
         }) => string;
     };
+    readonly AccountRequestMessagesRoute: {
+        readonly to: "/account/requests/:requestId/messages";
+        readonly build: (options: OptionalRouteOptions & {
+            params: {
+                "requestId": ParamValue;
+            };
+        }) => string;
+    };
     readonly SubmitReviewRoute: {
         readonly to: "/my-requests/:requestId/review";
+        readonly build: (options: OptionalRouteOptions & {
+            params: {
+                "requestId": ParamValue;
+            };
+        }) => string;
+    };
+    readonly AccountRequestReviewRoute: {
+        readonly to: "/account/requests/:requestId/review";
         readonly build: (options: OptionalRouteOptions & {
             params: {
                 "requestId": ParamValue;
@@ -238,11 +286,7 @@ export declare const routes: {
         }) => string;
     };
     readonly AccountRoute: {
-        readonly to: "/account";
-        readonly build: (options?: OptionalRouteOptions) => string;
-    };
-    readonly FileUploadRoute: {
-        readonly to: "/file-upload";
+        readonly to: "/account/profile";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly AdminRoute: {
@@ -267,6 +311,10 @@ export declare const routes: {
     };
     readonly AdminReviewsRoute: {
         readonly to: "/admin/reviews";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
+    readonly AdminCategoriesRoute: {
+        readonly to: "/admin/categories";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
     readonly AdminSettingsRoute: {

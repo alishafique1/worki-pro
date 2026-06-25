@@ -217,6 +217,7 @@ export const getProviders = async ({ categorySlug, search, areaSlug }, context) 
     // Map to include counts
     return providers.map((provider) => ({
         id: provider.id,
+        slug: provider.slug,
         businessName: provider.businessName,
         contactName: provider.contactName,
         ratingInternal: provider.ratingInternal,
@@ -642,5 +643,12 @@ export const saveGuestRequest = async (args, context) => {
         }
     }
     return { requestId: request.id };
+};
+export const getProviderSlugById = async ({ id }, context) => {
+    const provider = await context.entities.Provider.findUnique({
+        where: { id },
+        select: { slug: true },
+    });
+    return { slug: provider?.slug ?? null };
 };
 //# sourceMappingURL=operations.js.map

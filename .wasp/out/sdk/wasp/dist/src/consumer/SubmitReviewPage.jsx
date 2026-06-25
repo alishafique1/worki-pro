@@ -71,7 +71,7 @@ export default function SubmitReviewPage() {
         <p className="text-[#475569] mb-4">
           Request not found or no provider assigned.
         </p>
-        <Link to="/my-requests" className="text-sm font-bold underline text-[#2563EB] hover:text-[#1D4ED8] transition-colors">
+        <Link to="/account/requests" className="text-sm font-bold underline text-[#2563EB] hover:text-[#1D4ED8] transition-colors">
           Back to my requests
         </Link>
       </div>);
@@ -85,7 +85,7 @@ export default function SubmitReviewPage() {
         <p className="text-[#475569] mb-8 text-center">
           Thank you for helping other homeowners find great pros.
         </p>
-        <Link to="/my-requests" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
+        <Link to="/account/requests" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-black rounded-[16px] hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
           Back to my requests
         </Link>
       </div>);

@@ -49,10 +49,6 @@ export const routes = {
         to: "/providers/apply",
         build: (options) => interpolatePath("/providers/apply", undefined, options?.search, options?.hash),
     },
-    ListYourServicesRoute: {
-        to: "/list-your-services",
-        build: (options) => interpolatePath("/list-your-services", undefined, options?.search, options?.hash),
-    },
     TermsRoute: {
         to: "/terms",
         build: (options) => interpolatePath("/terms", undefined, options?.search, options?.hash),
@@ -89,6 +85,10 @@ export const routes = {
         to: "/request-service",
         build: (options) => interpolatePath("/request-service", undefined, options?.search, options?.hash),
     },
+    AccountRequestServiceRoute: {
+        to: "/account/request-service",
+        build: (options) => interpolatePath("/account/request-service", undefined, options?.search, options?.hash),
+    },
     GuestRequestWizardRoute: {
         to: "/get-quotes",
         build: (options) => interpolatePath("/get-quotes", undefined, options?.search, options?.hash),
@@ -101,21 +101,41 @@ export const routes = {
         to: "/book/:requestId",
         build: (options) => interpolatePath("/book/:requestId", options.params, options?.search, options?.hash),
     },
+    AccountBookRoute: {
+        to: "/account/book/:requestId",
+        build: (options) => interpolatePath("/account/book/:requestId", options.params, options?.search, options?.hash),
+    },
     DashboardRoute: {
         to: "/dashboard",
         build: (options) => interpolatePath("/dashboard", undefined, options?.search, options?.hash),
+    },
+    AccountHomeRoute: {
+        to: "/account",
+        build: (options) => interpolatePath("/account", undefined, options?.search, options?.hash),
     },
     MyRequestsRoute: {
         to: "/my-requests",
         build: (options) => interpolatePath("/my-requests", undefined, options?.search, options?.hash),
     },
+    AccountRequestsRoute: {
+        to: "/account/requests",
+        build: (options) => interpolatePath("/account/requests", undefined, options?.search, options?.hash),
+    },
     RequestDetailRoute: {
         to: "/my-requests/:requestId",
         build: (options) => interpolatePath("/my-requests/:requestId", options.params, options?.search, options?.hash),
     },
+    AccountRequestDetailRoute: {
+        to: "/account/requests/:requestId",
+        build: (options) => interpolatePath("/account/requests/:requestId", options.params, options?.search, options?.hash),
+    },
     RewardsRoute: {
         to: "/rewards",
         build: (options) => interpolatePath("/rewards", undefined, options?.search, options?.hash),
+    },
+    AccountRewardsRoute: {
+        to: "/account/rewards",
+        build: (options) => interpolatePath("/account/rewards", undefined, options?.search, options?.hash),
     },
     HelpRoute: {
         to: "/help",
@@ -125,9 +145,17 @@ export const routes = {
         to: "/referral",
         build: (options) => interpolatePath("/referral", undefined, options?.search, options?.hash),
     },
+    AccountReferralsRoute: {
+        to: "/account/referrals",
+        build: (options) => interpolatePath("/account/referrals", undefined, options?.search, options?.hash),
+    },
     AnalyticsRoute: {
         to: "/analytics",
         build: (options) => interpolatePath("/analytics", undefined, options?.search, options?.hash),
+    },
+    AccountActivityRoute: {
+        to: "/account/activity",
+        build: (options) => interpolatePath("/account/activity", undefined, options?.search, options?.hash),
     },
     DiscoveryRoute: {
         to: "/discover",
@@ -136,10 +164,6 @@ export const routes = {
     ConsumerServicesRoute: {
         to: "/services",
         build: (options) => interpolatePath("/services", undefined, options?.search, options?.hash),
-    },
-    ListingsRoute: {
-        to: "/listings",
-        build: (options) => interpolatePath("/listings", undefined, options?.search, options?.hash),
     },
     HowItWorksRoute: {
         to: "/how-it-works",
@@ -157,9 +181,17 @@ export const routes = {
         to: "/my-requests/:requestId/messages",
         build: (options) => interpolatePath("/my-requests/:requestId/messages", options.params, options?.search, options?.hash),
     },
+    AccountRequestMessagesRoute: {
+        to: "/account/requests/:requestId/messages",
+        build: (options) => interpolatePath("/account/requests/:requestId/messages", options.params, options?.search, options?.hash),
+    },
     SubmitReviewRoute: {
         to: "/my-requests/:requestId/review",
         build: (options) => interpolatePath("/my-requests/:requestId/review", options.params, options?.search, options?.hash),
+    },
+    AccountRequestReviewRoute: {
+        to: "/account/requests/:requestId/review",
+        build: (options) => interpolatePath("/account/requests/:requestId/review", options.params, options?.search, options?.hash),
     },
     ServiceAreaRoute: {
         to: "/services/:serviceSlug/:areaSlug",
@@ -198,12 +230,8 @@ export const routes = {
         build: (options) => interpolatePath("/provider/requests/:requestId/messages", options.params, options?.search, options?.hash),
     },
     AccountRoute: {
-        to: "/account",
-        build: (options) => interpolatePath("/account", undefined, options?.search, options?.hash),
-    },
-    FileUploadRoute: {
-        to: "/file-upload",
-        build: (options) => interpolatePath("/file-upload", undefined, options?.search, options?.hash),
+        to: "/account/profile",
+        build: (options) => interpolatePath("/account/profile", undefined, options?.search, options?.hash),
     },
     AdminRoute: {
         to: "/admin",
@@ -228,6 +256,10 @@ export const routes = {
     AdminReviewsRoute: {
         to: "/admin/reviews",
         build: (options) => interpolatePath("/admin/reviews", undefined, options?.search, options?.hash),
+    },
+    AdminCategoriesRoute: {
+        to: "/admin/categories",
+        build: (options) => interpolatePath("/admin/categories", undefined, options?.search, options?.hash),
     },
     AdminSettingsRoute: {
         to: "/admin/settings",
