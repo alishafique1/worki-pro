@@ -3049,4 +3049,391 @@ export const categoryPages: CategoryPageData[] = [
         "Basement waterproofing in Milton, Oakville, and Burlington. Interior drainage, sump pumps, exterior membranes, and crack injection. Written warranties.",
     },
   },
+
+  {
+    slug: "digital-marketing",
+    name: "Digital Marketing",
+    tagline: "Digital marketing that grows local GTA businesses.",
+    description:
+      "SEO, paid ads, and social media from vetted marketing pros. One request, matched fast.",
+    badge: "Marketing Pros · GTA",
+    subCategories: [
+      {
+        name: "Search & SEO",
+        services: [
+          {
+            name: "Local SEO",
+            description:
+              "Optimize your Google Business Profile, local citations, and on-page SEO to rank for GTA searches.",
+          },
+          {
+            name: "Google Ads Management",
+            description:
+              "Set up and manage Google Search and Display campaigns — keyword research, bidding, and monthly reporting.",
+          },
+          {
+            name: "SEO Audit",
+            description:
+              "Full technical and content audit identifying gaps holding your site back in search rankings.",
+          },
+        ],
+      },
+      {
+        name: "Social Media",
+        services: [
+          {
+            name: "Social Media Management",
+            description:
+              "Monthly content calendar, post creation, scheduling, and engagement across Instagram, Facebook, and LinkedIn.",
+          },
+          {
+            name: "Meta Ads (Facebook & Instagram)",
+            description:
+              "Run and optimize paid social campaigns — audience targeting, creative testing, and ROAS reporting.",
+          },
+          {
+            name: "Content Creation",
+            description:
+              "Branded graphics, short-form copy, and reels scripts tailored to your business and audience.",
+          },
+        ],
+      },
+      {
+        name: "Growth & Analytics",
+        services: [
+          {
+            name: "Email Marketing",
+            description:
+              "Design and send newsletters, promotional sequences, and automated drip campaigns.",
+          },
+          {
+            name: "Analytics Setup",
+            description:
+              "Configure Google Analytics 4, Meta Pixel, and conversion tracking so every channel is measurable.",
+          },
+          {
+            name: "Monthly Growth Reporting",
+            description:
+              "Plain-English monthly report covering traffic, leads, ad spend, and ROI across all channels.",
+          },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "How long before I see results from SEO?",
+        answer:
+          "Local SEO improvements typically show measurable ranking movement within 3–4 months. Paid ads can generate leads in the first week.",
+      },
+      {
+        question: "What budget do I need for Google or Meta ads?",
+        answer:
+          "Most local GTA businesses start with $500–$1,500/month in ad spend. Management fees are separate and depend on campaign complexity.",
+      },
+      {
+        question: "Do I need to provide content or does the pro create it?",
+        answer:
+          "Most marketing pros create content on your behalf with your approval. You provide brand assets (logo, photos) and tone guidance.",
+      },
+      {
+        question: "Is a long-term contract required?",
+        answer:
+          "Most providers offer month-to-month retainers after an initial onboarding period. Ask about contract terms when comparing quotes.",
+      },
+    ],
+    seo: {
+      title: "Digital Marketing Services in GTA | The Helper",
+      description:
+        "Vetted digital marketing pros in Milton, Oakville, and Burlington. SEO, Google Ads, social media management, and growth reporting. Get matched in minutes.",
+    },
+  },
+
+  {
+    slug: "software-development",
+    name: "Software Development",
+    tagline: "Custom software and web apps, built right.",
+    description:
+      "Vetted developers for web apps, integrations, and automation. Get matched in minutes.",
+    badge: "Vetted Developers · GTA",
+    subCategories: [
+      {
+        name: "Web Apps",
+        services: [
+          {
+            name: "Custom Web Application",
+            description:
+              "Design and build a bespoke web app from scratch — React, Next.js, or your preferred stack.",
+          },
+          {
+            name: "Landing Page & Website",
+            description:
+              "Build a fast, conversion-optimized marketing site or multi-page business website.",
+          },
+          {
+            name: "E-commerce Development",
+            description:
+              "Build or extend a Shopify, WooCommerce, or custom e-commerce store with payments and inventory.",
+          },
+        ],
+      },
+      {
+        name: "Integrations & Automation",
+        services: [
+          {
+            name: "API Integration",
+            description:
+              "Connect your tools and platforms — CRM, payment processor, shipping, or any third-party API.",
+          },
+          {
+            name: "Workflow Automation",
+            description:
+              "Automate repetitive business processes using Zapier, Make, or custom scripts.",
+          },
+          {
+            name: "Database Design",
+            description:
+              "Design and implement a scalable database schema for your application or reporting needs.",
+          },
+        ],
+      },
+      {
+        name: "Support & Maintenance",
+        services: [
+          {
+            name: "Bug Fixes & Updates",
+            description:
+              "Diagnose and fix issues in existing codebases — any framework or language.",
+          },
+          {
+            name: "Performance Optimization",
+            description:
+              "Improve load times, database query speed, and server response for existing web apps.",
+          },
+          {
+            name: "Monthly Retainer Support",
+            description:
+              "Ongoing developer support for updates, features, and firefighting — fixed monthly rate.",
+          },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "How do I know what type of developer I need?",
+        answer:
+          "Describe your project in the request form — our team will match you with a full-stack, frontend, or backend specialist based on scope.",
+      },
+      {
+        question: "Do developers sign NDAs?",
+        answer:
+          "Yes. Most vetted developers are comfortable signing an NDA before project kick-off. Mention it in your request.",
+      },
+      {
+        question: "Can you take over an existing codebase?",
+        answer:
+          "Yes. Many developers specialize in inheriting and improving existing projects. Share the tech stack in your request.",
+      },
+      {
+        question: "How is pricing structured?",
+        answer:
+          "Projects can be quoted as fixed-price or hourly. Most smaller projects use fixed-price to give you budget certainty.",
+      },
+    ],
+    seo: {
+      title: "Software Development Services in GTA | The Helper",
+      description:
+        "Vetted software developers in Milton, Oakville, and Burlington. Web apps, API integrations, automation, and ongoing support. Get matched in minutes.",
+    },
+  },
+
+  {
+    slug: "video-editing",
+    name: "Video Editing",
+    tagline: "Short-form video and editing that converts.",
+    description:
+      "Reels, promos, and professional edits from local creative pros.",
+    badge: "Video Editors · GTA",
+    subCategories: [
+      {
+        name: "Short-Form Video",
+        services: [
+          {
+            name: "Instagram & TikTok Reels",
+            description:
+              "Edit raw footage into engaging 15–90 second vertical videos with captions, music, and transitions.",
+          },
+          {
+            name: "YouTube Shorts",
+            description:
+              "Cut and optimize short-form content for YouTube — hooks, pacing, and thumbnail creation.",
+          },
+          {
+            name: "Social Media Content Packages",
+            description:
+              "Monthly packages editing 8–20 short-form videos from your raw footage for all platforms.",
+          },
+        ],
+      },
+      {
+        name: "Marketing & Promo",
+        services: [
+          {
+            name: "Promotional Video",
+            description:
+              "Edit a polished 60–120 second promo for your business, product, or service — motion graphics included.",
+          },
+          {
+            name: "Testimonial Video",
+            description:
+              "Clean edit of customer testimonial footage with lower-thirds, colour grade, and branded outro.",
+          },
+          {
+            name: "Ad Creative",
+            description:
+              "Edit video ads optimized for Meta, Google, or YouTube — multiple cut-down versions.",
+          },
+        ],
+      },
+      {
+        name: "Event & Long-Form",
+        services: [
+          {
+            name: "Event Highlight Video",
+            description:
+              "Edit a 3–5 minute highlight reel from event footage — weddings, corporate, and celebrations.",
+          },
+          {
+            name: "YouTube Long-Form Edit",
+            description:
+              "Full edit of 10–60 minute YouTube videos — jump cuts, b-roll, colour grade, and chapter markers.",
+          },
+          {
+            name: "Podcast Video Edit",
+            description:
+              "Multi-camera podcast edit with graphic overlays, chapter markers, and short-clip exports.",
+          },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "What format should I deliver raw footage in?",
+        answer:
+          "MP4, MOV, or any major video format works. Share via Google Drive, Dropbox, or WeTransfer — your editor will specify their preference.",
+      },
+      {
+        question: "How many revision rounds are included?",
+        answer:
+          "Most editors include 2 rounds of revisions. Additional rounds are available at a set hourly rate.",
+      },
+      {
+        question: "How long does a typical edit take?",
+        answer:
+          "A short-form reel takes 1–2 business days. A 10-minute YouTube video typically takes 3–5 days.",
+      },
+      {
+        question: "Can the editor add subtitles and captions?",
+        answer:
+          "Yes. Auto-generated captions with manual cleanup are included in most packages. Custom styled captions are available as an add-on.",
+      },
+    ],
+    seo: {
+      title: "Video Editing Services in GTA | The Helper",
+      description:
+        "Professional video editors in Milton, Oakville, and Burlington. Reels, promos, YouTube, and event highlights. Fast turnaround, competitive rates.",
+    },
+  },
+
+  {
+    slug: "driving-school",
+    name: "Driving School",
+    tagline: "Licensed driving lessons in Milton, Burlington & Oakville.",
+    description:
+      "MTO-approved instructors and in-car lessons. Book your first lesson in minutes.",
+    badge: "MTO-Approved Instructors · GTA",
+    subCategories: [
+      {
+        name: "Beginner Driver Education",
+        services: [
+          {
+            name: "In-Car Driving Lessons",
+            description:
+              "One-on-one in-car lessons with a licensed instructor — dual-control vehicle, any skill level.",
+          },
+          {
+            name: "G1 Exit Road Test Preparation",
+            description:
+              "Structured lessons targeting the MTO G1 exit (G2) road test — parallel parking, three-point turns, highway.",
+          },
+          {
+            name: "G2 Exit Road Test Preparation",
+            description:
+              "Advanced lessons for the G2 exit (full G) test — highway driving, lane changes, and complex intersections.",
+          },
+        ],
+      },
+      {
+        name: "Refresher & Specialty",
+        services: [
+          {
+            name: "Refresher Course",
+            description:
+              "For licensed drivers returning after a break or looking to rebuild confidence — customized lesson plan.",
+          },
+          {
+            name: "Highway Driving",
+            description:
+              "Dedicated highway sessions covering merging, lane changes, following distance, and exit strategies.",
+          },
+          {
+            name: "Parking & Manoeuvres",
+            description:
+              "Targeted practice for parallel parking, three-point turns, and tight lot manoeuvring.",
+          },
+        ],
+      },
+      {
+        name: "Insurance Discount Programs",
+        services: [
+          {
+            name: "MTO-Approved BDE Course",
+            description:
+              "Complete an MTO-approved Beginner Driver Education program — qualifies you for the G1 exit test earlier and insurance discounts.",
+          },
+          {
+            name: "Young Driver Package",
+            description:
+              "Bundled lessons and classroom hours meeting MTO BDE standards — designed for drivers under 25.",
+          },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Do I need a G1 licence before booking lessons?",
+        answer:
+          "Yes. You must hold a valid Ontario G1 licence to take in-car lessons. Instructors can advise on the written knowledge test if needed.",
+      },
+      {
+        question: "How many lessons do I need before the road test?",
+        answer:
+          "Most students need 10–20 hours of in-car practice depending on prior experience. Your instructor will assess readiness and advise.",
+      },
+      {
+        question: "Will the instructor pick me up at home?",
+        answer:
+          "Yes. Most instructors offer pick-up and drop-off at your home, school, or a nearby agreed location.",
+      },
+      {
+        question: "Does completing a BDE course lower my insurance?",
+        answer:
+          "Yes. Completing an MTO-approved BDE course can significantly reduce insurance premiums for young drivers — often 10–30% depending on the insurer.",
+      },
+    ],
+    seo: {
+      title: "Driving School & Lessons in GTA | The Helper",
+      description:
+        "MTO-approved driving instructors in Milton, Oakville, and Burlington. G2 and G road test prep, in-car lessons, and BDE courses. Book your first lesson today.",
+    },
+  },
 ];

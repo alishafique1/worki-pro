@@ -31,6 +31,7 @@ import type {
   GetMyReferral,
   ApplyReferralCode,
   SaveGuestRequest,
+  GetProviderSlugById,
 } from "wasp/server/operations";
 import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
@@ -276,6 +277,7 @@ export const submitServiceRequest: SubmitServiceRequest<
 
 type ProviderWithCategories = {
   id: string;
+  slug: string | null;
   businessName: string;
   contactName: string | null;
   ratingInternal: number | null;
@@ -345,6 +347,7 @@ export const getProviders: GetProviders<
   // Map to include counts
   return providers.map((provider) => ({
     id: provider.id,
+    slug: provider.slug,
     businessName: provider.businessName,
     contactName: provider.contactName,
     ratingInternal: provider.ratingInternal,
@@ -920,3 +923,12 @@ export const saveGuestRequest: SaveGuestRequest<SaveGuestRequestInput, { request
 
   return { requestId: request.id }
 }
+
+export const getProviderSlugById: GetProviderSlugById<{ id: string }, { slug: string | null }> =
+  async ({ id }, context) => {
+    const provider = await context.entities.Provider.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
+    return { slug: provider?.slug ?? null };
+  };

@@ -12,7 +12,7 @@ app OpenSaaS {
 
   
 
-  title: "TheHelper — Home Services Concierge | HVAC, Handyman & Smart Home Pros in GTA",
+  title: "TheHelper — Home Services Concierge | Handyman, Plumbing & Event Pros in GTA",
 
   head: [
     "<link rel='icon' href='/favicon.ico' sizes='any' />",
@@ -23,9 +23,9 @@ app OpenSaaS {
     "<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />",
     "<link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=DM+Sans:opsz,wght@9..40,300..700&display=swap' rel='stylesheet' />",
 
-    "<meta name='description' content=\"TheHelper is Milton, Oakville & Burlington's #1 home services concierge. Get matched with background-checked HVAC, handyman, plumbing, electrical and smart home pros in minutes. Earn rewards on every job.\" />",
+    "<meta name='description' content=\"TheHelper is Milton, Oakville & Burlington's #1 services concierge. Get matched with background-checked handyman, plumbing, smart home, events, catering, shisha lounge, AI services, and website design pros in minutes. Earn rewards on every job.\" />",
     "<meta name='author' content='TheHelper Home Services' />",
-    "<meta name='keywords' content='home services Milton, HVAC repair Oakville, handyman Burlington, smart home installation GTA, appliance repair Milton, plumber Oakville, electrician Burlington, home maintenance concierge' />",
+    "<meta name='keywords' content='home services Milton, handyman Oakville, plumber Burlington, smart home installation GTA, event planning Milton, food catering Oakville, shisha lounge GTA, website design Burlington, AI services GTA, services concierge' />",
     "<meta name='robots' content='index, follow' />",
     "<link rel='canonical' href='https://thehelper.ca/' />",
 
@@ -40,7 +40,7 @@ app OpenSaaS {
     "<meta name='twitter:description' content=\"GTA's #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.\" />",
     "<meta name='twitter:image' content='https://thehelper.ca/og-banner.webp' />",
 
-    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"TheHelper Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, handyman, plumbing, electrical, and smart home professionals.\",\"url\":\"https://thehelper.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Handyman\",\"Plumbing\",\"Electrical\",\"Smart Home Installation\",\"Appliance Repair\"]}</script>",
+    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"TheHelper Home Services\",\"description\":\"Services concierge connecting GTA homeowners and businesses with vetted handyman, plumbing, smart home, events, catering, shisha lounge, AI services, and website design professionals.\",\"url\":\"https://thehelper.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"Handyman\",\"Plumbing\",\"Smart Home Installation\",\"Events\",\"Food Catering\",\"Shisha Lounge\",\"AI Services\",\"Website Design\"]}</script>",
   ],
 
   // 🔐 Auth out of the box! https://wasp.sh/docs/auth/overview
@@ -144,9 +144,6 @@ page ProviderLandingPage { component: import ProviderLandingPage from "@src/prov
 route ProviderApplyRoute { path: "/providers/apply", to: ProviderApplyPage }
 page ProviderApplyPage { component: import ProviderApplyPage from "@src/provider/ApplyPage" }
 
-route ListYourServicesRoute { path: "/list-your-services", to: ListYourServicesPage }
-page ListYourServicesPage { component: import ListYourServicesPage from "@src/provider/ListYourServicesPage" }
-
 route TermsRoute { path: "/terms", to: TermsPage }
 page TermsPage { component: import TermsPage from "@src/shared/TermsPage" }
 
@@ -247,14 +244,16 @@ page DiscoveryPage          { component: import DiscoveryPage from "@src/consume
 route ConsumerServicesRoute { path: "/services",            to: ConsumerServicesPage }
 page ConsumerServicesPage   { component: import ConsumerServicesPage from "@src/consumer/ServicesPage" }
 
-route ListingsRoute         { path: "/listings",            to: ListingsPage }
-page ListingsPage           { component: import ListingsPage from "@src/consumer/ListingsPage" }
-
 route HowItWorksRoute       { path: "/how-it-works",         to: HowItWorksPage }
 page HowItWorksPage         { component: import HowItWorksPage from "@src/consumer/HowItWorksPage" }
 
 route ProviderDetailRoute   { path: "/pro/:providerId",      to: ProviderDetailPage }
-page ProviderDetailPage     { component: import ProviderDetailPage from "@src/consumer/ProviderDetailPage" }
+page ProviderDetailPage     { component: import ProviderRedirectPage from "@src/consumer/ProviderRedirectPage" }
+
+query getProviderSlugById {
+  fn: import { getProviderSlugById } from "@src/consumer/operations",
+  entities: [Provider]
+}
 
 route ContactRoute          { path: "/contact",             to: ContactPage }
 page ContactPage            { component: import ContactPage from "@src/consumer/ContactPage" }
@@ -387,6 +386,21 @@ page ProviderServicesPage { component: import ProviderServicesPage from "@src/pr
 route ProviderRequestMessagesRoute { path: "/provider/requests/:requestId/messages", to: ProviderRequestMessagesPage }
 page ProviderRequestMessagesPage { component: import ProviderRequestMessagesPage from "@src/provider/RequestMessagesPage", authRequired: true }
 
+action addPortfolioPhoto {
+  fn: import { addPortfolioPhoto } from "@src/provider/operations",
+  entities: [Provider]
+}
+
+action removePortfolioPhoto {
+  fn: import { removePortfolioPhoto } from "@src/provider/operations",
+  entities: [Provider]
+}
+
+action setProfilePhoto {
+  fn: import { setProfilePhoto } from "@src/provider/operations",
+  entities: [Provider]
+}
+
 query getProviderLeads {
   fn: import { getProviderLeads } from "@src/provider/operations",
   entities: [ServiceRequest, Provider]
@@ -479,6 +493,21 @@ action moderateReview {
   fn: import { moderateReview } from "@src/admin/operations",
   entities: [Review, Provider]
 }
+
+query getAdminCategories {
+  fn: import { getAdminCategories } from "@src/admin/operations",
+  entities: [ServiceCategory]
+}
+
+action upsertAdminCategory {
+  fn: import { upsertAdminCategory } from "@src/admin/operations",
+  entities: [ServiceCategory]
+}
+
+action deleteAdminCategory {
+  fn: import { deleteAdminCategory } from "@src/admin/operations",
+  entities: [ServiceCategory]
+}
 //#endregion
 
 //#region User
@@ -512,11 +541,8 @@ api calcomWebhook {
 //#endregion
 
 //#region File Upload
-route FileUploadRoute { path: "/file-upload", to: FileUploadPage }
-page FileUploadPage {
-  authRequired: true,
-  component: import FileUpload from "@src/file-upload/FileUploadPage"
-}
+// S3 upload operations (used for provider profile/portfolio images).
+// The standalone /file-upload demo page was removed — see NAVIGATION.md.
 
 action createFileUploadUrl {
   fn: import { createFileUploadUrl } from "@src/file-upload/operations",
@@ -588,6 +614,9 @@ page AdminRewardsPage { component: import AdminRewardsPage from "@src/admin/Rewa
 
 route AdminReviewsRoute { path: "/admin/reviews", to: AdminReviewsPage }
 page AdminReviewsPage { component: import AdminReviewsPage from "@src/admin/ReviewsPage", authRequired: true }
+
+route AdminCategoriesRoute { path: "/admin/categories", to: AdminCategoriesPage }
+page AdminCategoriesPage { component: import AdminCategoriesPage from "@src/admin/CategoriesPage", authRequired: true }
 
 query getAdminRequests {
   fn: import { getAdminRequests } from "@src/admin/operations",

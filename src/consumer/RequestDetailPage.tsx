@@ -360,7 +360,7 @@ export default function RequestDetailPage() {
                   )}
                 </div>
                 <Link
-                  to={`/pro/${provider.id}`}
+                  to={provider.slug ? `/pro-public/${provider.slug}` : `/pro/${provider.id}`}
                   className='inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] hover:underline'
                 >
                   View Pro Profile →
