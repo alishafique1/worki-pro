@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useAction } from "wasp/client/operations";
 import { getAdminReviews, moderateReview } from "wasp/client/operations";
-
-const STATUS_BADGES: Record<string, string> = {
-  PUBLISHED: "bg-green-50 text-[#22C55E] border-green-200",
-  PENDING: "bg-[#FEF3C7] text-[#F59E0B] border-amber-200",
-  REJECTED: "bg-red-50 text-red-600 border-red-200",
-};
-
+import { statusBadge } from "../client/lib/statusStyles";
 import { useRoleGuard } from '../shared/useRoleGuard';
 
 export default function AdminReviewsPage() {
@@ -104,7 +98,7 @@ export default function AdminReviewsPage() {
                     ))}
                   </div>
                   <span
-                    className={`px-2 py-0.5 rounded-full border text-xs font-bold ${STATUS_BADGES[review.status] ?? ""}`}
+                    className={`px-2 py-0.5 rounded-full text-xs font-bold ${statusBadge(review.status)}`}
                   >
                     {review.status}
                   </span>

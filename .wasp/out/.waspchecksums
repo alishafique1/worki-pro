@@ -1012,14 +1012,14 @@
             "file",
             "sdk/wasp/src/admin/RequestsPage.tsx"
         ],
-        "013958160547776cc32d476928b262ab8322e2808a90ad87fc78180691b8cce8"
+        "3e36dc4fba60186c2c1bce4b76d7c93ad7cbdad6b80d5e00fe5f96a32a6742b3"
     ],
     [
         [
             "file",
             "sdk/wasp/src/admin/ReviewsPage.tsx"
         ],
-        "31218c4c0c279e3e44091cf5fed04ee784952c35e9001418666189cefccc4508"
+        "d574fa9a464f0780910c481e57268001f02ea28b011d132a31997db4d0b5b70a"
     ],
     [
         [
@@ -1089,7 +1089,7 @@
             "file",
             "sdk/wasp/src/admin/dashboards/messages/MessagesPage.tsx"
         ],
-        "4c08040ff14f3d0f3b2c9928a339cfbf0b7d99bd46fba5fcab517789d0f34b44"
+        "7c450bb4b0a999d7c900caf0fdad32c73cc5b389e6073a2b2e8e9e66b44890e4"
     ],
     [
         [
@@ -1166,7 +1166,7 @@
             "file",
             "sdk/wasp/src/admin/layout/Sidebar.tsx"
         ],
-        "272293d78c7e762bd746887449b31f81f9bf6d8237491fd2b3bfd45f3a784d4d"
+        "896083f5e88a02a29ff0da0e20757ee499572062091d048f93a885ba39fc6708"
     ],
     [
         [
@@ -1222,42 +1222,42 @@
             "file",
             "sdk/wasp/src/auth/AuthPageLayout.tsx"
         ],
-        "55a41452539bbe15933e313311149038b0036fe9ae9ce60b43ca165486f14c1a"
+        "48b37ea8a5ed6790ecf4e3c50ed1c6d21eb363301abac71fb7ab799e3b569176"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "f16d06cc5a66009da79584c82fb883d1c4fdf5c2bd2f16d9c8aedf9158320152"
+        "6cad2aab4d6e7d2154b75d4089cea1cdca9abc0b7dc49121efd6e6ca1d1eb6ae"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
-        "4d55d1217b76b2544f9d7affa557cd20791b1b79cc10fde057932ff0a94c73ab"
+        "e454417013255878a450b5591829fc46aa4efdfa7c2bd6693be3fcfd7116b9fe"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/EmailVerificationPage.tsx"
         ],
-        "7c98253c60dd326132f1f8f947bfb918d3abe9c731bd0892628ad91f7786c9c9"
+        "ba7fa8323e2e8bb9d9613c97fefd9397231cea6b0ea540ef5460a62cb55cc1c9"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/PasswordResetPage.tsx"
         ],
-        "977e1d3da2cce45f3b119ad1f4d05d48d02962b3a775c807e83824e671031f9e"
+        "3c1781911d6fe79b0349eb6d8ddd669adad529aa4219539af49027bee8ca0089"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/email-and-pass/RequestPasswordResetPage.tsx"
         ],
-        "9bab0ebd4d1ad59b8d85608902b1fa21a8646b502d33c17b9ce037265bf697dc"
+        "7fcee29cd64b47e84b6637ccc53e67623140f972d6d5f14b97938ade717f9967"
     ],
     [
         [
@@ -1271,7 +1271,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "1eaf47d9d231691fd6eb1c7178174ff567d38e5a7e0dd0c0281623dba21bd79b"
+        "fb9bdcda846033bcd58c257b8505a08ce3a7dce0206d382b305cd61267b45ea5"
     ],
     [
         [
@@ -1320,7 +1320,7 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "c99af03f760b43e6826f7aaa32318939540ae4485547117a6c898d7317ea09e8"
+        "eb128ed9ec9ad52e8c400a6f77f450e8cbdce9cb69736d518010252fd3a575c2"
     ],
     [
         [
@@ -1348,7 +1348,7 @@
             "file",
             "sdk/wasp/src/client/Main.css"
         ],
-        "7ec99d976292c591d21c0e3b98a9b2af2409a6842485e32176bbfdf7154fd03b"
+        "d213cfc59876b49c699dd4e514eb492a41e893fcb3954d078c6a3c38f50aaf91"
     ],
     [
         [
@@ -1381,6 +1381,13 @@
     [
         [
             "file",
+            "sdk/wasp/src/client/components/Logo/Logo.tsx"
+        ],
+        "1abbdeba3f190d9945a28d2d83d9fbfb5b6ea2e735927103542382c60e6665ae"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/client/components/NavBar/Announcement.tsx"
         ],
         "a1f2f84b0057fff56c5a9986a6da51c4e09faf7813f0fe631c3c7aa2f368149f"
@@ -1390,7 +1397,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "b94c69b28cbbc2b5351d9715ee71618968d9bd5a7969b3b5970de13156860b9c"
+        "996137c0723d98bd84d5fa520f5e7fd27420028bcdcdeaf92aa5fdc7643630fa"
     ],
     [
         [
@@ -1426,6 +1433,55 @@
             "sdk/wasp/src/client/components/cookie-consent/Config.ts"
         ],
         "f5f5a11963f4910c9db4b4f594da596e3c24bb0d1d070443d3c56acb7b4787ff"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/Badge.tsx"
+        ],
+        "6b35182f822931aec7f87fcc3f346f8f7a4d929e30ecf78780f9ed3a780567e8"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/Button.tsx"
+        ],
+        "f4b1f163839a88a6322402214aa7b12354decc3a6690acb052b94ada87b9cd0d"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/Card.tsx"
+        ],
+        "29dd757c531cc744a48272b92db9832d51cc8a1e000a1efa79dd63943c828e51"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/FormLabel.tsx"
+        ],
+        "f4b54f27024bc6ea341d95c49bd9c49888c509bbd4b31c6f3376af762dde361c"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/Heading.tsx"
+        ],
+        "4290dcc0bf599aff3f27f584b62190d70358351401b30d7855365f6b41e1a7f5"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/TextInput.tsx"
+        ],
+        "9b84ab0c13101b3bb71de32bd4292d6e4b7ef85ce8960781bd3a7f5782efafc0"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/components/ds/index.ts"
+        ],
+        "0bf4f7c5baf6423c769d797c01010a6d5c89eebe37b70c16fdfab970c35dd8c9"
     ],
     [
         [
@@ -1601,6 +1657,13 @@
             "sdk/wasp/src/client/icons/icon-copy-alt.svg"
         ],
         "e5a91df9854a524b40db8ac45287053c734022beeab1a66d555b07ba7c29f443"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/client/lib/statusStyles.ts"
+        ],
+        "11b0617a85447a2c820ec12ac2c5e841b2197b4b494763e774b4585e7fc2f05e"
     ],
     [
         [
@@ -1859,7 +1922,7 @@
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "db044e1c84937d2d8800bfd44939224275d2211e3f3ca7eeadf1240c951c2783"
+        "78be51c9ef2010fdac16c41f9fd6d090e6163f0df7f4ae4916326b03ceef06db"
     ],
     [
         [
@@ -2027,7 +2090,7 @@
             "file",
             "sdk/wasp/src/consumer/layout/ConsumerLayout.tsx"
         ],
-        "87caa3c6621544c90b8e403cdc074e7228329323fbbe90c0d01913900b57dfb6"
+        "781a8dd139acd188f896966432be43a77feaf6e61ef795dfc72aed423ad0b6ab"
     ],
     [
         [
@@ -2202,7 +2265,7 @@
             "file",
             "sdk/wasp/src/landing-page/components/Footer.tsx"
         ],
-        "4db562950adef5009d9193b4629b65a226e13231f2352177fce490f49beb8a83"
+        "43bead88ba134983207d52bc717da7e47ececc94f735f89a917e32bacc7bde0d"
     ],
     [
         [
@@ -2489,7 +2552,7 @@
             "file",
             "sdk/wasp/src/provider/layout/ProviderLayout.tsx"
         ],
-        "45d42ef9d87eab9e5d2b465278d6d6000373b037822e205f3e88dbc4d5c02495"
+        "41191c5e0281c673ba1725d35e9ab572eb8a31387020ef6f3c577bfdbfc69a66"
     ],
     [
         [
@@ -2531,7 +2594,7 @@
             "file",
             "sdk/wasp/src/server/services/ghl.ts"
         ],
-        "bb73e5e674fd59c55a759ec2c772f62da7b477dc9522fd86fe57e16ca174f754"
+        "aba1ed844f15fdbe05351bb84eb7dac12c1f9a941e594b3c62bb9e5dd592ac8f"
     ],
     [
         [

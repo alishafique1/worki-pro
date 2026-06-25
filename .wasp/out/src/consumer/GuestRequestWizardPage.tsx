@@ -5,7 +5,7 @@ import StepCategory from './components/wizard/StepCategory'
 import StepQualifiers from './components/wizard/StepQualifiers'
 import StepInfoAndVerify from './components/wizard/StepInfoAndVerify'
 import StepVerifyEmail from './components/wizard/StepVerifyEmail'
-import logo from '../client/static/logo.webp'
+import { Logo } from '../client/components/Logo/Logo'
 
 export type WizardState = {
   categoryId: string | null
@@ -61,10 +61,7 @@ export default function GuestRequestWizardPage() {
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg" />
-            <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
-          </div>
+          <Logo variant="light" size="md" className="justify-center mb-4" />
           <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Get matched with a pro</h2>
           <p className="text-[#475569] text-sm mt-1">No account needed, no cost — takes 2 minutes</p>
         </div>

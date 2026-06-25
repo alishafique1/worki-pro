@@ -1,15 +1,12 @@
 import { Link } from 'react-router';
-import logo from '../../client/static/logo.webp';
+import { Logo } from '../../client/components/Logo/Logo';
 
 export default function Footer() {
   return (
     <footer className="bg-[#0F172A] border-t border-[#1E293B] py-16 px-6 mt-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="col-span-1 md:col-span-1">
-          <Link to="/" className="flex items-center gap-2.5 text-2xl font-black text-white">
-            <img src={logo} alt="The Helper" className="w-9 h-9 rounded-xl" />
-            The Helper
-          </Link>
+          <Logo variant="dark" size="lg" to="/" />
           <p className="mt-4 text-[#94A3B8] text-sm">
             Expert home services, managed for you. Plus real cashback on every job. Serving the GTA.
           </p>
