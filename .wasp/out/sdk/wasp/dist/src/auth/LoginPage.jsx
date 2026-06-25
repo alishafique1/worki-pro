@@ -5,7 +5,8 @@ import { login } from 'wasp/client/auth';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
 import { Link } from 'react-router';
-import logo from '../client/static/logo.webp';
+import { Logo } from '../client/components/Logo/Logo';
+import { Button, TextInput, FormLabel, Heading } from '../client/components/ds';
 export default function Login() {
     const navigate = useNavigate();
     const [step, setStep] = useState('email');
@@ -142,18 +143,15 @@ export default function Login() {
     }
     return (<AuthPageLayout>
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-6">
-          <img src={logo} alt="The Helper" className="w-8 h-8 rounded-lg"/>
-          <span className="text-xl font-black tracking-tight text-[#0F172A]">The Helper</span>
-        </div>
+        <Logo variant="light" size="md" className="mb-6"/>
         {step === 'email' ? (<>
-            <h2 className="text-2xl font-black tracking-tight mb-1 text-[#0F172A]">Sign in to The Helper</h2>
+            <Heading level={2} className="mb-1">Sign in to The Helper</Heading>
             <p className="text-sm text-[#475569]">Enter your email and we'll send a 6-digit code.</p>
           </>) : (<>
             <button type="button" onClick={() => { setStep('email'); setCode(['', '', '', '', '', '']); setError(null); }} className="text-sm text-[#475569] hover:text-[#0F172A] mb-3 flex items-center gap-1">
               ← Back
             </button>
-            <h2 className="text-2xl font-black tracking-tight mb-1 text-[#0F172A]">Check your email</h2>
+            <Heading level={2} className="mb-1">Check your email</Heading>
             <p className="text-sm text-[#475569]">
               We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{email}</span>
             </p>
@@ -162,19 +160,19 @@ export default function Login() {
 
       {step === 'email' && mode === 'password' ? (<form onSubmit={handlePasswordLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Email address</label>
-            <input type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }} className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"/>
+            <FormLabel>Email address</FormLabel>
+            <TextInput type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }}/>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Password</label>
-            <input type="password" required placeholder="••••••••" value={password} onChange={e => { setPassword(e.target.value); setError(null); }} className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"/>
+            <FormLabel>Password</FormLabel>
+            <TextInput type="password" required placeholder="••••••••" value={password} onChange={e => { setPassword(e.target.value); setError(null); }}/>
           </div>
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || !email.trim() || !password} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+          <Button type="submit" fullWidth disabled={isLoading || !email.trim() || !password}>
             {isLoading ? 'Signing in…' : 'Sign in →'}
-          </button>
+          </Button>
 
           <p className="text-center text-sm text-[#475569]">
             <button type="button" onClick={() => { setMode('otp'); setError(null); }} className="text-[#2563EB] font-semibold hover:underline">
@@ -183,15 +181,15 @@ export default function Login() {
           </p>
         </form>) : step === 'email' ? (<form onSubmit={handleSendCode} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Email address</label>
-            <input type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }} className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"/>
+            <FormLabel>Email address</FormLabel>
+            <TextInput type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }}/>
           </div>
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || !email.trim()} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+          <Button type="submit" fullWidth disabled={isLoading || !email.trim()}>
             {isLoading ? 'Sending code…' : 'Send code →'}
-          </button>
+          </Button>
 
           <p className="text-center text-sm text-[#475569]">
             <button type="button" onClick={() => { setMode('password'); setError(null); }} className="text-[#2563EB] font-semibold hover:underline">
@@ -200,7 +198,7 @@ export default function Login() {
           </p>
         </form>) : (<form onSubmit={handleVerifyCode} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-3">Enter your 6-digit code</label>
+            <FormLabel className="mb-3">Enter your 6-digit code</FormLabel>
             <div className="flex gap-2 justify-between" onPaste={handleCodePaste}>
               {code.map((digit, i) => (<input key={i} ref={el => { inputRefs.current[i] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} onChange={e => handleCodeInput(i, e.target.value)} onKeyDown={e => handleCodeKeyDown(i, e)} className="w-12 h-14 text-center text-2xl font-black bg-white border-2 rounded-xl transition-colors focus:outline-none focus:border-[#2563EB]" style={{ borderColor: digit ? '#2563EB' : '#E2E8F0' }}/>))}
             </div>
@@ -208,9 +206,9 @@ export default function Login() {
 
           {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
 
-          <button type="submit" disabled={isLoading || codeValue.length !== 6} className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
+          <Button type="submit" fullWidth disabled={isLoading || codeValue.length !== 6}>
             {isLoading ? 'Verifying…' : 'Verify & sign in'}
-          </button>
+          </Button>
 
           <p className="text-center text-sm text-[#475569]">
             Didn't get it?{' '}

@@ -91,6 +91,96 @@ export async function sendLeadToGHL(
   }
 }
 
+export interface GhlOnboardingContact {
+  firstName: string;
+  lastName?: string;
+  phone: string;
+  email?: string;
+  postalCode: string;
+  role: 'CONSUMER' | 'PROVIDER';
+  businessName?: string;
+}
+
+/**
+ * Syncs a freshly-onboarded user to GoHighLevel as a contact.
+ *
+ * Onboarding has no ServiceRequest, so this is separate from sendLeadToGHL:
+ * it logs with serviceRequestId = null (the FK is nullable) and tags the
+ * contact with the user's role instead of a lead/service type. Without this,
+ * a phone collected at signup never reached GHL until the user later filed a
+ * request. Fire-and-forget — never blocks onboarding.
+ */
+export async function syncContactToGHL(
+  contact: GhlOnboardingContact,
+  prisma: PrismaClient,
+): Promise<void> {
+  const webhookUrl = process.env.GHL_WEBHOOK_URL;
+  if (!webhookUrl) {
+    console.warn('[GHL] GHL_WEBHOOK_URL not set — skipping contact sync');
+    return;
+  }
+
+  const body = {
+    contact: {
+      firstName: contact.firstName,
+      lastName: contact.lastName || undefined,
+      phone: normalizePhone(contact.phone),
+      email: contact.email,
+      postalCode: contact.postalCode,
+      tags: ['thehelper-signup', contact.role.toLowerCase()],
+      customFields: {
+        role: contact.role,
+        business_name: contact.businessName ?? undefined,
+        source: 'ONBOARDING',
+      },
+    },
+  };
+
+  let statusCode: number | undefined;
+  let error: string | undefined;
+
+  try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (process.env.GHL_WEBHOOK_SECRET) {
+      headers['x-thehelper-secret'] = process.env.GHL_WEBHOOK_SECRET;
+    }
+
+    const res = await fetch(webhookUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    statusCode = res.status;
+
+    if (!res.ok) {
+      error = `GHL responded ${res.status}: ${await res.text()}`;
+      console.error('[GHL] Contact sync failed:', error);
+    } else {
+      console.log(`[GHL] Contact synced for ${contact.role} signup (${contact.email ?? contact.phone})`);
+    }
+  } catch (err) {
+    error = err instanceof Error ? err.message : String(err);
+    console.error('[GHL] Contact sync error:', error);
+  }
+
+  try {
+    const logData = {
+      direction: 'OUTBOUND',
+      source: 'GHL',
+      event: 'contact.created',
+      serviceRequestId: null,
+      payload: body as any,
+      statusCode,
+      error,
+    };
+    const webhookLogDelegate = (prisma as any).WebhookLog ?? (prisma as any).webhookLog;
+    await webhookLogDelegate.create({ data: logData });
+  } catch (logErr) {
+    console.error('[GHL] Failed to write WebhookLog:', logErr);
+  }
+}
+
 /** Normalize Canadian/US phone to E.164 format */
 function normalizePhone(phone: string): string {
   const digits = phone.replace(/\D/g, '');

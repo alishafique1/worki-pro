@@ -1,7 +1,7 @@
 import { LayoutDashboard, ClipboardList, Briefcase, Users, Star, Gift, Layers, MessageSquare, Settings, Calendar, X, ChevronRight, } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router';
-import Logo from '../../client/static/logo.webp';
+import { Logo } from '../../client/components/Logo/Logo';
 const NAV_SECTIONS = [
     {
         label: 'Overview',
@@ -65,9 +65,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     return (<aside ref={sidebar} className={`absolute top-0 left-0 z-50 flex h-screen w-64 flex-col bg-[#0F172A] overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-        <NavLink to="/" className="flex items-center gap-2.5">
-          <img src={Logo} alt="The Helper" className="w-8 h-8 rounded-lg"/>
-          <span className="text-white font-black text-base tracking-tight">The Helper</span>
+        <NavLink to="/">
+          <Logo variant="dark" size="md"/>
         </NavLink>
         <button ref={trigger} onClick={() => setSidebarOpen(!sidebarOpen)} className="block lg:hidden text-white/60 hover:text-white transition-colors">
           <X className="size-5"/>

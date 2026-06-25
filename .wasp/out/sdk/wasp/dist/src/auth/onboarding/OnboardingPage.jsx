@@ -7,7 +7,7 @@ import StepRole from './components/StepRole';
 import StepProfile from './components/StepProfile';
 import StepBusiness from './components/StepBusiness';
 import CategoryCardGrid from './components/CategoryCardGrid';
-import logo from '../../client/static/logo.webp';
+import { Logo } from '../../client/components/Logo/Logo';
 import { isValidCanadianPhone, isValidCanadianPostal, isGtaPostal } from './validation';
 const CONSUMER_STEPS = ['Your role', 'Your profile', 'Interests'];
 const PROVIDER_STEPS = ['Your role', 'Your profile', 'Business', 'Services'];
@@ -209,10 +209,7 @@ export default function OnboardingPage() {
 
         {/* Mobile: compact top strip */}
         <div className="flex items-center justify-between px-6 py-4 lg:hidden border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="The Helper" className="w-7 h-7 rounded-lg"/>
-            <span className="text-white font-black text-base tracking-tight">The Helper</span>
-          </div>
+          <Logo variant="dark" size="sm"/>
           <span className="text-white/50 text-sm font-semibold">
             Step {step} of {totalSteps}
           </span>
@@ -220,10 +217,7 @@ export default function OnboardingPage() {
 
         {/* Desktop: full side panel */}
         <div className="hidden lg:flex flex-col h-full px-8 py-10">
-          <div className="flex items-center gap-3 mb-12">
-            <img src={logo} alt="The Helper" className="w-9 h-9 rounded-xl"/>
-            <span className="text-white font-black text-lg tracking-tight">The Helper</span>
-          </div>
+          <Logo variant="dark" size="lg" className="mb-12"/>
 
           <div className="flex-1">
             <p className="text-white/50 text-xs font-bold uppercase tracking-widest mb-6">Setup progress</p>

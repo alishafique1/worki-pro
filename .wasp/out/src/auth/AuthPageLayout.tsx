@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import logo from "../client/static/logo.webp";
+import { Logo } from "../client/components/Logo/Logo";
 
 export function AuthPageLayout({ children }: { children: ReactNode }) {
   return (
@@ -7,10 +7,7 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
       {/* Left decorative panel — desktop only */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#0F172A] flex-col justify-between p-12 text-white">
         <div>
-          <div className="flex items-center gap-3 mb-16">
-            <img src={logo} alt="The Helper" className="w-10 h-10 rounded-xl" />
-            <span className="text-2xl font-black tracking-tight">The Helper</span>
-          </div>
+          <Logo variant="dark" size="lg" className="mb-16" />
           <div>
             <h1 className="text-5xl font-black tracking-tight leading-tight mb-6">Your home.<br/>Handled right.</h1>
             <p className="text-white/70 text-lg max-w-sm">Trusted local pros, real rewards, one platform.</p>

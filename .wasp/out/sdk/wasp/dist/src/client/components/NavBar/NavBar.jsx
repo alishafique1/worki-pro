@@ -7,7 +7,7 @@ import { Link as WaspRouterLink, routes } from "wasp/client/router";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, } from "../../../client/components/ui/sheet";
 import { UserDropdown } from "../../../user/UserDropdown";
 import { UserMenuItems } from "../../../user/UserMenuItems";
-import logo from "../../static/logo-icon.svg";
+import { Logo } from "../Logo/Logo";
 import { cn } from "../../utils";
 function NavCtaButton({ role, onClick, className }) {
     const base = "rounded-full bg-[#2563EB] text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8]";
@@ -25,11 +25,8 @@ export default function NavBar({ navigationItems, }) {
     return (<header className="sticky top-0 z-50 border-b border-[#E2E8F0] bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8" aria-label="Global">
         {/* Logo */}
-        <WaspRouterLink to={routes.LandingPageRoute.to} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <img src={logo} alt="The Helper" className="h-9 w-auto"/>
-          <span className="text-sm font-extrabold text-[#0F172A] tracking-tight">
-            <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
-          </span>
+        <WaspRouterLink to={routes.LandingPageRoute.to} className="hover:opacity-80 transition-opacity">
+          <Logo variant="light" size="lg"/>
         </WaspRouterLink>
 
         {/* Desktop nav links */}
@@ -98,11 +95,8 @@ function MobileMenu({ navigationItems, }) {
         <SheetContent side="right" className="w-[280px] sm:w-[360px]">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
-              <WaspRouterLink to={routes.LandingPageRoute.to} onClick={() => setOpen(false)} className="flex items-center gap-2">
-                <img src={logo} alt="The Helper" className="h-9 w-auto"/>
-                <span className="text-sm font-extrabold text-[#0F172A] tracking-tight">
-                  <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
-                </span>
+              <WaspRouterLink to={routes.LandingPageRoute.to} onClick={() => setOpen(false)}>
+                <Logo variant="light" size="lg"/>
               </WaspRouterLink>
             </SheetTitle>
           </SheetHeader>
