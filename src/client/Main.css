@@ -80,6 +80,16 @@
   --color-danger-border: #FECACA;
   --color-danger-fg: #B91C1C;
 
+  /* Radius scale — collapses the ~13 ad-hoc rounded-[px] values into a
+     4-step system. control = buttons/inputs, card = standard cards,
+     panel = large surfaces/modals. Use rounded-full for pills. */
+  --radius-control: 14px;
+  --radius-card: 20px;
+  --radius-panel: 24px;
+
+  /* The brand button glow — was copy-pasted as shadow-[0_8px_24px_rgba(...)] */
+  --shadow-brand: 0 8px 24px rgba(37, 99, 235, 0.30);
+
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
   --breakpoint-3xl: 2000px;
@@ -287,6 +297,14 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Keyboard-only focus ring for every interactive element. Additive (outline,
+     not border) so it never fights a component's own focus:border styling, and
+     :focus-visible keeps it from showing on mouse clicks. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid #2563EB;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 

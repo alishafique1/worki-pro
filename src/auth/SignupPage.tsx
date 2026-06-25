@@ -5,6 +5,7 @@ import { initSession } from 'wasp/auth/helpers/user'
 import { config } from 'wasp/client'
 import { AuthPageLayout } from './AuthPageLayout'
 import { Logo } from '../client/components/Logo/Logo'
+import { Button, TextInput, FormLabel, Heading } from '../client/components/ds'
 
 export function Signup() {
   const navigate = useNavigate()
@@ -178,7 +179,7 @@ export function Signup() {
         <Logo variant="light" size="md" className="mb-6" />
         {step === 'form' ? (
           <>
-            <h2 className="text-2xl font-black tracking-tight mb-1 text-[#0F172A]">Create your account</h2>
+            <Heading level={2} className="mb-1">Create your account</Heading>
             <p className="text-sm text-[#475569]">Join thousands of GTA homeowners. Free forever.</p>
           </>
         ) : (
@@ -190,7 +191,7 @@ export function Signup() {
             >
               ← Back
             </button>
-            <h2 className="text-2xl font-black tracking-tight mb-1 text-[#0F172A]">Verify your email</h2>
+            <Heading level={2} className="mb-1">Verify your email</Heading>
             <p className="text-sm text-[#475569]">
               We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{email}</span>
             </p>
@@ -201,37 +202,34 @@ export function Signup() {
       {step === 'form' ? (
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Email address</label>
-            <input
+            <FormLabel>Email address</FormLabel>
+            <TextInput
               type="email"
               required
               autoFocus
               placeholder="you@example.com"
               value={email}
               onChange={e => { setEmail(e.target.value); setError(null) }}
-              className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Password</label>
-            <input
+            <FormLabel>Password</FormLabel>
+            <TextInput
               type="password"
               required
               placeholder="At least 8 characters"
               value={password}
               onChange={e => { setPassword(e.target.value); setError(null) }}
-              className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-1.5">Confirm password</label>
-            <input
+            <FormLabel>Confirm password</FormLabel>
+            <TextInput
               type="password"
               required
               placeholder="Re-enter your password"
               value={confirmPassword}
               onChange={e => { setConfirmPassword(e.target.value); setError(null) }}
-              className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors"
             />
           </div>
 
@@ -239,13 +237,9 @@ export function Signup() {
             <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
           )}
 
-          <button
-            type="submit"
-            disabled={isLoading || !email.trim() || !password || !confirmPassword}
-            className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
-          >
+          <Button type="submit" fullWidth disabled={isLoading || !email.trim() || !password || !confirmPassword}>
             {isLoading ? 'Creating account…' : 'Create account →'}
-          </button>
+          </Button>
 
           <p className="text-center text-sm text-[#475569]">
             Already have an account?{' '}
@@ -257,7 +251,7 @@ export function Signup() {
       ) : (
         <form onSubmit={handleVerifyCode} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-[#475569] mb-3">Enter your 6-digit code</label>
+            <FormLabel className="mb-3">Enter your 6-digit code</FormLabel>
             <div className="flex gap-2 justify-between" onPaste={handleCodePaste}>
               {code.map((digit, i) => (
                 <input
@@ -280,13 +274,9 @@ export function Signup() {
             <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
           )}
 
-          <button
-            type="submit"
-            disabled={isLoading || codeValue.length !== 6}
-            className="w-full py-3 bg-[#2563EB] text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
-          >
+          <Button type="submit" fullWidth disabled={isLoading || codeValue.length !== 6}>
             {isLoading ? 'Verifying…' : 'Verify & complete signup'}
-          </button>
+          </Button>
 
           <p className="text-center text-sm text-[#475569]">
             Didn't get it?{' '}

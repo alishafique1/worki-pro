@@ -16,7 +16,7 @@ export const badgeToneClass: Record<BadgeTone, string> = {
   success: 'bg-success-bg text-success-fg border border-success-border',
   warning: 'bg-warning-bg text-warning-fg border border-warning-border',
   danger: 'bg-danger-bg text-danger-fg border border-danger-border',
-  neutral: 'bg-[#F1F5F9] text-slate border border-border',
+  neutral: 'bg-[#F1F5F9] text-slate border border-[#E2E8F0]',
 }
 
 /**

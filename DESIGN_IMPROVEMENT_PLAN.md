@@ -118,6 +118,46 @@ GHL when a service request / lead is later submitted. Confirmed gap.
   (deps not installed). Changes are mechanical import/usage swaps; import
   paths checked by hand. Run `wasp start` locally to confirm.
 
+## Systemic design language (deeper audit)
+
+A four-dimension audit (typography, components, voice, a11y) found the app has
+a strong human *voice* but no enforced visual *grammar*:
+
+- **No component grammar (root cause):** shadcn primitives exist but are used
+  <7%. ~80 hand-rolled primary buttons (8+ radius/padding/shadow combos), ~50
+  cards (5 radii), ~40 inputs, ~50 badges.
+- **No type system:** Fraunces (brand serif) applied in ~7 places; rest is DM
+  Sans. `font-black` used 209×, `font-bold` 433× → weight carries no hierarchy.
+- **No shape scale:** ~13 radii; arbitrary `rounded-[..]` outnumber the
+  `--radius` token ~398:92. Brand button shadow copy-pasted, not tokenized.
+- **Voice seams:** CTAs drift ("Get Help" / "Get matched now" / "Get your
+  first quote"); error copy drops to terse system-speak.
+- **A11y:** solid responsive coverage, but real WCAG contrast failures
+  (`text-white/50–60` on dark) and icon-only buttons missing focus/aria.
+
+### Foundation built (this push)
+- **Radius scale + brand shadow** tokens in `Main.css` (`rounded-control`,
+  `rounded-card`, `rounded-panel`, `shadow-brand`).
+- **Global keyboard focus ring** (`:focus-visible` outline) — a11y baseline.
+- **`src/client/components/ds/` primitives:** `Button` (primary/secondary/
+  ghost/danger × sm/md/lg), `TextInput`, `FormLabel`, `Card`, `Badge` (reuses
+  the statusStyles tones), `Heading` (applies Fraunces + weight discipline).
+  All built on working direct-hex tokens — NOT the broken `hsl(var(--x))`
+  tokens (e.g. `bg-primary`/`border-border`) that silently resolve to nothing
+  because the project stored hex in vars meant for HSL channels.
+- **Exemplar migration:** `LoginPage` + `SignupPage` fully moved onto the
+  primitives (headings, labels, inputs, buttons), leaving the OTP boxes.
+
+### Roadmap (follow-up)
+1. Migrate the wizard steps, consumer/provider dashboards, profile/apply forms,
+   and admin pages onto the primitives (the ~80-file sweep).
+2. Tokenize remaining ad-hoc radii/shadows page-by-page.
+3. Standardize the primary CTA label and humanize error copy.
+4. Fix `text-white/xx` contrast; add aria-labels to icon-only buttons.
+5. (Optional, deeper) Fix the `hsl(var(--x))` token bug at the root so the
+   shadcn `bg-primary`/`border-border` utilities work and the admin template
+   and app share one token layer.
+
 ## Risks / notes
 - `sendLeadToGHL` currently keys `WebhookLog` on `serviceRequestId`; the
   onboarding sync needs a path that tolerates no service request (synthetic
