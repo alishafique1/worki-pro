@@ -231,7 +231,7 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
     await page.getByRole('button', { name: /sign in/i }).click();
 
     // Wait for post-login redirect OR stay on login (auth failure)
-    await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 20000 }).catch(() => {});
+    await page.waitForURL(/\/(account|onboarding)/, { timeout: 20000 }).catch(() => {});
 
     // If still on login after the timeout, the credentials likely failed — surface an error
     // so the test doesn't silently proceed on the wrong page.
@@ -246,7 +246,7 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
     await loginConsumer(page);
 
     // If already onboarded (has firstName), skip to dashboard
-    if (page.url().includes('/dashboard')) {
+    if (page.url().includes('/account')) {
       await expect(page.locator('body')).toBeVisible();
       test.skip(false); // mark test done (no onboarding needed)
       return;
@@ -266,7 +266,7 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
   test('Consumer onboarding validates Step 2 (profile)', async ({ page }) => {
     await loginConsumer(page);
 
-    if (page.url().includes('/dashboard')) return; // already onboarded
+    if (page.url().includes('/account')) return; // already onboarded
 
     // Advance to step 2
     const consumerBtn = page.getByRole('button', { name: /homeowner|consumer/i }).first();
@@ -287,7 +287,7 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
   test('Consumer onboarding — navigating between steps', async ({ page }) => {
     await loginConsumer(page);
 
-    if (page.url().includes('/dashboard')) return;
+    if (page.url().includes('/account')) return;
 
     // Select role
     const consumerBtn = page.getByRole('button', { name: /homeowner|consumer/i }).first();
@@ -308,7 +308,7 @@ test.describe('Consumer — Onboarding (authenticated)', () => {
   test('Consumer completes full onboarding → redirected to get-quotes', async ({ page }) => {
     await loginConsumer(page);
 
-    if (page.url().includes('/dashboard')) {
+    if (page.url().includes('/account')) {
       // Already onboarded — verify dashboard works
       await expect(page.locator('body')).toBeVisible();
       return;
@@ -357,7 +357,7 @@ test.describe('Consumer — Request Service (get-quotes)', () => {
     await page.locator('input[type="email"]').fill(email);
     await page.locator('input[type="password"]').fill(password);
     await page.getByRole('button', { name: /sign in/i }).click();
-    await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 15000 }).catch(() => {});
+    await page.waitForURL(/\/(account|onboarding)/, { timeout: 15000 }).catch(() => {});
   }
 
   test('get-quotes wizard loads — Step 1 category selection', async ({ page }) => {
@@ -396,7 +396,7 @@ test.describe('Consumer — Request Service (get-quotes)', () => {
     await waitForPageReady(page);
 
     // Step through if categories are visible
-    const category = page.locator('button, [class*="card"]').filter({ hasText: /hvac|plumbing|electrical/i }).first();
+    const category = page.locator('button, [class*="card"]').filter({ hasText: /handyman|plumbing|smart.home/i }).first();
     if (await category.isVisible({ timeout: 5000 }).catch(() => false)) {
       await category.click();
       await page.waitForTimeout(500);
@@ -404,7 +404,7 @@ test.describe('Consumer — Request Service (get-quotes)', () => {
       // Description field should appear
       const textarea = page.locator('textarea').first();
       if (await textarea.isVisible({ timeout: 5000 })) {
-        await textarea.fill('Need HVAC maintenance for central air system.');
+        await textarea.fill('Need plumbing repair — leaking pipe under kitchen sink.');
       }
 
       // Next button
@@ -458,7 +458,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
     await page.locator('input[type="email"]').fill(CONSUMER_EMAIL);
     await page.locator('input[type="password"]').fill(CONSUMER_PASSWORD);
     await page.getByRole('button', { name: /sign in/i }).click();
-    await page.waitForURL(/\/(dashboard|onboarding)/, { timeout: 15000 }).catch(() => {});
+    await page.waitForURL(/\/(account|onboarding)/, { timeout: 15000 }).catch(() => {});
   }
 
   test.beforeEach(async ({ page }) => {
@@ -467,7 +467,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
   });
 
   test('/dashboard — shows user dashboard', async ({ page }) => {
-    await page.goto('/dashboard');
+    await page.goto('/account');
     await waitForPageReady(page);
 
     // Should be authenticated (not redirected to login)
@@ -477,7 +477,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
   });
 
   test('/my-requests — shows requests list or empty state', async ({ page }) => {
-    await page.goto('/my-requests');
+    await page.goto('/account/requests');
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
     // h1 heading always renders on this page; avoid strict-mode from .or() matching both
@@ -485,7 +485,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
   });
 
   test('/rewards — shows rewards section', async ({ page }) => {
-    await page.goto('/rewards');
+    await page.goto('/account/rewards');
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(
@@ -494,7 +494,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
   });
 
   test('/referral — shows referral code', async ({ page }) => {
-    await page.goto('/referral');
+    await page.goto('/account/referrals');
     await waitForPageReady(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(
@@ -504,7 +504,7 @@ test.describe('Consumer — Authenticated Dashboard Pages', () => {
   });
 
   test('user can log out', async ({ page }) => {
-    await page.goto('/dashboard');
+    await page.goto('/account');
     await waitForPageReady(page);
 
     // Look for logout button or user menu

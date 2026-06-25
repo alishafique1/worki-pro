@@ -48,7 +48,7 @@ export default function RequestSuccessPage() {
         <div className="flex flex-col gap-4">
           {requestId && (
             <Link
-              to={`/book/${requestId}`}
+              to={`/account/book/${requestId}`}
               className="px-8 py-4 bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Schedule Your Appointment Now

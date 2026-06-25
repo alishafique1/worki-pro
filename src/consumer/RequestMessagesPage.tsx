@@ -67,7 +67,7 @@ export default function RequestMessagesPage() {
     return (
       <div className="p-8 max-w-3xl mx-auto text-center text-[#475569] bg-[#F8FAFC] min-h-screen">
         Request not found.{" "}
-        <Link to="/my-requests" className="underline font-bold text-[#2563EB]">
+        <Link to="/account/requests" className="underline font-bold text-[#2563EB]">
           Back
         </Link>
       </div>
@@ -81,7 +81,7 @@ export default function RequestMessagesPage() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link
-          to={`/my-requests/${requestId}`}
+          to={`/account/requests/${requestId}`}
           className="text-[#475569] hover:text-[#0F172A] transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -168,7 +168,7 @@ export default function RequestMessagesPage() {
       {/* Quick action: leave review */}
       {request.status === "COMPLETED" && (
         <Link
-          to={`/my-requests/${requestId}/review`}
+          to={`/account/requests/${requestId}/review`}
           className="mt-4 text-center text-sm font-bold underline text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
         >
           Leave a review for {request.assignedProvider?.businessName} →

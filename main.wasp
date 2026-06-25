@@ -90,6 +90,8 @@ app OpenSaaS {
     seeds: [
       // Populates the database with a bunch of fake users to work with during development.
       import { seedMockUsers } from "@src/server/scripts/dbSeeds",
+      // Onboards the real launch providers (idempotent; run: wasp db seed seedRealProviders).
+      import { seedRealProviders } from "@src/server/scripts/seedRealProviders",
     ]
   },
 
@@ -202,7 +204,10 @@ api verifyOtp {
 
 //#region Consumer
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
-page RequestServicePage     { component: import RequestServicePage from "@src/consumer/RequestServicePage" }
+page RequestServicePage     { component: import { RequestServiceRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountRequestServiceRoute { path: "/account/request-service", to: AccountRequestServicePage }
+page AccountRequestServicePage   { component: import RequestServicePage from "@src/consumer/RequestServicePage", authRequired: true }
 
 route GuestRequestWizardRoute { path: "/get-quotes", to: GuestRequestWizardPage }
 page GuestRequestWizardPage {
@@ -215,28 +220,49 @@ page CategoryLandingPage {
 }
 
 route BookingRoute          { path: "/book/:requestId",     to: BookingPage }
-page BookingPage            { component: import BookingPage from "@src/consumer/BookingPage", authRequired: true }
+page BookingPage            { component: import { BookingRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountBookRoute      { path: "/account/book/:requestId", to: AccountBookPage }
+page AccountBookPage        { component: import BookingPage from "@src/consumer/BookingPage", authRequired: true }
 
 route DashboardRoute        { path: "/dashboard",           to: DashboardPage }
-page DashboardPage          { component: import DashboardPage from "@src/consumer/DashboardPage", authRequired: true }
+page DashboardPage          { component: import { DashboardRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountHomeRoute      { path: "/account",             to: AccountHomePage }
+page AccountHomePage        { component: import DashboardPage from "@src/consumer/DashboardPage", authRequired: true }
 
 route MyRequestsRoute       { path: "/my-requests",         to: MyRequestsPage }
-page MyRequestsPage         { component: import MyRequestsPage from "@src/consumer/MyRequestsPage", authRequired: true }
+page MyRequestsPage         { component: import { MyRequestsRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountRequestsRoute  { path: "/account/requests",    to: AccountRequestsPage }
+page AccountRequestsPage    { component: import MyRequestsPage from "@src/consumer/MyRequestsPage", authRequired: true }
 
 route RequestDetailRoute    { path: "/my-requests/:requestId", to: RequestDetailPage }
-page RequestDetailPage      { component: import RequestDetailPage from "@src/consumer/RequestDetailPage", authRequired: true }
+page RequestDetailPage      { component: import { RequestDetailRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountRequestDetailRoute { path: "/account/requests/:requestId", to: AccountRequestDetailPage }
+page AccountRequestDetailPage   { component: import RequestDetailPage from "@src/consumer/RequestDetailPage", authRequired: true }
 
 route RewardsRoute          { path: "/rewards",             to: RewardsPage }
-page RewardsPage            { component: import RewardsPage from "@src/consumer/RewardsPage", authRequired: true }
+page RewardsPage            { component: import { RewardsRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountRewardsRoute   { path: "/account/rewards",     to: AccountRewardsPage }
+page AccountRewardsPage     { component: import RewardsPage from "@src/consumer/RewardsPage", authRequired: true }
 
 route HelpRoute             { path: "/help",                to: HelpPage }
 page HelpPage               { component: import HelpPage from "@src/consumer/HelpPage" }
 
 route ReferralRoute         { path: "/referral",            to: ReferralPage }
-page ReferralPage           { component: import ReferralPage from "@src/consumer/ReferralPage", authRequired: true }
+page ReferralPage           { component: import { ReferralRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountReferralsRoute { path: "/account/referrals",   to: AccountReferralsPage }
+page AccountReferralsPage   { component: import ReferralPage from "@src/consumer/ReferralPage", authRequired: true }
 
 route AnalyticsRoute        { path: "/analytics",          to: AnalyticsPage }
-page AnalyticsPage          { component: import AnalyticsPage from "@src/consumer/AnalyticsPage", authRequired: true }
+page AnalyticsPage          { component: import { AnalyticsRedirect } from "@src/consumer/portalRedirects" }
+
+route AccountActivityRoute  { path: "/account/activity",    to: AccountActivityPage }
+page AccountActivityPage    { component: import AnalyticsPage from "@src/consumer/AnalyticsPage", authRequired: true }
 
 route DiscoveryRoute        { path: "/discover",            to: DiscoveryPage }
 page DiscoveryPage          { component: import DiscoveryPage from "@src/consumer/DiscoveryPage" }
@@ -260,9 +286,11 @@ page ContactPage            { component: import ContactPage from "@src/consumer/
 
 route RequestMessagesRoute  { path: "/my-requests/:requestId/messages", to: RequestMessagesPage }
 page RequestMessagesPage    { component: import RequestMessagesPage from "@src/consumer/RequestMessagesPage", authRequired: true }
+route AccountRequestMessagesRoute { path: "/account/requests/:requestId/messages", to: RequestMessagesPage }
 
 route SubmitReviewRoute     { path: "/my-requests/:requestId/review",   to: SubmitReviewPage }
 page SubmitReviewPage       { component: import SubmitReviewPage from "@src/consumer/SubmitReviewPage", authRequired: true }
+route AccountRequestReviewRoute { path: "/account/requests/:requestId/review", to: SubmitReviewPage }
 
 route ServiceAreaRoute      { path: "/services/:serviceSlug/:areaSlug", to: ServiceAreaLandingPage }
 page ServiceAreaLandingPage { component: import ServiceAreaLandingPage from "@src/landing-page/ServiceAreaLandingPage" }
@@ -511,7 +539,7 @@ action deleteAdminCategory {
 //#endregion
 
 //#region User
-route AccountRoute { path: "/account", to: AccountPage }
+route AccountRoute { path: "/account/profile", to: AccountPage }
 page AccountPage {
   authRequired: true,
   component: import Account from "@src/user/AccountPage"

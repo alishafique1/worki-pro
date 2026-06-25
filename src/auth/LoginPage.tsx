@@ -65,7 +65,7 @@ export default function Login() {
     setError(null)
     try {
       await login({ email: email.trim(), password })
-      navigate('/dashboard')
+      navigate('/account')
     } catch (err: any) {
       const raw = err && err.message ? String(err.message) : ''
       const friendly =
@@ -97,7 +97,7 @@ export default function Login() {
       // initSession (not setSessionId) — invalidates React Query cache so
       // useAuth() refetches the user before /onboarding's auth check fires.
       await initSession(data.sessionId)
-      navigate(data.isNewUser ? '/onboarding' : '/dashboard')
+      navigate(data.isNewUser ? '/onboarding' : '/account')
     } catch (err: any) {
       const raw = err && err.message ? String(err.message) : ''
       const friendly =

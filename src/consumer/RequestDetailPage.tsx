@@ -224,7 +224,7 @@ export default function RequestDetailPage() {
             This request may not exist or you may not have access to it.
           </p>
           <Link
-            to='/my-requests'
+            to='/account/requests'
             className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-6 py-3 font-bold text-white hover:bg-[#1D4ED8] transition-colors shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
           >
             <ArrowLeft className='size-4' /> Back to My Requests
@@ -241,7 +241,7 @@ export default function RequestDetailPage() {
     <div className='p-6 max-w-4xl mx-auto min-h-[80vh] bg-[#F8FAFC]'>
       {/* Back nav */}
       <Link
-        to='/my-requests'
+        to='/account/requests'
         className='inline-flex items-center gap-2 text-sm text-[#475569] hover:text-[#0F172A] mb-6 transition-colors'
       >
         <ArrowLeft className='size-4' /> My Requests
@@ -270,7 +270,7 @@ export default function RequestDetailPage() {
           {/* Book appointment CTA */}
           {!appointment?.scheduledAt && ['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'QUALIFIED'].includes(request.status) && (
             <Link
-              to={`/book/${request.id}`}
+              to={`/account/book/${request.id}`}
               className='inline-flex items-center gap-2 rounded-[18px] bg-[#2563EB] px-5 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shadow-[0_8px_24px_rgba(37,99,235,0.3)]'
             >
               <CalendarClock className='size-4' /> Book Appointment

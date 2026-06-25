@@ -37,9 +37,9 @@ async function login(page: Page, email: string, password: string) {
   await page.locator('input[type="password"]').fill(password);
   await page.getByRole('button', { name: /sign in/i }).click();
 
-  // Wait for post-login redirect (onboarding for new users, dashboard for returning)
+  // Wait for post-login redirect (onboarding for new users, account for returning)
   await page.waitForURL(
-    /\/(dashboard|onboarding)/,
+    /\/(account|onboarding)/,
     { timeout: 20000 }
   ).catch(async () => {
     // Fallback: if redirect didn't match expected routes, the page still needs to be visible
@@ -54,7 +54,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/dashboard — loads with heading', async ({ page }) => {
-    await page.goto('/dashboard');
+    await page.goto('/account');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     // Either a Welcome heading or a generic Dashboard heading
@@ -64,7 +64,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/my-requests — loads, shows requests or empty state', async ({ page }) => {
-    await page.goto('/my-requests');
+    await page.goto('/account/requests');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     // h1 always present on this page — avoid strict mode from .or() matching multiple elements
@@ -72,7 +72,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/rewards — loads and shows balance or rewards section', async ({ page }) => {
-    await page.goto('/rewards');
+    await page.goto('/account/rewards');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
@@ -86,7 +86,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/referral — loads and shows referral code section', async ({ page }) => {
-    await page.goto('/referral');
+    await page.goto('/account/referrals');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('h1, h2').first()).toBeVisible();
@@ -100,7 +100,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/analytics — loads', async ({ page }) => {
-    await page.goto('/analytics');
+    await page.goto('/account/activity');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     await expect(page.locator('body')).toBeVisible();
@@ -114,7 +114,7 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/request-service — loads and shows step 1 of form', async ({ page }) => {
-    await page.goto('/request-service');
+    await page.goto('/account/request-service');
     await dismissCookieConsent(page);
     await expect(page).not.toHaveURL(/\/login/);
     // Step 1 should show service selection — look for the category selection heading
@@ -122,11 +122,11 @@ test.describe('Consumer — authenticated flow', () => {
   });
 
   test('/request-service — can select a category', async ({ page }) => {
-    await page.goto('/request-service');
+    await page.goto('/account/request-service');
     await dismissCookieConsent(page);
     // Look for category cards or buttons
     const categoryCard = page.locator('[class*="card"]').first()
-      .or(page.getByRole('button').filter({ hasText: /hvac|plumbing|electrical/i }).first());
+      .or(page.getByRole('button').filter({ hasText: /handyman|plumbing|smart.home/i }).first());
     if (await categoryCard.isVisible({ timeout: 5000 }).catch(() => false)) {
       await categoryCard.click();
       // After clicking, should advance or show qualifier questions
