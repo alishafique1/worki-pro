@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/utils";
 import { REAL_PROVIDERS } from "../../consumer/providerProfileData";
+import { seedVendorCategories } from "./dbSeeds";
 
 const SEED_PASSWORD = "ChangeMe123"; // REVIEW: providers should reset via OTP/password-reset on first login
 
@@ -40,6 +41,11 @@ async function ensureEmailAuthIdentity(prisma: PrismaClient, email: string, pass
 
 export async function seedRealProviders(prisma: PrismaClient) {
   console.log("Seeding real providers...");
+
+  // Ensure the canonical service categories exist (idempotent upsert by slug)
+  // so provider→category links below resolve. The providers reference slugs
+  // from DEFAULT_VENDOR_CATEGORIES (e.g. shisha-lounge, digital-marketing).
+  await seedVendorCategories(prisma);
 
   for (const p of REAL_PROVIDERS) {
     // ── 1. Find-or-create User ─────────────────────────────────────────────
