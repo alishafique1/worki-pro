@@ -84,15 +84,12 @@ jobs:
             echo "=== Restarting containers ==="
             docker compose up -d
             echo "=== Deploy complete ==="
-            docker ps --format "table {{.Names}}\t{{.Status}}" | grep thehelper
+            docker ps
 
       - name: Purge Cloudflare cache
-        if: ${{ env.CF_API_TOKEN != \'\' }}
+        if: ${{ secrets.CF_API_TOKEN != '' }}
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: |
-          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
-            -H "Authorization: Bearer ${CF_API_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}' | grep -o '"success":[a-z]*'
+          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache"             -H "Authorization: Bearer ${CF_API_TOKEN}"             -H "Content-Type: application/json"             --data '{"purge_everything":true}' | grep -o '"success":[a-z]*'
