@@ -25,33 +25,13 @@ jobs:
       - name: Install root dependencies
         run: npm install
 
-      - name: Install Wasp CLI
-        run: npm i -g @wasp.sh/wasp-cli@0.21.1 @wasp.sh/wasp-cli-linux-x64-glibc@0.21.1
-
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Start dev server
-        env:
-          DATABASE_URL: postgres://worki:worki_test@localhost:5432/worki_test
-          NODE_ENV: test
-        run: |
-          sudo service postgresql start
-          sleep 3
-          sudo -u postgres psql -c "CREATE DATABASE worki_test;" 2>/dev/null || true
-          sudo -u postgres psql -c "CREATE USER worki WITH PASSWORD 'worki_test';" 2>/dev/null || true
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE worki_test TO worki;" 2>/dev/null || true
-          sudo -u postgres psql -c "ALTER DATABASE worki_test OWNER TO worki;" 2>/dev/null || true
-          wasp db migrate-dev
-          wasp start &
-          sleep 30
-          curl -f http://localhost:3000 || { echo "Server not ready after 30s"; exit 1; }
-
-      - name: Run Playwright tests
+      - name: Run Playwright tests against thehelper.ca
         run: npx playwright test --reporter=list
         env:
-          DATABASE_URL: postgres://worki:worki_test@localhost:5432/worki_test
-          NODE_ENV: test
+          PLAYWRIGHT_BASE_URL: https://thehelper.ca
 
       - name: Upload Playwright report
         if: always()
