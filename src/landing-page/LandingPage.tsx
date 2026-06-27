@@ -1,22 +1,17 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import {
-  AirVent,
   ArrowRight,
-  Award,
   BadgeCheck,
   BellRing,
   BriefcaseBusiness,
+  Award,
   CheckCircle2,
   Crown,
   Gift,
-  Hammer,
   Home,
   MapPin,
   MessageSquare,
-  Search,
   ShieldCheck,
-  ShowerHead,
   Star,
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
@@ -29,81 +24,6 @@ import {
   SectionHeader,
 } from "./marketplace/components";
 import { categories } from "./marketplace/content";
-
-// ── Popular services for search panel ───────────────────────────────────────
-
-const popularServices = [
-  { icon: <AirVent className="size-4" />, name: "AC not cooling", category: "HVAC" },
-  { icon: <ShowerHead className="size-4" />, name: "Leaky faucet", category: "Plumbing" },
-  { icon: <Hammer className="size-4" />, name: "Fix a door", category: "Handyman" },
-];
-
-function SearchPanel() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-  return (
-    <div className="mt-4 overflow-hidden rounded-2xl border border-[#BFDBFE] bg-white shadow-[0_20px_60px_rgba(37,99,235,0.12)] transition-all duration-300">
-      <div className="p-4 sm:p-6">
-        <div className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
-          <Search className="size-4 text-[#93C5FD]" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                navigate(`/get-quotes?q=${encodeURIComponent(searchQuery)}`);
-              }
-            }}
-            className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none"
-            placeholder={`e.g. "AC not cooling", "leaky faucet"…`}
-          />
-        </div>
-        <div className="mt-5">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
-            Browse Categories
-          </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {categories.map((cat) => (
-              <Link
-                key={cat.name}
-                to={cat.comingSoon ? "/get-quotes" : `/services/${cat.slug ?? cat.name.toLowerCase().replace(/\s+/g, "-")}`}
-              >
-                <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
-                  <span className="text-[#2563EB]">{cat.icon}</span>
-                  <span className="text-xs font-medium text-[#0F172A]">{cat.name}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="mt-5">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
-            Popular Right Now
-          </p>
-          <div className="flex flex-col gap-2">
-            {popularServices.map((svc) => (
-              <Link
-                key={svc.name}
-                to="/get-quotes"
-                className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]"
-              >
-                <span className="flex size-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
-                  {svc.icon}
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-[#0F172A]">{svc.name}</p>
-                  <p className="text-xs text-[#94A3B8]">{svc.category}</p>
-                </div>
-                <ArrowRight className="size-4 text-[#BFDBFE]" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ── Reward tiers ─────────────────────────────────────────────────────────────
 
@@ -162,7 +82,6 @@ const trustPillars = [
 // ── Main page ────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
-  const [showSearch, setShowSearch] = useState(false);
 
   return (
     <>
@@ -224,14 +143,7 @@ export default function LandingPage() {
                   Get matched now
                   <ArrowRight className="size-4" />
                 </Link>
-                <button
-                  onClick={() => setShowSearch((v) => !v)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3.5 text-sm font-semibold text-[#475569] transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
-                >
-                  <Search className="size-4" />
-                  Browse services
-                </button>
-              </div>
+                </div>
 
               {/* Trust micro-row */}
               <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-[#475569]">
@@ -245,7 +157,6 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              {showSearch && <SearchPanel />}
             </div>
 
             {/* Right — Activity card */}
