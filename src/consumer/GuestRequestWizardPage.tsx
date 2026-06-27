@@ -126,12 +126,13 @@ export default function GuestRequestWizardPage() {
             )}
             {step === 3 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
             {step === 4 && (
-              state.phone ? (
+              state.phone || state.email ? (
                 <StepOtp
                   state={state}
                   onBack={back}
                   onVerified={handleOtpVerified}
                   externalError={submitError}
+                  email={state.email}
                 />
               ) : (
                 <div className="text-center py-6">

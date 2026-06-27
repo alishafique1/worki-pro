@@ -307,7 +307,7 @@ export default function LandingPage() {
             <SectionHeader
               eyebrow="WHAT WE HELP WITH"
               title="Every home service. One platform."
-              description="Handyman, HVAC, plumbing, and smart home — all from verified local pros in your neighbourhood. More services launching in Q1 2026."
+              description="Handyman, HVAC, plumbing, and smart home — all from verified local pros in your neighbourhood. Event Management, IT Services, and Rental Services coming soon."
             />
             {/* 4 live category cards */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -334,9 +334,6 @@ export default function LandingPage() {
                     <div className="flex size-11 items-center justify-center rounded-xl bg-white/70 text-[#94A3B8]">
                       {category.icon}
                     </div>
-                    <span className="rounded-full bg-white/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-[#64748B]">
-                      Coming Q1 2026
-                    </span>
                   </div>
                   <h3 className="mt-4 text-base font-semibold text-[#475569]">{category.name}</h3>
                   <p className="mt-1.5 text-sm leading-6 text-[#64748B]">{category.description}</p>
@@ -490,7 +487,7 @@ export default function LandingPage() {
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {[
-                    { icon: <BriefcaseBusiness className="size-3.5" />, text: "4 live categories · 3 more Q1 2026" },
+                    { icon: <BriefcaseBusiness className="size-3.5" />, text: "4 live categories · 3 more coming soon" },
                     { icon: <MapPin className="size-3.5" />, text: "GTA coverage" },
                     { icon: <BadgeCheck className="size-3.5" />, text: "Free to apply" },
                   ].map(({ icon, text }) => (
