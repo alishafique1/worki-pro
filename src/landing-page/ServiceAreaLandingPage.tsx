@@ -219,7 +219,7 @@ export default function ServiceAreaLandingPage() {
             {providers.map((pro) => (
               <Link
                 key={pro.id}
-                to={pro.slug ? `/pro-public/${pro.slug}` : `/pro/${pro.id}`}
+                to={pro.slug ? `/pros/${pro.slug}` : `/pro/${pro.id}`}
                 className="block rounded-[18px] border border-[#E2E8F0] bg-white p-5 hover:border-[#BFDBFE] transition-all group"
               >
                 <div className="flex items-center gap-3 mb-3">

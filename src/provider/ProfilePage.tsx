@@ -328,12 +328,12 @@ const handleSave = async () => {
               <div className="pt-2 border-t border-[#E2E8F0]">
                 <p className="text-sm text-[#475569] mb-1">Public Profile</p>
                 <a
-                  href={`/pro-public/${(profile as any).slug}`}
+                  href={`/pros/${(profile as any).slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-medium text-[#2563EB] hover:underline"
                 >
-                  thehelper.ca/pro-public/{(profile as any).slug}
+                  thehelper.ca/pros/{(profile as any).slug}
                 </a>
               </div>
             )}
@@ -546,7 +546,7 @@ const handleSave = async () => {
               />
               {formData.slug && (
                 <p className="text-xs text-[#2563EB] mt-1">
-                  thehelper.ca/pro-public/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
+                  thehelper.ca/pros/{formData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')}
                 </p>
               )}
             </div>

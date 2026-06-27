@@ -298,6 +298,9 @@ page ServiceAreaLandingPage { component: import ServiceAreaLandingPage from "@sr
 route ProPublicRoute        { path: "/pro-public/:slug",  to: ProPublicPage }
 page ProPublicPage          { component: import ProPublicPage from "@src/consumer/ProPublicPage" }
 
+route ProsRoute             { path: "/pros/:slug",  to: ProsPage }
+page ProsPage               { component: import ProsPage from "@src/consumer/ProsPage" }
+
 query getMyRequests {
   fn: import { getMyRequests } from "@src/consumer/operations",
   entities: [ServiceRequest, Appointment, Provider, CommunicationLog, ServiceCategory]
