@@ -10,15 +10,15 @@ const rewardsFaqs = [
   },
   {
     question: 'How do I redeem my rewards?',
-    answer: 'Once your balance reaches 10,000 points ($100 cash value), you can redeem for Amazon gift cards, Starbucks cards, or credits toward your next The Helper booking. Redemptions are processed within 24 hours.',
+    answer: 'Once your balance reaches 10,000 points, you can redeem for Amazon gift cards, Starbucks cards, or credits toward your next The Helper booking. Redemptions are processed within 24 hours.',
   },
   {
     question: 'Do rewards expire?',
-    answer: 'No, your earned rewards never expire. You can accumulate points over time and redeem whenever you reach the 10,000 point threshold ($100).',
+    answer: 'No, your earned rewards never expire. You can accumulate points over time and redeem whenever you reach the 10,000 point threshold.',
   },
   {
     question: 'Can I earn rewards on every job?',
-    answer: 'Yes, after your first completed job, you earn 5% of the job value in TheHelper points on every subsequent service. A $200 plumbing job earns 2,000 points, a $500 HVAC service earns 5,000 points.',
+    answer: 'Yes, after your first completed job, you earn 5% of the job value in TheHelper points on every subsequent service. A typical plumbing job earns 2,000 points, a typical HVAC service earns 5,000 points.',
   },
 ];
 
@@ -27,7 +27,6 @@ const FIRST_JOB_TIERS = [
     step: '01',
     title: 'Submit a Request: Earn 500 pts',
     points: '500 pts',
-    dollar: '($5)',
     color: 'text-[#2563EB]',
     bg: 'bg-[#EFF6FF] border-[#BFDBFE]',
     icon: <CreditCard className="size-7 text-[#2563EB]" />,
@@ -37,7 +36,6 @@ const FIRST_JOB_TIERS = [
     step: '02',
     title: 'Get Booked: Earn Another 500 pts',
     points: '500 pts',
-    dollar: '($5)',
     color: 'text-[#F59E0B]',
     bg: 'bg-[#FEF3C7] border-[#FDE68A]',
     icon: <CheckCircle2 className="size-7 text-[#F59E0B]" />,
@@ -47,7 +45,6 @@ const FIRST_JOB_TIERS = [
     step: '03',
     title: 'First Job Done: Earn 5,000 Bonus pts',
     points: '5,000 pts',
-    dollar: '($50)',
     color: 'text-[#22C55E]',
     bg: 'bg-green-50 border-green-200',
     icon: <Gift className="size-7 text-[#22C55E]" />,
@@ -80,7 +77,18 @@ export default function HowRewardsWorkPage() {
           </h1>
           <p className='text-xl text-[#475569] max-w-2xl mx-auto'>
             Your credit card earns points on purchases. The Helper <strong className='text-[#0F172A]'>pays you back on top of that</strong> for completing real home service jobs. <strong className='text-[#0F172A]'>6,000 points on your first job</strong>, then <strong className='text-[#0F172A]'>5% back</strong> on every job after. Never expires.
-            <br /><span className='text-sm mt-2 inline-block text-[#94A3B8]'>100 pts = $1 · Cash out at 10,000 pts · Amazon, Starbucks, or service credits</span>
+            <br /><span className='text-sm mt-2 inline-block text-[#94A3B8]'>Cash out at 10,000 pts · Amazon, Starbucks, or service credits</span>
+          </p>
+        </div>
+
+        {/* Conversion explainer — single canonical conversion line on /how-rewards-work */}
+        <div className='mb-16 rounded-[24px] border-2 border-[#2563EB] bg-[#EFF6FF] p-8 sm:p-10 text-center shadow-[0_8px_28px_rgba(37,99,235,0.18)]'>
+          <p className='mb-2 text-xs font-bold uppercase tracking-widest text-[#2563EB]'>How points turn into rewards</p>
+          <h2 className='mb-3 text-3xl font-black tracking-tight text-[#0F172A] sm:text-4xl'>
+            1,000 pts ≈ $10 gift card
+          </h2>
+          <p className='text-lg text-[#475569]'>
+            Cash out at 10,000 pts (≈ $100).
           </p>
         </div>
 
@@ -106,7 +114,7 @@ export default function HowRewardsWorkPage() {
                 </div>
                 <div className={`shrink-0 text-center px-8 py-6 rounded-2xl border ${tier.bg}`}>
                   <div className={`text-3xl font-black ${tier.color}`}>{tier.points}</div>
-                  <div className='text-xs font-bold uppercase tracking-widest text-[#475569] mt-1'>{tier.dollar} value</div>
+                  <div className='text-xs font-bold uppercase tracking-widest text-[#475569] mt-1'>credited to wallet</div>
                 </div>
               </div>
             ))}
@@ -130,13 +138,13 @@ export default function HowRewardsWorkPage() {
               <h2 className='text-2xl font-black mb-3 text-[#0F172A]'>Ongoing 5% Points Back on Every Job</h2>
               <p className='text-[#475569] leading-relaxed'>
                 After your first job, every completed booking earns you 5% of the job value in TheHelper points.
-                A $200 plumbing job earns 2,000 points. A $500 HVAC service earns 5,000 points. It adds up fast and never expires.
+                A typical plumbing job earns 2,000 points. A typical HVAC service earns 5,000 points. It adds up fast and never expires.
               </p>
             </div>
             <div className='shrink-0'>
               <div className='text-center px-8 py-6 rounded-2xl border bg-[#EFF6FF] border-[#BFDBFE]'>
                 <div className='text-sm font-bold text-[#475569] mb-2'>Example</div>
-                <div className='text-xl font-black text-[#2563EB]'>$200 job</div>
+                <div className='text-xl font-black text-[#2563EB]'>Typical job</div>
                 <div className='text-3xl font-black text-[#2563EB]'>= 2,000 pts</div>
               </div>
             </div>
@@ -152,14 +160,14 @@ export default function HowRewardsWorkPage() {
             <div className='flex-1'>
               <h2 className='text-2xl font-black mb-2 text-[#0F172A]'>Cash Out at 10,000 pts</h2>
               <p className='text-[#475569] leading-relaxed'>
-                Once your balance hits <strong className='text-[#0F172A]'>10,000 points ($100 cash value)</strong>, you can redeem for Amazon gift cards, Starbucks, or credits toward your next TheHelper booking.
+                Once your balance hits <strong className='text-[#0F172A]'>10,000 points</strong>, you can redeem for Amazon gift cards, Starbucks, or credits toward your next TheHelper booking.
                 Most homeowners hit 10,000 points after their second or third job. Redemptions are processed within 24 hours.
               </p>
             </div>
             <div className='shrink-0 text-center px-8 py-6 rounded-2xl border bg-[#FEF3C7] border-[#FDE68A]'>
               <div className='text-xs font-bold uppercase tracking-widest text-[#475569] mb-1'>Minimum Cashout</div>
               <div className='text-4xl font-black text-[#F59E0B]'>10,000 pts</div>
-              <div className='text-sm text-[#94A3B8] font-semibold'>$100 value</div>
+              <div className='text-sm text-[#94A3B8] font-semibold'>≈ $100 in gift cards</div>
             </div>
           </div>
         </div>

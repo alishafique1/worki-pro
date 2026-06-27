@@ -186,7 +186,7 @@ export default function OnboardingPage() {
             {[
                 { href: '/get-quotes', num: '1', label: 'Get quotes', sub: 'Match with local pros fast.', amber: false },
                 { href: '/services', num: '2', label: 'Browse services', sub: 'See what we cover near you.', amber: false },
-                { href: '/how-rewards-work', num: '$', label: 'Earn rewards', sub: '$60+ back on your first job.', amber: true },
+                { href: '/how-rewards-work', num: '★', label: 'Earn rewards', sub: '6,000 pts on your first job (≈ $60).', amber: true },
             ].map(({ href, num, label, sub, amber }) => (<a key={href} href={href} className="bg-white border border-[#E2E8F0] rounded-[20px] p-5 text-left hover:border-[#2563EB] hover:shadow-md transition-all group">
                 <div className={`size-9 rounded-xl flex items-center justify-center mb-3 ${amber ? 'bg-[#FEF3C7]' : 'bg-[#EFF6FF]'}`}>
                   <span className={`text-sm font-black ${amber ? 'text-[#F59E0B]' : 'text-[#2563EB]'}`}>{num}</span>

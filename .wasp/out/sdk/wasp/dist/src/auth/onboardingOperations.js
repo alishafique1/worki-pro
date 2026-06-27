@@ -103,7 +103,7 @@ export const completeOnboarding = async (args, context) => {
                         type: 'SERVICE_REQUEST',
                         points: REWARD_POINTS.SERVICE_REQUEST,
                         status: 'PENDING',
-                        reason: 'Request submitted — $5 reward pending verification',
+                        reason: 'Request submitted — 500 pts reward pending verification',
                     }));
                     if (newRewards.length > 0) {
                         await tx.rewardTransaction.createMany({ data: newRewards, skipDuplicates: true });

@@ -49,7 +49,7 @@ export default function ServicesPage() {
             </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {filteredLive.map((cat) => (<Link key={cat.slug} to={cat.href} className="group relative bg-white rounded-[20px] border border-[#E2E8F0] overflow-hidden hover:border-[#BFDBFE] hover:shadow-[0_4px_20px_rgba(37,99,235,0.10)] transition-all duration-200">
+              {filteredLive.map((cat) => (<Link key={cat.slug} to={cat.href ?? '/services'} className="group relative bg-white rounded-[20px] border border-[#E2E8F0] overflow-hidden hover:border-[#BFDBFE] hover:shadow-[0_4px_20px_rgba(37,99,235,0.10)] transition-all duration-200">
                   {/* Image strip */}
                   <div className="relative h-32 overflow-hidden bg-[#F1F5F9]">
                     <img src={cat.imageUrl} alt={cat.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
