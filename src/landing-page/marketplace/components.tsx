@@ -179,7 +179,7 @@ export function Hero() {
             <div className="flex items-center gap-2 text-xs">
               <BellRing className="size-4 text-[#2563EB]" />
               <div>
-                <p className="font-semibold text-[#0F172A]">Sarah just earned $5!</p>
+                <p className="font-semibold text-[#0F172A]">Sarah just earned 500 pts!</p>
                 <p className="text-[#94A3B8]">AC repair submitted · Milton, ON</p>
               </div>
             </div>
@@ -221,7 +221,7 @@ export function Hero() {
             {/* Blue reward callout */}
             <div className="mt-4 flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-3">
               <Trophy className="size-4 text-[#60A5FA]" />
-              <p className="text-xs font-medium text-[#BFDBFE]">James earned $50 this month</p>
+              <p className="text-xs font-medium text-[#BFDBFE]">James earned 5,000 pts this month</p>
             </div>
           </div>
         </div>
@@ -477,7 +477,7 @@ export function CTASection() {
               Stop calling around. Get matched with a verified pro in 15 minutes.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              One request. Matched with a licensed, insured local pro. 100% free for homeowners. $60+ cash back on your first completed job.
+              One request. Matched with a licensed, insured local pro. 100% free for homeowners. 6,000 pts on your first completed job (≈ $60 in gift cards).
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link

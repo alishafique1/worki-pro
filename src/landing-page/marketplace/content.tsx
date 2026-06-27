@@ -84,7 +84,7 @@ export const solutionSteps = [
   {
     icon: <MapPin className="size-5" />,
     title: "Done",
-    description: "Job complete. Leave a review. Earn $60+ cash back on your first completed job. Redeemable as gift cards.",
+    description: "Job complete. Leave a review. Earn 6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts.",
   },
 ];
 
@@ -253,7 +253,7 @@ export const customerSteps = [
   {
     step: "04",
     title: "Job done. Earn rewards.",
-    description: "$60+ cash back on your first completed job. Redeemable as gift cards at $100.",
+    description: "6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts.",
   },
 ];
 
@@ -382,7 +382,7 @@ export const faqs = [
   {
     question: "How do the rewards work?",
     answer:
-      "You earn points automatically at each step. $5 when you submit a request. $5 when you book. $50 when your first job is completed. Refer a friend and both of you earn $5 when they submit their first request. Redeem as gift cards once you hit $100.",
+      "You earn points automatically at each step. 500 pts when you submit a request. 500 pts when you book. 5,000 pts when your first job is completed. Refer a friend and both of you earn 500 pts when they submit their first request. Redeem as gift cards once you hit 10,000 pts (≈ $100).",
   },
   {
     question: "I already have a guy I call. Why use The Helper?",

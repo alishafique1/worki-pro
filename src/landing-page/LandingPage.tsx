@@ -193,9 +193,9 @@ export default function LandingPage() {
     <>
       <PageSeo
         title="Book a Verified Home Pro in 15 Minutes | The Helper"
-        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back."
+        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
         ogTitle="Book a Verified Home Pro in 15 Minutes | The Helper"
-        ogDescription="One request. Matched with a verified local pro in 15 minutes. Same-day service available. 100% free for homeowners. Earn $60+ cash back on your first job."
+        ogDescription="One request. Matched with a verified local pro in 15 minutes. Same-day service available. 100% free for homeowners. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
         canonicalPath="/"
         keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
@@ -237,7 +237,7 @@ export default function LandingPage() {
               {/* Reward pill — blue only */}
               <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-2 text-sm font-semibold text-[#1D4ED8]">
                 <Gift className="size-4 text-[#2563EB]" />
-                Earn $60+ cash back on your first completed job
+                Earn 6,000 pts on your first completed job (≈ $60 in gift cards)
               </div>
 
               {/* CTAs */}
@@ -287,7 +287,7 @@ export default function LandingPage() {
                     <span className="flex size-5 items-center justify-center rounded-full bg-[#DBEAFE]">
                       <CheckCircle2 className="size-3 text-[#2563EB]" />
                     </span>
-                    Sarah earned $5 · AC repair · Milton
+                    Sarah earned 500 pts · AC repair · Milton
                   </div>
                 </div>
               </div>
@@ -319,7 +319,7 @@ export default function LandingPage() {
                 {/* Blue reward callout */}
                 <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-3 text-sm font-medium text-[#1D4ED8]">
                   <Gift className="size-4 text-[#2563EB] shrink-0" />
-                  James earned $50 cash back this month
+                  James earned 5,000 pts cash back this month
                 </div>
               </div>
             </div>
@@ -385,7 +385,7 @@ export default function LandingPage() {
                   { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Tell us what's broken. 100% free for homeowners." },
                   { n: "02", title: "Get matched fast", desc: "A verified local pro responds within 15 minutes. No calling around." },
                   { n: "03", title: "Book a time that works", desc: "Same-day for urgent jobs. Or schedule a window that fits your week." },
-                  { n: "04", title: "Job done. Earn rewards.", desc: "$60+ cash back on your first completed job. Redeemable as gift cards." },
+                  { n: "04", title: "Job done. Earn rewards.", desc: "6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts." },
                 ].map(({ n, title, desc }) => (
                   <div key={n} className="relative flex flex-col items-center text-center lg:items-start lg:text-left">
                     <div className="relative z-10 flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-[#BFDBFE] bg-white text-sm font-bold text-[#2563EB] shadow-[0_0_0_6px_#EFF6FF]">
@@ -445,16 +445,16 @@ export default function LandingPage() {
                 ))}
                 <div className="mt-1 flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-medium text-[#BFDBFE]">
                   <Gift className="size-4 text-[#60A5FA] shrink-0" />
-                  Refer a friend — both of you earn $5 when they submit their first request.
+                  Refer a friend — both of you earn 500 pts when they submit their first request.
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-xs text-[#93C5FD]">
-                  <span>Submit → +$5</span>
+                  <span>Submit → +500 pts</span>
                   <span className="text-white/20">·</span>
-                  <span>Book → +$5</span>
+                  <span>Book → +500 pts</span>
                   <span className="text-white/20">·</span>
-                  <span>Job done → <strong className="text-[#60A5FA]">+$50</strong></span>
+                  <span>Job done → <strong className="text-[#60A5FA]">+5,000 pts</strong></span>
                   <span className="text-white/20">·</span>
-                  <span>Referral → +$5 each</span>
+                  <span>Referral → +500 pts each</span>
                 </div>
               </div>
             </div>
@@ -521,7 +521,7 @@ export default function LandingPage() {
                 { value: "15 min", label: "Average match time" },
                 { value: "500+", label: "GTA homeowners served" },
                 { value: "4.9★", label: "Average rating" },
-                { value: "$60+", label: "Cash back on first job" },
+                { value: "6,000 pts", label: "First-job reward (≈ $60)" },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <p className="text-3xl font-bold text-white sm:text-4xl">{value}</p>
