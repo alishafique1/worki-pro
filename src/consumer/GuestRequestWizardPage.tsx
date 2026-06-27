@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router'
 import WizardProgress from './components/wizard/WizardProgress'
 import StepCategory from './components/wizard/StepCategory'
+import StepQualifiers from './components/wizard/StepQualifiers'
 import StepDetails from './components/wizard/StepDetails'
 import StepContact from './components/wizard/StepContact'
 import StepOtp from './components/wizard/StepOtp'
@@ -16,14 +17,16 @@ export type WizardState = {
   description: string
   urgency: 'TODAY' | 'THIS_WEEK' | 'FLEXIBLE'
   preferredTime: string
+  qualifierAnswers: Record<string, string>
+  detailChips: string[]
   firstName: string
   email: string
   phone: string
   smsConsent: boolean
 }
 
-const STEP_LABELS = ['Service', 'Details', 'Contact', 'Verify']
-const TOTAL_STEPS = 4
+const STEP_LABELS = ['Service', 'Job details', 'Qualifiers', 'Contact', 'Verify']
+const TOTAL_STEPS = 5
 
 export default function GuestRequestWizardPage() {
   const [searchParams] = useSearchParams()
@@ -42,6 +45,8 @@ export default function GuestRequestWizardPage() {
     description: '',
     urgency: 'FLEXIBLE',
     preferredTime: '',
+    qualifierAnswers: {},
+    detailChips: [],
     firstName: '',
     email: '',
     phone: '',
@@ -113,8 +118,16 @@ export default function GuestRequestWizardPage() {
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
             {step === 1 && <StepCategory state={state} update={update} onNext={next} />}
             {step === 2 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
-            {step === 3 && <StepContact state={state} update={update} onNext={next} onBack={back} />}
-            {step === 4 && (
+            {step === 3 && (
+              <StepQualifiers
+                state={state}
+                update={update}
+                onNext={next}
+                onBack={back}
+              />
+            )}
+            {step === 4 && <StepContact state={state} update={update} onNext={next} onBack={back} />}
+            {step === 5 && (
               state.phone ? (
                 <StepOtp
                   state={state}
