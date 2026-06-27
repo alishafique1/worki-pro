@@ -4,7 +4,6 @@ import WizardProgress from './components/wizard/WizardProgress'
 import StepCategory from './components/wizard/StepCategory'
 import StepQualifiers from './components/wizard/StepQualifiers'
 import StepDetails from './components/wizard/StepDetails'
-import StepContact from './components/wizard/StepContact'
 import StepOtp from './components/wizard/StepOtp'
 import { submitServiceRequest } from 'wasp/client/operations'
 import { Logo } from '../client/components/Logo/Logo'
@@ -25,8 +24,8 @@ export type WizardState = {
   smsConsent: boolean
 }
 
-const STEP_LABELS = ['Service', 'Qualifiers', 'Availability', 'Contact', 'Verify']
-const TOTAL_STEPS = 5
+const STEP_LABELS = ['Service', 'Qualifiers', 'Details', 'Verify']
+const TOTAL_STEPS = 4
 
 export default function GuestRequestWizardPage() {
   const [searchParams] = useSearchParams()
@@ -126,8 +125,7 @@ export default function GuestRequestWizardPage() {
               />
             )}
             {step === 3 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
-            {step === 4 && <StepContact state={state} update={update} onNext={next} onBack={back} />}
-            {step === 5 && (
+            {step === 4 && (
               state.phone ? (
                 <StepOtp
                   state={state}
