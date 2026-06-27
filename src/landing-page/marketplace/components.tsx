@@ -474,7 +474,7 @@ export function CTASection() {
               Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Stop calling around. Get matched with a verified pro in 15 minutes.
+              Stop calling around. Get matched with a verified pro quickly.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
               One request. Matched with a licensed, insured local pro. 100% free for homeowners. 6,000 pts on your first completed job (≈ $60 in gift cards).

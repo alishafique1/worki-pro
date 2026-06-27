@@ -88,7 +88,7 @@ export default function GuestRequestWizardPage() {
           <div className="mb-6 text-5xl">✅</div>
           <h2 className="text-2xl font-black text-[#0F172A] mb-2">Request submitted!</h2>
           <p className="text-[#475569] mb-8">
-            We'll be in touch within 15 minutes. No need to stay by the phone — we'll email you when a pro responds.
+            We'll let you know as soon as a pro responds. No need to stay by the phone — we'll email you when someone picks up your request.
           </p>
           <a
             href="/services"

@@ -65,7 +65,7 @@ export const solutionSteps = [
     icon: <BadgeCheck className="size-5" />,
     title: "Match",
     description:
-      "We connect you with a verified local pro who is available today. Often within 15 minutes. No calling around.",
+      "We connect you with a verified local pro who's available today. No calling around.",
   },
   {
     icon: <CalendarCheck className="size-5" />,
@@ -167,7 +167,7 @@ export const customerSteps = [
   {
     step: "02",
     title: "Get matched fast",
-    description: "A verified local pro responds, typically within 15 minutes. No calling around.",
+    description: "A verified local pro responds quickly. No calling around.",
   },
   {
     step: "03",
@@ -286,7 +286,7 @@ export const faqs = [
   {
     question: "How fast will I get matched?",
     answer:
-      "Most homeowners get matched with a verified local pro within 15 minutes of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
+      "Most homeowners get matched with a verified local pro within the hour of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
   },
   {
     question: "How do I know the pro is actually verified?",

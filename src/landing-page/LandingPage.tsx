@@ -167,10 +167,10 @@ export default function LandingPage() {
   return (
     <>
       <PageSeo
-        title="Book a Verified Home Pro in 15 Minutes | The Helper"
+        title="Book a Verified Home Pro | The Helper"
         description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
-        ogTitle="Book a Verified Home Pro in 15 Minutes | The Helper"
-        ogDescription="One request. Matched with a verified local pro in 15 minutes. Same-day service available. 100% free for homeowners. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
+        ogTitle="Book a Verified Home Pro | The Helper"
+        ogDescription="One request. Matched with a verified local pro quickly. No calling around. 100% free for homeowners. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
         canonicalPath="/"
         keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
@@ -202,7 +202,7 @@ export default function LandingPage() {
               <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
                 <span className="text-[#2563EB]">Book a verified pro</span>
                 <br />
-                <span className="whitespace-nowrap">in under 15 minutes.</span>
+                <span className="whitespace-nowrap">in Milton, Oakville & Burlington.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
@@ -365,7 +365,7 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="HOW IT WORKS"
-              title="One request. Matched in 15 minutes."
+              title="One request. Matched fast."
               description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up."
             />
             <div className="relative mt-12">
@@ -374,7 +374,7 @@ export default function LandingPage() {
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Tell us what's broken. 100% free for homeowners." },
-                  { n: "02", title: "Get matched fast", desc: "A verified local pro responds within 15 minutes. No calling around." },
+                  { n: "02", title: "Get matched fast", desc: "A verified local pro responds quickly. No calling around." },
                   { n: "03", title: "Book a time that works", desc: "Same-day for urgent jobs. Or schedule a window that fits your week." },
                   { n: "04", title: "Job done. Earn rewards.", desc: "6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts." },
                 ].map(({ n, title, desc }) => (

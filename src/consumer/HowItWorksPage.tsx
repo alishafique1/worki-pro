@@ -37,7 +37,7 @@ const STEPS = [
     num: '02',
     icon: <BadgeCheck className="size-5" />,
     title: 'Get matched fast',
-    desc: 'We connect you with a verified local pro, typically within 15 minutes. Same-day service available.',
+    desc: 'We connect you with a verified local pro, fast. Same-day service available.',
   },
   {
     num: '03',
@@ -55,7 +55,7 @@ const STEPS = [
 
 const TRUST_POINTS = [
   { icon: <ShieldCheck className="size-5" />, title: 'Verified local pros', desc: 'Every pro is vetted before joining. Credentials, insurance, and reviews verified.' },
-  { icon: <Clock3 className="size-5" />, title: 'Fast matching', desc: 'Most homeowners get matched within 15 minutes. Same-day service available.' },
+  { icon: <Clock3 className="size-5" />, title: 'Fast matching', desc: 'We connect you with a verified local pro quickly. Same-day service available.' },
   { icon: <MessageSquareText className="size-5" />, title: '100% free for homeowners', desc: 'No platform fees, no credit card required. You only pay the pro for the work.' },
   { icon: <MapPin className="size-5" />, title: 'Local GTA coverage', desc: 'Serving Milton, Oakville, Burlington, Mississauga, Brampton, and Hamilton.' },
 ];
@@ -84,7 +84,7 @@ export default function HowItWorksPage() {
         {/* Hero */}
         <section className="text-center max-w-3xl mx-auto">
           <p className="text-xl text-[#475569] leading-relaxed">
-            Get connected to a verified local pro in under 15 minutes. 100% free for homeowners.
+            Get connected to a verified local pro. 100% free for homeowners.
             No more calling around or waiting for callbacks.
           </p>
 

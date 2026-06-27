@@ -178,13 +178,12 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
       {/* Optional description */}
       <div className="mb-4">
         <label className="block text-sm font-semibold text-[#475569] mb-1.5">
-          Anything else to add?
-          <span className="font-normal opacity-60 ml-1">(optional)</span>
+          Describe the job <span className="font-normal opacity-60">(optional)</span>
         </label>
         <textarea
-          className="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] resize-none"
-          rows={3}
-          placeholder="e.g. 'AC stopped working overnight, unit is 8 years old'"
+          className="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] resize-none min-h-[100px]"
+          rows={4}
+          placeholder="e.g. 'AC unit in the basement stopped working overnight. Thermostat shows no power. Unit is about 8 years old.'"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
