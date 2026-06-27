@@ -8,12 +8,15 @@
 set -e
 
 API_URL="${REACT_APP_API_URL:-https://thehelper.ca}"
+# PostHog public project key (phc_…) is safe to bake into the client bundle.
+# Shared "Social-Dots" PostHog project. Override via env if it ever changes.
+POSTHOG_KEY="${REACT_APP_POSTHOG_KEY:-phc_AxYiacGAymmuaa2cRPMZASTbXRMsiKtdzKv9BiaELZrj}"
 
 echo "Building Wasp server artifacts..."
 wasp build
 
-echo "Building React SPA (API_URL=$API_URL)..."
-REACT_APP_API_URL="$API_URL" npx vite build --outDir deploy/dist
+echo "Building React SPA (API_URL=$API_URL, POSTHOG_KEY=${POSTHOG_KEY:0:8}…)..."
+REACT_APP_API_URL="$API_URL" REACT_APP_POSTHOG_KEY="$POSTHOG_KEY" npx vite build --outDir deploy/dist
 
 # === Bundle guard: catch the "wrong REACT_APP_API_URL" class of bug. ===
 # If someone rebuilds the bundle with the wrong env var, the deployed
@@ -34,6 +37,15 @@ if ! grep -q "REACT_APP_API_URL:\"$API_URL\"" "$BUNDLE"; then
   exit 1
 fi
 echo "Bundle guard: OK (REACT_APP_API_URL=$API_URL)"
+
+# === Bundle guard: ensure the PostHog key was baked in. ===
+# Without this, thehelper.ca silently sends zero analytics to PostHog.
+if ! grep -q "$POSTHOG_KEY" "$BUNDLE"; then
+  echo "ERROR: bundle is missing the PostHog key ($POSTHOG_KEY)." >&2
+  echo "  re-run with: REACT_APP_POSTHOG_KEY=$POSTHOG_KEY ./deploy/build.sh" >&2
+  exit 1
+fi
+echo "Bundle guard: OK (REACT_APP_POSTHOG_KEY baked in)"
 
 echo ""
 echo "Done. Stage, commit, and push:"

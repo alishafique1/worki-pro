@@ -40,6 +40,9 @@ jobs:
       - name: Build React SPA
         env:
           REACT_APP_API_URL: https://api.thehelper.ca
+          # Public PostHog project key (phc_…) for the shared Social-Dots project.
+          # Safe to expose — it ships in the client bundle. Inlined by Vite at build time.
+          REACT_APP_POSTHOG_KEY: phc_AxYiacGAymmuaa2cRPMZASTbXRMsiKtdzKv9BiaELZrj
         run: npx vite build --outDir deploy/dist
 
       - name: Commit build artifacts to git
