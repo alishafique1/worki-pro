@@ -14,7 +14,7 @@ export default function RequestSuccessPage() {
         </div>
         <h1 className="text-4xl font-black tracking-tighter mb-4 text-[#0F172A]">You're All Set!</h1>
         <p className="text-[#475569] mb-4 leading-relaxed">
-          A verified local pro will text you within <strong className="text-[#0F172A]">15 minutes</strong>.
+          A verified local pro will reach out to you <strong className="text-[#0F172A]">shortly</strong>.
         </p>
 
         {/* What happens next */}
