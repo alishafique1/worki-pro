@@ -177,16 +177,76 @@ function serveWebhook() {
 
 const [, , cmd, arg1, arg2, ...rest] = process.argv
 
+// ── Loop discovery bridge ──────────────────────────────────────────────────
+// The loop-engineering skill requires every loop to surface findings
+// somewhere a human can review. Paperclip is that somewhere for worki-pro.
+//
+// Usage:
+//   node scripts/paperclip-sync.cjs loop <loop-name> <finding-id> <severity> <summary>
+//     severities: blocker | high | medium | low
+//   node scripts/paperclip-sync.cjs loop-resolve <loop-name> <finding-id> <verdict>
+//     verdicts: passed | false-positive | wontfix
+
+async function loopReport(loopName, findingId, severity, summary) {
+  // Map finding → Paperclip identifier using a naming convention:
+  //   smoke/finding-2026-06-19-01 → WOR-LOOP-SMOKE-001
+  // The actual identifier is created on first report; subsequent reports
+  // post comments to the same thread.
+  const issueMap = require('fs').existsSync('.hermes/loop-state/_issue-map.json')
+    ? JSON.parse(require('fs').readFileSync('.hermes/loop-state/_issue-map.json', 'utf8'))
+    : {}
+  const key = `${loopName}/${findingId}`
+  let identifier = issueMap[key]
+
+  if (!identifier) {
+    // Create new issue
+    const title = `[loop:${loopName}] ${findingId} — ${severity}`
+    const body = `**Loop**: ${loopName}\n**Finding**: ${findingId}\n**Severity**: ${severity}\n\n${summary}\n\n---\n_Auto-created by worki-pro loop system. Update by running:\n  \`node scripts/paperclip-sync.cjs loop ${loopName} ${findingId} <severity> <summary>\`_`
+    const created = await pcRequest('POST', `/api/companies/${COMPANY}/issues`, {
+      title, body, status: 'todo',
+    })
+    identifier = created.identifier
+    issueMap[key] = identifier
+    require('fs').mkdirSync('.hermes/loop-state', { recursive: true })
+    require('fs').writeFileSync('.hermes/loop-state/_issue-map.json', JSON.stringify(issueMap, null, 2))
+    console.log(`Created ${identifier} for ${key}`)
+  } else {
+    // Append comment to existing thread
+    await updateIssue(identifier, null, `**Update**: ${summary}`)
+    console.log(`Updated ${identifier} for ${key}`)
+  }
+}
+
+async function loopResolve(loopName, findingId, verdict) {
+  const issueMap = require('fs').existsSync('.hermes/loop-state/_issue-map.json')
+    ? JSON.parse(require('fs').readFileSync('.hermes/loop-state/_issue-map.json', 'utf8'))
+    : {}
+  const identifier = issueMap[`${loopName}/${findingId}`]
+  if (!identifier) {
+    console.error(`No tracked issue for ${loopName}/${findingId}`)
+    process.exit(1)
+  }
+  const statusMap = { passed: 'done', 'false-positive': 'cancelled', wontfix: 'cancelled' }
+  await updateIssue(identifier, statusMap[verdict] || 'done', `Loop resolved: ${verdict}`)
+  console.log(`${identifier} → ${verdict}`)
+}
+
 if (cmd === 'update-issue') {
   updateIssue(arg1, arg2, rest.join(' ')).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1) })
 } else if (cmd === 'post-comment') {
   updateIssue(arg1, null, [arg2, ...rest].join(' ')).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1) })
 } else if (cmd === 'serve') {
   serveWebhook()
+} else if (cmd === 'loop') {
+  loopReport(arg1, arg2, arg3, rest.join(' ')).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1) })
+} else if (cmd === 'loop-resolve') {
+  loopResolve(arg1, arg2, arg3).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1) })
 } else {
   console.log('Usage:')
   console.log('  node scripts/paperclip-sync.js update-issue <WOR-XX> <status> [comment]')
   console.log('  node scripts/paperclip-sync.js post-comment <WOR-XX> <comment>')
+  console.log('  node scripts/paperclip-sync.js loop <loop-name> <finding-id> <severity> <summary>')
+  console.log('  node scripts/paperclip-sync.js loop-resolve <loop-name> <finding-id> <verdict>')
   console.log('  node scripts/paperclip-sync.js serve')
   process.exit(1)
 }
