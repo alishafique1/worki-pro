@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import type { WizardState } from '../../GuestRequestWizardPage'
+import { useQuery, getServiceCategories } from 'wasp/client/operations'
+import type { ServiceCategory } from 'wasp/entities'
 import { CATEGORY_QUALIFIERS } from '../../categoryQualifiers'
+import type { WizardState } from '../../GuestRequestWizardPage'
 
 type Props = {
   state: WizardState
@@ -16,36 +18,96 @@ const chipClass = (selected: boolean) =>
       : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-[#94A3B8]'
   }`
 
+/** Build a flat questions array from DB or hardcoded config. */
+function buildQuestions(
+  slug: string,
+  categories: ServiceCategory[] | undefined,
+): { id: string; label: string; options: string[]; required: boolean }[] {
+  // 1. Try DB questions on the matching category
+  const match = categories?.find(
+    (c) => c.slug === slug || c.id === slug,
+  )
+  const dbQ = match?.questions as
+    | { id: string; label: string; options: string[]; required?: boolean }[]
+    | null
+    | undefined
+  if (dbQ?.length) {
+    return dbQ.map((q) => ({ ...q, required: q.required ?? false }))
+  }
+
+  // 2. Fall back to hardcoded categoryQualifiers.ts
+  const fallback = CATEGORY_QUALIFIERS[slug]
+  if (fallback) {
+    const out: { id: string; label: string; options: string[]; required: boolean }[] = [
+      { ...fallback.q1, required: false },
+    ]
+    if (fallback.q2) {
+      out.push({ ...fallback.q2, required: false })
+    }
+    return out
+  }
+
+  return []
+}
+
 export default function StepQualifiers({ state, update, onNext, onBack }: Props) {
   const slug = state.categorySlug ?? ''
+  const { data: categories } = useQuery(getServiceCategories)
   const config = CATEGORY_QUALIFIERS[slug]
+
+  const questions = buildQuestions(slug, categories)
   const [answers, setAnswers] = useState<Record<string, string>>(state.qualifierAnswers)
   const [chips, setChips] = useState<string[]>(state.detailChips)
   const [description, setDescription] = useState(state.description)
   const [error, setError] = useState<string | null>(null)
 
   function setAnswer(id: string, value: string) {
-    setAnswers(prev => ({ ...prev, [id]: value }))
+    setAnswers((prev) => ({ ...prev, [id]: value }))
     setError(null)
   }
 
   function toggleChip(chip: string) {
-    setChips(prev =>
-      prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip]
+    setChips((prev) =>
+      prev.includes(chip) ? prev.filter((c) => c !== chip) : [...prev, chip],
     )
   }
 
   function handleNext() {
+    // Validate required questions
+    for (const q of questions) {
+      if (q.required && !answers[q.id]) {
+        setError(`Please answer: ${q.label}`)
+        return
+      }
+    }
     update({ qualifierAnswers: answers, detailChips: chips, description: description.trim() })
     onNext()
   }
 
-  if (!config) {
+  // ── No questions = skip screen ─────────────────────────────────────────
+  if (!questions.length && !config?.detailChips?.length) {
     return (
       <div>
-        <h3 className="text-xl font-black mb-1 text-[#0F172A]">Job details</h3>
-        <p className="text-[#475569] text-sm mb-6">Help pros understand your job.</p>
-        <div className="flex justify-end mt-8">
+        <h3 className="text-xl font-black mb-1 text-[#0F172A]">Describe your job</h3>
+        <p className="text-[#475569] text-sm mb-6">
+          Tell us what you need and we'll match you with the right pro.
+        </p>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-[#475569] mb-1.5">
+            What needs doing? <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            className="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] resize-none min-h-[100px]"
+            rows={4}
+            placeholder="Describe the job — the room, the problem, any measurements or model numbers."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <p className="text-xs text-[#94A3B8] mt-1">
+            Aim for at least 20 characters so pros can quote accurately.
+          </p>
+        </div>
+        <div className="flex justify-end mt-6">
           <button
             type="button"
             onClick={handleNext}
@@ -60,60 +122,46 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
 
   return (
     <div>
-      <h3 className="text-xl font-black mb-1 text-[#0F172A]">{config.q1.label}</h3>
+      <h3 className="text-xl font-black mb-1 text-[#0F172A]">Tell us more</h3>
+      <p className="text-[#475569] text-sm mb-6">
+        Help pros understand your job. All questions are optional unless marked.
+      </p>
 
-      {/* q1 — required */}
-      <div className="grid grid-cols-2 gap-2 mb-5">
-        {config.q1.options.map(opt => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => setAnswer(config.q1.id, opt)}
-            className={`border-2 rounded-xl px-4 py-3 text-sm font-semibold text-left transition-all cursor-pointer ${
-              answers[config.q1.id] === opt
-                ? 'border-[#2563EB] bg-[#EFF6FF] text-[#0F172A]'
-                : 'border-[#E2E8F0] bg-white text-[#0F172A] hover:border-[#94A3B8]'
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
-      </div>
-
-      {/* q2 — optional */}
-      {config.q2 && (
-        <>
-          <h4 className="text-base font-semibold mb-2 text-[#0F172A]">
-            {config.q2.label}
-            {config.q2.isOptional && (
+      {questions.map((q) => (
+        <div key={q.id} className="mb-5">
+          <p className="text-sm font-semibold text-[#475569] mb-2">
+            {q.label}
+            {!q.required && (
               <span className="font-normal text-[#94A3B8] text-sm ml-1">(optional)</span>
             )}
-          </h4>
-          <div className="flex flex-wrap gap-2 mb-5">
-            {config.q2.options.map(opt => (
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {q.options.map((opt) => (
               <button
                 key={opt}
                 type="button"
-                onClick={() => setAnswer(config.q2!.id, opt)}
-                className={`border-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
-                  answers[config.q2!.id] === opt
-                    ? 'border-[#2563EB] bg-[#EFF6FF] text-[#0F172A]'
-                    : 'border-[#E2E8F0] bg-white text-[#0F172A] hover:border-[#94A3B8]'
+                onClick={() => setAnswer(q.id, opt)}
+                className={`px-4 py-2 rounded-full text-sm border-2 transition-all ${
+                  answers[q.id] === opt
+                    ? 'border-[#2563EB] bg-[#EFF6FF] text-[#2563EB] font-bold'
+                    : 'border-[#E2E8F0] text-[#475569] hover:border-[#94A3B8]'
                 }`}
               >
                 {opt}
               </button>
             ))}
           </div>
-        </>
-      )}
+        </div>
+      ))}
 
-      {/* detailChips */}
-      {config.detailChips && config.detailChips.length > 0 && (
+      {/* detailChips from hardcoded config */}
+      {config?.detailChips && config.detailChips.length > 0 && (
         <div className="mb-5">
-          <p className="text-sm font-semibold text-[#475569] mb-2">{config.detailChipsLabel}</p>
+          <p className="text-sm font-semibold text-[#475569] mb-2">
+            {config.detailChipsLabel}
+          </p>
           <div className="flex flex-wrap gap-2">
-            {config.detailChips.map(chip => (
+            {config.detailChips.map((chip) => (
               <button
                 key={chip}
                 type="button"
@@ -127,7 +175,7 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
         </div>
       )}
 
-      {/* optional description */}
+      {/* Optional description */}
       <div className="mb-4">
         <label className="block text-sm font-semibold text-[#475569] mb-1.5">
           Anything else to add?
@@ -138,7 +186,7 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
           rows={3}
           placeholder="e.g. 'AC stopped working overnight, unit is 8 years old'"
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
 

@@ -25,7 +25,7 @@ export type WizardState = {
   smsConsent: boolean
 }
 
-const STEP_LABELS = ['Service', 'Job details', 'Qualifiers', 'Contact', 'Verify']
+const STEP_LABELS = ['Service', 'Qualifiers', 'Availability', 'Contact', 'Verify']
 const TOTAL_STEPS = 5
 
 export default function GuestRequestWizardPage() {
@@ -117,8 +117,7 @@ export default function GuestRequestWizardPage() {
         <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 shadow-lg">
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
             {step === 1 && <StepCategory state={state} update={update} onNext={next} />}
-            {step === 2 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
-            {step === 3 && (
+            {step === 2 && (
               <StepQualifiers
                 state={state}
                 update={update}
@@ -126,6 +125,7 @@ export default function GuestRequestWizardPage() {
                 onBack={back}
               />
             )}
+            {step === 3 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
             {step === 4 && <StepContact state={state} update={update} onNext={next} onBack={back} />}
             {step === 5 && (
               state.phone ? (
