@@ -192,6 +192,13 @@ action completeOnboarding {
 }
 
 // Passwordless OTP auth — public endpoints (no Wasp session required)
+// Custom `api` routes don't inherit Wasp's global CORS, so this namespace
+// attaches CORS middleware to /api/auth/* (fixes "Failed to fetch" on login).
+apiNamespace authApi {
+  middlewareConfigFn: import { authApiMiddlewareConfigFn } from "@src/auth/otpApi",
+  path: "/api/auth"
+}
+
 api requestOtp {
   fn: import { requestOtp } from "@src/auth/otpApi",
   httpRoute: (POST, "/api/auth/request-otp")
