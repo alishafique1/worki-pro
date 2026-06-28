@@ -614,7 +614,8 @@ export const sendOtp: SendOtp<{ phone: string }, { sent: boolean }> = async (
     throw new HttpError(429, "Too many OTP requests. Please wait a few minutes.");
   }
 
-  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  // crypto.randomInt is cryptographically secure; Math.random is predictable.
+  const code = crypto.randomInt(100000, 1000000).toString();
   const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000);
 
   await context.entities.OtpVerification.create({
@@ -626,15 +627,29 @@ export const sendOtp: SendOtp<{ phone: string }, { sent: boolean }> = async (
   });
 
   const ghlOtpWebhook = process.env.GHL_OTP_WEBHOOK_URL;
+  const isProd = process.env.NODE_ENV === "production";
 
   if (ghlOtpWebhook) {
-    await fetch(ghlOtpWebhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: normalized, code, ttlMinutes: OTP_TTL_MINUTES }),
-    }).catch(() => console.warn("[GHL OTP] Webhook failed"));
+    // Fail loud: if the webhook is down we must NOT report success, or the
+    // user waits forever for a code that was never sent.
+    try {
+      const resp = await fetch(ghlOtpWebhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: normalized, code, ttlMinutes: OTP_TTL_MINUTES }),
+      });
+      if (!resp.ok) throw new Error(`GHL webhook returned ${resp.status}`);
+    } catch (err) {
+      console.error("[GHL OTP] Webhook failed:", err);
+      throw new HttpError(502, "Could not send your code right now. Please try again.");
+    }
+  } else if (isProd) {
+    // No delivery channel configured in production = broken login. Surface it
+    // instead of silently logging the code to the server console.
+    console.error("[OTP] GHL_OTP_WEBHOOK_URL is not set in production.");
+    throw new HttpError(500, "SMS delivery is not configured. Please contact support.");
   } else {
-    // Dev mode: log to console
+    // Dev only: log to console so local testing works without GHL.
     console.info(`[OTP dev] Code for ${normalized}: ${code}`);
   }
 

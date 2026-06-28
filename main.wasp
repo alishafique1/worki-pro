@@ -604,6 +604,11 @@ query getDailyStats {
   entities: [User, DailyStats]
 }
 
+query getAdminLiveCounts {
+  fn: import { getAdminLiveCounts } from "@src/analytics/operations",
+  entities: [Provider, Review, ServiceRequest]
+}
+
 job dailyStatsJob {
   executor: PgBoss,
   perform: {
