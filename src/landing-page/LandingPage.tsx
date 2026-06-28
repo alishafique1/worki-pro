@@ -110,7 +110,7 @@ export default function LandingPage() {
             <div className="absolute -left-20 bottom-0 h-[400px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.05),transparent_60%)]" />
           </div>
 
-          <Container className="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Container className="relative grid items-center gap-8 md:gap-12 md:grid-cols-2 lg:gap-16">
             {/* Left */}
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-1.5 text-xs font-semibold text-[#2563EB]">
@@ -121,7 +121,7 @@ export default function LandingPage() {
               <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
                 <span className="text-[#2563EB]">Book a verified pro</span>
                 <br />
-                <span className="whitespace-nowrap">in Milton, Oakville & Burlington.</span>
+                <span>in Milton, Oakville & Burlington.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
