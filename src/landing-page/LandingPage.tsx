@@ -170,19 +170,16 @@ const testimonials = [
     quote: "My AC broke on a Saturday afternoon. Submitted at 2pm, tech booked by 4pm, done by 6pm. First time I've not spent hours calling around.",
     name: "Sarah M.",
     city: "Milton",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
     quote: "Found an electrician in 45 minutes on a weeknight. The app sent the quote, I booked, and it was fixed before the weekend. The rewards points are a bonus.",
     name: "James K.",
     city: "Oakville",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
     quote: "Most platforms connect you and disappear. This one tracks the whole job and makes it easy to get someone out fast. The cash back adds up.",
     name: "Priya S.",
     city: "Burlington",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
   },
 ];
 
@@ -502,12 +499,9 @@ export default function LandingPage() {
                     ))}
                   </div>
                   <p className="relative z-10 text-sm leading-6 text-[#475569]">"{t.quote}"</p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <img src={t.avatar} alt={t.name} className="size-9 rounded-full object-cover ring-2 ring-[#BFDBFE]" loading="lazy" />
-                    <div>
-                      <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
-                      <p className="text-xs text-[#94A3B8]">{t.city}</p>
-                    </div>
+                  <div className="mt-5 border-t border-[#E2E8F0] pt-4">
+                    <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
+                    <p className="text-xs text-[#94A3B8]">{t.city}</p>
                   </div>
                 </article>
               ))}
