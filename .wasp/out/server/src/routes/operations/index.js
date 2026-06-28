@@ -61,6 +61,7 @@ import getPaginatedUsers from './getPaginatedUsers.js'
 import getAllFilesByUser from './getAllFilesByUser.js'
 import getDownloadFileSignedURL from './getDownloadFileSignedURL.js'
 import getDailyStats from './getDailyStats.js'
+import getAdminLiveCounts from './getAdminLiveCounts.js'
 import getAdminRequests from './getAdminRequests.js'
 import getAdminProviders from './getAdminProviders.js'
 import getAdminRewards from './getAdminRewards.js'
@@ -127,6 +128,7 @@ router.post('/get-paginated-users', auth, getPaginatedUsers)
 router.post('/get-all-files-by-user', auth, getAllFilesByUser)
 router.post('/get-download-file-signed-url', auth, getDownloadFileSignedURL)
 router.post('/get-daily-stats', auth, getDailyStats)
+router.post('/get-admin-live-counts', auth, getAdminLiveCounts)
 router.post('/get-admin-requests', auth, getAdminRequests)
 router.post('/get-admin-providers', auth, getAdminProviders)
 router.post('/get-admin-rewards', auth, getAdminRewards)

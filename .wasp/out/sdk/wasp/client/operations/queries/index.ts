@@ -21,6 +21,7 @@ import { GetPaginatedUsers_ext } from 'wasp/server/operations/queries'
 import { GetAllFilesByUser_ext } from 'wasp/server/operations/queries'
 import { GetDownloadFileSignedURL_ext } from 'wasp/server/operations/queries'
 import { GetDailyStats_ext } from 'wasp/server/operations/queries'
+import { GetAdminLiveCounts_ext } from 'wasp/server/operations/queries'
 import { GetAdminRequests_ext } from 'wasp/server/operations/queries'
 import { GetAdminProviders_ext } from 'wasp/server/operations/queries'
 import { GetAdminRewards_ext } from 'wasp/server/operations/queries'
@@ -156,6 +157,12 @@ export const getDownloadFileSignedURL: QueryFor<GetDownloadFileSignedURL_ext> = 
 export const getDailyStats: QueryFor<GetDailyStats_ext> = createQuery<GetDailyStats_ext>(
   'operations/get-daily-stats',
   ['User', 'DailyStats'],
+)
+
+// PUBLIC API
+export const getAdminLiveCounts: QueryFor<GetAdminLiveCounts_ext> = createQuery<GetAdminLiveCounts_ext>(
+  'operations/get-admin-live-counts',
+  ['Provider', 'Review', 'ServiceRequest'],
 )
 
 // PUBLIC API

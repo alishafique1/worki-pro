@@ -44,6 +44,8 @@ export const getDownloadFileSignedURL = createQuery('operations/get-download-fil
 // PUBLIC API
 export const getDailyStats = createQuery('operations/get-daily-stats', ['User', 'DailyStats']);
 // PUBLIC API
+export const getAdminLiveCounts = createQuery('operations/get-admin-live-counts', ['Provider', 'Review', 'ServiceRequest']);
+// PUBLIC API
 export const getAdminRequests = createQuery('operations/get-admin-requests', ['ServiceRequest', 'Provider', 'User']);
 // PUBLIC API
 export const getAdminProviders = createQuery('operations/get-admin-providers', ['Provider', 'User']);

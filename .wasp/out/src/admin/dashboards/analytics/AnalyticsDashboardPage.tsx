@@ -12,10 +12,9 @@ import {
   UserCheck,
 } from "lucide-react";
 import { type AuthUser } from "wasp/auth";
-import { getDailyStats, useQuery } from "wasp/client/operations";
-import { cn } from "../../../client/utils";
+import { getDailyStats, getAdminLiveCounts, useQuery } from "wasp/client/operations";
 import DefaultLayout from "../../layout/DefaultLayout";
-import RevenueAndProfitChart from "./RevenueAndProfitChart";
+import RequestVolumeChart from "./RequestVolumeChart";
 import SourcesTable from "./SourcesTable";
 
 /* -------------------------------------------------------------------------- */
@@ -41,27 +40,6 @@ type Trend = {
   direction: "up" | "down" | "flat";
 };
 
-function buildTrend(delta: number | undefined | null): Trend {
-  if (delta === undefined || delta === null || delta === 0) {
-    return { value: "0", direction: "flat" };
-  }
-  return {
-    value: `${delta > 0 ? "+" : ""}${delta}`,
-    direction: delta > 0 ? "up" : "down",
-  };
-}
-
-function percentTrend(raw: string | undefined): Trend {
-  const parsed = parseInt(raw ?? "", 10);
-  if (!raw || Number.isNaN(parsed) || parsed === 0) {
-    return { value: "0%", direction: "flat" };
-  }
-  return {
-    value: `${parsed > 0 ? "+" : ""}${parsed}%`,
-    direction: parsed > 0 ? "up" : "down",
-  };
-}
-
 /* -------------------------------------------------------------------------- */
 /*  Stat card                                                                  */
 /* -------------------------------------------------------------------------- */
@@ -69,7 +47,7 @@ type StatCardProps = {
   label: string;
   value: string | number;
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  trend: Trend;
+  trend?: Trend;
   trendLabel: string;
   microcopy: string;
   hero?: boolean;
@@ -85,9 +63,9 @@ const StatCard = ({
   hero = false,
 }: StatCardProps) => {
   const trendColor =
-    trend.direction === "up"
+    trend?.direction === "up"
       ? COLORS.success
-      : trend.direction === "down"
+      : trend?.direction === "down"
         ? "#EF4444"
         : COLORS.slate;
 
@@ -112,17 +90,19 @@ const StatCard = ({
           />
         </div>
 
-        <span
-          className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
-          style={{
-            background: hero ? "rgba(255,255,255,0.16)" : `${trendColor}15`,
-            color: hero ? "#FFFFFF" : trendColor,
-          }}
-        >
-          {trend.direction === "up" && <ArrowUpRight className="h-3 w-3" />}
-          {trend.direction === "down" && <ArrowDownRight className="h-3 w-3" />}
-          {trend.value}
-        </span>
+        {trend && (
+          <span
+            className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+            style={{
+              background: hero ? "rgba(255,255,255,0.16)" : `${trendColor}15`,
+              color: hero ? "#FFFFFF" : trendColor,
+            }}
+          >
+            {trend.direction === "up" && <ArrowUpRight className="h-3 w-3" />}
+            {trend.direction === "down" && <ArrowDownRight className="h-3 w-3" />}
+            {trend.value}
+          </span>
+        )}
       </div>
 
       <div className="mt-6">
@@ -181,68 +161,85 @@ const StatCardSkeleton = ({ hero = false }: { hero?: boolean }) => (
 /* -------------------------------------------------------------------------- */
 /*  Request status pipeline                                                    */
 /* -------------------------------------------------------------------------- */
-const PIPELINE_STEPS = [
-  { label: "New", icon: Inbox },
-  { label: "Qualified", icon: ClipboardList },
-  { label: "Assigned", icon: UserCheck },
-  { label: "Booked", icon: CheckCircle2 },
-  { label: "Completed", icon: Star },
+type PipelineCounts = {
+  new: number;
+  qualified: number;
+  assigned: number;
+  booked: number;
+  completed: number;
+};
+
+const PIPELINE_STEPS: { label: string; icon: typeof Inbox; key: keyof PipelineCounts }[] = [
+  { label: "New", icon: Inbox, key: "new" },
+  { label: "Qualified", icon: ClipboardList, key: "qualified" },
+  { label: "Assigned", icon: UserCheck, key: "assigned" },
+  { label: "Booked", icon: CheckCircle2, key: "booked" },
+  { label: "Completed", icon: Star, key: "completed" },
 ];
 
-const RequestPipeline = ({ total }: { total: number }) => (
-  <div
-    className="rounded-[24px] border p-6"
-    style={{ background: COLORS.surface, borderColor: COLORS.border }}
-  >
-    <div className="mb-5 flex items-center justify-between">
-      <div>
-        <h3
-          className="font-['Fraunces',serif] text-lg font-extrabold"
-          style={{ color: COLORS.navy }}
-        >
-          Request Pipeline
-        </h3>
-        <p className="text-xs font-medium" style={{ color: COLORS.slate }}>
-          {total} requests flowing through the funnel today
-        </p>
+const RequestPipeline = ({ pipeline }: { pipeline?: PipelineCounts }) => {
+  const total = pipeline
+    ? pipeline.new + pipeline.qualified + pipeline.assigned + pipeline.booked + pipeline.completed
+    : 0;
+  return (
+    <div
+      className="rounded-[24px] border p-6"
+      style={{ background: COLORS.surface, borderColor: COLORS.border }}
+    >
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <h3
+            className="font-['Fraunces',serif] text-lg font-extrabold"
+            style={{ color: COLORS.navy }}
+          >
+            Request Pipeline
+          </h3>
+          <p className="text-xs font-medium" style={{ color: COLORS.slate }}>
+            {total} active request{total === 1 ? "" : "s"} across the funnel
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center">
+        {PIPELINE_STEPS.map((step, i) => {
+          const StepIcon = step.icon;
+          const isLast = i === PIPELINE_STEPS.length - 1;
+          const count = pipeline?.[step.key] ?? 0;
+          return (
+            <div key={step.label} className="flex flex-1 items-center">
+              <div className="flex flex-col items-center gap-2">
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-[14px]"
+                  style={{
+                    background: count > 0 ? COLORS.primary : "#EFF4FF",
+                    color: count > 0 ? "#FFFFFF" : COLORS.primary,
+                  }}
+                >
+                  <StepIcon className="h-5 w-5" />
+                </div>
+                <span className="text-sm font-extrabold" style={{ color: COLORS.navy }}>
+                  {count}
+                </span>
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: COLORS.slate }}
+                >
+                  {step.label}
+                </span>
+              </div>
+              {!isLast && (
+                <div
+                  className="mx-2 mb-10 h-0.5 flex-1 rounded-full"
+                  style={{ background: COLORS.border }}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
-
-    <div className="flex items-center">
-      {PIPELINE_STEPS.map((step, i) => {
-        const StepIcon = step.icon;
-        const isLast = i === PIPELINE_STEPS.length - 1;
-        return (
-          <div key={step.label} className="flex flex-1 items-center">
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className="flex h-11 w-11 items-center justify-center rounded-[14px]"
-                style={{
-                  background: i === 0 ? COLORS.primary : "#EFF4FF",
-                  color: i === 0 ? "#FFFFFF" : COLORS.primary,
-                }}
-              >
-                <StepIcon className="h-5 w-5" />
-              </div>
-              <span
-                className="text-xs font-semibold"
-                style={{ color: COLORS.navy }}
-              >
-                {step.label}
-              </span>
-            </div>
-            {!isLast && (
-              <div
-                className="mx-2 mb-6 h-0.5 flex-1 rounded-full"
-                style={{ background: COLORS.border }}
-              />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  </div>
-);
+  );
+};
 
 /* -------------------------------------------------------------------------- */
 /*  Recent activity feed                                                       */
@@ -256,47 +253,51 @@ type ActivityItem = {
   tone: "primary" | "success" | "amber" | "slate";
 };
 
-function deriveActivity(stats: {
-  userDelta?: number | null;
-  paidUserDelta?: number | null;
-  totalViews?: number | null;
+function deriveActivity(counts?: {
+  requestsToday: number;
+  pendingProviders: number;
+  pendingReviews: number;
+  verifiedProviders: number;
 }): ActivityItem[] {
   const items: ActivityItem[] = [];
+  if (!counts) return items;
 
-  if ((stats.userDelta ?? 0) > 0) {
+  if (counts.requestsToday > 0) {
     items.push({
-      initials: "NS",
-      name: `${stats.userDelta} new signups`,
-      action: "joined The Helper today",
-      meta: "Consumers & providers",
+      initials: "LD",
+      name: `${counts.requestsToday} request${counts.requestsToday === 1 ? "" : "s"} today`,
+      action: "submitted across the GTA",
+      meta: "Milton · Oakville · Burlington",
       time: "Today",
       tone: "primary",
     });
   }
-  if ((stats.paidUserDelta ?? 0) !== 0) {
+  if (counts.pendingProviders > 0) {
     items.push({
       initials: "PR",
-      name: "Provider verifications",
-      action: `${stats.paidUserDelta} change in active providers`,
+      name: `${counts.pendingProviders} provider${counts.pendingProviders === 1 ? "" : "s"} awaiting review`,
+      action: "needs verification",
       meta: "Pending → Verified",
-      time: "Today",
+      time: "Now",
       tone: "success",
     });
   }
+  if (counts.pendingReviews > 0) {
+    items.push({
+      initials: "RV",
+      name: `${counts.pendingReviews} review${counts.pendingReviews === 1 ? "" : "s"} to moderate`,
+      action: "queued for admin approval",
+      meta: "Moderation queue",
+      time: "Now",
+      tone: "amber",
+    });
+  }
   items.push({
-    initials: "RV",
-    name: "Reviews awaiting moderation",
-    action: "queued for admin approval",
-    meta: "Moderation queue",
-    time: "Recent",
-    tone: "amber",
-  });
-  items.push({
-    initials: "LD",
-    name: `${stats.totalViews ?? 0} requests received`,
-    action: "matched to local providers",
-    meta: "Milton · Oakville · Burlington",
-    time: "Today",
+    initials: "VP",
+    name: `${counts.verifiedProviders} verified provider${counts.verifiedProviders === 1 ? "" : "s"}`,
+    action: "live on the platform",
+    meta: "Active pros",
+    time: "Live",
     tone: "slate",
   });
 
@@ -393,7 +394,8 @@ const RecentActivity = ({ items }: { items: ActivityItem[] }) => (
 /*  Page                                                                       */
 /* -------------------------------------------------------------------------- */
 const Dashboard = ({ user }: { user: AuthUser }) => {
-  const { data: stats, isLoading, error } = useQuery(getDailyStats);
+  const { data: stats, error } = useQuery(getDailyStats);
+  const { data: counts, isLoading: countsLoading } = useQuery(getAdminLiveCounts);
 
   /* ----- error ----- */
   if (error) {
@@ -425,37 +427,25 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
     );
   }
 
-  const daily = stats?.dailyStats;
+  /* ----- real operational metrics from getAdminLiveCounts ----- */
+  // Total Requests (Today) — real ServiceRequest count for today
+  const totalRequests = counts?.requestsToday ?? 0;
 
-  /* ----- derived The Helper metrics (mapped from existing DailyStats) ----- */
-  // Total Requests (Today) — mapped from totalViews
-  const totalRequests = daily?.totalViews ?? 0;
-  const requestsTrend = percentTrend(daily?.prevDayViewsChangePercent);
+  // Providers Pending Review — real Provider PENDING count
+  const providersPending = counts?.pendingProviders ?? 0;
 
-  // Providers Pending Review — derived from active-provider delta
-  const providersPending = Math.max(daily?.paidUserDelta ?? 0, 0);
-  const providersTrend = buildTrend(daily?.paidUserDelta);
+  // Reviews Awaiting Moderation — real Review PENDING count
+  const reviewsPending = counts?.pendingReviews ?? 0;
 
-  // Reviews Awaiting Moderation — derived from new-signup delta as a stand-in
-  const reviewsPending = Math.max(daily?.userDelta ?? 0, 0);
-  const reviewsTrend = buildTrend(daily?.userDelta);
-
-  // Platform Health — % requests matched within 24h (synthesised from active providers vs requests)
-  const matchedPercent =
-    totalRequests > 0
-      ? Math.min(
-          100,
-          Math.round(
-            ((daily?.paidUserCount ?? 0) / Math.max(totalRequests, 1)) * 100,
-          ) || 92,
-        )
+  // Verified provider share — verified / (verified + pending). A real health
+  // signal: how much of the provider base has cleared verification.
+  const providerTotal = (counts?.verifiedProviders ?? 0) + (counts?.pendingProviders ?? 0);
+  const verifiedPercent =
+    providerTotal > 0
+      ? Math.round(((counts?.verifiedProviders ?? 0) / providerTotal) * 100)
       : 0;
 
-  const activity = deriveActivity({
-    userDelta: daily?.userDelta,
-    paidUserDelta: daily?.paidUserDelta,
-    totalViews: daily?.totalViews,
-  });
+  const activity = deriveActivity(counts);
 
   return (
     <DefaultLayout user={user}>
@@ -476,7 +466,7 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
 
         {/* Stat cards row */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {isLoading ? (
+          {countsLoading ? (
             <>
               <StatCardSkeleton hero />
               <StatCardSkeleton />
@@ -490,36 +480,43 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
                 label="Total Requests"
                 value={totalRequests}
                 icon={ClipboardList}
-                trend={requestsTrend}
-                trendLabel="vs yesterday"
+                trendLabel="Today"
                 microcopy="Leads submitted today"
               />
               <StatCard
                 label="Providers Pending Review"
                 value={providersPending}
                 icon={ShieldCheck}
-                trend={providersTrend}
-                trendLabel="vs yesterday"
+                trend={
+                  providersPending > 0
+                    ? { value: "Action needed", direction: "flat" }
+                    : { value: "Clear", direction: "up" }
+                }
+                trendLabel="Verification queue"
                 microcopy="Awaiting verification"
               />
               <StatCard
                 label="Reviews Awaiting Moderation"
                 value={reviewsPending}
                 icon={Star}
-                trend={reviewsTrend}
-                trendLabel="vs yesterday"
+                trend={
+                  reviewsPending > 0
+                    ? { value: "Action needed", direction: "flat" }
+                    : { value: "Clear", direction: "up" }
+                }
+                trendLabel="Moderation queue"
                 microcopy="In moderation queue"
               />
               <StatCard
-                label="Platform Health"
-                value={`${matchedPercent}%`}
+                label="Verified Providers"
+                value={`${verifiedPercent}%`}
                 icon={TrendingUp}
                 trend={{
-                  value: matchedPercent >= 90 ? "Healthy" : "Watch",
-                  direction: matchedPercent >= 90 ? "up" : "flat",
+                  value: verifiedPercent >= 80 ? "Healthy" : "Building",
+                  direction: verifiedPercent >= 80 ? "up" : "flat",
                 }}
-                trendLabel="matched < 24h"
-                microcopy="Requests matched same-day"
+                trendLabel="of provider base"
+                microcopy={`${counts?.verifiedProviders ?? 0} live pros`}
               />
             </>
           )}
@@ -527,7 +524,7 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
 
         {/* Request pipeline */}
         <div className="mt-6">
-          <RequestPipeline total={totalRequests} />
+          <RequestPipeline pipeline={counts?.pipeline} />
         </div>
 
         {/* Chart */}
@@ -551,9 +548,9 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
                   Daily incoming service requests across all categories
                 </p>
               </div>
-              <RevenueAndProfitChart
-                weeklyStats={stats?.weeklyStats}
-                isLoading={isLoading}
+              <RequestVolumeChart
+                data={counts?.requestsByDay}
+                isLoading={countsLoading}
               />
             </div>
           </div>
@@ -574,46 +571,12 @@ const Dashboard = ({ user }: { user: AuthUser }) => {
           </div>
         </div>
 
-        {/* Empty state when no stats generated yet */}
-        {!isLoading && stats === null && (
-          <div
-            className="absolute inset-0 flex items-start justify-center pt-20"
-            style={{ background: "rgba(248,250,252,0.7)" }}
-          >
-            <div
-              className="flex max-w-md flex-col items-center rounded-[24px] border p-10 text-center shadow-lg"
-              style={{ background: COLORS.surface, borderColor: COLORS.border }}
-            >
-              <div
-                className="mb-4 flex h-14 w-14 items-center justify-center rounded-[16px]"
-                style={{ background: "#EFF4FF" }}
-              >
-                <ClipboardList
-                  className="h-7 w-7"
-                  style={{ color: COLORS.primary }}
-                />
-              </div>
-              <p
-                className="font-['Fraunces',serif] text-xl font-extrabold"
-                style={{ color: COLORS.navy }}
-              >
-                No daily stats generated yet
-              </p>
-              <p className="mt-2 text-sm" style={{ color: COLORS.slate }}>
-                Stats will appear here once the daily stats job has run.
-              </p>
-            </div>
-          </div>
-        )}
-
         <p
-          className={cn(
-            "mt-6 text-center text-[11px] font-medium",
-            stats === null && "opacity-0",
-          )}
+          className="mt-6 text-center text-[11px] font-medium"
           style={{ color: COLORS.slate }}
         >
-          Updated hourly via the daily stats job · The Helper Admin
+          Requests, providers, and reviews are live · traffic sources update
+          hourly via the daily stats job · The Helper Admin
         </p>
       </div>
     </DefaultLayout>

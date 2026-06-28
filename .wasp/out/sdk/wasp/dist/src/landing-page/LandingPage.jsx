@@ -4,6 +4,8 @@ import { AirVent, ArrowRight, Award, BadgeCheck, BriefcaseBusiness, CheckCircle2
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import { CategoryCard, Container, CTASection, Footer, SectionHeader, } from "./marketplace/components";
 import { categories } from "./marketplace/content";
+// Self-hosted hero image (was an Unsplash hotlink — a prod reliability risk).
+import heroImage from "../client/static/modern_home_service_hero_1777676793583.png";
 // ── Popular services for search panel ───────────────────────────────────────
 const popularServices = [
     { icon: <AirVent className="size-4"/>, name: "AC not cooling", category: "HVAC" },
@@ -156,10 +158,9 @@ export default function LandingPage() {
                 Now serving GTA · Milton · Oakville · Burlington
               </span>
 
-              <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
-                <span className="text-[#2563EB]">Book a verified pro</span>
-                <br />
-                <span className="whitespace-nowrap">in under 15 minutes.</span>
+              <h1 className="mt-5 text-balance text-4xl font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[56px]">
+                <span className="text-[#2563EB]">Book a verified pro</span>{" "}
+                <span className="lg:whitespace-nowrap">in under 15 minutes.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
@@ -200,7 +201,7 @@ export default function LandingPage() {
             {/* Right — Activity card */}
             <div className="relative">
               <div className="relative overflow-hidden rounded-3xl shadow-[0_32px_80px_rgba(15,23,42,0.18)]">
-                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80" alt="Verified professional completing a home service" className="h-72 w-full object-cover sm:h-80"/>
+                <img src={heroImage} alt="Verified professional completing a home service" className="h-72 w-full object-cover sm:h-80" loading="eager"/>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/50 via-transparent to-transparent"/>
                 <div className="absolute left-4 top-4">
                   <div className="flex items-center gap-2 rounded-full border border-white/30 bg-white/90 px-4 py-2 text-xs font-semibold text-[#0F172A] shadow-lg backdrop-blur-sm">

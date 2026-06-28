@@ -18,7 +18,6 @@ export declare function SectionHeader({ eyebrow, title, description, align, clas
     align?: "center" | "left";
     className?: string;
 }): React.JSX.Element;
-export declare function Hero(): React.JSX.Element;
 export declare function MarketplaceMockup(): React.JSX.Element;
 export declare function FeatureCard({ icon, title, description, }: {
     icon: React.ReactNode;

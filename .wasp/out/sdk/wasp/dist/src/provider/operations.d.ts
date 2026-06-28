@@ -1,4 +1,5 @@
 import type { ServiceRequest, Provider, Appointment, ProviderFee, ProviderCategory, ServiceCategory, CommunicationLog, Review } from "wasp/entities";
+import { type MaskedLead } from "./leadMasking";
 import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, ResubmitProviderApplication, AddPortfolioPhoto, RemovePortfolioPhoto, SetProfilePhoto } from "wasp/server/operations";
 export declare const getProviderLeads: GetProviderLeads<void, ServiceRequest[]>;
 export declare const getProviderAppointments: GetProviderAppointments<void, any[]>;
@@ -72,21 +73,6 @@ export declare const sendProviderMessage: SendProviderMessage<{
     requestId: string;
     body: string;
 }, CommunicationLog>;
-type MaskedLead = {
-    id: string;
-    createdAt: Date;
-    serviceCategory: {
-        name: string;
-        slug: string;
-    } | null;
-    postalCode: string;
-    city: string | null;
-    urgency: string;
-    description: string;
-    estimatedSchedule: string | null;
-    status: string;
-    claimed: boolean;
-};
 export declare const getPublicLeadFeed: GetPublicLeadFeed<{
     categorySlug?: string;
     urgency?: string;

@@ -22,6 +22,7 @@ import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operat
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations';
+import { getAdminLiveCounts as getAdminLiveCounts_ext } from 'wasp/src/analytics/operations';
 import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operations';
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations';
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations';
@@ -146,6 +147,12 @@ export const getDownloadFileSignedURL = createAuthenticatedOperation(getDownload
 export const getDailyStats = createAuthenticatedOperation(getDailyStats_ext, {
     User: prisma.user,
     DailyStats: prisma.dailyStats,
+});
+// PUBLIC API
+export const getAdminLiveCounts = createAuthenticatedOperation(getAdminLiveCounts_ext, {
+    Provider: prisma.provider,
+    Review: prisma.review,
+    ServiceRequest: prisma.serviceRequest,
 });
 // PUBLIC API
 export const getAdminRequests = createAuthenticatedOperation(getAdminRequests_ext, {

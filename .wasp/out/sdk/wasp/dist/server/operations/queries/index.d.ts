@@ -21,6 +21,7 @@ import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operat
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations';
+import { getAdminLiveCounts as getAdminLiveCounts_ext } from 'wasp/src/analytics/operations';
 import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operations';
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations';
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations';
@@ -69,6 +70,8 @@ export type GetDownloadFileSignedURL_ext = typeof getDownloadFileSignedURL_ext;
 export declare const getDownloadFileSignedURL: AuthenticatedOperationFor<GetDownloadFileSignedURL_ext>;
 export type GetDailyStats_ext = typeof getDailyStats_ext;
 export declare const getDailyStats: AuthenticatedOperationFor<GetDailyStats_ext>;
+export type GetAdminLiveCounts_ext = typeof getAdminLiveCounts_ext;
+export declare const getAdminLiveCounts: AuthenticatedOperationFor<GetAdminLiveCounts_ext>;
 export type GetAdminRequests_ext = typeof getAdminRequests_ext;
 export declare const getAdminRequests: AuthenticatedOperationFor<GetAdminRequests_ext>;
 export type GetAdminProviders_ext = typeof getAdminProviders_ext;

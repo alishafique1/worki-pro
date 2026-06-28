@@ -31,6 +31,8 @@ import {
   StepCard,
 } from "./marketplace/components";
 import { categories } from "./marketplace/content";
+// Self-hosted hero image (was an Unsplash hotlink — a prod reliability risk).
+import heroImage from "../client/static/modern_home_service_hero_1777676793583.png";
 
 // ── Popular services for search panel ───────────────────────────────────────
 
@@ -224,10 +226,9 @@ export default function LandingPage() {
                 Now serving GTA · Milton · Oakville · Burlington
               </span>
 
-              <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
-                <span className="text-[#2563EB]">Book a verified pro</span>
-                <br />
-                <span className="whitespace-nowrap">in under 15 minutes.</span>
+              <h1 className="mt-5 text-balance text-4xl font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[56px]">
+                <span className="text-[#2563EB]">Book a verified pro</span>{" "}
+                <span className="lg:whitespace-nowrap">in under 15 minutes.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
@@ -277,9 +278,10 @@ export default function LandingPage() {
             <div className="relative">
               <div className="relative overflow-hidden rounded-3xl shadow-[0_32px_80px_rgba(15,23,42,0.18)]">
                 <img
-                  src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80"
+                  src={heroImage}
                   alt="Verified professional completing a home service"
                   className="h-72 w-full object-cover sm:h-80"
+                  loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/50 via-transparent to-transparent" />
                 <div className="absolute left-4 top-4">

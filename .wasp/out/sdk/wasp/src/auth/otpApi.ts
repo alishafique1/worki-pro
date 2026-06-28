@@ -7,7 +7,8 @@ import { emailSender } from 'wasp/server/email'
 import crypto from 'crypto'
 
 function generateOtp(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString()
+  // crypto.randomInt is cryptographically secure; Math.random is predictable.
+  return crypto.randomInt(100000, 1000000).toString()
 }
 
 function hashCode(code: string): string {

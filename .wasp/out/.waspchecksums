@@ -501,7 +501,7 @@
             "file",
             "sdk/wasp/client/operations/queries/index.ts"
         ],
-        "84605229c66e242b089319e2cf11ec92a33137c236b5e79374c2d253274756da"
+        "2bcdf2109b9d44a79bcb0b462f43d76b4c20cad052fbb623b1166f907fb958ff"
     ],
     [
         [
@@ -956,21 +956,21 @@
             "file",
             "sdk/wasp/server/operations/index.ts"
         ],
-        "dfa6dc3d0e7ee66217b946d8f42a48a4a10ef3ccf534e4cb41b21ceca0a72a2b"
+        "07794f4dc11e65549ee980ee93e69d461f2d39318e61545d095d9c408e51d31f"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/index.ts"
         ],
-        "ccbe7d8a7f5fe3dc4562ac0e61c628f8eb6714800ebc6fb8f4ca3d4de92c5f70"
+        "c7da11dd267d6902c973adaa3dfe781510ade13f970f7c3c908d6b0103a6e1dd"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/types.ts"
         ],
-        "7b856c8f258939f06248b65b81afcda83f914c94b4443ed24bb1ef14dd785a29"
+        "7d9886539b845c5268f5aa0593018b840c56ecd3c3491b41ad53bca06bc30ccf"
     ],
     [
         [
@@ -1033,14 +1033,14 @@
             "file",
             "sdk/wasp/src/admin/dashboards/analytics/AnalyticsDashboardPage.tsx"
         ],
-        "3895e73ea1603437d7601d1b062d11082b09827ba974fd58d375c7c441602f58"
+        "22be5d9d73479c76d0de0ca0ec931d75fade1ceb7046325fc8b45c5f4f18de18"
     ],
     [
         [
             "file",
-            "sdk/wasp/src/admin/dashboards/analytics/RevenueAndProfitChart.tsx"
+            "sdk/wasp/src/admin/dashboards/analytics/RequestVolumeChart.tsx"
         ],
-        "d14b8b747ebfe32d73b6270db9fb353e7c885d5df50a8ebf0e7f4d6a1c622d5b"
+        "485ba147c99cdf7fffac5f8ce74363bce1734b05ce16a310c3959af1893aa9b7"
     ],
     [
         [
@@ -1187,7 +1187,7 @@
             "file",
             "sdk/wasp/src/analytics/operations.ts"
         ],
-        "7be6588e15499235cbf0d7a60009af222d6584fe5390bf1ef39515398d1b4a50"
+        "aa664b388d16d4a0f1c78076c5e3d71bd0bf662c86dc2ffc1b18e0b3f06f8f94"
     ],
     [
         [
@@ -1320,14 +1320,14 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "c99af03f760b43e6826f7aaa32318939540ae4485547117a6c898d7317ea09e8"
+        "33c40f214c08e868fe36cc2d97b90ff29444b11ed4cac186e6bbb930bf927e9f"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "d87236d7d00d906e6ac68167c0948db74f38cb8ce62ae9db8776daf51229c78e"
+        "90f895aae16670f31c75f93c8f2fab2357293521eeab673f7d2285f33251bfdc"
     ],
     [
         [
@@ -1390,7 +1390,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "b94c69b28cbbc2b5351d9715ee71618968d9bd5a7969b3b5970de13156860b9c"
+        "8ff8bedfe9fd0bb52503175dbebf21707f98e61a1db6a9ab001bc70e8064d3e1"
     ],
     [
         [
@@ -2034,7 +2034,7 @@
             "file",
             "sdk/wasp/src/consumer/operations.ts"
         ],
-        "9086c70e19e452abf5bc39acb520669d5665ca467c9b0788ce4e15a960e75d2c"
+        "3e203f9a1aeb40effccf95d6bb6c9178821b03a5dc8a4b91318d43a516b5e7cb"
     ],
     [
         [
@@ -2048,7 +2048,7 @@
             "file",
             "sdk/wasp/src/consumer/providerProfileData.ts"
         ],
-        "7e5eedec0af79c3f62630e7e4e0ff4febf8f0af0e0b0805c6d2721df6d2ff0f2"
+        "7932964afffc0182099f4f61f56ca1f9c6f3d989e2e7e4e27081ce9a276c8e57"
     ],
     [
         [
@@ -2139,7 +2139,7 @@
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "9145064392927ca5c06dadc7310e6379df6957eb7f3815955dbab419db40fee5"
+        "70d99b6e13d3a9fcdc41d8a05024e6a54f59b25eaecd9f0c68945ae2fc9247e0"
     ],
     [
         [
@@ -2286,7 +2286,7 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/components.tsx"
         ],
-        "e08cd614db53561020b4fe65bf27c3c96a71efc798cadb452a6e06a2e027ecc4"
+        "4f6a2e4298ad2f0076febe1497ea67eada22861f6b884cc167dcc4a8a5491327"
     ],
     [
         [
@@ -2494,9 +2494,23 @@
     [
         [
             "file",
+            "sdk/wasp/src/provider/leadMasking.test.ts"
+        ],
+        "ce0aeee9f8904774495a2b8c854c827d9a7e8be70ec4f7c12778074e67d9989c"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/provider/leadMasking.ts"
+        ],
+        "3a3fd60880a71fea9f61320fd9b42b8afeb1a51a0e7af752570ea5988833983d"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/provider/operations.ts"
         ],
-        "122acb2da6a1ef428919b21505231403e06ccdf900023932fd4670db9f4565e1"
+        "067ff0a9076917c66b649f3537cd1100725def6491bed055184233b031ee0444"
     ],
     [
         [
@@ -3138,6 +3152,13 @@
     [
         [
             "file",
+            "server/src/queries/getAdminLiveCounts.ts"
+        ],
+        "b7599283d075e9e51ab6b48e3e31611e9b1d3ec1f9b29c6b8b3283b32866b457"
+    ],
+    [
+        [
+            "file",
             "server/src/queries/getAdminProviders.ts"
         ],
         "ceda64a9b07fb81512c7babade6a3d4d0845a3dffce2b1f251858ae591aec81e"
@@ -3446,6 +3467,13 @@
     [
         [
             "file",
+            "server/src/routes/operations/getAdminLiveCounts.js"
+        ],
+        "3cc8c6995222ddeca127114b6a7658873e8c4a8a0de45238ca619801f844eaac"
+    ],
+    [
+        [
+            "file",
             "server/src/routes/operations/getAdminProviders.js"
         ],
         "b2dfb406b36af7089bfd2b70bbae0bfec627814fcc4a9e06c683f47883cdfe9a"
@@ -3616,7 +3644,7 @@
             "file",
             "server/src/routes/operations/index.js"
         ],
-        "306f338c32e90adb56cc786815ac9723de3f7f63c2df7b542253620de3ccd833"
+        "6e64a34556f51c511d0e8aa4b79335de5b6b6ddd655e5f55f5083125cba5a189"
     ],
     [
         [

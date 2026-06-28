@@ -47,6 +47,8 @@ export { getDownloadFileSignedURL } from './queries/index.js'
 
 export { getDailyStats } from './queries/index.js'
 
+export { getAdminLiveCounts } from './queries/index.js'
+
 export { getAdminRequests } from './queries/index.js'
 
 export { getAdminProviders } from './queries/index.js'

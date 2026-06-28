@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { ArrowRight, BadgeCheck, BellRing, CalendarCheck, Check, ClipboardList, Clock3, MapPin, MessageSquareText, Search, ShieldCheck, Trophy, UserCheck, Zap, } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarCheck, Check, ClipboardList, Clock3, MapPin, MessageSquareText, Search, ShieldCheck, UserCheck, Zap, } from "lucide-react";
 import { cn } from "../../client/utils";
 export function Container({ children, className, }) {
     return (<div className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)}>
@@ -32,117 +32,6 @@ export function SectionHeader({ eyebrow, title, description, align = "center", c
           {description}
         </p>)}
     </div>);
-}
-export function Hero() {
-    return (<section className="relative overflow-hidden bg-[#F8FAFC] pb-14 pt-10 sm:pb-20 lg:pt-16">
-      {/* Subtle blue gradient bloom */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.06),transparent_65%)]"/>
-        <div className="absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.04),transparent_60%)]"/>
-      </div>
-      <Container className="relative grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
-        {/* Left column */}
-        <div>
-          {/* Location badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#2563EB]">
-            <span className="size-2 rounded-full bg-[#22C55E]"/>
-            Now serving GTA: Milton, Oakville, Burlington
-          </div>
-
-          <h1 className="font-display mt-6 max-w-2xl text-balance text-[42px] font-bold leading-[1.05] text-[#0F172A] sm:text-5xl lg:text-6xl">
-            Get help with{" "}
-            <span className="text-[#2563EB]">anything.</span>
-          </h1>
-
-          <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-[#475569] sm:text-lg">
-            Connect with verified local pros for HVAC, plumbing, electrical, handyman work, and more, right in your neighbourhood.
-          </p>
-
-          {/* Reward pill */}
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#1D4ED8]">
-            <Trophy className="size-3.5 text-[#2563EB]"/>
-            Earn reward points on every completed job
-          </div>
-
-          {/* CTAs */}
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button href="/get-quotes">
-              Get Help <ArrowRight className="size-4"/>
-            </Button>
-            <Button href="/providers/apply" variant="secondary">
-              Join as a Pro
-            </Button>
-          </div>
-
-          {/* Trust micro-row */}
-          <div className="mt-6 grid grid-cols-2 gap-2 text-sm text-[#475569]">
-            {[
-            "100% Free for Homeowners",
-            "Verified Local Pros",
-            "Same-Day Available",
-            "500+ GTA Homeowners",
-        ].map((item) => (<div key={item} className="flex items-center gap-2">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#DCFCE7] text-[#22C55E]">
-                  <Check className="size-3"/>
-                </span>
-                {item}
-              </div>))}
-          </div>
-        </div>
-
-        {/* Right column — Live Activity Card */}
-        <div className="relative">
-          {/* Floating notification */}
-          <div className="absolute -top-4 right-4 z-10 hidden rounded-2xl border border-[#E2E8F0] bg-white px-4 py-3 shadow-lg sm:block">
-            <div className="flex items-center gap-2 text-xs">
-              <BellRing className="size-4 text-[#2563EB]"/>
-              <div>
-                <p className="font-semibold text-[#0F172A]">Sarah just earned $5!</p>
-                <p className="text-[#94A3B8]">AC repair submitted · Milton, ON</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Live activity dark card */}
-          <div className="rounded-2xl bg-[#0F172A] p-5 shadow-[0_24px_60px_rgba(15,23,42,0.25)]">
-            {/* Header */}
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-semibold text-white">Live requests near you</p>
-              <div className="flex items-center gap-1.5 rounded-full bg-[#22C55E]/10 px-2.5 py-1 text-xs font-semibold text-[#22C55E]">
-                <span className="size-1.5 rounded-full bg-[#22C55E]"/>
-                Live
-              </div>
-            </div>
-
-            {/* Request rows */}
-            <div className="space-y-3">
-              {[
-            { service: "HVAC repair", area: "Milton", time: "12 min ago", status: "Done ✓", statusColor: "text-[#22C55E]" },
-            { service: "Plumbing", area: "Oakville", time: "8 min ago", status: "Active", statusColor: "text-[#60A5FA]" },
-            { service: "Handyman", area: "Burlington", time: "just now", status: "New", statusColor: "text-[#93C5FD]" },
-        ].map((row) => (<div key={row.service} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3">
-                  <div>
-                    <p className="text-sm font-medium text-white">{row.service}</p>
-                    <p className="mt-0.5 flex items-center gap-1 text-xs text-[#94A3B8]">
-                      <MapPin className="size-3"/>
-                      {row.area} · {row.time}
-                    </p>
-                  </div>
-                  <span className={cn("text-xs font-semibold", row.statusColor)}>
-                    {row.status}
-                  </span>
-                </div>))}
-            </div>
-
-            {/* Blue reward callout */}
-            <div className="mt-4 flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-3">
-              <Trophy className="size-4 text-[#60A5FA]"/>
-              <p className="text-xs font-medium text-[#BFDBFE]">James earned $50 this month</p>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>);
 }
 export function MarketplaceMockup() {
     return (<div className="relative mx-auto w-full max-w-2xl">

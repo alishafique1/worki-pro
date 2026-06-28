@@ -98,6 +98,11 @@ export type GetDailyStats<Input extends Payload = never, Output extends Payload 
     _User,
     _DailyStats
 ], Input, Output>;
+export type GetAdminLiveCounts<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
+    _Provider,
+    _Review,
+    _ServiceRequest
+], Input, Output>;
 export type GetAdminRequests<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _ServiceRequest,
     _Provider,

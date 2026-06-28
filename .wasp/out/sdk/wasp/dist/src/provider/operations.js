@@ -1,3 +1,4 @@
+import { maskLead } from "./leadMasking";
 import { checkFileExistsInS3, deleteFileFromS3 } from '../file-upload/s3Utils';
 import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
@@ -152,6 +153,8 @@ export const submitProviderApplication = async (args, context) => {
     const provider = await context.entities.Provider.upsert({
         where: { userId: context.user.id },
         update: {
+            // Do NOT reset verificationStatus here: an already-VERIFIED pro editing
+            // their application must not be silently knocked back to PENDING.
             businessName,
             contactName,
             phone,
@@ -159,7 +162,6 @@ export const submitProviderApplication = async (args, context) => {
             website,
             serviceAreas,
             calComUsername,
-            verificationStatus: "PENDING",
             active: true,
         },
         create: {
@@ -443,6 +445,7 @@ export const sendProviderMessage = async ({ requestId, body }, context) => {
     }
     return log;
 };
+// ─── Bark-style Public Lead Feed (masked) ────────────────────────────────────
 export const getPublicLeadFeed = async ({ categorySlug, urgency, limit = 20, offset = 0 }, context) => {
     const provider = await requireProvider(context);
     // Build category filter based on pro's registered categories
@@ -470,23 +473,9 @@ export const getPublicLeadFeed = async ({ categorySlug, urgency, limit = 20, off
         skip: offset,
         include: { serviceCategory: true },
     });
-    // Mask PII — never expose name, phone, email
-    return requests.map((r) => ({
-        id: r.id,
-        createdAt: r.createdAt,
-        serviceCategory: r.serviceCategory
-            ? { name: r.serviceCategory.name, slug: r.serviceCategory.slug }
-            : null,
-        postalCode: r.postalCode,
-        city: r.city,
-        urgency: r.urgency,
-        description: r.description.length > 200
-            ? r.description.substring(0, 200) + "…"
-            : r.description,
-        estimatedSchedule: r.estimatedSchedule,
-        status: r.status,
-        claimed: !!r.assignedProviderId,
-    }));
+    // Mask PII — never expose name, phone, email. maskLead is the single source
+    // of truth for this rule; see leadMasking.test.ts for the regression guard.
+    return requests.map(maskLead);
 };
 // ─── Claim Lead (reveals contact, creates ProviderFee) ───────────────────────
 export const claimLead = async ({ requestId }, context) => {

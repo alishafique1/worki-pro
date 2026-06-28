@@ -274,6 +274,18 @@ export type GetDailyStats<Input extends Payload = never, Output extends Payload 
   >
 
 // PUBLIC API
+export type GetAdminLiveCounts<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedQueryDefinition<
+    [
+      _Provider,
+      _Review,
+      _ServiceRequest,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type GetAdminRequests<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedQueryDefinition<
     [
