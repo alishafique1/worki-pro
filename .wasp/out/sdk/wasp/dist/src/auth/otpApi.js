@@ -11,20 +11,45 @@ function generateOtp() {
 function hashCode(code) {
     return crypto.createHash('sha256').update(code).digest('hex');
 }
-function isAllowedOrigin(req) {
-    const origin = req.headers.origin;
+function isOriginAllowed(origin) {
     if (!origin)
         return true; // non-browser / same-origin server calls have no Origin header
+    // allow localhost dev origins on any port
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
+        return true;
     const allowed = [
         process.env.WASP_WEB_CLIENT_URL,
         'https://thehelper.ca',
         'https://www.thehelper.ca',
     ].filter(Boolean);
-    // also allow localhost dev origins
-    if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
-        return true;
     return allowed.includes(origin);
 }
+function isAllowedOrigin(req) {
+    return isOriginAllowed(req.headers.origin);
+}
+// Wasp applies its global CORS middleware to operation routes but NOT to custom
+// `api` routes, so cross-origin browser calls to /api/auth/* (dev: localhost ->
+// :3200; prod: thehelper.ca -> api.thehelper.ca) were blocked by the browser and
+// surfaced as "Failed to fetch". This middleware adds the missing CORS headers
+// and answers the preflight. Wired to the /api/auth namespace in main.wasp.
+export const authApiMiddlewareConfigFn = (middlewareConfig) => {
+    middlewareConfig.set('cors', (req, res, next) => {
+        const origin = req.headers.origin;
+        if (origin && isOriginAllowed(origin)) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Vary', 'Origin');
+            res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+        }
+        if (req.method === 'OPTIONS') {
+            res.sendStatus(204);
+            return;
+        }
+        next();
+    });
+    return middlewareConfig;
+};
 export const requestOtp = async (req, res, context) => {
     if (!isAllowedOrigin(req)) {
         res.status(403).json({ error: 'Forbidden.' });

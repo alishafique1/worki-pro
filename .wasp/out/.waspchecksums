@@ -1327,7 +1327,7 @@
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "90f895aae16670f31c75f93c8f2fab2357293521eeab673f7d2285f33251bfdc"
+        "4096f11d642d7bd3d7ecf8b1b3bc171df952995ddd4478473001f9e0b1198f16"
     ],
     [
         [
@@ -2732,16 +2732,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "3b8bf09e13fbc6ece4b305718cebc79d8dd737f8daeb05ccb2ac045ad8c726da"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -3049,7 +3049,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3329,7 +3329,7 @@
             "file",
             "server/src/routes/apis/index.ts"
         ],
-        "df062f0c9e4732947b0ba8d3839e24e6039b7d560607e79393a4a69ae29733c0"
+        "d9a2f07899dcd1a15478a90f5068540275e64e60494aa054d7de35dc646f52f7"
     ],
     [
         [
@@ -3357,7 +3357,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3820,6 +3820,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [
