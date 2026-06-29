@@ -1,14 +1,8 @@
 import { useState } from 'react';
 const CA_POSTAL = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
-const URGENCY_OPTIONS = [
-    { value: 'TODAY', label: 'Today', helper: 'ASAP — within the next few hours' },
-    { value: 'THIS_WEEK', label: 'This week', helper: 'Sometime in the next 7 days' },
-    { value: 'FLEXIBLE', label: 'Flexible', helper: 'No rush — pick a date that works' },
-];
 const inputClass = 'w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors';
 export default function StepDetails({ state, update, onBack, onNext }) {
     const [postalCode, setPostalCode] = useState(state.postalCode);
-    const [urgency, setUrgency] = useState(state.urgency);
     const [preferredTime, setPreferredTime] = useState(state.preferredTime);
     const [firstName, setFirstName] = useState(state.firstName);
     const [email, setEmail] = useState(state.email);
@@ -36,7 +30,7 @@ export default function StepDetails({ state, update, onBack, onNext }) {
         setError(null);
         update({
             postalCode: trimmedPostal,
-            urgency,
+            urgency: 'FLEXIBLE',
             preferredTime: preferredTime.trim(),
             firstName: firstName.trim(),
             email: email.trim().toLowerCase(),
@@ -97,25 +91,6 @@ export default function StepDetails({ state, update, onBack, onNext }) {
             We serve Milton, Oakville, Burlington and surrounding GTA areas.
           </p>
         </div>
-
-        {/* Urgency */}
-        <fieldset>
-          <legend className="block text-sm font-semibold text-[#475569] mb-2">
-            How soon do you need it?
-          </legend>
-          <div className="grid grid-cols-1 gap-2">
-            {URGENCY_OPTIONS.map(opt => {
-            const isSelected = urgency === opt.value;
-            return (<label key={opt.value} className={`flex items-start gap-3 border-2 rounded-xl px-4 py-3 cursor-pointer transition-colors ${isSelected ? 'border-[#2563EB] bg-[#EFF6FF]' : 'border-[#E2E8F0] bg-white hover:border-[#94A3B8]'}`}>
-                  <input type="radio" name="wiz-urgency" value={opt.value} checked={isSelected} onChange={() => { setUrgency(opt.value); setError(null); }} className="mt-1 accent-[#2563EB]"/>
-                  <span className="flex-1 min-w-0">
-                    <span className="block font-semibold text-sm text-[#0F172A]">{opt.label}</span>
-                    <span className="block text-xs text-[#475569]">{opt.helper}</span>
-                  </span>
-                </label>);
-        })}
-          </div>
-        </fieldset>
 
         {/* Preferred time */}
         <div>

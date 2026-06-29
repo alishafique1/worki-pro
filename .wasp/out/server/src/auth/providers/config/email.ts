@@ -40,7 +40,7 @@ const config: ProviderConfig = {
             fromField,
             clientRoute: '/email-verification',
             getVerificationEmailContent: _waspGetVerificationEmailContent,
-            isEmailAutoVerified: env.SKIP_EMAIL_VERIFICATION_IN_DEV,
+            isEmailAutoVerified: false,
         }));
         router.post('/signup', signupRoute);
 

@@ -1,62 +1,9 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { AirVent, ArrowRight, Award, BadgeCheck, BellRing, BriefcaseBusiness, CheckCircle2, Crown, Gift, Hammer, Home, MapPin, MessageSquare, Search, ShieldCheck, ShowerHead, Star, } from "lucide-react";
+import { Link } from "react-router";
+import { ArrowRight, BadgeCheck, BellRing, BriefcaseBusiness, Award, CheckCircle2, Crown, Gift, Home, MapPin, MessageSquare, ShieldCheck, Star, } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import TrustBadges from "./components/TrustBadges";
 import { CategoryCard, Container, CTASection, Footer, SectionHeader, } from "./marketplace/components";
 import { categories } from "./marketplace/content";
-// ── Popular services for search panel ───────────────────────────────────────
-const popularServices = [
-    { icon: <AirVent className="size-4"/>, name: "AC not cooling", category: "HVAC" },
-    { icon: <ShowerHead className="size-4"/>, name: "Leaky faucet", category: "Plumbing" },
-    { icon: <Hammer className="size-4"/>, name: "Fix a door", category: "Handyman" },
-];
-function SearchPanel() {
-    const [searchQuery, setSearchQuery] = useState("");
-    const navigate = useNavigate();
-    return (<div className="mt-4 overflow-hidden rounded-2xl border border-[#BFDBFE] bg-white shadow-[0_20px_60px_rgba(37,99,235,0.12)] transition-all duration-300">
-      <div className="p-4 sm:p-6">
-        <div className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
-          <Search className="size-4 text-[#93C5FD]"/>
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => {
-            if (e.key === "Enter") {
-                navigate(`/get-quotes?q=${encodeURIComponent(searchQuery)}`);
-            }
-        }} className="flex-1 bg-transparent text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none" placeholder={`e.g. "AC not cooling", "leaky faucet"…`}/>
-        </div>
-        <div className="mt-5">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
-            Browse Categories
-          </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {categories.map((cat) => (<Link key={cat.name} to={cat.comingSoon ? "/get-quotes" : `/services/${cat.slug ?? cat.name.toLowerCase().replace(/\s+/g, "-")}`}>
-                <div className="flex flex-col items-center gap-2 rounded-xl border border-[#E2E8F0] p-3 text-center transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] cursor-pointer">
-                  <span className="text-[#2563EB]">{cat.icon}</span>
-                  <span className="text-xs font-medium text-[#0F172A]">{cat.name}</span>
-                </div>
-              </Link>))}
-          </div>
-        </div>
-        <div className="mt-5">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#94A3B8]">
-            Popular Right Now
-          </p>
-          <div className="flex flex-col gap-2">
-            {popularServices.map((svc) => (<Link key={svc.name} to="/get-quotes" className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] px-4 py-3 transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF]">
-                <span className="flex size-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
-                  {svc.icon}
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-[#0F172A]">{svc.name}</p>
-                  <p className="text-xs text-[#94A3B8]">{svc.category}</p>
-                </div>
-                <ArrowRight className="size-4 text-[#BFDBFE]"/>
-              </Link>))}
-          </div>
-        </div>
-      </div>
-    </div>);
-}
 // ── Reward tiers ─────────────────────────────────────────────────────────────
 const rewardTiers = [
     {
@@ -109,7 +56,6 @@ const trustPillars = [
 ];
 // ── Main page ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
-    const [showSearch, setShowSearch] = useState(false);
     return (<>
       <PageSeo title="Book a Verified Home Pro | The Helper" description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)." ogTitle="Book a Verified Home Pro | The Helper" ogDescription="One request. Matched with a verified local pro quickly. No calling around. 100% free for homeowners. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)." canonicalPath="/" keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto" structuredData={createLocalBusinessSchema({
             name: "The Helper Home Services",
@@ -128,7 +74,7 @@ export default function LandingPage() {
             <div className="absolute -left-20 bottom-0 h-[400px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.05),transparent_60%)]"/>
           </div>
 
-          <Container className="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Container className="relative grid items-center gap-8 md:gap-12 md:grid-cols-2 lg:gap-16">
             {/* Left */}
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-1.5 text-xs font-semibold text-[#2563EB]">
@@ -139,7 +85,7 @@ export default function LandingPage() {
               <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
                 <span className="text-[#2563EB]">Book a verified pro</span>
                 <br />
-                <span className="whitespace-nowrap">in Milton, Oakville & Burlington.</span>
+                <span>in Milton, Oakville & Burlington.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
@@ -158,11 +104,7 @@ export default function LandingPage() {
                   Get matched now
                   <ArrowRight className="size-4"/>
                 </Link>
-                <button onClick={() => setShowSearch((v) => !v)} className="inline-flex items-center justify-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-6 py-3.5 text-sm font-semibold text-[#475569] transition duration-150 hover:border-[#BFDBFE] hover:bg-[#EFF6FF] hover:text-[#2563EB]">
-                  <Search className="size-4"/>
-                  Browse services
-                </button>
-              </div>
+                </div>
 
               {/* Trust micro-row */}
               <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-[#475569]">
@@ -174,7 +116,6 @@ export default function LandingPage() {
                   </span>))}
               </div>
 
-              {showSearch && <SearchPanel />}
             </div>
 
             {/* Right — Activity card */}
@@ -227,7 +168,7 @@ export default function LandingPage() {
         {/* ── SERVICES ──────────────────────────────────────────────────── */}
         <section id="services" className="bg-[#F8FAFC] py-16 sm:py-20">
           <Container>
-            <SectionHeader eyebrow="WHAT WE HELP WITH" title="Every home service. One platform." description="Handyman, HVAC, plumbing, and smart home — all from verified local pros in your neighbourhood. More services launching in Q1 2026."/>
+            <SectionHeader eyebrow="WHAT WE HELP WITH" title="Every home service. One platform." description="Handyman, HVAC, plumbing, and smart home — all from verified local pros in your neighbourhood. Event Management, IT Services, and Rental Services coming soon."/>
             {/* 4 live category cards */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {categories.filter((c) => c.live).map((category) => (<CategoryCard key={category.name} icon={category.icon} name={category.name} description={category.description} href={category.href ?? "/get-quotes"} imageUrl={category.imageUrl}/>))}
@@ -239,9 +180,6 @@ export default function LandingPage() {
                     <div className="flex size-11 items-center justify-center rounded-xl bg-white/70 text-[#94A3B8]">
                       {category.icon}
                     </div>
-                    <span className="rounded-full bg-white/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-[#64748B]">
-                      Coming Q1 2026
-                    </span>
                   </div>
                   <h3 className="mt-4 text-base font-semibold text-[#475569]">{category.name}</h3>
                   <p className="mt-1.5 text-sm leading-6 text-[#64748B]">{category.description}</p>
@@ -369,7 +307,7 @@ export default function LandingPage() {
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-2 lg:justify-start">
                   {[
-            { icon: <BriefcaseBusiness className="size-3.5"/>, text: "4 live categories · 3 more Q1 2026" },
+            { icon: <BriefcaseBusiness className="size-3.5"/>, text: "4 live categories · 3 more coming soon" },
             { icon: <MapPin className="size-3.5"/>, text: "GTA coverage" },
             { icon: <BadgeCheck className="size-3.5"/>, text: "Free to apply" },
         ].map(({ icon, text }) => (<span key={text} className="inline-flex items-center gap-1.5 rounded-full border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-1 text-xs font-semibold text-[#2563EB]">

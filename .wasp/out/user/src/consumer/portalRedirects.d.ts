@@ -1,9 +1,0 @@
-export declare const DashboardRedirect: () => import("react").JSX.Element;
-export declare const RequestServiceRedirect: () => import("react").JSX.Element;
-export declare const MyRequestsRedirect: () => import("react").JSX.Element;
-export declare const RewardsRedirect: () => import("react").JSX.Element;
-export declare const ReferralRedirect: () => import("react").JSX.Element;
-export declare const AnalyticsRedirect: () => import("react").JSX.Element;
-export declare const AccountProfileRedirect: () => import("react").JSX.Element;
-export declare const RequestDetailRedirect: () => import("react").JSX.Element;
-export declare const BookingRedirect: () => import("react").JSX.Element;
