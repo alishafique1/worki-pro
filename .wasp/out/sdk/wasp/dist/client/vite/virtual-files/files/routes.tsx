@@ -51,7 +51,6 @@ import RequestMessagesPage from './src/consumer/RequestMessagesPage'
 import SubmitReviewPage from './src/consumer/SubmitReviewPage'
 import ServiceAreaLandingPage from './src/landing-page/ServiceAreaLandingPage'
 import ProPublicPage from './src/consumer/ProPublicPage'
-import ProsPage from './src/consumer/ProsPage'
 import ProviderDashboardPage from './src/provider/DashboardPage'
 import ProviderLeadsPage from './src/provider/LeadsPage'
 import ProviderAppointmentsPage from './src/provider/AppointmentsPage'
@@ -124,7 +123,6 @@ export const routesMapping = {
   AccountRequestReviewRoute: createAuthRequiredPage(SubmitReviewPage),
   ServiceAreaRoute: ServiceAreaLandingPage,
   ProPublicRoute: ProPublicPage,
-  ProsRoute: ProsPage,
   ProviderDashboardRoute: createAuthRequiredPage(ProviderDashboardPage),
   ProviderLeadsRoute: createAuthRequiredPage(ProviderLeadsPage),
   ProviderAppointmentsRoute: createAuthRequiredPage(ProviderAppointmentsPage),

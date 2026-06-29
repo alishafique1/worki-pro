@@ -253,14 +253,6 @@ export declare const routes: {
             };
         }) => string;
     };
-    readonly ProsRoute: {
-        readonly to: "/pros/:slug";
-        readonly build: (options: OptionalRouteOptions & {
-            params: {
-                "slug": ParamValue;
-            };
-        }) => string;
-    };
     readonly ProviderDashboardRoute: {
         readonly to: "/provider/dashboard";
         readonly build: (options?: OptionalRouteOptions) => string;

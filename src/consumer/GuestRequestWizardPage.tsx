@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router'
 import { useAuth } from 'wasp/client/auth'
 import WizardProgress from './components/wizard/WizardProgress'
-import StepCategory from './components/wizard/StepCategory'
+import StepCategory, { HARDCODED_CATEGORIES } from './components/wizard/StepCategory'
 import StepQualifiers from './components/wizard/StepQualifiers'
 import StepDetails from './components/wizard/StepDetails'
 import StepOtp from './components/wizard/StepOtp'
@@ -34,7 +34,21 @@ export default function GuestRequestWizardPage() {
   const navigate = useNavigate()
   const { data: user, isLoading: authLoading } = useAuth()
 
-  const [step, setStep] = useState(1)
+  // Resolve known category from ?slug or ?category URL params.
+  // Only treat it as "preselected" when it matches a wizard category exactly.
+  const slugParam = searchParams.get('slug')
+  const categoryParam = searchParams.get('category')
+  const knownCat = HARDCODED_CATEGORIES.find(
+    c => c.slug === slugParam || c.slug === categoryParam || c.id === categoryParam,
+  ) ?? null
+
+  // Decode ?problem — URLSearchParams.get() already percent-decodes, but be explicit.
+  const problemParam = searchParams.get('problem')
+  const decodedProblem = problemParam ? decodeURIComponent(problemParam) : null
+
+  // If a known category is preselected from the URL, skip directly to step 2 (Qualifiers).
+  // Unknown / missing category keeps step 1 (category picker) as default.
+  const [step, setStep] = useState(knownCat ? 2 : 1)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -45,15 +59,15 @@ export default function GuestRequestWizardPage() {
   const [pendingSubmit, setPendingSubmit] = useState(false)
 
   const [state, setState] = useState<WizardState>({
-    categoryId: searchParams.get('category'),
-    categorySlug: searchParams.get('slug'),
-    categoryName: null,
+    categoryId: knownCat ? knownCat.id : null,
+    categorySlug: knownCat ? knownCat.slug : null,
+    categoryName: knownCat ? knownCat.name : null,
     postalCode: searchParams.get('postal') ?? '',
     description: '',
     urgency: 'FLEXIBLE',
     preferredTime: '',
     qualifierAnswers: {},
-    detailChips: [],
+    detailChips: decodedProblem ? [decodedProblem] : [],
     firstName: '',
     email: '',
     phone: '',

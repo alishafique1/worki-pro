@@ -46,31 +46,12 @@ export const updateIsUserAdminById: UpdateIsUserAdminById<
   });
 };
 
-// ── Validation helpers (mirrored from src/auth/onboarding/validation.ts) ─────
-const CANADIAN_PHONE = /^(\+1)?[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$/;
-const CA_POSTAL = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
-const GTA_POSTAL_PREFIX = /^[LM]/i;
-
 const updateUserProfileInputSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
+  firstName: z.string().optional(),
   lastName: z.string().optional(),
-  phone: z
-    .string()
-    .min(1, "Phone number is required")
-    .refine((v) => CANADIAN_PHONE.test(v.trim()), {
-      message: "Enter a valid Canadian phone number (e.g. (416) 555-0100).",
-    }),
-  postalCode: z
-    .string()
-    .min(1, "Postal code is required")
-    .refine((v) => CA_POSTAL.test(v.trim()), {
-      message: "Enter a valid Canadian postal code (e.g. L9T 2X5).",
-    })
-    .refine((v) => GTA_POSTAL_PREFIX.test(v.trim()), {
-      message:
-        "We currently serve the GTA (postal codes starting with L or M).",
-    }),
-  smsConsent: z.boolean(),
+  phone: z.string().optional(),
+  postalCode: z.string().optional(),
+  username: z.string().optional(),
 });
 
 type UpdateUserProfileInput = z.infer<typeof updateUserProfileInputSchema>;
@@ -79,30 +60,21 @@ export const updateUserProfile: UpdateUserProfile<
   UpdateUserProfileInput,
   User
 > = async (rawArgs, context) => {
+  const { firstName, lastName, phone, postalCode, username } =
+    ensureArgsSchemaOrThrowHttpError(updateUserProfileInputSchema, rawArgs);
+
   if (!context.user) {
     throw new HttpError(401, "Authentication required");
   }
 
-  const { firstName, lastName, phone, postalCode, smsConsent } =
-    ensureArgsSchemaOrThrowHttpError(updateUserProfileInputSchema, rawArgs);
-
-  // Only stamp smsConsentAt when the user is newly opting in
-  const existingUser = await context.entities.User.findUnique({
-    where: { id: context.user.id },
-    select: { smsConsent: true },
-  });
-  const smsConsentAt =
-    smsConsent && !existingUser?.smsConsent ? new Date() : undefined;
-
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
-      firstName,
+      ...(firstName !== undefined && { firstName }),
       ...(lastName !== undefined && { lastName }),
-      phone,
-      postalCode,
-      smsConsent,
-      ...(smsConsentAt !== undefined && { smsConsentAt }),
+      ...(phone !== undefined && { phone }),
+      ...(postalCode !== undefined && { postalCode }),
+      ...(username !== undefined && { username }),
     },
   });
 };

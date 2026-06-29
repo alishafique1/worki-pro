@@ -206,12 +206,12 @@ const AREA_DATA: Record<string, AreaData> = {
 };
 
 const SERVICES = [
-  { slug: 'hvac',             label: 'HVAC',            icon: <Zap className="size-7" />, color: 'blue',    desc: 'Furnace, AC, heat pumps & air quality' },
-  { slug: 'handyman',         label: 'Handyman',        icon: <Wrench className="size-7" />, color: 'amber',   desc: 'Mounting, repairs, assembly & painting' },
-  { slug: 'plumbing',         label: 'Plumbing',        icon: <Target className="size-7" />, color: 'cyan',    desc: 'Leaks, drains, fixtures & waterlines' },
-  { slug: 'electrical',       label: 'Electrical',      icon: <Lightbulb className="size-7" />, color: 'yellow',  desc: 'Panel upgrades, outlets, fixtures & EV' },
-  { slug: 'appliance-repair', label: 'Appliance Repair',icon: <Home className="size-7" />, color: 'emerald', desc: 'Fridge, washer, stove & dishwasher repair' },
-  { slug: 'smart-home',       label: 'Smart Home',      icon: <Smartphone className="size-7" />, color: 'purple',  desc: 'Cameras, thermostats, locks & automation' },
+  { slug: 'hvac',             categoryId: 'hvac',             label: 'HVAC',            icon: <Zap className="size-7" />, color: 'blue',    desc: 'Furnace, AC, heat pumps & air quality' },
+  { slug: 'handyman',         categoryId: 'handyman',         label: 'Handyman',        icon: <Wrench className="size-7" />, color: 'amber',   desc: 'Mounting, repairs, assembly & painting' },
+  { slug: 'plumbing',         categoryId: 'plumbing',         label: 'Plumbing',        icon: <Target className="size-7" />, color: 'cyan',    desc: 'Leaks, drains, fixtures & waterlines' },
+  { slug: 'electrical',       categoryId: 'electrical',       label: 'Electrical',      icon: <Lightbulb className="size-7" />, color: 'yellow',  desc: 'Panel upgrades, outlets, fixtures & EV' },
+  { slug: 'appliance-repair', categoryId: 'appliance-repair', label: 'Appliance Repair',icon: <Home className="size-7" />, color: 'emerald', desc: 'Fridge, washer, stove & dishwasher repair' },
+  { slug: 'smart-home',       categoryId: 'smarthome',        label: 'Smart Home',      icon: <Smartphone className="size-7" />, color: 'purple',  desc: 'Cameras, thermostats, locks & automation' },
 ];
 
 const SERVICE_COLOR_CLASSES: Record<string, { badge: string; icon: string }> = {
@@ -427,12 +427,12 @@ export default function AreaLandingPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map(({ slug, label, icon, color, desc }) => {
+            {SERVICES.map(({ slug, categoryId, label, icon, color, desc }) => {
               const c = SERVICE_COLOR_CLASSES[color];
               return (
                 <Link
                   key={slug}
-                  to={`/get-quotes?service=${slug}`}
+                  to={`/get-quotes?category=${categoryId}&slug=${slug}`}
                   className="group p-8 bg-white rounded-[32px] border border-[#E2E8F0] hover:border-[#BFDBFE] transition-all hover:-translate-y-1 hover:shadow-xl text-left"
                 >
                   <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl border mb-5 ${c.badge}`}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { WizardState } from '../../GuestRequestWizardPage'
 
 type Props = {
@@ -6,38 +6,28 @@ type Props = {
   update: (p: Partial<WizardState>) => void
   onBack: () => void
   onNext: () => void
-  /** When true, shows "From your account" hint on prefilled fields. */
-  prefilled?: boolean
 }
 
 const CA_POSTAL = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
 
+const URGENCY_OPTIONS: { value: WizardState['urgency']; label: string; helper: string }[] = [
+  { value: 'TODAY', label: 'Today', helper: 'ASAP — within the next few hours' },
+  { value: 'THIS_WEEK', label: 'This week', helper: 'Sometime in the next 7 days' },
+  { value: 'FLEXIBLE', label: 'Flexible', helper: 'No rush — pick a date that works' },
+]
+
 const inputClass =
   'w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] transition-colors'
 
-export default function StepDetails({ state, update, onBack, onNext, prefilled }: Props) {
+export default function StepDetails({ state, update, onBack, onNext }: Props) {
   const [postalCode, setPostalCode] = useState(state.postalCode)
+  const [urgency, setUrgency] = useState<WizardState['urgency']>(state.urgency)
   const [preferredTime, setPreferredTime] = useState(state.preferredTime)
   const [firstName, setFirstName] = useState(state.firstName)
   const [email, setEmail] = useState(state.email)
   const [phone, setPhone] = useState(state.phone)
   const [smsConsent, setSmsConsent] = useState(state.smsConsent)
   const [error, setError] = useState<string | null>(null)
-
-  // Sync local state when the parent prefills values (e.g. from the logged-in user account).
-  // Using guards so a user's own typing is never clobbered by a stale parent value.
-  useEffect(() => {
-    if (state.firstName) setFirstName(state.firstName)
-  }, [state.firstName])
-  useEffect(() => {
-    if (state.email) setEmail(state.email)
-  }, [state.email])
-  useEffect(() => {
-    if (state.phone) setPhone(state.phone)
-  }, [state.phone])
-  useEffect(() => {
-    if (state.postalCode) setPostalCode(state.postalCode)
-  }, [state.postalCode])
 
   function handleNext() {
     const trimmedPostal = postalCode.trim().toUpperCase()
@@ -49,7 +39,7 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
     setError(null)
     update({
       postalCode: trimmedPostal,
-      urgency: 'FLEXIBLE',
+      urgency,
       preferredTime: preferredTime.trim(),
       firstName: firstName.trim(),
       email: email.trim().toLowerCase(),
@@ -71,9 +61,8 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
       <div className="space-y-4">
         {/* Name */}
         <div>
-          <label className="flex items-center justify-between text-sm font-semibold text-[#475569] mb-1.5">
-            <span>Your name <span className="text-red-500">*</span></span>
-            {prefilled && firstName && <span className="text-xs font-normal text-[#94A3B8]">From your account</span>}
+          <label className="block text-sm font-semibold text-[#475569] mb-1.5">
+            Your name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -86,9 +75,8 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
 
         {/* Email */}
         <div>
-          <label className="flex items-center justify-between text-sm font-semibold text-[#475569] mb-1.5">
-            <span>Email <span className="text-red-500">*</span></span>
-            {prefilled && email && <span className="text-xs font-normal text-[#94A3B8]">From your account</span>}
+          <label className="block text-sm font-semibold text-[#475569] mb-1.5">
+            Email <span className="text-red-500">*</span>
           </label>
           <input
             type="email"
@@ -101,9 +89,8 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
 
         {/* Phone */}
         <div>
-          <label className="flex items-center justify-between text-sm font-semibold text-[#475569] mb-1.5">
-            <span>Phone <span className="font-normal opacity-60">(optional — for faster response)</span></span>
-            {prefilled && phone && <span className="text-xs font-normal text-[#94A3B8]">From your account</span>}
+          <label className="block text-sm font-semibold text-[#475569] mb-1.5">
+            Phone <span className="font-normal opacity-60">(optional — for faster response)</span>
           </label>
           <input
             type="tel"
@@ -133,9 +120,8 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
 
         {/* Postal code */}
         <div>
-          <label htmlFor="wiz-postal" className="flex items-center justify-between text-sm font-semibold text-[#475569] mb-1.5">
-            <span>Your area <span className="text-red-500">*</span></span>
-            {prefilled && postalCode && <span className="text-xs font-normal text-[#94A3B8]">From your account</span>}
+          <label htmlFor="wiz-postal" className="block text-sm font-semibold text-[#475569] mb-1.5">
+            Your area <span className="text-red-500">*</span>
           </label>
           <input
             id="wiz-postal"
@@ -152,6 +138,39 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
             We serve Milton, Oakville, Burlington and surrounding GTA areas.
           </p>
         </div>
+
+        {/* Urgency */}
+        <fieldset>
+          <legend className="block text-sm font-semibold text-[#475569] mb-2">
+            How soon do you need it?
+          </legend>
+          <div className="grid grid-cols-1 gap-2">
+            {URGENCY_OPTIONS.map(opt => {
+              const isSelected = urgency === opt.value
+              return (
+                <label
+                  key={opt.value}
+                  className={`flex items-start gap-3 border-2 rounded-xl px-4 py-3 cursor-pointer transition-colors ${
+                    isSelected ? 'border-[#2563EB] bg-[#EFF6FF]' : 'border-[#E2E8F0] bg-white hover:border-[#94A3B8]'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="wiz-urgency"
+                    value={opt.value}
+                    checked={isSelected}
+                    onChange={() => { setUrgency(opt.value); setError(null) }}
+                    className="mt-1 accent-[#2563EB]"
+                  />
+                  <span className="flex-1 min-w-0">
+                    <span className="block font-semibold text-sm text-[#0F172A]">{opt.label}</span>
+                    <span className="block text-xs text-[#475569]">{opt.helper}</span>
+                  </span>
+                </label>
+              )
+            })}
+          </div>
+        </fieldset>
 
         {/* Preferred time */}
         <div>
@@ -185,7 +204,7 @@ export default function StepDetails({ state, update, onBack, onNext, prefilled }
           onClick={handleNext}
           className="px-8 py-3 bg-[#2563EB] text-white font-bold rounded-full hover:bg-[#1D4ED8] transition-colors"
         >
-          {prefilled ? 'Submit request →' : hasPhone ? 'Send code →' : 'Submit request →'}
+          {hasPhone ? 'Send code →' : 'Submit request →'}
         </button>
       </div>
     </div>

@@ -26,7 +26,6 @@ model User {
   smsMarketingConsentAt         DateTime?
   smsMarketingConsentIp         String?
   emailConsent                  Boolean              @default(false)
-  onboardingCompletedAt         DateTime?
   paymentProcessorUserId        String?              @unique
   lemonSqueezyCustomerPortalUrl String?
   subscriptionStatus            String?

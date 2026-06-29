@@ -18,14 +18,14 @@
             "dir",
             "db/migrations/"
         ],
-        "c8368e8c10b4121b68b5af52c931fe7b584b97520f5db69d266240326cf19a46"
+        "a5e95c23210fa8fb712797c50222b0369d18ad1b5ceed0817edfbee5499e0444"
     ],
     [
         [
             "file",
             "db/schema.prisma"
         ],
-        "c260ccd59885734d16a1facb7b7a20e2550bc750c5109b697cefd1389f29d1cb"
+        "a84ec96a6d677f83e3f957747468da4c3e43a83567c5ef7ffcd5efac3bda764c"
     ],
     [
         [
@@ -529,7 +529,7 @@
             "file",
             "sdk/wasp/client/router/index.ts"
         ],
-        "82456ced7710d1a109623afcb2d76db148b2e5678cf37a14194e1fab73abf93d"
+        "87f38394a403d364b16d35ef5ebb90e963e7653975c843104b326b72c18b8883"
     ],
     [
         [
@@ -655,7 +655,7 @@
             "file",
             "sdk/wasp/client/vite/virtual-files/files/routes.tsx"
         ],
-        "1541991f938230ad3bcf4f42e5923cdfd4ace2f70874b76f45e7ed7d2048796d"
+        "1d3821b63572c3faa2609a7d3858495f56a5031d332cfc0dc802cf4d70927271"
     ],
     [
         [
@@ -1222,21 +1222,21 @@
             "file",
             "sdk/wasp/src/auth/AuthPageLayout.tsx"
         ],
-        "61df42ab89638bac0bec5b5317f4ef48f804e9f7ac4746217861d695bd25f3fb"
+        "ab79b929c035ecb164d20d6bffd2a9fe67b066dda1cfe92ec94922f3a0272bd5"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/LoginPage.tsx"
         ],
-        "872ab2526f4c04bb4fc370521f0bce7397af89dd5c02e441599390041b8dcab1"
+        "6cad2aab4d6e7d2154b75d4089cea1cdca9abc0b7dc49121efd6e6ca1d1eb6ae"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/SignupPage.tsx"
         ],
-        "2d356286515b47b951a9dd0ae384b0ecf07180d5998c319d9031259a1df7c4e4"
+        "e454417013255878a450b5591829fc46aa4efdfa7c2bd6693be3fcfd7116b9fe"
     ],
     [
         [
@@ -1271,7 +1271,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "4a67ac3cf92d041d70c7653276ff80e92e1f2802349acdfaec94ef9160ec0b7c"
+        "6533ee77a7d9ad3186a134f22af6c82b202e9d456d7a81c961e257a1d4cbca07"
     ],
     [
         [
@@ -1320,14 +1320,14 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "1c30f33f03f6efd3e778310c8dc286f1f524e8e2c2d06730fd711271d6eeed17"
+        "d9d3d98c7a8d37c51b4bf1baeb601ca27a61643da963cf345097572b5b24e45c"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "930e5bdceb87275adbee6d5fe6afaea88ac5f64e22aebdc0c1ab9f6a0c7a83d2"
+        "d87236d7d00d906e6ac68167c0948db74f38cb8ce62ae9db8776daf51229c78e"
     ],
     [
         [
@@ -1397,7 +1397,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "70f565bad59b22dc684a7d3beb4164fb7fa188e6a93c836cf366f9d40a2aac95"
+        "996137c0723d98bd84d5fa520f5e7fd27420028bcdcdeaf92aa5fdc7643630fa"
     ],
     [
         [
@@ -1418,7 +1418,7 @@
             "file",
             "sdk/wasp/src/client/components/ProviderCard.tsx"
         ],
-        "6033e871a1281d9be5ced12fae9f80a39023a12e7348fffbb6d08cfcf8682902"
+        "d05564f6b231e77e3af8adba0519149477067c7a654649462c18861013054e90"
     ],
     [
         [
@@ -1887,7 +1887,7 @@
             "file",
             "sdk/wasp/src/consumer/AnalyticsPage.tsx"
         ],
-        "4fa02f89449452bd3a0ede8a8fa571f3a3d66eb148279613e3811b01980c62a8"
+        "f7978e651f236c8b13cfc3278a1ed8d2be417a1aefbaad812d29c0e0550b90fe"
     ],
     [
         [
@@ -1901,14 +1901,14 @@
             "file",
             "sdk/wasp/src/consumer/ContactPage.tsx"
         ],
-        "129e3678fabda24997bdc22ea8380733f1c8442b3fe5e9c6c679a3af36311a2c"
+        "794410e3577f4b4606be00e6b38c472e4f9a8ab151cc6a8692185f0e52169c6c"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/DashboardPage.tsx"
         ],
-        "1fe9f48dbe53055d0c883cc5d6abc1b10fc8e69c40d58d58222e916b19cdf012"
+        "f68d3baf30538ad0d9353857a1299b0902cb9dba653ccb52d778f408262108ca"
     ],
     [
         [
@@ -1922,7 +1922,7 @@
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "991c94491f7288f471566e87c3b81b396e2c47d9d3f3800db7846d5626158f7c"
+        "b2acc3c03db5b833bd3077120c93d9b411cce00cd978825186ee224d1c72a9c7"
     ],
     [
         [
@@ -1950,14 +1950,7 @@
             "file",
             "sdk/wasp/src/consumer/ProPublicPage.tsx"
         ],
-        "28c80d023278e9076de0840aafb566f7ce274ac7fa6332c001d66d207c4626f3"
-    ],
-    [
-        [
-            "file",
-            "sdk/wasp/src/consumer/ProsPage.tsx"
-        ],
-        "cd0b74320dea9948f6f645266a7b268bf650feff6e99b2e4f768472f92c603a2"
+        "f411cf4114dbc8b3eea3cedf63c8a86cb36139a9c2807d45462cf6f697cec1f1"
     ],
     [
         [
@@ -1971,7 +1964,7 @@
             "file",
             "sdk/wasp/src/consumer/ProviderRedirectPage.tsx"
         ],
-        "2a75b18f2f2a087add8030c4f8e51c422da817877169bf2e0598e0ac94f5171f"
+        "7ca4e6dab12bcacec85744ca1fe3204502d4641e0e6a99f51a4710c3e58c27c0"
     ],
     [
         [
@@ -1985,7 +1978,7 @@
             "file",
             "sdk/wasp/src/consumer/RequestDetailPage.tsx"
         ],
-        "b29f25f1fd0a7bd676605743ad30a74c95110c0cb83fca1d441a848610e0cb6b"
+        "7285cc0b3e4cd397d152b13d631c4e60db69700241edd91d949cec3f2d9636fd"
     ],
     [
         [
@@ -2046,16 +2039,23 @@
     [
         [
             "file",
+            "sdk/wasp/src/consumer/components/wizard/StepContact.tsx"
+        ],
+        "580b567c718eea1676ee0534c0bb7dda70c68399b2544fd05aa9b094b5d520c3"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/consumer/components/wizard/StepDetails.tsx"
         ],
-        "eea3a1576edb261b9cffa3fc6e29c203659247e72f45704e97b06eb6bba65317"
+        "b4f699cefb7860f786b39f86e15cd42a6fd82ce9304b85e1816597a89a063629"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/components/wizard/StepOtp.tsx"
         ],
-        "d129e55086f561d2850b5c1c5989c93592994dda2682cd26dba271b02fafd6bc"
+        "e809c60e16c3440501234a0dee73efde169a55ae002f1184c5f8fd6699bd4d7c"
     ],
     [
         [
@@ -2083,7 +2083,7 @@
             "file",
             "sdk/wasp/src/consumer/operations.ts"
         ],
-        "c73ad48da14236b48ad13858fe587da19ee983ecd58ada7c9d95748a635e85fa"
+        "c214bfe1b5a6931c0cc1ebd6e3f54d59d51b82d46e6795493f15497913259f33"
     ],
     [
         [
@@ -2104,7 +2104,7 @@
             "file",
             "sdk/wasp/src/file-upload/fileUploading.ts"
         ],
-        "037593d7dbfbfbd2b7c931e7a0fcdd001d87cde6b18d439e9bc2491e9f85efc2"
+        "8f0eef143b71bcbf9fde39feb30ece8830bec4a2fd56ce1d786e7f6b21e520c5"
     ],
     [
         [
@@ -2139,14 +2139,14 @@
             "file",
             "sdk/wasp/src/landing-page/AreaLandingPage.tsx"
         ],
-        "2738717f30171e4cdd5fae5f6d9ac4e65f75de112a1fbd4ae38fa51417f874db"
+        "2f80132a828fafdd620d7aa0abd7e925f94c9017b149ec7babff5275746d360c"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/CategoryLandingPage.tsx"
         ],
-        "11ae64ec9109f160fa80cc936d989d5f80c50ce5f0550436898dd0f12a51549e"
+        "3b02f40f92f5b9bae9691de52b539ae797cb8e4b40553fb6823580777b14e471"
     ],
     [
         [
@@ -2188,7 +2188,7 @@
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "1d1fceb2b33aa564326cdd8c88dd1ae1138a351854dafc90fe3a6fbc6975593a"
+        "66ad8118029787b2fa5ebd938afb9497894a5d9dd31e52602800c11ef00c21a4"
     ],
     [
         [
@@ -2202,7 +2202,7 @@
             "file",
             "sdk/wasp/src/landing-page/ServiceAreaLandingPage.tsx"
         ],
-        "a7db68e6a55c3ec873aa5ffe6b73ea9531a43c6cdb4123b7dd8c4e9fe38fceb9"
+        "bc0f5fdeeed1cec94f1584157657c0ddcb3e325545f67296c6b1f41162e7df31"
     ],
     [
         [
@@ -2342,7 +2342,7 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
-        "76390e87eee48c3e1027852732a2676bccc28a80da9421eb13cb810ba8927e86"
+        "ac5c42585ac099148ebf83e145647b542e56b1ac037c2d0adc7a1aa2a85803df"
     ],
     [
         [
@@ -2517,7 +2517,7 @@
             "file",
             "sdk/wasp/src/provider/ProfilePage.tsx"
         ],
-        "3b628ede0da9aebdb9db64850351175db521cf68fe55c24ef432137d594951b6"
+        "eeafd7017f0261f8b56d0e62adcd0905fce5e4576a487789411b1aeb56d4db44"
     ],
     [
         [
@@ -2566,14 +2566,14 @@
             "file",
             "sdk/wasp/src/server/scripts/dbSeeds.ts"
         ],
-        "33654299a7b5befc4bf1b62f1715c3c9428e5b6f2c4145e35cedb5b381e01e2d"
+        "47832462058317a06a565ee2dca3b366e6be087572daf6abc019dfabe02172d9"
     ],
     [
         [
             "file",
             "sdk/wasp/src/server/scripts/seedRealProviders.ts"
         ],
-        "7b8c092d383eb7222ea538cc3066859ab0fed5d753356d008c50ef29cf7f5083"
+        "99334bb92176ad0e2b95bd978ec20a17831f655193b1fd3574029c4150cdcb19"
     ],
     [
         [
@@ -2664,7 +2664,7 @@
             "file",
             "sdk/wasp/src/shared/useRoleGuard.ts"
         ],
-        "8ab7dba52337f2bec26e7930afbc40ba315d0b716c133426de93fc7f40ac7de0"
+        "e2d19f1dd39d6e82731d76efa3f6bb9d8f580f11407c3eeb7da64de4d68facea"
     ],
     [
         [
@@ -2678,7 +2678,7 @@
             "file",
             "sdk/wasp/src/user/AccountPage.tsx"
         ],
-        "6f6800f5c94049ed5e20fbca6fa4f900d1731517a7eb4ced67e7b327772d3ce6"
+        "3dcf5b8aeb1c88626bc5c78c5010a6b216d09a51a723caad5380f40ea6a0aea4"
     ],
     [
         [
@@ -2706,7 +2706,7 @@
             "file",
             "sdk/wasp/src/user/operations.ts"
         ],
-        "01c59517e1d74ccf825625b4f071e033873e40062f1c21f2ca4415688cb0cb4b"
+        "18a7e9b35afce55a31a572c5e3d4ddea13787468f09303855fbbec28144eaca1"
     ],
     [
         [
@@ -2767,16 +2767,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "8e6b15a38627da530b91516e03eb5342f3b14957693cfa858cecfdc7d2e0b83a"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -3084,7 +3084,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3357,7 +3357,7 @@
             "file",
             "server/src/routes/apis/index.ts"
         ],
-        "8b1d0bfb51ddc2a409e67060e3215023e4164e16476c88b7304a36623be594fe"
+        "df062f0c9e4732947b0ba8d3839e24e6039b7d560607e79393a4a69ae29733c0"
     ],
     [
         [
@@ -3385,7 +3385,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3841,6 +3841,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

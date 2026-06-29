@@ -63,7 +63,6 @@ export const completeOnboarding: CompleteOnboarding<
           role,
           smsConsent: smsConsent ?? false,
           smsConsentAt: smsConsent ? new Date() : undefined,
-          onboardingCompletedAt: new Date(),
         },
       });
 

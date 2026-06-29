@@ -498,12 +498,6 @@ export async function seedMockUsers(prisma) {
             ],
         });
     }
-    // Seeded users are fully-formed accounts → mark onboarding complete so the
-    // onboarding guard (which now keys on onboardingCompletedAt) doesn't loop them.
-    await prisma.user.updateMany({
-        where: { onboardingCompletedAt: null, firstName: { not: null } },
-        data: { onboardingCompletedAt: new Date() },
-    });
     console.log("✓ GTA test accounts and sample data seeded successfully.");
     console.log("  consumer@thehelper.ca  / HelperTest123  (Sarah Chen, Milton)");
     console.log("  consumer2@thehelper.ca / HelperTest123  (James Kowalski, Oakville)");

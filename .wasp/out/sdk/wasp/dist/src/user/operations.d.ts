@@ -15,23 +15,23 @@ declare const updateUserAdminByIdInputSchema: z.ZodObject<{
 type UpdateUserAdminByIdInput = z.infer<typeof updateUserAdminByIdInputSchema>;
 export declare const updateIsUserAdminById: UpdateIsUserAdminById<UpdateUserAdminByIdInput, User>;
 declare const updateUserProfileInputSchema: z.ZodObject<{
-    firstName: z.ZodString;
+    firstName: z.ZodOptional<z.ZodString>;
     lastName: z.ZodOptional<z.ZodString>;
-    phone: z.ZodEffects<z.ZodString, string, string>;
-    postalCode: z.ZodEffects<z.ZodEffects<z.ZodString, string, string>, string, string>;
-    smsConsent: z.ZodBoolean;
+    phone: z.ZodOptional<z.ZodString>;
+    postalCode: z.ZodOptional<z.ZodString>;
+    username: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    firstName: string;
-    phone: string;
-    postalCode: string;
-    smsConsent: boolean;
+    username?: string | undefined;
+    firstName?: string | undefined;
     lastName?: string | undefined;
+    phone?: string | undefined;
+    postalCode?: string | undefined;
 }, {
-    firstName: string;
-    phone: string;
-    postalCode: string;
-    smsConsent: boolean;
+    username?: string | undefined;
+    firstName?: string | undefined;
     lastName?: string | undefined;
+    phone?: string | undefined;
+    postalCode?: string | undefined;
 }>;
 type UpdateUserProfileInput = z.infer<typeof updateUserProfileInputSchema>;
 export declare const updateUserProfile: UpdateUserProfile<UpdateUserProfileInput, User>;

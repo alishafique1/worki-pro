@@ -12,7 +12,7 @@ import { isValidCanadianPhone, isValidCanadianPostal, isGtaPostal } from './vali
 const CONSUMER_STEPS = ['Your role', 'Your profile', 'Interests'];
 const PROVIDER_STEPS = ['Your role', 'Your profile', 'Business', 'Services'];
 export default function OnboardingPage() {
-    const { data: user, isLoading: authLoading } = useAuth();
+    const { data: user } = useAuth();
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,25 +55,8 @@ export default function OnboardingPage() {
         sessionStorage.setItem('onboardingForm', JSON.stringify(form));
         sessionStorage.setItem('onboardingStep', String(step));
     }, [form, step]);
-    // Prefill form from the user record once auth resolves.
-    // Handles the case where a user completed a guest request before signing up,
-    // so firstName/phone/postalCode were already stored on their account.
-    // Only fills empty fields — never overwrites what the user has already typed.
     useEffect(() => {
-        if (!user)
-            return;
-        setForm(prev => ({
-            ...prev,
-            firstName: prev.firstName || (user.firstName ?? ''),
-            phone: prev.phone || (user.phone ?? ''),
-            postalCode: prev.postalCode || (user.postalCode ?? ''),
-        }));
-    }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
-    // Redirect users who have already completed onboarding.
-    // Guards against stale cache: we rely on onboardingCompletedAt (set server-side in
-    // completeOnboarding) rather than firstName, which could be set by non-onboarding paths.
-    useEffect(() => {
-        if (user && user.onboardingCompletedAt && !done) {
+        if (user && user.firstName && !done) {
             sessionStorage.removeItem('onboardingForm');
             sessionStorage.removeItem('onboardingStep');
             navigate(getDashboardPath(user.role ?? null));
@@ -166,17 +149,10 @@ export default function OnboardingPage() {
         }
         const ok = await submitOnboarding();
         if (ok) {
-            if (isProvider) {
-                // Hard-navigate so the browser discards the React Query cache and re-fetches
-                // useAuth from the server. wasp/client/operations exports queryClientInitialized
-                // (a PRIVATE Promise<QueryClient>), not a public getQueryClient() — using it
-                // directly is fragile. window.location.href guarantees useRoleGuard on the
-                // provider dashboard sees role=PROVIDER rather than the stale CONSUMER value.
-                window.location.href = '/provider/dashboard';
-            }
-            else {
+            if (isProvider)
+                navigate('/provider/dashboard');
+            else
                 setDone(true);
-            }
         }
     }
     function toggleInterest(id) {
@@ -196,13 +172,6 @@ export default function OnboardingPage() {
                 : [...prev.serviceCategoryIds, id],
         }));
         setError(null);
-    }
-    // ── Loading / redirect gate ─────────────────────────────────────────────────
-    // Show a blank canvas while auth is resolving, OR while waiting for the
-    // useEffect above to fire its navigate() after detecting onboardingCompletedAt.
-    // This prevents the full onboarding shell from flashing before the redirect runs.
-    if (authLoading || (!done && user?.onboardingCompletedAt != null)) {
-        return <div className="min-h-screen bg-[#F8FAFC]"/>;
     }
     // ── Success screen ───────────────────────────────────────────────────────────
     if (done) {

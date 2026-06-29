@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useQuery, getMyRequests, getMyRewardAccount, } from "wasp/client/operations";
 import { useAuth } from "wasp/client/auth";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link } from "react-router";
 import { useRoleGuard } from '../shared/useRoleGuard';
-import { CalendarClock, CheckCircle2, Clock3, ShieldCheck, Wrench, TrendingUp, TrendingDown, Gift, Star, ArrowRight, Zap, Calendar, Inbox, Sparkles, Users, X, } from "lucide-react";
+import { CalendarClock, CheckCircle2, Clock3, ShieldCheck, Wrench, TrendingUp, TrendingDown, Gift, Star, ArrowRight, Zap, Calendar, Inbox, Sparkles, Users, } from "lucide-react";
 const urgencyConfig = {
     EMERGENCY: { label: "Emergency", className: "bg-red-50 text-red-600 border border-red-200", icon: <Zap className="size-3"/> },
     URGENT: { label: "Urgent", className: "bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]", icon: <Clock3 className="size-3"/> },
@@ -33,31 +33,11 @@ const filterPills = [
 export default function DashboardPage() {
     useRoleGuard('CONSUMER');
     const { data: user, isLoading: authLoading } = useAuth();
-    const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
-    // Capture newRequest param in state/ref so it survives the URL clear.
-    const newRequestIdFromParam = searchParams.get('newRequest');
-    const [showSuccessBanner, setShowSuccessBanner] = useState(!!newRequestIdFromParam);
-    const [highlightedId, setHighlightedId] = useState(newRequestIdFromParam);
-    const cardRefs = useRef({});
-    // Clear the URL param after the first paint (state already has the ID).
-    useEffect(() => {
-        if (newRequestIdFromParam) {
-            navigate('/account', { replace: true });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     if (authLoading)
         return <div className="min-h-screen bg-[#F8FAFC]"/>;
     const { data: requests, isLoading: requestsLoading, error: requestsError, } = useQuery(getMyRequests);
     const { data: rewards, isLoading: rewardsLoading, error: rewardsError, } = useQuery(getMyRewardAccount);
     const [filter, setFilter] = useState("ALL");
-    // Scroll to the newly-created request card once the request list loads.
-    useEffect(() => {
-        if (highlightedId && cardRefs.current[highlightedId]) {
-            cardRefs.current[highlightedId]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }, [highlightedId, requests]);
     const firstName = user?.firstName || "there";
     const totalCount = requests?.length ?? 0;
     const inProgressCount = requests?.filter((r) => !COMPLETED_OR_DEAD.includes(r.status)).length ?? 0;
@@ -96,20 +76,6 @@ export default function DashboardPage() {
             <Wrench className="size-4"/> Get Help
           </Link>
         </div>
-
-        {/* ---------- Success banner (shown after wizard redirect) ---------- */}
-        {showSuccessBanner && (<div className="flex items-start gap-4 bg-white border border-[#E2E8F0] rounded-[20px] p-5">
-            <CheckCircle2 className="size-5 text-[#22C55E] shrink-0 mt-0.5" aria-hidden="true"/>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-[#0F172A]">Request sent</p>
-              <p className="text-sm text-[#475569] mt-0.5">
-                We'll email you the moment a local pro responds
-              </p>
-            </div>
-            <button type="button" onClick={() => { setShowSuccessBanner(false); setHighlightedId(null); }} aria-label="Dismiss" className="text-[#94A3B8] hover:text-[#475569] transition-colors shrink-0">
-              <X className="size-4"/>
-            </button>
-          </div>)}
 
         {/* ---------- Stat cards ---------- */}
         {requestsLoading ? (<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -274,7 +240,7 @@ export default function DashboardPage() {
                 const appt = req.appointments?.[0];
                 const provider = appt?.provider || req.assignedProvider;
                 const accent = statusAccent[req.status] ?? "#2563EB";
-                return (<div key={req.id} ref={(el) => { cardRefs.current[req.id] = el; }} style={{ borderLeftColor: accent }} className={`bg-white border border-[#E2E8F0] border-l-4 rounded-[24px] p-6 hover:border-[#BFDBFE] hover:border-l-4 hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)] transition-all duration-200 group${highlightedId === req.id ? ' ring-2 ring-[#2563EB]' : ''}`}>
+                return (<div key={req.id} style={{ borderLeftColor: accent }} className="bg-white border border-[#E2E8F0] border-l-4 rounded-[24px] p-6 hover:border-[#BFDBFE] hover:border-l-4 hover:shadow-[0_8px_24px_rgba(37,99,235,0.08)] transition-all duration-200 group">
                       <div className="flex justify-between items-start gap-4 mb-4">
                         <div className="min-w-0 flex-1">
                           {/* Urgency badge */}
