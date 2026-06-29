@@ -1327,7 +1327,7 @@
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "d87236d7d00d906e6ac68167c0948db74f38cb8ce62ae9db8776daf51229c78e"
+        "375752afaba6cbf1dea4817fb00d8cbb466ba50570f2d1d04dc4f9de6ebbca88"
     ],
     [
         [
@@ -3364,7 +3364,7 @@
             "file",
             "server/src/routes/apis/index.ts"
         ],
-        "df062f0c9e4732947b0ba8d3839e24e6039b7d560607e79393a4a69ae29733c0"
+        "8b1d0bfb51ddc2a409e67060e3215023e4164e16476c88b7304a36623be594fe"
     ],
     [
         [
