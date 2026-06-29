@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router'
+import { useAuth } from 'wasp/client/auth'
 import WizardProgress from './components/wizard/WizardProgress'
 import StepCategory from './components/wizard/StepCategory'
 import StepQualifiers from './components/wizard/StepQualifiers'
@@ -24,17 +25,24 @@ export type WizardState = {
   smsConsent: boolean
 }
 
-const STEP_LABELS = ['Service', 'Qualifiers', 'Details', 'Verify']
-const TOTAL_STEPS = 4
+// Steps shown to guests (need OTP); logged-in users skip Verify.
+const GUEST_LABELS = ['Service', 'Qualifiers', 'Details', 'Verify']
+const LOGGEDIN_LABELS = ['Service', 'Qualifiers', 'Details']
 
 export default function GuestRequestWizardPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { data: user, isLoading: authLoading } = useAuth()
+
   const [step, setStep] = useState(1)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+
+  // Flag set when StepDetails calls onNext() while logged-in.
+  // We need a re-render cycle so state.xxx has the freshly-written values
+  // before we call submitServiceRequest.
+  const [pendingSubmit, setPendingSubmit] = useState(false)
 
   const [state, setState] = useState<WizardState>({
     categoryId: searchParams.get('category'),
@@ -52,15 +60,34 @@ export default function GuestRequestWizardPage() {
     smsConsent: false,
   })
 
+  const isLoggedIn = !authLoading && !!user
+  const stepLabels = isLoggedIn ? LOGGEDIN_LABELS : GUEST_LABELS
+  const totalSteps = stepLabels.length
+
+  // Prefill contact fields from the logged-in user's account once auth resolves.
+  useEffect(() => {
+    if (!user) return
+    const u = user as any
+    setState(prev => ({
+      ...prev,
+      firstName: u.firstName || prev.firstName,
+      email: u.email || prev.email,
+      phone: u.phone || prev.phone,
+      postalCode: u.postalCode || prev.postalCode,
+    }))
+  }, [user])
+
   function update(patch: Partial<WizardState>) {
     setState(prev => ({ ...prev, ...patch }))
     setError(null)
   }
 
-  function next() { setStep(s => Math.min(s + 1, TOTAL_STEPS)); setError(null) }
+  function next() { setStep(s => Math.min(s + 1, totalSteps)); setError(null) }
   function back() { setStep(s => Math.max(s - 1, 1)); setError(null) }
 
-  async function handleOtpVerified() {
+  // Single submit function — used by both logged-in (after step 3) and guest (after OTP).
+  async function handleSubmit() {
+    if (submitting) return
     setSubmitting(true)
     setSubmitError(null)
     try {
@@ -81,24 +108,29 @@ export default function GuestRequestWizardPage() {
     }
   }
 
-  if (done) {
-    return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
-        <div className="w-full max-w-md text-center">
-          <div className="mb-6 text-5xl">✅</div>
-          <h2 className="text-2xl font-black text-[#0F172A] mb-2">Request submitted!</h2>
-          <p className="text-[#475569] mb-8">
-            We'll let you know as soon as a pro responds. No need to stay by the phone — we'll email you when someone picks up your request.
-          </p>
-          <a
-            href="/services"
-            className="inline-block rounded-xl bg-[#2563EB] px-6 py-3 font-semibold text-white hover:bg-[#1D4ED8] transition-colors"
-          >
-            Browse services
-          </a>
-        </div>
-      </div>
-    )
+  // Effect: when both pendingSubmit is true AND state has settled (same render),
+  // fire the actual submit. This ensures state.xxx has the values written by
+  // StepDetails before submitServiceRequest reads them.
+  useEffect(() => {
+    if (pendingSubmit) {
+      setPendingSubmit(false)
+      void handleSubmit()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingSubmit])
+
+  // For logged-in users: StepDetails' onNext triggers pending submit instead of OTP.
+  function handleDetailsNext() {
+    if (isLoggedIn) {
+      setPendingSubmit(true)
+    } else {
+      next()
+    }
+  }
+
+  // Loading gate — hold until auth resolves so prefill is ready on first render.
+  if (authLoading) {
+    return <div className="min-h-screen bg-[#F8FAFC]" />
   }
 
   return (
@@ -108,10 +140,12 @@ export default function GuestRequestWizardPage() {
         <div className="text-center mb-8">
           <Logo variant="light" size="md" className="justify-center mb-4" />
           <h2 className="text-2xl font-black tracking-tight text-[#0F172A]">Get matched with a pro</h2>
-          <p className="text-[#475569] text-sm mt-1">No account needed, no cost — takes 2 minutes</p>
+          <p className="text-[#475569] text-sm mt-1">
+            {isLoggedIn ? "Takes 2 minutes — we'll match you instantly" : 'No account needed, no cost — takes 2 minutes'}
+          </p>
         </div>
 
-        <WizardProgress current={step} total={TOTAL_STEPS} labels={STEP_LABELS} />
+        <WizardProgress current={step} total={totalSteps} labels={stepLabels} />
 
         <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 shadow-lg">
           <div className="animate-in fade-in slide-in-from-right-4 duration-300">
@@ -124,38 +158,37 @@ export default function GuestRequestWizardPage() {
                 onBack={back}
               />
             )}
-            {step === 3 && <StepDetails state={state} update={update} onNext={next} onBack={back} />}
+            {step === 3 && (
+              <StepDetails
+                state={state}
+                update={update}
+                onNext={handleDetailsNext}
+                onBack={back}
+                prefilled={isLoggedIn}
+              />
+            )}
+            {/* Step 4 only shown for guests — logged-in users have totalSteps=3 */}
             {step === 4 && (
-              state.phone || state.email ? (
-                <StepOtp
-                  state={state}
-                  onBack={back}
-                  onVerified={handleOtpVerified}
-                  externalError={submitError}
-                  email={state.email}
-                />
-              ) : (
-                <div className="text-center py-6">
-                  <p className="text-[#475569] mb-4">Ready to submit your request?</p>
-                  <button
-                    type="button"
-                    onClick={handleOtpVerified}
-                    disabled={submitting}
-                    className="rounded-xl bg-[#2563EB] px-6 py-3 font-semibold text-white hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
-                  >
-                    {submitting ? 'Submitting…' : 'Submit request →'}
-                  </button>
-                  {submitError && (
-                    <p className="mt-4 text-sm text-red-500">{submitError}</p>
-                  )}
-                </div>
-              )
+              <StepOtp
+                state={state}
+                onBack={back}
+                onVerified={handleSubmit}
+                externalError={submitError}
+                email={state.email}
+              />
             )}
           </div>
 
           {error && (
             <p className="mt-4 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-[10px] px-4 py-3">
               {error}
+            </p>
+          )}
+
+          {/* Logged-in submit error shown under details step */}
+          {isLoggedIn && submitError && step === 3 && (
+            <p className="mt-4 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-[10px] px-4 py-3">
+              {submitError}
             </p>
           )}
         </div>

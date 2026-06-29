@@ -232,6 +232,16 @@ export const submitServiceRequest: SubmitServiceRequest<
   // Strip HTML tags from description to prevent stored XSS
   const sanitizedDescription = trimmedDescription.replace(/<[^>]*>/g, '').trim();
 
+  // M2: For authenticated users, override PII fields with server-side profile data so
+  // the lead always reflects the verified account rather than client-supplied args.
+  // Guests (no context.user) keep using the validated args as-is.
+  const effectiveName = context.user?.firstName ?? trimmedName;
+  const effectiveEmail = context.user
+    ? (context.user.email ?? (args.email ? args.email.trim().toLowerCase() : undefined))
+    : (args.email ? args.email.trim().toLowerCase() : undefined);
+  const effectivePhone = context.user?.phone ?? args.phone ?? '';
+  const effectivePostalCode = context.user?.postalCode ?? args.postalCode;
+
   let serviceCategoryId: string | undefined = undefined;
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({
@@ -251,10 +261,10 @@ export const submitServiceRequest: SubmitServiceRequest<
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
       consumerId: context.user?.id || undefined,
-      name: trimmedName,
-      email: args.email ? args.email.trim().toLowerCase() : undefined,
-      phone: args.phone || '',
-      postalCode: args.postalCode,
+      name: effectiveName,
+      email: effectiveEmail,
+      phone: effectivePhone,
+      postalCode: effectivePostalCode,
       description: sanitizedDescription,
       urgency: args.urgency,
       estimatedSchedule: args.estimatedSchedule,
@@ -297,10 +307,10 @@ export const submitServiceRequest: SubmitServiceRequest<
   sendLeadToGHL(
     {
       serviceRequestId: newRequest.id,
-      name: trimmedName,
-      phone: args.phone || '',
-      email: args.email ? args.email.trim().toLowerCase() : undefined,
-      postalCode: args.postalCode,
+      name: effectiveName,
+      phone: effectivePhone,
+      email: effectiveEmail,
+      postalCode: effectivePostalCode,
       serviceType: args.serviceType,
       description: sanitizedDescription,
       urgency: args.urgency,
