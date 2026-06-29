@@ -202,6 +202,13 @@ api verifyOtp {
   httpRoute: (POST, "/api/auth/verify-otp")
 }
 
+// Custom `api` routes don't inherit Operations' default CORS middleware, so the
+// browser's OPTIONS preflight to /api/auth/* was rejected. Enable CORS here.
+apiNamespace authApi {
+  middlewareConfigFn: import { authApiMiddleware } from "@src/auth/otpApi",
+  path: "/api/auth"
+}
+
 //#region Consumer
 route RequestServiceRoute   { path: "/request-service",     to: RequestServicePage }
 page RequestServicePage     { component: import { RequestServiceRedirect } from "@src/consumer/portalRedirects" }
