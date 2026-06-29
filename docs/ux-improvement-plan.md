@@ -1,6 +1,6 @@
 # The Helper — Logged-in UX & Flow Improvement Plan
 
-_Status: PHASE 0 IMPLEMENTED + LOCALLY VERIFIED — 2026-06-29_
+_Status: PHASE 0 + 1 + CONTEXT-AWARE BOOKING — **LIVE ON PROD** — 2026-06-29_
 
 **Decisions (2026-06-29):** (1) account creation from booking is **explicit opt-in**, never
 silent. (2) Priority = **refine the existing flow now** — we're at ~0 users, so liquidity /
@@ -9,29 +9,46 @@ until traffic exists. Polish the core flow first.
 
 ## Implementation status (2026-06-29)
 
-Built by 4 parallel agents (file-partitioned), then verified in a local browser against a
-seeded DB. Not yet deployed.
+Built by file-partitioned parallel agents, verified in a local browser against a seeded DB,
+then **deployed to prod** (thehelper.ca) and re-verified live.
 
-| Item | Status | Evidence |
-|------|--------|----------|
-| **0.0 Live OTP bug** (`StepOtp` checked `data.verified`, never returned) | ✅ done | guest code entry no longer dead-ends |
-| **0.1 Onboarding loop** (`onboardingCompletedAt` flag + backfill migration + loading gate + fresh-auth reload) | ✅ done + verified | existing consumer logs in → lands on `/account`, not looped |
-| **0.2 Auth-aware wizard** (prefill from account, skip OTP, single submit, dashboard success banner) | ✅ done + verified | logged-in wizard = 3 steps, prefilled, 1 request created (DB 3→4), "Request sent" banner |
-| **0.3 De-dup** (single write path; `verifyOtp` seeds profile only, in a `$transaction`, never demotes providers; `skipOnboarding`; deleted dead `StepContact`) | ✅ done | tsc clean; no duplicate lead/reward |
-| **Phase 1 — editable consumer profile** (`AccountPage` rewrite, `updateUserProfile`, design-token parity) | ✅ done + verified | phone edit persisted to DB |
+| Item | Status | Evidence (prod) |
+|------|--------|-----------------|
+| **0.0 Live OTP bug** (`StepOtp` checked `data.verified`, never returned) | ✅ shipped | real guest booking on prod completes OTP → lead created |
+| **0.1 Onboarding loop** (`onboardingCompletedAt` flag + backfill migration + loading gate + fresh-auth reload) | ✅ shipped | OTP login on prod lands on `/account`, not looped; backfill 0 loop-risk |
+| **0.2 Auth-aware wizard** (prefill, skip OTP, single submit, dashboard success banner) | ✅ shipped | logged-in wizard skips OTP, prefilled; 1 lead per booking |
+| **0.3 De-dup** (single write path; `verifyOtp` seeds profile only, `$transaction`, no provider demotion; `skipOnboarding`; deleted dead `StepContact`) | ✅ shipped | guest booking creates exactly 1 ServiceRequest |
+| **Phase 1 — editable consumer profile** (`AccountPage` rewrite, `updateUserProfile`, token parity) | ✅ shipped | phone edit persists |
+| **Context-aware booking** (landing pages carry category + specific problem into the wizard) | ✅ shipped | `/plumbing` "Clogged drain" → wizard opens at Qualifiers, category + chip pre-selected |
 
 **Extra fixes found during verification (not in original plan):**
-- Seed scripts (`dbSeeds`, `seedRealProviders`) now set `onboardingCompletedAt` — otherwise
-  seeded/new users loop. Any future user-creation path must set this flag.
-- `verifyOtp` persists `onboardingCompletedAt` when booking seeds a full profile (so the
-  user isn't looped on next login, matching `skipOnboarding`).
-- Submit button relabelled "Submit request →" for logged-in users (was "Send code →").
+- Seed scripts (`dbSeeds`, `seedRealProviders`) set `onboardingCompletedAt` — any future
+  user-creation path must set this flag or those users get looped.
+- `verifyOtp` persists `onboardingCompletedAt` when booking seeds a full profile.
+- Submit button relabelled "Submit request →" for logged-in users.
+- Fixed broken `?service=` category links on the 4 landing pages (wizard reads `?category=&slug=`).
 
-**Still open:** Playwright E2E tests (6 cases below) not yet written; Phase 1 photo/password
-TODOs; trimmed Phase 2 (fee-tracking) + Phase 3 polish; deploy to prod.
+## Open tasks (next)
 
-**Local-dev note:** `WASP_WEB_CLIENT_URL` in local `.env.server` must be `http://localhost:3000`
-(not the prod URL) or Wasp CORS blocks every operation locally.
+- [ ] **Playwright E2E tests** — the 6 cases listed below are still unwritten (flows were
+      verified manually, not automated).
+- [ ] **Tailscale CI deploy** — `deploy.yml` is manual-trigger only and has the Tailscale +
+      `migrate deploy` steps; still needs the `TS_OAUTH_CLIENT_ID`/`TS_OAUTH_SECRET` repo
+      secrets + a `tag:ci` OAuth client + ACL before `gh workflow run deploy.yml` works
+      end-to-end. Until then deploy is: trigger build → `ssh vps` rebuild.
+- [ ] **Phase 1 remainder** — profile photo upload + password/email change (TODOs in `AccountPage`).
+- [ ] **Phase 2 (trimmed)** — provider fee-tracking visibility only (inbox/payouts deferred).
+- [ ] **Phase 3 polish** — request cancel/archive, rewards tier clarity, leads location filter,
+      public-profile verified badge + "Book now".
+- [ ] **Cosmetic** — wizard's failed-submit error persists across steps until next submit.
+- [ ] **Clean up prod test data** — `e2e-booking-test@socialdots.ca` user + its test lead.
+
+**Deploy notes (live):**
+- Migrations do NOT auto-run on `docker compose` deploy — run
+  `ssh vps 'docker exec -w /app/.wasp/out/db thehelper-api npx prisma migrate deploy'`
+  (now also baked into `deploy.yml`'s VPS script).
+- `WASP_WEB_CLIENT_URL` in **local** `.env.server` must be `http://localhost:3000` or Wasp
+  CORS blocks every operation locally (prod VPS has its own env = `https://thehelper.ca`).
 
 Grounded in a code-level audit of four areas: auth/onboarding redirects, the request
 wizard, signup↔booking data duplication, and the authenticated dashboards/profile.
