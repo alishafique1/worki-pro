@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import { config } from 'wasp/client'
+import { initSession } from 'wasp/auth/helpers/user'
 import type { WizardState } from '../../GuestRequestWizardPage'
 
 type Props = {
@@ -89,11 +90,21 @@ export default function StepOtp({ state, onBack, onVerified, externalError, emai
       const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: joined }),
+        body: JSON.stringify({
+          email,
+          code: joined,
+          pendingRequest: {
+            firstName: state.firstName,
+            phone: state.phone,
+            postalCode: state.postalCode,
+            smsConsent: state.smsConsent,
+          },
+        }),
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok || !data?.verified) throw new Error(data?.error || 'Incorrect code. Please try again.')
+      if (!res.ok || !data?.success) throw new Error(data?.error || 'Incorrect code. Please try again.')
       setVerifyState('idle')
+      await initSession(data.sessionId)
       onVerified()
     } catch (err: any) {
       setVerifyState('failed')

@@ -6,7 +6,7 @@ export default function ProviderRedirectPage() {
     if (isLoading)
         return <div className="p-8 text-sm text-[#475569]">Redirecting…</div>;
     if (data?.slug)
-        return <Navigate to={`/pros/${data.slug}`} replace/>;
+        return <Navigate to={`/pro-public/${data.slug}`} replace/>;
     return <Navigate to="/discover" replace/>;
 }
 //# sourceMappingURL=ProviderRedirectPage.jsx.map

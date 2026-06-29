@@ -5,6 +5,7 @@ import { login } from 'wasp/client/auth';
 import { config } from 'wasp/client';
 import { AuthPageLayout } from './AuthPageLayout';
 import { Link } from 'react-router';
+import { Logo } from '../client/components/Logo/Logo';
 import { Button, TextInput, FormLabel, Heading } from '../client/components/ds';
 export default function Login() {
     const navigate = useNavigate();
@@ -142,6 +143,7 @@ export default function Login() {
     }
     return (<AuthPageLayout>
       <div className="mb-8">
+        <Logo variant="light" size="md" className="mb-6"/>
         {step === 'email' ? (<>
             <Heading level={2} className="mb-1">Sign in to The Helper</Heading>
             <p className="text-sm text-[#475569]">Enter your email and we'll send a 6-digit code.</p>

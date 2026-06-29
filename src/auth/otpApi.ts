@@ -111,9 +111,6 @@ type PendingRequest = {
   phone: string
   postalCode: string
   smsConsent: boolean
-  serviceCategoryId?: string
-  description: string
-  qualifierAnswers?: Record<string, string | string[]>
   referralCode?: string
 }
 
@@ -194,75 +191,77 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
 
   const session = await createSession(authId)
 
-  // If a pending request was submitted with the OTP, save it now
-  let requestId: string | undefined
+  // If a pending request was submitted with the OTP, seed the user profile now.
+  // The lead itself is created solely by submitServiceRequest (C2 single-write path).
+  let skipOnboarding = false
   if (pendingRequest) {
     const userRecord = await prisma.user.findFirst({ where: { email: normalizedEmail } })
     if (userRecord) {
-      await prisma.user.update({
-        where: { id: userRecord.id },
-        data: {
-          firstName: pendingRequest.firstName,
-          phone: pendingRequest.phone,
-          postalCode: pendingRequest.postalCode,
-          role: 'CONSUMER',
-          smsConsent: pendingRequest.smsConsent,
-          smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
-        },
-      })
+      skipOnboarding = !!(pendingRequest.firstName && pendingRequest.phone && pendingRequest.postalCode)
 
-      const request = await prisma.serviceRequest.create({
-        data: {
-          consumerId: userRecord.id,
-          name: pendingRequest.firstName,
-          phone: pendingRequest.phone,
-          postalCode: pendingRequest.postalCode,
-          email: normalizedEmail,
-          smsConsentGiven: pendingRequest.smsConsent,
-          serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
-          description: pendingRequest.description,
-          qualifierAnswers: pendingRequest.qualifierAnswers ?? {},
-          source: 'WEBSITE',
-        },
-      })
-      requestId = request.id
+      await prisma.$transaction(async (tx) => {
+        // M1: Only set role for new users or users who have no role yet — never demote a provider.
+        const roleData = (isNewUser || !userRecord.role) ? { role: 'CONSUMER' as const } : {}
 
-      await prisma.rewardAccount.upsert({
-        where: { consumerId: userRecord.id },
-        update: {},
-        create: { consumerId: userRecord.id },
-      })
-      const existingBonus = await prisma.rewardTransaction.findFirst({
-        where: { consumerId: userRecord.id, type: 'SIGNUP_BONUS' },
-      })
-      if (!existingBonus) {
-        await prisma.rewardTransaction.create({
+        await tx.user.update({
+          where: { id: userRecord.id },
           data: {
-            consumerId: userRecord.id,
-            type: 'SIGNUP_BONUS',
-            points: 100,
-            status: 'APPROVED',
-            reason: 'Welcome bonus',
+            firstName: pendingRequest.firstName,
+            phone: pendingRequest.phone,
+            postalCode: pendingRequest.postalCode,
+            smsConsent: pendingRequest.smsConsent,
+            smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
+            // A full profile from booking means onboarding is effectively done —
+            // persist it so the user isn't looped to /onboarding on next login.
+            ...(skipOnboarding ? { onboardingCompletedAt: new Date() } : {}),
+            ...roleData,
           },
         })
-        await prisma.rewardAccount.update({
-          where: { consumerId: userRecord.id },
-          data: { pointsBalance: { increment: 100 }, lifetimePoints: { increment: 100 } },
-        })
-      }
 
-      if (pendingRequest.referralCode) {
-        const refCode = pendingRequest.referralCode.trim().toUpperCase()
-        const referral = await prisma.referral.findUnique({ where: { referralCode: refCode } })
-        if (referral && referral.referrerUserId !== userRecord.id && !referral.referredUserId) {
-          await prisma.referral.update({
-            where: { id: referral.id },
-            data: { referredUserId: userRecord.id, status: 'SIGNED_UP' },
+        await tx.rewardAccount.upsert({
+          where: { consumerId: userRecord.id },
+          update: {},
+          create: { consumerId: userRecord.id },
+        })
+
+        // Signup bonus — idempotent guard prevents double-award on re-verify
+        const existingBonus = await tx.rewardTransaction.findFirst({
+          where: { consumerId: userRecord.id, type: 'SIGNUP_BONUS' },
+        })
+        if (!existingBonus) {
+          // TODO: replace 100 with REWARD_POINTS.SIGNUP_BONUS once that constant is defined
+          const SIGNUP_BONUS_POINTS = 100
+          await tx.rewardTransaction.create({
+            data: {
+              consumerId: userRecord.id,
+              type: 'SIGNUP_BONUS',
+              points: SIGNUP_BONUS_POINTS,
+              status: 'APPROVED',
+              reason: 'Welcome bonus',
+            },
+          })
+          await tx.rewardAccount.update({
+            where: { consumerId: userRecord.id },
+            data: {
+              pointsBalance: { increment: SIGNUP_BONUS_POINTS },
+              lifetimePoints: { increment: SIGNUP_BONUS_POINTS },
+            },
           })
         }
-      }
+
+        if (pendingRequest.referralCode) {
+          const refCode = pendingRequest.referralCode.trim().toUpperCase()
+          const referral = await tx.referral.findUnique({ where: { referralCode: refCode } })
+          if (referral && referral.referrerUserId !== userRecord.id && !referral.referredUserId) {
+            await tx.referral.update({
+              where: { id: referral.id },
+              data: { referredUserId: userRecord.id, status: 'SIGNED_UP' },
+            })
+          }
+        }
+      })
     }
   }
 
-  res.json({ success: true, sessionId: session.id, isNewUser, requestId })
+  res.json({ success: true, sessionId: session.id, isNewUser, skipOnboarding })
 }

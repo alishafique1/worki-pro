@@ -52,7 +52,7 @@ export default function ContactPage() {
           <div className="w-20 h-20 bg-[#DCFCE7] rounded-full mx-auto flex items-center justify-center">
             <CheckCircle2 className="w-10 h-10 text-[#22C55E]"/>
           </div>
-          <h2 className="text-4xl font-black tracking-tight text-[#0F172A]">Thanks, {formData.name.split(' ')[0]}!</h2>
+          <h1 className="text-4xl font-black tracking-tight text-[#0F172A]">Thanks, {formData.name.split(' ')[0]}!</h1>
           <p className="text-lg text-[#475569]">
             We've received your message and will be in touch within 24 hours.
             A confirmation has been sent to <strong>{formData.email}</strong>.

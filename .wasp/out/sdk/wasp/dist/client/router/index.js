@@ -201,10 +201,6 @@ export const routes = {
         to: "/pro-public/:slug",
         build: (options) => interpolatePath("/pro-public/:slug", options.params, options?.search, options?.hash),
     },
-    ProsRoute: {
-        to: "/pros/:slug",
-        build: (options) => interpolatePath("/pros/:slug", options.params, options?.search, options?.hash),
-    },
     ProviderDashboardRoute: {
         to: "/provider/dashboard",
         build: (options) => interpolatePath("/provider/dashboard", undefined, options?.search, options?.hash),

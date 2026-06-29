@@ -89,7 +89,7 @@ export default function GuestRequestWizardPage() {
             {step === 1 && <StepCategory state={state} update={update} onNext={next}/>}
             {step === 2 && (<StepQualifiers state={state} update={update} onNext={next} onBack={back}/>)}
             {step === 3 && <StepDetails state={state} update={update} onNext={next} onBack={back}/>}
-            {step === 4 && (state.phone || state.email ? (<StepOtp state={state} onBack={back} onVerified={handleOtpVerified} externalError={submitError} email={state.email}/>) : (<div className="text-center py-6">
+            {step === 4 && (state.phone ? (<StepOtp state={state} onBack={back} onVerified={handleOtpVerified} externalError={submitError}/>) : (<div className="text-center py-6">
                   <p className="text-[#475569] mb-4">Ready to submit your request?</p>
                   <button type="button" onClick={handleOtpVerified} disabled={submitting} className="rounded-xl bg-[#2563EB] px-6 py-3 font-semibold text-white hover:bg-[#1D4ED8] transition-colors disabled:opacity-50">
                     {submitting ? 'Submitting…' : 'Submit request →'}

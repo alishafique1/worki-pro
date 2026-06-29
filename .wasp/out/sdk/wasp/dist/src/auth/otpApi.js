@@ -1,5 +1,4 @@
-import cors from 'cors';
-import { HttpError, prisma, config } from 'wasp/server';
+import { HttpError, prisma } from 'wasp/server';
 import { createSession } from 'wasp/auth/session';
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth';
 import { hashPassword } from 'wasp/auth/password';
@@ -25,13 +24,6 @@ function isAllowedOrigin(req) {
         return true;
     return allowed.includes(origin);
 }
-// Wasp custom `api` routes do NOT get the default Operations middleware, so
-// CORS (incl. the browser's OPTIONS preflight) must be enabled explicitly.
-// Applied to the whole /api/auth namespace via apiNamespace in main.wasp.
-export const authApiMiddleware = (middlewareConfig) => {
-    middlewareConfig.set('cors', cors({ origin: config.frontendUrl }));
-    return middlewareConfig;
-};
 export const requestOtp = async (req, res, context) => {
     if (!isAllowedOrigin(req)) {
         res.status(403).json({ error: 'Forbidden.' });

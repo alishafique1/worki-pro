@@ -9,8 +9,6 @@ type Props = {
   onVerified: () => void
   /** External error from the parent (e.g. submitServiceRequest failure). */
   externalError: string | null
-  /** Email collected earlier in the wizard (used for email-based OTP). */
-  email: string
 }
 
 type SendState = 'idle' | 'sending' | 'sent' | 'failed'
@@ -19,11 +17,12 @@ type VerifyState = 'idle' | 'verifying' | 'failed'
 const RESEND_SECONDS = 60
 
 /**
- * Step 4 of the wizard. Sends a 6-digit code via /api/auth/request-otp,
- * verifies it via /api/auth/verify-otp using EMAIL, then hands control back
- * to the parent to call submitServiceRequest.
+ * Step 4 of the wizard. Only reached when the user supplied a phone number.
+ * Sends a 6-digit code via the /api/auth/request-otp endpoint, verifies it
+ * via /api/auth/verify-otp, then hands control back to the parent to call
+ * the submitServiceRequest action.
  */
-export default function StepOtp({ state, onBack, onVerified, externalError, email }: Props) {
+export default function StepOtp({ state, onBack, onVerified, externalError }: Props) {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', ''])
   const [resendIn, setResendIn] = useState<number>(RESEND_SECONDS)
   const [sendState, setSendState] = useState<SendState>('idle')
@@ -63,7 +62,7 @@ export default function StepOtp({ state, onBack, onVerified, externalError, emai
       const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ phone: state.phone }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data?.error || 'Could not send the code. Please try again.')
@@ -89,7 +88,7 @@ export default function StepOtp({ state, onBack, onVerified, externalError, emai
       const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: joined }),
+        body: JSON.stringify({ phone: state.phone, code: joined }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data?.verified) throw new Error(data?.error || 'Incorrect code. Please try again.')
@@ -127,16 +126,20 @@ export default function StepOtp({ state, onBack, onVerified, externalError, emai
     inputRefs.current[Math.min(chars.length, 5)]?.focus()
   }
 
+  const maskedPhone = state.phone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{0,4}).*/, (_, a, b, c) =>
+    c ? `(${a}) ${b}-${c}` : `(${a}) ${b}`,
+  )
+
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#EFF6FF] text-[#2563EB]">
           <ShieldCheck className="w-5 h-5" aria-hidden="true" />
         </span>
-        <h3 className="text-xl font-black text-[#0F172A]">Confirm your email</h3>
+        <h3 className="text-xl font-black text-[#0F172A]">Confirm your phone</h3>
       </div>
       <p className="text-[#475569] text-sm mb-6">
-        We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{email}</span>.
+        We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{maskedPhone}</span>.
         Enter it below to finish your request.
       </p>
 
@@ -205,7 +208,7 @@ export default function StepOtp({ state, onBack, onVerified, externalError, emai
           onClick={onBack}
           className="text-[#475569] text-sm hover:text-[#0F172A]"
         >
-          ← Change email
+          ← Change phone
         </button>
       </div>
     </div>

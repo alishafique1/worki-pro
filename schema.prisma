@@ -30,6 +30,9 @@ model User {
   smsMarketingConsentIp String?
   emailConsent              Boolean         @default(false)
 
+  // backfilled in migration for existing users
+  onboardingCompletedAt     DateTime?
+
   paymentProcessorUserId    String?         @unique
   lemonSqueezyCustomerPortalUrl String?
   subscriptionStatus        String?

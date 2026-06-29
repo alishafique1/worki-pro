@@ -5,14 +5,13 @@ type Props = {
     onVerified: () => void;
     /** External error from the parent (e.g. submitServiceRequest failure). */
     externalError: string | null;
-    /** Email collected earlier in the wizard (used for email-based OTP). */
-    email: string;
 };
 /**
- * Step 4 of the wizard. Sends a 6-digit code via /api/auth/request-otp,
- * verifies it via /api/auth/verify-otp using EMAIL, then hands control back
- * to the parent to call submitServiceRequest.
+ * Step 4 of the wizard. Only reached when the user supplied a phone number.
+ * Sends a 6-digit code via the /api/auth/request-otp endpoint, verifies it
+ * via /api/auth/verify-otp, then hands control back to the parent to call
+ * the submitServiceRequest action.
  */
-export default function StepOtp({ state, onBack, onVerified, externalError, email }: Props): import("react").JSX.Element;
+export default function StepOtp({ state, onBack, onVerified, externalError }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=StepOtp.d.ts.map

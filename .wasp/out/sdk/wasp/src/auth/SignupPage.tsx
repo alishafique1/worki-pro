@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router'
 import { initSession } from 'wasp/auth/helpers/user'
 import { config } from 'wasp/client'
 import { AuthPageLayout } from './AuthPageLayout'
+import { Logo } from '../client/components/Logo/Logo'
 import { Button, TextInput, FormLabel, Heading } from '../client/components/ds'
 
 export function Signup() {
@@ -175,6 +176,7 @@ export function Signup() {
   return (
     <AuthPageLayout>
       <div className="mb-8">
+        <Logo variant="light" size="md" className="mb-6" />
         {step === 'form' ? (
           <>
             <Heading level={2} className="mb-1">Create your account</Heading>

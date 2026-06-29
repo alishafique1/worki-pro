@@ -72,7 +72,7 @@ export default function CategoryLandingPage() {
   if (!category) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
-        <h2 className="text-2xl font-black text-slate-900">Service not found</h2>
+        <h1 className="text-2xl font-black text-slate-900">Service not found</h1>
         <Link to="/" className="text-blue-600 hover:underline">← Back to home</Link>
       </div>
     )
