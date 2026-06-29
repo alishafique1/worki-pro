@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { MapPin, Zap, Award, Search, ArrowLeft, BadgeCheck } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
@@ -36,6 +36,13 @@ function ReviewCard({ review, }) {
 export default function ProPublicPage() {
     const { slug } = useParams();
     const navigate = useNavigate();
+    const location = window.location.pathname;
+    // Redirect /pro-public/:slug → /pros/:slug
+    useEffect(() => {
+        if (location.startsWith('/pro-public/') && slug) {
+            navigate(`/pros/${slug}`, { replace: true });
+        }
+    }, [location, slug, navigate]);
     const { data: provider, isLoading, error } = useQuery(getPublicProvider, { slug: slug ?? "" });
     if (isLoading) {
         return (<div className="p-8 max-w-5xl mx-auto min-h-[80vh] space-y-6">
@@ -69,7 +76,7 @@ export default function ProPublicPage() {
         "@type": "LocalBusiness",
         name: provider.businessName,
         description: provider.bio ?? `Verified ${provider.categories.map(c => c.serviceCategory.name).join(", ")} professional in the GTA`,
-        url: `https://thehelper.ca/pro-public/${provider.slug}`,
+        url: `https://thehelper.ca/pros/${provider.slug}`,
         aggregateRating: provider.ratingInternal
             ? { "@type": "AggregateRating", ratingValue: provider.ratingInternal, reviewCount }
             : undefined,

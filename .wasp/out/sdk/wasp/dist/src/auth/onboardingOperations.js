@@ -35,6 +35,7 @@ export const completeOnboarding = async (args, context) => {
                 role,
                 smsConsent: smsConsent ?? false,
                 smsConsentAt: smsConsent ? new Date() : undefined,
+                onboardingCompletedAt: new Date(),
             },
         });
         if (role === 'PROVIDER') {

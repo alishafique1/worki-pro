@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { config } from 'wasp/client';
+import { initSession } from 'wasp/auth/helpers/user';
 const RESEND_SECONDS = 60;
 /**
- * Step 4 of the wizard. Only reached when the user supplied a phone number.
- * Sends a 6-digit code via the /api/auth/request-otp endpoint, verifies it
- * via /api/auth/verify-otp, then hands control back to the parent to call
- * the submitServiceRequest action.
+ * Step 4 of the wizard. Sends a 6-digit code via /api/auth/request-otp,
+ * verifies it via /api/auth/verify-otp using EMAIL, then hands control back
+ * to the parent to call submitServiceRequest.
  */
-export default function StepOtp({ state, onBack, onVerified, externalError }) {
+export default function StepOtp({ state, onBack, onVerified, externalError, email }) {
     const [code, setCode] = useState(['', '', '', '', '', '']);
     const [resendIn, setResendIn] = useState(RESEND_SECONDS);
     const [sendState, setSendState] = useState('idle');
@@ -47,7 +47,7 @@ export default function StepOtp({ state, onBack, onVerified, externalError }) {
             const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: state.phone }),
+                body: JSON.stringify({ email }),
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok)
@@ -74,12 +74,22 @@ export default function StepOtp({ state, onBack, onVerified, externalError }) {
             const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: state.phone, code: joined }),
+                body: JSON.stringify({
+                    email,
+                    code: joined,
+                    pendingRequest: {
+                        firstName: state.firstName,
+                        phone: state.phone,
+                        postalCode: state.postalCode,
+                        smsConsent: state.smsConsent,
+                    },
+                }),
             });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok || !data?.verified)
+            if (!res.ok || !data?.success)
                 throw new Error(data?.error || 'Incorrect code. Please try again.');
             setVerifyState('idle');
+            await initSession(data.sessionId);
             onVerified();
         }
         catch (err) {
@@ -111,16 +121,15 @@ export default function StepOtp({ state, onBack, onVerified, externalError }) {
         setCode(chars);
         inputRefs.current[Math.min(chars.length, 5)]?.focus();
     }
-    const maskedPhone = state.phone.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{0,4}).*/, (_, a, b, c) => c ? `(${a}) ${b}-${c}` : `(${a}) ${b}`);
     return (<div>
       <div className="flex items-center gap-3 mb-4">
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#EFF6FF] text-[#2563EB]">
           <ShieldCheck className="w-5 h-5" aria-hidden="true"/>
         </span>
-        <h3 className="text-xl font-black text-[#0F172A]">Confirm your phone</h3>
+        <h3 className="text-xl font-black text-[#0F172A]">Confirm your email</h3>
       </div>
       <p className="text-[#475569] text-sm mb-6">
-        We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{maskedPhone}</span>.
+        We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{email}</span>.
         Enter it below to finish your request.
       </p>
 
@@ -150,7 +159,7 @@ export default function StepOtp({ state, onBack, onVerified, externalError }) {
 
       <div className="mt-6">
         <button type="button" onClick={onBack} className="text-[#475569] text-sm hover:text-[#0F172A]">
-          ← Change phone
+          ← Change email
         </button>
       </div>
     </div>);

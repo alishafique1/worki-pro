@@ -8,7 +8,7 @@ export declare function uploadFileWithProgress({ file, s3UploadUrl, s3UploadFiel
     s3UploadUrl: string;
     s3UploadFields: Record<string, string>;
     setUploadProgressPercent: (percentage: number) => void;
-}): Promise<import("axios").AxiosResponse<any, any, {}>>;
+}): Promise<void>;
 export declare function validateFile(file: File): FileWithValidType;
 export {};
 //# sourceMappingURL=fileUploading.d.ts.map

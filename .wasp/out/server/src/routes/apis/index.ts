@@ -5,6 +5,7 @@ import { MiddlewareConfigFn, globalMiddlewareConfigForExpress } from '../../midd
 import auth from 'wasp/core/auth'
 import { type AuthUserData, makeAuthUserIfPossible } from 'wasp/auth/user'
 
+import { authApiMiddleware as _waspauthApinamespaceMiddlewareConfigFn } from '../../../../../../src/auth/otpApi'
 
 import { requestOtp as _wasprequestOtpfn } from '../../../../../../src/auth/otpApi'
 import { verifyOtp as _waspverifyOtpfn } from '../../../../../../src/auth/otpApi'
@@ -24,6 +25,7 @@ const _waspghlWebhookmiddlewareConfigFn = idFn
 
 const router = express.Router()
 
+router.use('/api/auth', globalMiddlewareConfigForExpress(_waspauthApinamespaceMiddlewareConfigFn))
 
 const requestOtpMiddleware = globalMiddlewareConfigForExpress(_wasprequestOtpmiddlewareConfigFn)
 router.post(

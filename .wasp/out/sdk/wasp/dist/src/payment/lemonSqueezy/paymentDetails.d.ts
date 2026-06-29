@@ -28,6 +28,7 @@ export declare const updateUserLemonSqueezyPaymentDetails: ({ lemonSqueezyId, us
     smsMarketingConsentAt: Date | null;
     smsMarketingConsentIp: string | null;
     emailConsent: boolean;
+    onboardingCompletedAt: Date | null;
     paymentProcessorUserId: string | null;
     lemonSqueezyCustomerPortalUrl: string | null;
     subscriptionStatus: string | null;
