@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" width="120" height="100" role="img" aria-label="thehelper.ca icon">
+  <defs>
+    <linearGradient id="hG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FB923C"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="bG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <!-- House: orange -->
+  <polygon points="48,4 6,40 14,40 14,92 82,92 82,40 90,40" fill="url(#hG)"/>
+  <rect x="34" y="62" width="28" height="30" rx="3" fill="white" opacity="0.25"/>
+  <!-- Toolbox: blue -->
+  <rect x="76" y="54" width="42" height="38" rx="5" fill="url(#bG)"/>
+  <rect x="76" y="54" width="42" height="4" rx="2" fill="#93C5FD" opacity="0.5"/>
+  <path d="M83,54 Q97,36 111,54" fill="none" stroke="#1E3A8A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M83,54 Q97,36 111,54" fill="none" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"/>
+  <line x1="86" y1="54" x2="86" y2="33" stroke="#BFDBFE" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="86" cy="30" rx="5" ry="4" fill="none" stroke="#BFDBFE" stroke-width="2.5"/>
+  <rect x="95" y="26" width="5" height="6" rx="2" fill="#60A5FA"/>
+  <rect x="97" y="32" width="2" height="22" rx="1" fill="#93C5FD"/>
+  <line x1="107" y1="54" x2="107" y2="40" stroke="#BFDBFE" stroke-width="3" stroke-linecap="round"/>
+  <rect x="101" y="32" width="14" height="10" rx="3" fill="#60A5FA"/>
+  <path d="M114,52 L114,38 L119,32" stroke="#93C5FD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="119,32 123,37 117,37" fill="#60A5FA"/>
+</svg>

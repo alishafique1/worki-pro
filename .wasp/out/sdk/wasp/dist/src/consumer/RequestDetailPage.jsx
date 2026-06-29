@@ -262,7 +262,7 @@ export default function RequestDetailPage() {
                       <Mail className='size-3.5'/> {provider.email}
                     </a>)}
                 </div>
-                <Link to={provider.slug ? `/pro-public/${provider.slug}` : `/pro/${provider.id}`} className='inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] hover:underline'>
+                <Link to={provider.slug ? `/pros/${provider.slug}` : `/pro/${provider.id}`} className='inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] hover:underline'>
                   View Pro Profile →
                 </Link>
               </div>) : (<p className='text-sm text-[#475569]'>

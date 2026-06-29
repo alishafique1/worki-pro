@@ -98,6 +98,12 @@ export async function seedRealProviders(prisma) {
         }
         console.log(`  ✓ ${p.businessName} (${p.slug})`);
     }
+    // Real providers are fully onboarded accounts → set the completion flag so the
+    // onboarding guard doesn't loop them.
+    await prisma.user.updateMany({
+        where: { role: 'PROVIDER', onboardingCompletedAt: null },
+        data: { onboardingCompletedAt: new Date() },
+    });
     console.log(`Seeded ${REAL_PROVIDERS.length} real providers.`);
 }
 //# sourceMappingURL=seedRealProviders.js.map

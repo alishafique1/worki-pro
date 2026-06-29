@@ -58,7 +58,7 @@ export default function CategoryLandingPage() {
     }
     if (!category) {
         return (<div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-black text-slate-900">Service not found</h1>
+        <h2 className="text-2xl font-black text-slate-900">Service not found</h2>
         <Link to="/" className="text-blue-600 hover:underline">← Back to home</Link>
       </div>);
     }
@@ -125,10 +125,10 @@ export default function CategoryLandingPage() {
                   {sub.name}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {sub.services.map(s => (<div key={s.name} className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-600/30 transition-colors">
-                      <h4 className="font-bold text-slate-900 text-sm mb-1">{s.name}</h4>
-                      <p className="text-xs text-slate-600 leading-relaxed">{s.description}</p>
-                    </div>))}
+                  {sub.services.map(s => (<Link key={s.name} to={`/get-quotes?category=${category.id}&slug=${category.slug}&problem=${encodeURIComponent(s.name)}`} className="bg-white border border-[#E2E8F0] rounded-xl p-4 hover:border-[#2563EB]/40 hover:shadow-sm transition-all text-left block">
+                      <h4 className="font-bold text-[#0F172A] text-sm mb-1">{s.name}</h4>
+                      <p className="text-xs text-[#475569] leading-relaxed">{s.description}</p>
+                    </Link>))}
                 </div>
               </div>))}
           </div>

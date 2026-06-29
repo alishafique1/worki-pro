@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { ChevronDown, ChevronUp, Package, Search, ShieldCheck, Star, Wrench } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
+import { CATEGORY_QUALIFIERS } from '../consumer/categoryQualifiers';
+const HANDYMAN_CHIPS = CATEGORY_QUALIFIERS['handyman']?.detailChips ?? [];
 const handymanFaqs = [
     {
         question: 'How much does a handyman cost in Oakville?',
@@ -60,11 +62,24 @@ export default function HandymanLandingPage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <Link to="/get-quotes?service=handyman" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
+            <Link to="/get-quotes?category=handyman&slug=handyman" className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               Get Handyman Help
             </Link>
           </div>
-          <p className="text-sm text-[#475569] mt-2 mb-16">Background-checked pros. Earn rewards on every completed job.</p>
+          <p className="text-sm text-[#475569] mt-2 mb-8">Background-checked pros. Earn rewards on every completed job.</p>
+
+          {/* Common Problems */}
+          <section className="w-full max-w-2xl mb-16" aria-label="Common handyman tasks">
+            <p className="text-sm font-semibold text-[#475569] uppercase tracking-widest mb-4">What needs to be done?</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {HANDYMAN_CHIPS.filter(chip => chip !== 'Something else').map(chip => (<Link key={chip} to={`/get-quotes?category=handyman&slug=handyman&problem=${encodeURIComponent(chip)}`} className="px-4 py-2 bg-white rounded-full border border-[#E2E8F0] text-sm font-medium text-[#0F172A] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors">
+                  {chip}
+                </Link>))}
+              <Link to="/get-quotes?category=handyman&slug=handyman" className="px-4 py-2 bg-white rounded-full border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors">
+                Something else →
+              </Link>
+            </div>
+          </section>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">

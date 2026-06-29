@@ -11,7 +11,7 @@ export default function StepCategory({ state, update, onNext }) {
       </div>
     </div>);
 }
-const HARDCODED_CATEGORIES = [
+export const HARDCODED_CATEGORIES = [
     { id: 'handyman', slug: 'handyman', name: 'Handyman', icon: '🔧', desc: 'Minor repairs, assembly, drywall, painting' },
     { id: 'hvac', slug: 'hvac', name: 'HVAC', icon: '❄️', desc: 'Heating, cooling, furnace, AC repair' },
     { id: 'plumbing', slug: 'plumbing', name: 'Plumbing', icon: '🔧', desc: 'Leaks, drains, toilets, water heaters' },

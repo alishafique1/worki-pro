@@ -5,5 +5,12 @@ type Props = {
     onNext: () => void;
 };
 export default function StepCategory({ state, update, onNext }: Props): import("react").JSX.Element;
+export declare const HARDCODED_CATEGORIES: {
+    id: string;
+    slug: string;
+    name: string;
+    icon: string;
+    desc: string;
+}[];
 export {};
 //# sourceMappingURL=StepCategory.d.ts.map
