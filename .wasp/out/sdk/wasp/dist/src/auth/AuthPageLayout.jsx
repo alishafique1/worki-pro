@@ -9,6 +9,7 @@ export function AuthPageLayout({ children }) {
             <h1 className="text-5xl font-black tracking-tight leading-tight mb-6">Your home.<br />Handled right.</h1>
             <p className="text-white/70 text-lg max-w-sm">Trusted local pros, real rewards, one platform.</p>
           </div>
+          <a href="/" className="inline-block mt-4 text-white/50 hover:text-white text-sm transition-colors">← Back to homepage</a>
         </div>
         <div className="space-y-4">
           {[

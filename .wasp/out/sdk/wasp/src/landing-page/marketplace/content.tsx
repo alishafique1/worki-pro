@@ -1,15 +1,9 @@
 import type { ReactNode } from "react";
 import {
   BadgeCheck,
-  Bot,
   CalendarCheck,
-  Car,
-  Clapperboard,
   ClipboardList,
   Clock3,
-  Code,
-  Flame,
-  Globe,
   Hammer,
   Home,
   KeyRound,
@@ -17,13 +11,10 @@ import {
   Leaf,
   Bell,
   MapPin,
-  Megaphone,
   MessageSquareText,
-  Plus,
   Search,
   ShieldCheck,
   ShowerHead,
-  UtensilsCrossed,
   Wifi,
 } from "lucide-react";
 
@@ -74,7 +65,7 @@ export const solutionSteps = [
     icon: <BadgeCheck className="size-5" />,
     title: "Match",
     description:
-      "We connect you with a verified local pro who is available today. Often within 15 minutes. No calling around.",
+      "We connect you with a verified local pro who's available today. No calling around.",
   },
   {
     icon: <CalendarCheck className="size-5" />,
@@ -84,24 +75,15 @@ export const solutionSteps = [
   {
     icon: <MapPin className="size-5" />,
     title: "Done",
-    description: "Job complete. Leave a review. Earn $60+ cash back on your first completed job. Redeemable as gift cards.",
+    description: "Job complete. Leave a review. Earn 6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts.",
   },
 ];
 
-// Unsplash image URLs for each service category
 export const categoryImages: Record<string, string> = {
-  handyman: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400&h=300&fit=crop",
+  handyman: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
+  hvac: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&h=300&fit=crop",
   plumbing: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop",
   "smart-home": "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=300&fit=crop",
-  events: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&h=300&fit=crop",
-  "food-catering": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
-  "shisha-lounge": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop",
-  "ai-services": "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&h=300&fit=crop",
-  "website-design": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop",
-  "digital-marketing": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
-  "software-development": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop",
-  "video-editing": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=300&fit=crop",
-  "driving-school": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=300&fit=crop",
 };
 
 export interface Category {
@@ -109,7 +91,7 @@ export interface Category {
   name: string;
   slug: string;
   description: string;
-  href: string;
+  href?: string;
   imageUrl?: string;
   live?: boolean;
   comingSoon?: boolean;
@@ -127,6 +109,15 @@ export const categories: Category[] = [
   },
   {
     icon: <ShowerHead className="size-5" />,
+    name: "HVAC",
+    slug: "hvac",
+    description: "Heating, cooling, furnace, AC repair, and air quality.",
+    href: "/services/hvac",
+    imageUrl: categoryImages.hvac,
+    live: true,
+  },
+  {
+    icon: <Wifi className="size-5" />,
     name: "Plumbing",
     slug: "plumbing",
     description: "Leaks, fixtures, drains, water heaters, and urgent repairs.",
@@ -135,7 +126,7 @@ export const categories: Category[] = [
     live: true,
   },
   {
-    icon: <Wifi className="size-5" />,
+    icon: <Home className="size-5" />,
     name: "Smart Home",
     slug: "smart-home",
     description: "Cameras, thermostats, locks, sensors, and connected devices.",
@@ -145,91 +136,24 @@ export const categories: Category[] = [
   },
   {
     icon: <CalendarCheck className="size-5" />,
-    name: "Events",
-    slug: "events",
-    description: "Event planning, setup, coordination, and day-of management.",
-    href: "/services/events",
-    imageUrl: categoryImages.events,
-    live: true,
+    name: "Event Management",
+    slug: "event-management",
+    description: "Event planning, setup, coordination, and day-of management. Coming Q1 2026.",
+    comingSoon: true,
   },
   {
-    icon: <UtensilsCrossed className="size-5" />,
-    name: "Food Catering",
-    slug: "food-catering",
-    description: "Full catering, food trucks, private dining, and custom menus.",
-    href: "/services/food-catering",
-    imageUrl: categoryImages["food-catering"],
-    live: true,
+    icon: <Layers className="size-5" />,
+    name: "IT Services",
+    slug: "it-services",
+    description: "AI solutions, website design, and digital tools for your business. Coming Q1 2026.",
+    comingSoon: true,
   },
   {
-    icon: <Flame className="size-5" />,
-    name: "Shisha Lounge",
-    slug: "shisha-lounge",
-    description: "Shisha setup and rental for events and private gatherings.",
-    href: "/services/shisha-lounge",
-    imageUrl: categoryImages["shisha-lounge"],
-    live: true,
-  },
-  {
-    icon: <Bot className="size-5" />,
-    name: "AI Services",
-    slug: "ai-services",
-    description: "Automation, chatbots, workflow tools, and digital assistants.",
-    href: "/services/ai-services",
-    imageUrl: categoryImages["ai-services"],
-    live: true,
-  },
-  {
-    icon: <Globe className="size-5" />,
-    name: "Website Design",
-    slug: "website-design",
-    description: "Custom websites, landing pages, e-commerce, and brand design.",
-    href: "/services/website-design",
-    imageUrl: categoryImages["website-design"],
-    live: true,
-  },
-  {
-    icon: <Megaphone className="size-5" />,
-    name: "Digital Marketing",
-    slug: "digital-marketing",
-    description: "SEO, paid ads, social media, and growth marketing.",
-    href: "/services/digital-marketing",
-    imageUrl: categoryImages["digital-marketing"],
-    live: true,
-  },
-  {
-    icon: <Code className="size-5" />,
-    name: "Software Development",
-    slug: "software-development",
-    description: "Custom software, web apps, integrations, and automation.",
-    href: "/services/software-development",
-    imageUrl: categoryImages["software-development"],
-    live: true,
-  },
-  {
-    icon: <Clapperboard className="size-5" />,
-    name: "Video Editing",
-    slug: "video-editing",
-    description: "Short-form video, reels, promos, and editing.",
-    href: "/services/video-editing",
-    imageUrl: categoryImages["video-editing"],
-    live: true,
-  },
-  {
-    icon: <Car className="size-5" />,
-    name: "Driving School",
-    slug: "driving-school",
-    description: "Licensed in-car lessons and beginner driver courses.",
-    href: "/services/driving-school",
-    imageUrl: categoryImages["driving-school"],
-    live: true,
-  },
-  {
-    icon: <Plus className="size-5" />,
-    name: "More",
-    slug: "more",
-    description: "More services coming soon. Submit any request to get started.",
-    href: "/get-quotes",
+    icon: <KeyRound className="size-5" />,
+    name: "Rental Services",
+    slug: "rental-services",
+    description: "Shisha, event equipment, and party rentals. Coming Q1 2026.",
+    comingSoon: true,
   },
 ];
 
@@ -243,7 +167,7 @@ export const customerSteps = [
   {
     step: "02",
     title: "Get matched fast",
-    description: "A verified local pro responds, typically within 15 minutes. No calling around.",
+    description: "A verified local pro responds quickly. No calling around.",
   },
   {
     step: "03",
@@ -253,7 +177,7 @@ export const customerSteps = [
   {
     step: "04",
     title: "Job done. Earn rewards.",
-    description: "$60+ cash back on your first completed job. Redeemable as gift cards at $100.",
+    description: "6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts.",
   },
 ];
 
@@ -362,7 +286,7 @@ export const faqs = [
   {
     question: "How fast will I get matched?",
     answer:
-      "Most homeowners get matched with a verified local pro within 15 minutes of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
+      "Most homeowners get matched with a verified local pro within the hour of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
   },
   {
     question: "How do I know the pro is actually verified?",
@@ -382,7 +306,7 @@ export const faqs = [
   {
     question: "How do the rewards work?",
     answer:
-      "You earn points automatically at each step. $5 when you submit a request. $5 when you book. $50 when your first job is completed. Refer a friend and both of you earn $5 when they submit their first request. Redeem as gift cards once you hit $100.",
+      "You earn points automatically at each step. 500 pts when you submit a request. 500 pts when you book. 5,000 pts when your first job is completed. Refer a friend and both of you earn 500 pts when they submit their first request. Redeem as gift cards once you hit 10,000 pts (≈ $100).",
   },
   {
     question: "I already have a guy I call. Why use The Helper?",

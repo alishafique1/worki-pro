@@ -139,7 +139,7 @@ export const completeOnboarding: CompleteOnboarding<
                 type: 'SERVICE_REQUEST' as const,
                 points: REWARD_POINTS.SERVICE_REQUEST,
                 status: 'PENDING' as const,
-                reason: 'Request submitted — $5 reward pending verification',
+                reason: 'Request submitted — 500 pts reward pending verification',
               }));
 
             if (newRewards.length > 0) {

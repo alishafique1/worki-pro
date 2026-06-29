@@ -28,6 +28,15 @@ node_modules/
 .DS_Store
 *.pem
 npm-debug.log*
+
+# Hermes loop runtime — keep configs, ignore transient state
+.hermes/loop-state/_budget.json
+.hermes/loop-state/heartbeat.jsonl
+.hermes/loop-state/_issue-map.json
+.hermes/loop-logs/
+
+# Pathing artifact from prior tooling — empty mirror of $HOME
+Users/
 yarn-debug.log*
 yarn-error.log*
 
@@ -40,5 +49,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .gstack/
-test-results/
-.firecrawl/

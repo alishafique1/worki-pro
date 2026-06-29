@@ -273,7 +273,7 @@ export default function AreaLandingPage() {
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-6">
         <div className="bg-white rounded-[40px] border border-[#E2E8F0] p-16 text-center max-w-md">
           <div className="text-5xl mb-6"><MapPin /></div>
-          <h1 className="text-3xl font-black tracking-tighter mb-4 text-[#0F172A]">Area Coming Soon</h1>
+          <h2 className="text-3xl font-black tracking-tighter mb-4 text-[#0F172A]">Area Coming Soon</h2>
           <p className="text-[#475569] mb-8">
             We're expanding quickly. Enter your postal code on the request form and we'll let you know when The Helper arrives near you.
           </p>

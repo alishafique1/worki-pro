@@ -15,7 +15,7 @@ export interface Category {
     name: string;
     slug: string;
     description: string;
-    href: string;
+    href?: string;
     imageUrl?: string;
     live?: boolean;
     comingSoon?: boolean;

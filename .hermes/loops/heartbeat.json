@@ -1,0 +1,67 @@
+{
+  "loop": "heartbeat",
+  "version": "1.0.0",
+  "description": "Provider inbox heartbeat — every 5 min, check for HOT leads and low provider credit balances, ping Ali on Telegram",
+  "owner": "Ali",
+
+  "schedule": "*/5 * * * *",
+  "timezone": "America/Toronto",
+
+  "trigger_mode": "script",
+  "schedule_mode": "recurring",
+
+  "script_path": "scripts/loops/heartbeat.sh",
+
+  "discovery": {
+    "sources": [
+      "ServiceRequest table: rows with urgency=EMERGENCY AND status=NEW AND assignedProviderId IS NULL AND createdAt > now-15min",
+      "LeadCreditAccount table: providers with pointsBalance < 5 AND hasEverLoggedIn=true",
+      "Provider table: providers with verificationStatus=VERIFIED AND lastSeenAt > now-24h"
+    ],
+    "skip_if": "no HOT leads AND no providers below threshold"
+  },
+
+  "generator": {
+    "type": "script",
+    "path": "scripts/loops/heartbeat.sh",
+    "actions": [
+      "Insert deduped alerts into .hermes/loop-state/heartbeat.jsonl (last 30 min window)",
+      "POST to Telegram bot with one-click claim / buy-credits links"
+    ]
+  },
+
+  "evaluator": {
+    "type": "script",
+    "path": "tests/loop-acceptance/heartbeat-evaluator.sh",
+    "default_stance": "PASS only if Telegram delivery confirmed",
+    "checks": [
+      "Telegram API returned 200",
+      "No duplicate pings within last 10 min (read heartbeat.jsonl)",
+      "If HOT lead was reported, the lead still exists in DB and is unassigned"
+    ]
+  },
+
+  "caps": {
+    "max_tokens_per_run": 5000,
+    "max_wallclock_seconds": 60,
+    "daily_budget_tokens": 50000,
+    "max_retries_per_finding": 3
+  },
+
+  "persistence": {
+    "state_file": ".hermes/loop-state/heartbeat.jsonl",
+    "format": "JSONL — one alert per line with timestamp, type, dedup_key",
+    "retention_days": 7
+  },
+
+  "human_review_points": [
+    "Ali decides whether to claim / buy from the Telegram message",
+    "Loop never sends money, never posts publicly",
+    "If Telegram API is down for 3 consecutive runs, pause the loop"
+  ],
+
+  "alerts": {
+    "on_hard_fail": "log + weekly digest",
+    "on_telegram_down": "log; do NOT spam on every tick"
+  }
+}

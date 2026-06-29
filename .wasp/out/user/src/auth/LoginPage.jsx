@@ -1,0 +1,231 @@
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
+import { initSession } from 'wasp/auth/helpers/user';
+import { login } from 'wasp/client/auth';
+import { config } from 'wasp/client';
+import { AuthPageLayout } from './AuthPageLayout';
+import { Link } from 'react-router';
+import { Logo } from '../client/components/Logo/Logo';
+import { Button, TextInput, FormLabel, Heading } from '../client/components/ds';
+export default function Login() {
+    const navigate = useNavigate();
+    const [step, setStep] = useState('email');
+    const [mode, setMode] = useState('otp');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [code, setCode] = useState(['', '', '', '', '', '']);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const inputRefs = useRef([]);
+    const codeValue = code.join('');
+    async function handleSendCode(e) {
+        e.preventDefault();
+        if (!email.trim())
+            return;
+        setIsLoading(true);
+        setError(null);
+        try {
+            const res = await fetch(`${config.apiUrl}/api/auth/request-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email.trim() }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok)
+                throw new Error((data && data.error) || 'Failed to send code.');
+            setStep('code');
+            setResendCooldown(60);
+            const timer = setInterval(() => {
+                setResendCooldown(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            setTimeout(() => inputRefs.current[0]?.focus(), 100);
+        }
+        catch (err) {
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+    async function handlePasswordLogin(e) {
+        e.preventDefault();
+        if (!email.trim() || !password)
+            return;
+        setIsLoading(true);
+        setError(null);
+        try {
+            await login({ email: email.trim(), password });
+            navigate('/account');
+        }
+        catch (err) {
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Invalid email or password.';
+            setError(friendly);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+    async function handleVerifyCode(e) {
+        e.preventDefault();
+        if (codeValue.length !== 6)
+            return;
+        setIsLoading(true);
+        setError(null);
+        try {
+            const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email.trim(), code: codeValue }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok)
+                throw new Error((data && data.error) || 'Verification failed.');
+            if (!data || !data.sessionId) {
+                throw new Error('Verification succeeded but no session was returned. Please sign in.');
+            }
+            // initSession (not setSessionId) — invalidates React Query cache so
+            // useAuth() refetches the user before /onboarding's auth check fires.
+            await initSession(data.sessionId);
+            navigate(data.isNewUser ? '/onboarding' : '/account');
+        }
+        catch (err) {
+            const raw = err && err.message ? String(err.message) : '';
+            const friendly = raw.includes('Unexpected token') || raw.includes('is not valid JSON')
+                ? 'Something went wrong reaching our server. Please try again in a moment.'
+                : raw || 'Something went wrong. Please try again.';
+            setError(friendly);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+    function handleCodeInput(index, value) {
+        const digit = value.replace(/\D/g, '').slice(-1);
+        const newCode = [...code];
+        newCode[index] = digit;
+        setCode(newCode);
+        setError(null);
+        if (digit && index < 5) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    }
+    function handleCodeKeyDown(index, e) {
+        if (e.key === 'Backspace' && !code[index] && index > 0) {
+            inputRefs.current[index - 1]?.focus();
+        }
+    }
+    function handleCodePaste(e) {
+        e.preventDefault();
+        const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        if (pasted.length === 6) {
+            setCode(pasted.split(''));
+            inputRefs.current[5]?.focus();
+        }
+    }
+    function handleResend() {
+        setCode(['', '', '', '', '', '']);
+        setError(null);
+        handleSendCode({ preventDefault: () => { } });
+    }
+    return (<AuthPageLayout>
+      <div className="mb-8">
+        <Logo variant="light" size="md" className="mb-6"/>
+        {step === 'email' ? (<>
+            <Heading level={2} className="mb-1">Sign in to The Helper</Heading>
+            <p className="text-sm text-[#475569]">Enter your email and we'll send a 6-digit code.</p>
+          </>) : (<>
+            <button type="button" onClick={() => { setStep('email'); setCode(['', '', '', '', '', '']); setError(null); }} className="text-sm text-[#475569] hover:text-[#0F172A] mb-3 flex items-center gap-1">
+              ← Back
+            </button>
+            <Heading level={2} className="mb-1">Check your email</Heading>
+            <p className="text-sm text-[#475569]">
+              We sent a 6-digit code to <span className="font-semibold text-[#0F172A]">{email}</span>
+            </p>
+          </>)}
+      </div>
+
+      {step === 'email' && mode === 'password' ? (<form onSubmit={handlePasswordLogin} className="space-y-4">
+          <div>
+            <FormLabel>Email address</FormLabel>
+            <TextInput type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }}/>
+          </div>
+          <div>
+            <FormLabel>Password</FormLabel>
+            <TextInput type="password" required placeholder="••••••••" value={password} onChange={e => { setPassword(e.target.value); setError(null); }}/>
+          </div>
+
+          {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
+
+          <Button type="submit" fullWidth disabled={isLoading || !email.trim() || !password}>
+            {isLoading ? 'Signing in…' : 'Sign in →'}
+          </Button>
+
+          <p className="text-center text-sm text-[#475569]">
+            <button type="button" onClick={() => { setMode('otp'); setError(null); }} className="text-[#2563EB] font-semibold hover:underline">
+              Use email code instead
+            </button>
+          </p>
+        </form>) : step === 'email' ? (<form onSubmit={handleSendCode} className="space-y-4">
+          <div>
+            <FormLabel>Email address</FormLabel>
+            <TextInput type="email" required autoFocus placeholder="you@example.com" value={email} onChange={e => { setEmail(e.target.value); setError(null); }}/>
+          </div>
+
+          {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
+
+          <Button type="submit" fullWidth disabled={isLoading || !email.trim()}>
+            {isLoading ? 'Sending code…' : 'Send code →'}
+          </Button>
+
+          <p className="text-center text-sm text-[#475569]">
+            <button type="button" onClick={() => { setMode('password'); setError(null); }} className="text-[#2563EB] font-semibold hover:underline">
+              Sign in with password
+            </button>
+          </p>
+        </form>) : (<form onSubmit={handleVerifyCode} className="space-y-6">
+          <div>
+            <FormLabel className="mb-3">Enter your 6-digit code</FormLabel>
+            <div className="flex gap-2 justify-between" onPaste={handleCodePaste}>
+              {code.map((digit, i) => (<input key={i} ref={el => { inputRefs.current[i] = el; }} type="text" inputMode="numeric" maxLength={1} value={digit} onChange={e => handleCodeInput(i, e.target.value)} onKeyDown={e => handleCodeKeyDown(i, e)} className="w-12 h-14 text-center text-2xl font-black bg-white border-2 rounded-xl transition-colors focus:outline-none focus:border-[#2563EB]" style={{ borderColor: digit ? '#2563EB' : '#E2E8F0' }}/>))}
+            </div>
+          </div>
+
+          {error && (<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>)}
+
+          <Button type="submit" fullWidth disabled={isLoading || codeValue.length !== 6}>
+            {isLoading ? 'Verifying…' : 'Verify & sign in'}
+          </Button>
+
+          <p className="text-center text-sm text-[#475569]">
+            Didn't get it?{' '}
+            {resendCooldown > 0 ? (<span>Resend in {resendCooldown}s</span>) : (<button type="button" onClick={handleResend} className="text-[#2563EB] font-semibold hover:underline">
+                Resend code
+              </button>)}
+          </p>
+        </form>)}
+
+      {/* Sign up link */}
+      <div className="mt-6 pt-6 border-t border-[#E2E8F0] text-center">
+        <p className="text-sm text-[#475569]">
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-[#2563EB] font-semibold hover:underline">
+            Create one — it's free
+          </Link>
+        </p>
+      </div>
+    </AuthPageLayout>);
+}

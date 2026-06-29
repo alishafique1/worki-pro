@@ -208,7 +208,7 @@ export default function OnboardingPage() {
             {[
               { href: '/get-quotes', num: '1', label: 'Get quotes', sub: 'Match with local pros fast.', amber: false },
               { href: '/services', num: '2', label: 'Browse services', sub: 'See what we cover near you.', amber: false },
-              { href: '/how-rewards-work', num: '$', label: 'Earn rewards', sub: '$60+ back on your first job.', amber: true },
+              { href: '/how-rewards-work', num: '★', label: 'Earn rewards', sub: '6,000 pts on your first job (≈ $60).', amber: true },
             ].map(({ href, num, label, sub, amber }) => (
               <a
                 key={href}

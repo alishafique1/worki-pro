@@ -212,8 +212,8 @@ export default function AnalyticsPage() {
   }
 
   const maxMonthly = Math.max(...stats.monthlyPoints.map((m) => Math.max(m.earned, m.redeemed)), 1);
-  const maxCategory = Math.max(...Object.values(stats.requestsByCategory), 1);
-  const totalCategoryRequests = Object.values(stats.requestsByCategory).reduce((a, b) => a + b, 0);
+  const maxCategory = Math.max(...Object.values(stats.requestsByCategory as Record<string, number>), 1);
+  const totalCategoryRequests = Object.values(stats.requestsByCategory as Record<string, number>).reduce((a: number, b: number) => a + b, 0);
 
   // Milestone progress toward next $100 redemption.
   const balancePoints = stats.currentBalance;
@@ -398,9 +398,9 @@ export default function AnalyticsPage() {
           <div className="bg-white rounded-[24px] border border-[#E2E8F0] p-6 space-y-4 shadow-sm">
             <h2 className="text-lg font-bold text-[#0F172A]">Requests by category</h2>
             <div className="space-y-4">
-              {Object.entries(stats.requestsByCategory)
-                .sort(([, a], [, b]) => b - a)
-                .map(([cat, count]) => {
+              {Object.entries(stats.requestsByCategory as Record<string, number>)
+                .sort(([, a], [, b]) => (b as number) - (a as number))
+                .map(([cat, count]: [string, number]) => {
                   const share = totalCategoryRequests > 0 ? Math.round((count / totalCategoryRequests) * 100) : 0;
                   return (
                     <div key={cat} className="space-y-1.5">
