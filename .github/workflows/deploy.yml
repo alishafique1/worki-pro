@@ -53,6 +53,18 @@ jobs:
           git diff --staged --quiet || git commit -m "build: update deploy/dist + .wasp/out [skip ci]"
           git push origin main
 
+      # The production VPS only accepts SSH over Tailscale (firewall + fail2ban
+      # whitelist the tailnet; public port 22 is unreachable from GitHub runners).
+      # This step joins the runner to the tailnet so the SSH step below can reach
+      # the VPS at its Tailscale address (set VPS_HOST to e.g. vps.zebu-mirzam.ts.net
+      # or 100.102.25.87). Requires a Tailscale OAuth client with tag:ci.
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Validate SSH secret is configured
         run: |
           if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
