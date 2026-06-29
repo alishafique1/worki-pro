@@ -164,6 +164,7 @@ model ServiceCategory {
   icon             String?           // Lucide icon name, e.g. "AirVent"
   imageUrl         String?           // Unsplash hero image URL
   questions        Json?             // [{ id, type, label, options?, required? }]
+  defaultLeadCredits Int             @default(20)  // credit price for a lead in this category; copied onto each ServiceRequest at creation
   active           Boolean           @default(true)
   parentCategoryId String?
   parent           ServiceCategory?  @relation("SubCategories", fields: [parentCategoryId], references: [id])
@@ -239,6 +240,7 @@ model Provider {
   fees               ProviderFee[]
   communicationLogs  CommunicationLog[]
   reviews            Review[]
+  creditAccount      CreditAccount?
 }
 
 model ProviderCategory {
@@ -306,6 +308,8 @@ model ServiceRequest {
   rewardEligible      Boolean         @default(true)
   rewardStatus        RewardStatus?
 
+  creditCost          Int             @default(20)  // credits a provider spends to claim this lead; defaults from category, admin-overridable until claimed
+
   assignedProviderId  String?
   assignedProvider    Provider?       @relation(fields: [assignedProviderId], references: [id])
 
@@ -319,6 +323,7 @@ model ServiceRequest {
   communicationLogs  CommunicationLog[]
   notes              RequestNote[]
   fees               ProviderFee[]
+  creditTransactions CreditTransaction[]
   webhookLogs        WebhookLog[]
 
   @@index([email])
@@ -565,6 +570,47 @@ enum FeeStatus {
   PAID
   WAIVED
   DISPUTED
+}
+
+// ─── Worki Provider Credits ────────────────────────────────────────────────
+// Prepaid wallet. Providers buy credits (1 credit = $1 CAD) and spend them to
+// claim leads. Lead price is set manually per category / per lead (no dynamic
+// pricing yet). Mirrors the consumer RewardAccount / RewardTransaction pattern.
+
+model CreditAccount {
+  id              String   @id @default(cuid())
+  providerId      String   @unique
+  provider        Provider @relation(fields: [providerId], references: [id])
+  balance         Int      @default(0)   // credits currently available
+  lifetimeBought  Int      @default(0)
+  lifetimeSpent   Int      @default(0)
+  transactions    CreditTransaction[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model CreditTransaction {
+  id                String          @id @default(cuid())
+  accountId         String
+  account           CreditAccount   @relation(fields: [accountId], references: [id])
+  delta             Int             // +N for purchases/bonuses, -N for lead claims
+  type              CreditTxnType
+  balanceAfter      Int
+  serviceRequestId  String?         // set when type = LEAD_CLAIM
+  serviceRequest    ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+  stripePaymentId   String?         // set when type = PURCHASE / REFUND
+  reason            String?
+  createdAt         DateTime        @default(now())
+
+  @@index([accountId])
+}
+
+enum CreditTxnType {
+  PURCHASE
+  LEAD_CLAIM
+  REFUND
+  BONUS
+  ADMIN_ADJUST
 }
 
 // ─── Worki Request Notes ───────────────────────────────────────────────────

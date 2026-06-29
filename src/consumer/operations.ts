@@ -243,11 +243,13 @@ export const submitServiceRequest: SubmitServiceRequest<
   const effectivePostalCode = context.user?.postalCode ?? args.postalCode;
 
   let serviceCategoryId: string | undefined = undefined;
+  let leadCreditCost = 20; // fallback when no category resolves
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({
       where: { slug: args.serviceType },
     });
     serviceCategoryId = cat?.id;
+    if (cat?.defaultLeadCredits != null) leadCreditCost = cat.defaultLeadCredits;
   }
 
   const preferredProviderId = args.preferredProviderId
@@ -276,6 +278,7 @@ export const submitServiceRequest: SubmitServiceRequest<
       rewardStatus: "PENDING_VERIFICATION",
       serviceCategoryId: serviceCategoryId || undefined,
       assignedProviderId: preferredProviderId || undefined,
+      creditCost: leadCreditCost,
     },
   });
 
@@ -943,6 +946,14 @@ export const saveGuestRequest: SaveGuestRequest<SaveGuestRequestInput, { request
     },
   })
 
+  let leadCreditCost = 20;
+  if (args.serviceCategoryId) {
+    const cat = await context.entities.ServiceCategory.findUnique({
+      where: { id: args.serviceCategoryId },
+    });
+    if (cat?.defaultLeadCredits != null) leadCreditCost = cat.defaultLeadCredits;
+  }
+
   const request = await context.entities.ServiceRequest.create({
     data: {
       consumerId: userId,
@@ -955,6 +966,7 @@ export const saveGuestRequest: SaveGuestRequest<SaveGuestRequestInput, { request
       description: args.description,
       qualifierAnswers: args.qualifierAnswers ?? {},
       source: 'WEBSITE',
+      creditCost: leadCreditCost,
     },
   })
 

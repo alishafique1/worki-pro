@@ -335,7 +335,7 @@ action redeemPoints {
 
 action saveGuestRequest {
   fn: import { saveGuestRequest } from "@src/consumer/operations",
-  entities: [ServiceRequest, User, RewardAccount, RewardTransaction, Referral]
+  entities: [ServiceRequest, User, RewardAccount, RewardTransaction, Referral, ServiceCategory]
 }
 
 action submitServiceRequest {
@@ -459,6 +459,11 @@ query getProviderFees {
   entities: [ProviderFee, Provider]
 }
 
+query getCreditBalance {
+  fn: import { getCreditBalance } from "@src/provider/operations",
+  entities: [Provider, CreditAccount, CreditTransaction]
+}
+
 action acceptServiceRequest {
   fn: import { acceptServiceRequest } from "@src/provider/operations",
   entities: [ServiceRequest, Appointment, ProviderFee, Provider, RewardTransaction, RewardAccount]
@@ -512,7 +517,7 @@ query getPublicLeadFeed {
 
 action claimLead {
   fn: import { claimLead } from "@src/provider/operations",
-  entities: [ServiceRequest, Provider, ProviderFee, CommunicationLog]
+  entities: [ServiceRequest, Provider, ProviderFee, CommunicationLog, CreditAccount, CreditTransaction]
 }
 
 // Public provider profile (by slug)
@@ -545,6 +550,16 @@ action upsertAdminCategory {
 action deleteAdminCategory {
   fn: import { deleteAdminCategory } from "@src/admin/operations",
   entities: [ServiceCategory]
+}
+
+action setLeadCreditCost {
+  fn: import { setLeadCreditCost } from "@src/admin/operations",
+  entities: [ServiceRequest]
+}
+
+action grantProviderCredits {
+  fn: import { grantProviderCredits } from "@src/admin/operations",
+  entities: [Provider, CreditAccount, CreditTransaction]
 }
 //#endregion
 
@@ -663,7 +678,7 @@ query getAdminRequests {
 
 query getAdminProviders {
   fn: import { getAdminProviders } from "@src/admin/operations",
-  entities: [Provider, User]
+  entities: [Provider, User, CreditAccount]
 }
 
 query getAdminRewards {

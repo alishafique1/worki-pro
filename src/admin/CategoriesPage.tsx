@@ -18,6 +18,7 @@ type Category = {
   icon: string | null;
   imageUrl: string | null;
   active: boolean;
+  defaultLeadCredits: number;
   createdAt: Date;
 };
 
@@ -29,6 +30,7 @@ type FormState = {
   icon: string;
   imageUrl: string;
   active: boolean;
+  defaultLeadCredits: number;
 };
 
 const BLANK: FormState = {
@@ -38,6 +40,7 @@ const BLANK: FormState = {
   icon: 'Hammer',
   imageUrl: '',
   active: true,
+  defaultLeadCredits: 20,
 };
 
 function slugify(s: string) {
@@ -65,6 +68,7 @@ export default function AdminCategoriesPage() {
       icon: cat.icon ?? 'Hammer',
       imageUrl: cat.imageUrl ?? '',
       active: cat.active,
+      defaultLeadCredits: cat.defaultLeadCredits ?? 20,
     });
     setErrMsg(null);
   };
@@ -86,6 +90,7 @@ export default function AdminCategoriesPage() {
         icon: form.icon || undefined,
         imageUrl: form.imageUrl.trim() || undefined,
         active: form.active,
+        defaultLeadCredits: form.defaultLeadCredits,
       });
       setForm(null);
       refetch();
@@ -120,6 +125,7 @@ export default function AdminCategoriesPage() {
         icon: cat.icon ?? undefined,
         imageUrl: cat.imageUrl ?? undefined,
         active: !cat.active,
+        defaultLeadCredits: cat.defaultLeadCredits,
       });
       refetch();
     } catch (e: any) {
@@ -167,6 +173,7 @@ export default function AdminCategoriesPage() {
                 <th className="text-left px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Category</th>
                 <th className="text-left px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Slug</th>
                 <th className="text-left px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Icon</th>
+                <th className="text-center px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Lead price</th>
                 <th className="text-center px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Active</th>
                 <th className="text-right px-5 py-3 text-xs font-bold uppercase tracking-widest text-[#475569]">Actions</th>
               </tr>
@@ -174,7 +181,7 @@ export default function AdminCategoriesPage() {
             <tbody>
               {(!categories || categories.length === 0) && (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-[#475569]">No categories yet. Click "Add Category" to create one.</td>
+                  <td colSpan={6} className="text-center py-12 text-[#475569]">No categories yet. Click "Add Category" to create one.</td>
                 </tr>
               )}
               {categories?.map((cat) => (
@@ -190,6 +197,11 @@ export default function AdminCategoriesPage() {
                   </td>
                   <td className="px-5 py-4">
                     <code className="text-xs bg-[#EFF6FF] px-2 py-1 rounded-lg text-[#2563EB]">{cat.icon ?? '—'}</code>
+                  </td>
+                  <td className="px-5 py-4 text-center">
+                    <span className="inline-block text-xs font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE] px-2.5 py-1 rounded-full">
+                      {cat.defaultLeadCredits ?? 20} cr
+                    </span>
                   </td>
                   <td className="px-5 py-4 text-center">
                     <button
@@ -274,6 +286,20 @@ export default function AdminCategoriesPage() {
                   className="w-full border border-[#E2E8F0] rounded-[12px] px-4 py-2.5 text-sm text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 resize-none"
                   placeholder="Short description shown on category cards"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-[#475569] mb-1.5">Lead price (credits)</label>
+                <input
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={form.defaultLeadCredits}
+                  onChange={(e) => setForm((f) => f ? { ...f, defaultLeadCredits: Math.max(0, parseInt(e.target.value || '0', 10)) } : f)}
+                  className="w-full border border-[#E2E8F0] rounded-[12px] px-4 py-2.5 text-sm text-[#0F172A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
+                  placeholder="20"
+                />
+                <p className="text-xs text-[#94A3B8] mt-1">Credits a provider spends to claim a lead in this category. 1 credit = $1 CAD. Copied onto new leads; existing leads keep their price.</p>
               </div>
 
               <div>

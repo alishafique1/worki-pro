@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router";
 import { MapPin, AlertTriangle, Clock, Inbox, Search, CheckCircle2 } from 'lucide-react';
 import { useAction, useQuery } from "wasp/client/operations";
-import { getPublicLeadFeed, claimLead, getServiceCategories } from "wasp/client/operations";
+import { getPublicLeadFeed, claimLead, getServiceCategories, getCreditBalance } from "wasp/client/operations";
 
 const URGENCY_LABELS: Record<string, { label: string; color: string }> = {
   EMERGENCY: { label: "Urgent", color: "text-red-600 bg-red-50 border-red-200" },
@@ -41,6 +41,8 @@ export default function ProviderLeadsPage() {
   });
 
   const { data: categories } = useQuery(getServiceCategories);
+  const { data: credits, refetch: refetchCredits } = useQuery(getCreditBalance);
+  const balance = credits?.balance ?? 0;
 
   const claimLeadFn = useAction(claimLead);
 
@@ -50,6 +52,7 @@ export default function ProviderLeadsPage() {
     try {
       const result = await claimLeadFn({ requestId });
       setClaimedIds((prev) => new Set([...prev, requestId]));
+      refetchCredits();
       if (result.alreadyClaimed) {
         setClaimError("You already claimed this lead.");
       }
@@ -95,7 +98,14 @@ export default function ProviderLeadsPage() {
             Verified service requests near your area. Claim a lead to reveal customer contact details.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            to="/provider/billing"
+            className="inline-flex items-center gap-2 rounded-[18px] border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-2 text-sm font-bold text-[#2563EB] hover:bg-[#DBEAFE] transition-colors"
+            title="Manage your credits"
+          >
+            {balance} credits
+          </Link>
           <Link
             to="/provider/dashboard"
             className="rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-bold hover:border-[#2563EB] transition-colors"
@@ -225,6 +235,9 @@ export default function ProviderLeadsPage() {
                   >
                     {urgencyInfo.label}
                   </span>
+                  <span className="px-3 py-1 rounded-full border text-xs font-bold border-[#BFDBFE] text-[#2563EB] bg-[#EFF6FF]">
+                    {lead.creditCost} credits
+                  </span>
                   {isClaimed && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold border-green-200 text-green-700 bg-green-50">
                       <CheckCircle2 className="size-3" /> Claimed
@@ -253,16 +266,25 @@ export default function ProviderLeadsPage() {
 
               {/* CTA */}
               {!isClaimed ? (
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handleClaim(lead.id)}
-                    disabled={isClaiming}
-                    className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] disabled:opacity-50 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
-                  >
-                    {isClaiming ? "Claiming…" : "Claim this lead"}
-                  </button>
+                <div className="flex flex-wrap items-center gap-3">
+                  {balance >= lead.creditCost ? (
+                    <button
+                      onClick={() => handleClaim(lead.id)}
+                      disabled={isClaiming}
+                      className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] disabled:opacity-50 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
+                    >
+                      {isClaiming ? "Claiming…" : `Claim for ${lead.creditCost} credits`}
+                    </button>
+                  ) : (
+                    <Link
+                      to="/provider/billing"
+                      className="px-6 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] text-sm font-black rounded-[14px] hover:border-[#2563EB] transition-all"
+                    >
+                      Need {lead.creditCost - balance} more credits → Buy
+                    </Link>
+                  )}
                   <span className="text-xs text-[#94A3B8]">
-                    Reveal customer contact · $5 lead fee
+                    Reveal customer contact · {lead.creditCost} credits
                   </span>
                 </div>
               ) : (

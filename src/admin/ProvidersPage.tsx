@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useQuery, approveProvider, rejectProvider, getAdminProviders } from 'wasp/client/operations';
+import { useQuery, approveProvider, rejectProvider, getAdminProviders, grantProviderCredits } from 'wasp/client/operations';
 import {
   Phone,
   Mail,
@@ -107,6 +107,19 @@ export default function AdminProvidersPage() {
       await refetch();
     } catch (e: any) {
       setActionError(e.message || 'Failed to reject provider');
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handleGrant = async (id: string, credits: number) => {
+    setActionError(null);
+    setBusyId(id);
+    try {
+      await grantProviderCredits({ providerId: id, credits });
+      await refetch();
+    } catch (e: any) {
+      setActionError(e.message || 'Failed to grant credits');
     } finally {
       setBusyId(null);
     }
@@ -255,6 +268,7 @@ export default function AdminProvidersPage() {
                 }}
                 onChangeReason={setRejectReason}
                 onConfirmReject={() => handleReject(prov.id)}
+                onGrant={(credits) => handleGrant(prov.id, credits)}
               />
             ))}
           </div>
@@ -341,6 +355,7 @@ interface ProviderCardProps {
   onCancelReject: () => void;
   onChangeReason: (v: string) => void;
   onConfirmReject: () => void;
+  onGrant: (credits: number) => void;
 }
 
 function ProviderCard({
@@ -353,7 +368,9 @@ function ProviderCard({
   onCancelReject,
   onChangeReason,
   onConfirmReject,
+  onGrant,
 }: ProviderCardProps) {
+  const [grantAmount, setGrantAmount] = useState('100');
   const isPending = provider.verificationStatus === 'PENDING';
   const isVerified = provider.verificationStatus === 'VERIFIED';
   const colors = avatarColors(provider.businessName || '?');
@@ -468,6 +485,45 @@ function ProviderCard({
         <span>Applied {formatDate(provider.createdAt)}</span>
         {provider.wsibCertExpiry && <span> · WSIB exp {formatDate(provider.wsibCertExpiry)}</span>}
         {provider.insuranceCertExpiry && <span> · Insurance exp {formatDate(provider.insuranceCertExpiry)}</span>}
+      </div>
+
+      {/* Credits */}
+      <div className="mt-4 rounded-[14px] border border-[#BFDBFE] bg-[#EFF6FF] p-3">
+        <div className="mb-2 flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-wide text-[#475569]">Lead Credits</span>
+          <span className="text-sm font-black text-[#2563EB]">{provider.creditAccount?.balance ?? 0} cr</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => onGrant(50)}
+            disabled={busy}
+            className="rounded-[10px] border border-[#BFDBFE] bg-white px-2.5 py-1 text-xs font-bold text-[#2563EB] hover:bg-[#DBEAFE] disabled:opacity-50 transition-colors"
+          >
+            +50
+          </button>
+          <button
+            onClick={() => onGrant(100)}
+            disabled={busy}
+            className="rounded-[10px] border border-[#BFDBFE] bg-white px-2.5 py-1 text-xs font-bold text-[#2563EB] hover:bg-[#DBEAFE] disabled:opacity-50 transition-colors"
+          >
+            +100
+          </button>
+          <input
+            type="number"
+            value={grantAmount}
+            onChange={(e) => setGrantAmount(e.target.value)}
+            className="w-20 rounded-[10px] border border-[#BFDBFE] bg-white px-2 py-1 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30"
+            placeholder="amount"
+          />
+          <button
+            onClick={() => { const n = parseInt(grantAmount, 10); if (n) onGrant(n); }}
+            disabled={busy || !parseInt(grantAmount, 10)}
+            className="rounded-[10px] bg-[#2563EB] px-3 py-1 text-xs font-bold text-white hover:bg-[#1D4ED8] disabled:opacity-50 transition-colors"
+          >
+            {busy ? '…' : 'Grant'}
+          </button>
+        </div>
+        <p className="mt-1.5 text-[11px] text-[#94A3B8]">Use a negative amount to deduct/refund. 1 credit = $1 CAD.</p>
       </div>
 
       {/* Actions */}

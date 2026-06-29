@@ -28,6 +28,7 @@ import type {
   AddPortfolioPhoto,
   RemovePortfolioPhoto,
   SetProfilePhoto,
+  GetCreditBalance,
 } from "wasp/server/operations";
 import { checkFileExistsInS3, deleteFileFromS3 } from '../file-upload/s3Utils';
 import { HttpError, prisma } from "wasp/server";
@@ -40,6 +41,14 @@ const requireProvider = async (context: any) => {
   });
   if (!provider) throw new HttpError(403, "Provider profile required.");
   return provider;
+};
+
+// Ensure a provider has a credit wallet, creating an empty one on first access.
+// Works with either context.entities or a transaction client.
+const ensureCreditAccount = async (db: any, providerId: string) => {
+  const existing = await db.creditAccount.findUnique({ where: { providerId } });
+  if (existing) return existing;
+  return db.creditAccount.create({ data: { providerId } });
 };
 
 export const getProviderLeads: GetProviderLeads<
@@ -100,6 +109,46 @@ export const getProviderFees: GetProviderFees<void, ProviderFee[]> = async (
     where: { providerId: provider.id },
     orderBy: { createdAt: "desc" },
   });
+};
+
+type CreditBalance = {
+  balance: number;
+  lifetimeBought: number;
+  lifetimeSpent: number;
+  transactions: {
+    id: string;
+    delta: number;
+    type: string;
+    balanceAfter: number;
+    reason: string | null;
+    createdAt: Date;
+  }[];
+};
+
+export const getCreditBalance: GetCreditBalance<void, CreditBalance> = async (
+  _args,
+  context,
+) => {
+  const provider = await requireProvider(context);
+  const account = await ensureCreditAccount(prisma, provider.id);
+  const transactions = await prisma.creditTransaction.findMany({
+    where: { accountId: account.id },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+  return {
+    balance: account.balance,
+    lifetimeBought: account.lifetimeBought,
+    lifetimeSpent: account.lifetimeSpent,
+    transactions: transactions.map((t) => ({
+      id: t.id,
+      delta: t.delta,
+      type: t.type,
+      balanceAfter: t.balanceAfter,
+      reason: t.reason,
+      createdAt: t.createdAt,
+    })),
+  };
 };
 
 export const acceptServiceRequest: AcceptServiceRequest<
@@ -610,6 +659,7 @@ type MaskedLead = {
   estimatedSchedule: string | null;
   status: string;
   claimed: boolean;
+  creditCost: number;
 };
 
 export const getPublicLeadFeed: GetPublicLeadFeed<
@@ -664,6 +714,7 @@ export const getPublicLeadFeed: GetPublicLeadFeed<
     estimatedSchedule: r.estimatedSchedule,
     status: r.status,
     claimed: !!r.assignedProviderId,
+    creditCost: r.creditCost ?? 20,
   }));
 };
 
@@ -694,24 +745,50 @@ export const claimLead: ClaimLead<
     throw new HttpError(409, "This lead has already been claimed by another provider.");
   }
 
-  // All three writes must succeed together: if the fee write fails after
-  // the lead is assigned, the provider has contact info with no revenue record.
+  const cost = req.creditCost ?? 20;
+
+  // Ensure a wallet exists and check funds before doing any writes.
+  const account = await ensureCreditAccount(prisma, provider.id);
+  if (account.balance < cost) {
+    throw new HttpError(
+      402,
+      `This lead costs ${cost} credits but you have ${account.balance}. Top up to claim.`,
+    );
+  }
+
+  // All writes must succeed together. The credit deduction is conditional on the
+  // balance still covering the cost (updateMany count guards against a race where
+  // a concurrent claim drained the wallet between the check above and here).
   const [updated] = await prisma.$transaction(async (tx) => {
+    const debit = await tx.creditAccount.updateMany({
+      where: { id: account.id, balance: { gte: cost } },
+      data: {
+        balance: { decrement: cost },
+        lifetimeSpent: { increment: cost },
+      },
+    });
+    if (debit.count === 0) {
+      throw new HttpError(402, "Insufficient credits — your balance changed. Top up and retry.");
+    }
+
+    const fresh = await tx.creditAccount.findUnique({ where: { id: account.id } });
+
+    await tx.creditTransaction.create({
+      data: {
+        accountId: account.id,
+        delta: -cost,
+        type: "LEAD_CLAIM",
+        balanceAfter: fresh!.balance,
+        serviceRequestId: requestId,
+        reason: `Claimed lead in ${req.city || req.postalCode}`,
+      },
+    });
+
     const updateResult = await tx.serviceRequest.update({
       where: { id: requestId },
       data: {
         assignedProviderId: provider.id,
         status: "ASSIGNED",
-      },
-    });
-
-    await tx.providerFee.create({
-      data: {
-        providerId: provider.id,
-        serviceRequestId: requestId,
-        feeType: "QUALIFIED_LEAD",
-        amount: 5.0,
-        status: "PENDING",
       },
     });
 
@@ -723,7 +800,7 @@ export const claimLead: ClaimLead<
         direction: "OUTBOUND",
         from: provider.businessName,
         to: req.email || req.name || "Customer",
-        body: "Lead claimed — contact details now available.",
+        body: `Lead claimed — contact details now available. (${cost} credits)`,
         status: "DELIVERED",
       },
     });

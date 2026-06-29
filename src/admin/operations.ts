@@ -1,7 +1,7 @@
 import type { ServiceRequest, Provider, RewardTransaction, Redemption, User, RewardAccount, Lead, Review } from 'wasp/entities';
 import type { ReviewStatus } from '@prisma/client';
-import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider, GetAdminLeads, UpdateLead, GetAdminReviews, ModerateReview } from 'wasp/server/operations';
-import { HttpError } from 'wasp/server';
+import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider, GetAdminLeads, UpdateLead, GetAdminReviews, ModerateReview, SetLeadCreditCost, GrantProviderCredits } from 'wasp/server/operations';
+import { HttpError, prisma } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
 
 const requireAdmin = (context: any) => {
@@ -22,7 +22,7 @@ export const getAdminProviders: GetAdminProviders<void, Provider[]> = async (arg
   requireAdmin(context);
   return context.entities.Provider.findMany({
     orderBy: { createdAt: 'desc' },
-    include: { user: true }
+    include: { user: true, creditAccount: true }
   });
 };
 
@@ -220,6 +220,7 @@ type UpsertCategoryInput = {
   icon?: string;
   imageUrl?: string;
   active?: boolean;
+  defaultLeadCredits?: number;
 };
 
 export const upsertAdminCategory = async (args: UpsertCategoryInput, context: any) => {
@@ -234,6 +235,73 @@ export const upsertAdminCategory = async (args: UpsertCategoryInput, context: an
 export const deleteAdminCategory = async ({ id }: { id: string }, context: any) => {
   requireAdmin(context);
   return context.entities.ServiceCategory.delete({ where: { id } });
+};
+
+// ─── Lead Credit Pricing & Provider Credit Grants ────────────────────────────
+
+// Manually set the credit price of a single lead (admin override). Blocked once
+// the lead is claimed, since the price was already charged at claim time.
+export const setLeadCreditCost: SetLeadCreditCost<
+  { requestId: string; creditCost: number },
+  ServiceRequest
+> = async ({ requestId, creditCost }, context) => {
+  requireAdmin(context);
+  if (!Number.isInteger(creditCost) || creditCost < 0) {
+    throw new HttpError(400, 'creditCost must be a non-negative integer.');
+  }
+  const req = await context.entities.ServiceRequest.findUnique({ where: { id: requestId } });
+  if (!req) throw new HttpError(404, 'Lead not found.');
+  if (req.assignedProviderId) {
+    throw new HttpError(409, 'Cannot reprice a lead that has already been claimed.');
+  }
+  return context.entities.ServiceRequest.update({
+    where: { id: requestId },
+    data: { creditCost },
+  });
+};
+
+// Manually add (or remove, with a negative amount) credits from a provider's
+// wallet. Used for top-ups, refunds, and corrections until Stripe purchase lands.
+export const grantProviderCredits: GrantProviderCredits<
+  { providerId: string; credits: number; reason?: string },
+  { balance: number }
+> = async ({ providerId, credits, reason }, context) => {
+  requireAdmin(context);
+  if (!Number.isInteger(credits) || credits === 0) {
+    throw new HttpError(400, 'credits must be a non-zero integer.');
+  }
+  const provider = await prisma.provider.findUnique({ where: { id: providerId } });
+  if (!provider) throw new HttpError(404, 'Provider not found.');
+
+  return prisma.$transaction(async (tx) => {
+    const account =
+      (await tx.creditAccount.findUnique({ where: { providerId } })) ||
+      (await tx.creditAccount.create({ data: { providerId } }));
+
+    if (account.balance + credits < 0) {
+      throw new HttpError(400, `Cannot remove ${-credits} credits; balance is ${account.balance}.`);
+    }
+
+    const updated = await tx.creditAccount.update({
+      where: { id: account.id },
+      data: {
+        balance: { increment: credits },
+        ...(credits > 0 ? { lifetimeBought: { increment: credits } } : {}),
+      },
+    });
+
+    await tx.creditTransaction.create({
+      data: {
+        accountId: account.id,
+        delta: credits,
+        type: credits > 0 ? 'ADMIN_ADJUST' : 'REFUND',
+        balanceAfter: updated.balance,
+        reason: reason || (credits > 0 ? 'Admin credit grant' : 'Admin credit removal'),
+      },
+    });
+
+    return { balance: updated.balance };
+  });
 };
 
 // ─── Review Moderation ────────────────────────────────────────────────────────
