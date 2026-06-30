@@ -293,8 +293,8 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Request Preview Card */}
-              <div className="-mt-6 relative z-10 mx-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.12)]">
+              {/* Request Preview Card — decorative illustration, not interactive */}
+              <div aria-hidden="true" className="-mt-6 relative z-10 mx-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.12)]">
                 <p className="mb-4 text-sm font-semibold text-[#0F172A]">What happens when you submit</p>
                 {/* Category row */}
                 <div className="mb-3 flex flex-wrap gap-2">
@@ -318,7 +318,7 @@ export default function LandingPage() {
                   Milton, ON L9T
                 </div>
                 {/* CTA */}
-                <button type="button" className="w-full rounded-xl bg-[#2563EB] py-3 text-sm font-semibold text-white">
+                <button type="button" tabIndex={-1} className="w-full rounded-xl bg-[#2563EB] py-3 text-sm font-semibold text-white">
                   Get matched, free
                 </button>
                 {/* Trust row */}
