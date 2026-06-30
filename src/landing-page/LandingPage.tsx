@@ -15,7 +15,7 @@ import {
   Star,
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
-import TrustBadges from "./components/TrustBadges";
+import heroImage from "../client/static/hero-home-service.jpg";
 import {
   CategoryCard,
   Container,
@@ -38,13 +38,13 @@ const rewardTiers = [
     icon: <Star className="size-5 text-[#60A5FA]" />,
     label: "Active Homeowner",
     range: "500 – 1,999 pts",
-    note: "Keep going — your next job unlocks more",
+    note: "Keep going. Your next job unlocks more.",
   },
   {
     icon: <Award className="size-5 text-[#3B82F6]" />,
     label: "Smart Maintainer",
     range: "2,000 – 4,999 pts",
-    note: "You're a regular — thank you",
+    note: "You're a regular. Thank you.",
   },
   {
     icon: <Crown className="size-5 text-[#BFDBFE]" />,
@@ -79,6 +79,30 @@ const trustPillars = [
   },
 ];
 
+// ── Testimonials ─────────────────────────────────────────────────────────────
+
+const testimonials = [
+  {
+    quote: "My AC broke on a Saturday afternoon. Submitted at 2pm, tech booked by 4pm, done by 6pm. First time I've not spent hours calling around.",
+    name: "S.M.",
+    city: "Milton",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
+  },
+  {
+    quote: "Found an electrician in 45 minutes on a weeknight. The app sent the quote, I booked, and it was fixed before the weekend. The rewards points are a bonus.",
+    name: "J.K.",
+    city: "Oakville",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
+  },
+  {
+    quote: "Most platforms connect you and disappear. This one tracks the whole job and makes it easy to get someone out fast. The cash back adds up.",
+    name: "Priya S.",
+    city: "Burlington",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
+  },
+];
+
+
 // ── Main page ────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
@@ -87,9 +111,9 @@ export default function LandingPage() {
     <>
       <PageSeo
         title="Book a Verified Home Pro | The Helper"
-        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
+        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back."
         ogTitle="Book a Verified Home Pro | The Helper"
-        ogDescription="One request. Matched with a verified local pro quickly. No calling around. 100% free for homeowners. Earn 6,000 pts on your first completed job (≈ $60 in gift cards)."
+        ogDescription="One request. Matched with a verified local pro within 24 hours. Same-day service available. 100% free for homeowners. Earn $60+ cash back on your first job."
         canonicalPath="/"
         keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
@@ -121,7 +145,7 @@ export default function LandingPage() {
               <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
                 <span className="text-[#2563EB]">Book a verified pro</span>
                 <br />
-                <span>in Milton, Oakville & Burlington.</span>
+                <span className="whitespace-nowrap">within 24 hours.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
@@ -163,7 +187,7 @@ export default function LandingPage() {
             <div className="relative">
               <div className="relative overflow-hidden rounded-3xl shadow-[0_32px_80px_rgba(15,23,42,0.18)]">
                 <img
-                  src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80"
+                  src={heroImage}
                   alt="Verified professional completing a home service"
                   className="h-72 w-full object-cover sm:h-80"
                 />
@@ -173,39 +197,44 @@ export default function LandingPage() {
                     <span className="flex size-5 items-center justify-center rounded-full bg-[#DBEAFE]">
                       <CheckCircle2 className="size-3 text-[#2563EB]" />
                     </span>
-                    Sarah earned 500 pts · AC repair · Milton
+                    Reward earned · Burlington
                   </div>
                 </div>
               </div>
 
-              {/* Overlapping white card */}
-              <div className="-mt-6 relative z-10 mx-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.12)]">
-                <div className="mb-4 flex items-center justify-between">
-                  <p className="text-sm font-semibold text-[#0F172A]">Live requests near you</p>
-                  <span className="flex items-center gap-1.5 rounded-full bg-[#DBEAFE] px-2.5 py-1 text-[11px] font-semibold text-[#1D4ED8]">
-                    <span className="size-1.5 rounded-full bg-[#2563EB] inline-block animate-pulse" />
-                    Live
-                  </span>
-                </div>
-                <div className="flex flex-col gap-3">
-                  {[
-                    { job: "HVAC Repair", loc: "Milton · Matched in 12 min", badge: "Done", cls: "bg-[#DBEAFE] text-[#1D4ED8]" },
-                    { job: "Plumbing", loc: "Oakville · Matched in 8 min", badge: "Active", cls: "bg-[#EFF6FF] text-[#2563EB]" },
-                    { job: "Handyman", loc: "Burlington · Just now", badge: "New", cls: "border border-[#E2E8F0] bg-[#F8FAFC] text-[#475569]" },
-                  ].map((row) => (
-                    <div key={row.job} className="flex items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-3">
-                      <div>
-                        <p className="text-sm font-medium text-[#0F172A]">{row.job}</p>
-                        <p className="text-xs text-[#94A3B8]">{row.loc}</p>
-                      </div>
-                      <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${row.cls}`}>{row.badge}</span>
-                    </div>
+              {/* Request Preview Card — decorative illustration, not interactive */}
+              <div aria-hidden="true" className="-mt-6 relative z-10 mx-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_24px_64px_rgba(15,23,42,0.12)]">
+                <p className="mb-4 text-sm font-semibold text-[#0F172A]">What happens when you submit</p>
+                {/* Category row */}
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {["Handyman", "Plumbing", "HVAC"].map((cat) => (
+                    <span
+                      key={cat}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${cat === "Handyman" ? "bg-[#2563EB] text-white" : "border border-[#E2E8F0] bg-[#F8FAFC] text-[#475569]"}`}
+                    >
+                      {cat}
+                    </span>
                   ))}
+                  <span className="rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1 text-xs font-semibold text-[#475569]">+ more</span>
                 </div>
-                {/* Blue reward callout */}
-                <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-3 text-sm font-medium text-[#1D4ED8]">
-                  <Gift className="size-4 text-[#2563EB] shrink-0" />
-                  James earned 5,000 pts cash back this month
+                {/* Description field mock */}
+                <div className="mb-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm text-[#94A3B8]">
+                  Describe what you need...
+                </div>
+                {/* Postal code field mock */}
+                <div className="mb-4 flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm text-[#0F172A]">
+                  <MapPin className="size-4 shrink-0 text-[#2563EB]" />
+                  Milton, ON L9T
+                </div>
+                {/* CTA */}
+                <button type="button" tabIndex={-1} className="w-full rounded-xl bg-[#2563EB] py-3 text-sm font-semibold text-white">
+                  Get matched, free
+                </button>
+                {/* Trust row */}
+                <div className="mt-3 flex items-center justify-center gap-4 text-xs text-[#94A3B8]">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-[#22C55E]" /> Verified</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-[#22C55E]" /> Insured</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-[#22C55E]" /> Reviewed</span>
                 </div>
               </div>
             </div>
@@ -217,8 +246,8 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="WHAT WE HELP WITH"
-              title="Every home service. One platform."
-              description="Handyman, HVAC, plumbing, and smart home — all from verified local pros in your neighbourhood. Event Management, IT Services, and Rental Services coming soon."
+              title="Every service. One platform."
+              description="HVAC, plumbing, electrical, handyman, and more. All from verified local pros in your neighbourhood."
             />
             {/* 4 live category cards */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -273,18 +302,18 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="HOW IT WORKS"
-              title="One request. Matched fast."
-              description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up."
+              title="Submit once. Matched within 24 hours."
+              description="Tell us what you need. We handle the matching, scheduling, and follow-up."
             />
             <div className="relative mt-12">
               {/* Connector line */}
               <div className="absolute top-7 left-[calc(12.5%+20px)] right-[calc(12.5%+20px)] hidden h-px bg-[#BFDBFE] lg:block" />
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {[
-                  { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Tell us what's broken. 100% free for homeowners." },
-                  { n: "02", title: "Get matched fast", desc: "A verified local pro responds quickly. No calling around." },
-                  { n: "03", title: "Book a time that works", desc: "Same-day for urgent jobs. Or schedule a window that fits your week." },
-                  { n: "04", title: "Job done. Earn rewards.", desc: "6,000 pts on your first completed job (≈ $60 in gift cards). Redeemable once you hit 10,000 pts." },
+                  { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Pick a category, describe the job, and add your postal code. No account needed. 100% free." },
+                  { n: "02", title: "We match you", desc: "We review your request and contact verified pros who cover your area. Most requests are answered and booked within 24 hours." },
+                  { n: "03", title: "Confirm a time", desc: "The pro confirms availability and you pick a window. You get a calendar confirmation. Same-day available for urgent jobs." },
+                  { n: "04", title: "Job done. Earn rewards.", desc: "Your job is tracked end-to-end. Earn $5 on submit, $5 on booking, $50 when the first job is completed. Redeem as gift cards." },
                 ].map(({ n, title, desc }) => (
                   <div key={n} className="relative flex flex-col items-center text-center lg:items-start lg:text-left">
                     <div className="relative z-10 flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-[#BFDBFE] bg-white text-sm font-bold text-[#2563EB] shadow-[0_0_0_6px_#EFF6FF]">
@@ -344,7 +373,7 @@ export default function LandingPage() {
                 ))}
                 <div className="mt-1 flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-medium text-[#BFDBFE]">
                   <Gift className="size-4 text-[#60A5FA] shrink-0" />
-                  Refer a friend — both of you earn 500 pts when they submit their first request.
+                  Refer a friend. Both of you earn $5 when they submit their first request.
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-xs text-[#93C5FD]">
                   <span>Submit → +500 pts</span>
@@ -382,8 +411,54 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        {/* ── TRUST BADGES ─────────────────────────────────────────────── */}
-        <TrustBadges />
+        {/* ── TESTIMONIALS ──────────────────────────────────────────────── */}
+        <section className="bg-[#F8FAFC] py-16 sm:py-20">
+          <Container>
+            <SectionHeader eyebrow="WHAT HOMEOWNERS SAY" title="Trusted by GTA homeowners." />
+            <div className="mt-10 grid gap-5 sm:grid-cols-3">
+              {testimonials.map((t) => (
+                <article
+                  key={t.name}
+                  className="relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_8px_32px_rgba(15,23,42,0.05)]"
+                >
+                  <div className="absolute right-5 top-4 select-none font-serif text-[80px] leading-none text-[#2563EB]/8">"</div>
+                  <div className="mb-4 flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-[#2563EB] text-sm">★</span>
+                    ))}
+                  </div>
+                  <p className="relative z-10 text-sm leading-6 text-[#475569]">"{t.quote}"</p>
+                  <div className="mt-5 flex items-center gap-3">
+                    <img src={t.avatar} alt={t.name} className="size-9 rounded-full object-cover ring-2 ring-[#BFDBFE]" loading="lazy" />
+                    <div>
+                      <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
+                      <p className="text-xs text-[#94A3B8]">{t.city}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        {/* ── STATS BAND ────────────────────────────────────────────────── */}
+        <section className="bg-[#2563EB] py-10">
+          <Container>
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+              {[
+                { value: "24 hrs", label: "Average match time" },
+                { value: "500+", label: "GTA homeowners served" },
+                { value: "4.9★", label: "Average rating" },
+                { value: "$60+", label: "Cash back on first job" },
+              ].map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <p className="text-3xl font-bold text-white sm:text-4xl">{value}</p>
+                  <p className="mt-1 text-xs font-medium text-[#BFDBFE]">{label}</p>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
 
         {/* ── PROVIDER CTA BAND ─────────────────────────────────────────── */}
         <section className="bg-white py-12 sm:py-16 border-t border-[#E2E8F0]">
