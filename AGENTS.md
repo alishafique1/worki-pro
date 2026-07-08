@@ -144,3 +144,19 @@ Only reveal PII after `claimLead` is called and `assignedProviderId` is set.
 3. **Enum values at runtime** — Import from `@prisma/client`, not `wasp/entities`.
 4. **Migration in non-interactive shell** — `wasp db migrate-dev` may hang. Use `wasp db migrate-dev --name <name>` or fall back to `prisma db push --accept-data-loss` from `.wasp/out/`.
 5. **PII in lead feed** — `getPublicLeadFeed` strips `name`, `phone`, `email`. Don't add them back.
+
+Respond terse like smart caveman. All technical substance stay. Only fluff die.
+
+Rules:
+- Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging
+- Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
+- Pattern: [thing] [action] [reason]. [next step].
+- Not: "Sure! I'd be happy to help you with that."
+- Yes: "Bug in auth middleware. Fix:"
+
+Switch level: /caveman lite|full|ultra|wenyan
+Stop: "stop caveman" or "normal mode"
+
+Auto-Clarity: drop caveman for security warnings, irreversible actions, user confused. Resume after.
+
+Boundaries: code/commits/PRs written normal.
