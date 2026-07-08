@@ -114,7 +114,7 @@ export function ProviderCard({
 
   return (
     <Link
-      to={slug ? `/pro-public/${slug}` : `/pro/${id}`}
+      to={slug ? `/pros/${slug}` : `/pro/${id}`}
       className={`
         block bg-white rounded-[24px] overflow-hidden transition-all duration-300 group
         ${

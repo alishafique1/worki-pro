@@ -1,0 +1,73 @@
+{
+  "loop": "smoke",
+  "version": "1.0.0",
+  "description": "Daily E2E smoke test — runs Playwright against staging, opens fix PRs on failure",
+  "owner": "Ali",
+
+  "schedule": "0 7 * * *",
+  "timezone": "America/Toronto",
+
+  "trigger_mode": "agent",
+  "schedule_mode": "recurring",
+
+  "discovery": {
+    "sources": [
+      "playwright-report/ (last CI run)",
+      "tests/e2e/*.spec.ts (test inventory)",
+      "production health endpoint: GET /api/health"
+    ],
+    "skip_if": "production health endpoint returns 200 AND last CI run was within 24h AND passed"
+  },
+
+  "generator": {
+    "type": "delegate_task",
+    "model": "sonnet",
+    "goal": "Run Playwright suite. If any test fails, investigate the first 1 failure and propose a fix in a worktree at worktrees/smoke-fix-{{date}}. Do NOT auto-merge. Open a PR with the fix and report the PR URL.",
+    "toolsets": ["terminal", "file", "web"],
+    "context_artifacts": [
+      ".hermes/loop-state/smoke.md (prior state — read first)",
+      "tests/e2e/*.spec.ts (current specs)",
+      "playwright-report/ (last failure detail)"
+    ]
+  },
+
+  "evaluator": {
+    "type": "script",
+    "path": "tests/loop-acceptance/smoke-evaluator.sh",
+    "default_stance": "FAIL until proven PASS",
+    "checks": [
+      "playwright-report/results.json exits with code 0",
+      "test count matches expected (33 known tests)",
+      "no new failures vs the last 7-day baseline",
+      "if a fix PR was opened: PR's `wasp build` workflow is green"
+    ]
+  },
+
+  "caps": {
+    "max_tokens_per_run": 50000,
+    "max_wallclock_seconds": 900,
+    "daily_budget_tokens": 200000,
+    "max_retries_per_finding": 1
+  },
+
+  "persistence": {
+    "state_file": ".hermes/loop-state/smoke.md",
+    "format": "yaml-frontmatter + markdown body (see references/state-file-template.md)",
+    "archive_after_days": 30
+  },
+
+  "human_review_points": [
+    "Generator must NEVER merge to main",
+    "Fix PRs go to the human review queue in state, not auto-merged",
+    "If 7 consecutive runs have any failure, pause the loop and ping Ali"
+  ],
+
+  "alerts": {
+    "on_hard_fail": "telegram: 'smoke loop failed 7 days in a row — investigate'",
+    "on_budget_exceeded": "log only (no spam)",
+    "on_blocked": "telegram: 'smoke loop blocked — DB or Playwright unreachable'"
+  },
+
+  "model_combo_for_generator": "niner/daily",
+  "model_combo_for_evaluator": "niner/daily (different prompt, same combo — script-based check, not LLM)"
+}

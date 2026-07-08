@@ -8,7 +8,7 @@ import StepProfile from './components/StepProfile';
 import StepBusiness from './components/StepBusiness';
 import StepCredentials from './components/StepCredentials';
 import CategoryCardGrid from './components/CategoryCardGrid';
-import logo from '../../client/static/logo.webp';
+import { Logo } from '../../client/components/Logo/Logo';
 import { isValidCanadianPhone, isValidCanadianPostal, isGtaPostal } from './validation';
 
 type Role = 'CONSUMER' | 'PROVIDER';
@@ -34,7 +34,7 @@ const CONSUMER_STEPS = ['Your role', 'Your profile', 'Interests'];
 const PROVIDER_STEPS = ['Your role', 'Your profile', 'Business', 'Services', 'Credentials'];
 
 export default function OnboardingPage() {
-  const { data: user } = useAuth();
+  const { data: user, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
@@ -87,8 +87,25 @@ export default function OnboardingPage() {
     sessionStorage.setItem('onboardingStep', String(step));
   }, [form, step]);
 
+  // Prefill form from the user record once auth resolves.
+  // Handles the case where a user completed a guest request before signing up,
+  // so firstName/phone/postalCode were already stored on their account.
+  // Only fills empty fields — never overwrites what the user has already typed.
   useEffect(() => {
-    if (user && user.firstName && !done) {
+    if (!user) return;
+    setForm(prev => ({
+      ...prev,
+      firstName: prev.firstName || (user.firstName ?? ''),
+      phone: prev.phone || (user.phone ?? ''),
+      postalCode: prev.postalCode || (user.postalCode ?? ''),
+    }));
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Redirect users who have already completed onboarding.
+  // Guards against stale cache: we rely on onboardingCompletedAt (set server-side in
+  // completeOnboarding) rather than firstName, which could be set by non-onboarding paths.
+  useEffect(() => {
+    if (user && user.onboardingCompletedAt && !done) {
       sessionStorage.removeItem('onboardingForm');
       sessionStorage.removeItem('onboardingStep');
       navigate(getDashboardPath((user.role as Role | undefined) ?? null));
@@ -181,8 +198,16 @@ export default function OnboardingPage() {
     }
     const ok = await submitOnboarding();
     if (ok) {
-      if (isProvider) navigate('/provider/dashboard');
-      else setDone(true);
+      if (isProvider) {
+        // Hard-navigate so the browser discards the React Query cache and re-fetches
+        // useAuth from the server. wasp/client/operations exports queryClientInitialized
+        // (a PRIVATE Promise<QueryClient>), not a public getQueryClient() — using it
+        // directly is fragile. window.location.href guarantees useRoleGuard on the
+        // provider dashboard sees role=PROVIDER rather than the stale CONSUMER value.
+        window.location.href = '/provider/dashboard';
+      } else {
+        setDone(true);
+      }
     }
   }
 
@@ -206,6 +231,14 @@ export default function OnboardingPage() {
     setError(null);
   }
 
+  // ── Loading / redirect gate ─────────────────────────────────────────────────
+  // Show a blank canvas while auth is resolving, OR while waiting for the
+  // useEffect above to fire its navigate() after detecting onboardingCompletedAt.
+  // This prevents the full onboarding shell from flashing before the redirect runs.
+  if (authLoading || (!done && user?.onboardingCompletedAt != null)) {
+    return <div className="min-h-screen bg-[#F8FAFC]" />;
+  }
+
   // ── Success screen ───────────────────────────────────────────────────────────
   if (done) {
     return (
@@ -220,7 +253,7 @@ export default function OnboardingPage() {
             {[
               { href: '/get-quotes', num: '1', label: 'Get quotes', sub: 'Match with local pros fast.', amber: false },
               { href: '/services', num: '2', label: 'Browse services', sub: 'See what we cover near you.', amber: false },
-              { href: '/how-rewards-work', num: '$', label: 'Earn rewards', sub: '$60+ back on your first job.', amber: true },
+              { href: '/how-rewards-work', num: '★', label: 'Earn rewards', sub: '6,000 pts on your first job (≈ $60).', amber: true },
             ].map(({ href, num, label, sub, amber }) => (
               <a
                 key={href}
@@ -255,10 +288,7 @@ export default function OnboardingPage() {
 
         {/* Mobile: compact top strip */}
         <div className="flex items-center justify-between px-6 py-4 lg:hidden border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="The Helper" className="w-7 h-7 rounded-lg" />
-            <span className="text-white font-black text-base tracking-tight">The Helper</span>
-          </div>
+          <Logo variant="dark" size="sm" />
           <span className="text-white/50 text-sm font-semibold">
             Step {step} of {totalSteps}
           </span>
@@ -266,10 +296,7 @@ export default function OnboardingPage() {
 
         {/* Desktop: full side panel */}
         <div className="hidden lg:flex flex-col h-full px-8 py-10">
-          <div className="flex items-center gap-3 mb-12">
-            <img src={logo} alt="The Helper" className="w-9 h-9 rounded-xl" />
-            <span className="text-white font-black text-lg tracking-tight">The Helper</span>
-          </div>
+          <Logo variant="dark" size="lg" className="mb-12" />
 
           <div className="flex-1">
             <p className="text-white/50 text-xs font-bold uppercase tracking-widest mb-6">Setup progress</p>

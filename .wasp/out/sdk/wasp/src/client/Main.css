@@ -53,6 +53,43 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
+  /* ── The Helper brand + semantic ramp ──────────────────────────────────────
+     Formalized from values already used across the app so pages can share one
+     vocabulary instead of hand-written hex. Direct-hex (not hsl-wrapped) so the
+     `bg-*`/`text-*`/`border-*` utilities resolve correctly. Status pills should
+     go through statusBadge() in client/lib/statusStyles. */
+  --color-brand: #2563EB;          /* Primary */
+  --color-brand-hover: #1D4ED8;    /* blue-700 — primary hover */
+  --color-brand-soft: #60A5FA;     /* blue-400 — icons/accents on dark */
+  --color-navy: #0F172A;           /* dark sections, footer */
+  --color-slate: #475569;          /* body / secondary text */
+  --color-muted-fg: #94A3B8;       /* placeholder / tertiary text */
+
+  --color-info-bg: #EFF6FF;        /* blue-50 badge bg */
+  --color-info-surface: #DBEAFE;   /* blue-100 stronger badge bg */
+  --color-info-border: #BFDBFE;    /* blue-200 borders */
+  --color-info-fg: #1D4ED8;        /* blue-700 badge text */
+
+  --color-success-bg: #DCFCE7;
+  --color-success-border: #BBF7D0;
+  --color-success-fg: #15803D;
+  --color-warning-bg: #FEF3C7;
+  --color-warning-border: #FDE68A;
+  --color-warning-fg: #B45309;
+  --color-danger-bg: #FEE2E2;
+  --color-danger-border: #FECACA;
+  --color-danger-fg: #B91C1C;
+
+  /* Radius scale — collapses the ~13 ad-hoc rounded-[px] values into a
+     4-step system. control = buttons/inputs, card = standard cards,
+     panel = large surfaces/modals. Use rounded-full for pills. */
+  --radius-control: 14px;
+  --radius-card: 20px;
+  --radius-panel: 24px;
+
+  /* The brand button glow — was copy-pasted as shadow-[0_8px_24px_rgba(...)] */
+  --shadow-brand: 0 8px 24px rgba(37, 99, 235, 0.30);
+
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
   --breakpoint-3xl: 2000px;
@@ -196,29 +233,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@utility glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-@utility mesh-gradient {
-  background-color: #ffffff;
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(328,100%,93%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225,100%,96%,1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,100%,94%,1) 0, transparent 50%);
-}
-
-@utility mesh-gradient-dark {
-  background-color: #000000;
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(328,50%,15%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225,50%,10%,1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,50%,15%,1) 0, transparent 50%);
-}
-
 @utility hover-lift {
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   &:hover {
@@ -228,32 +242,6 @@
 
 @utility animate-float {
   animation: float 4s ease-in-out infinite;
-}
-
-@utility btn-shine {
-  position: relative;
-  overflow: hidden;
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
-    transform: translateX(-110%);
-    transition: transform 0.55s ease;
-    pointer-events: none;
-  }
-  &:hover::after {
-    transform: translateX(110%);
-  }
-}
-
-@utility card-glow-pink {
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-  &:hover {
-    box-shadow: 0 20px 44px rgba(37,99,235,0.18), 0 8px 24px rgba(15,23,42,0.08);
-    border-color: #2563EB;
-    transform: translateY(-3px);
-  }
 }
 
 @layer base {
@@ -278,15 +266,6 @@
     --input: #E2E8F0;
     --ring: #2563EB;
     --radius: 14px;
-
-    /* Semantic Aliases for Dribbble UI */
-    --surface-base: var(--background);
-    --surface-raised: var(--card);
-    --surface-overlay: var(--popover);
-    --text-primary: var(--foreground);
-    --text-secondary: var(--muted-foreground);
-    --text-tertiary: var(--muted-foreground);
-    --border-default: var(--border);
   }
 
   .dark {
@@ -318,6 +297,14 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Keyboard-only focus ring for every interactive element. Additive (outline,
+     not border) so it never fights a component's own focus:border styling, and
+     :focus-visible keeps it from showing on mouse clicks. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid #2563EB;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 

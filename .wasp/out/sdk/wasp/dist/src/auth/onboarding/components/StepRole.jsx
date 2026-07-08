@@ -16,7 +16,7 @@ const options = [
         title: 'I provide services',
         subtitle: 'Service Pro',
         desc: 'Receive qualified leads from homeowners ready to book.',
-        perks: ['No bidding wars', '$5 per claimed lead', 'Manage jobs in one place'],
+        perks: ['No bidding wars', '500 pts per claimed lead', 'Manage jobs in one place'],
         accent: '#0F172A',
         bg: '#F8FAFC',
     },

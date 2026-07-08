@@ -2,6 +2,7 @@ import { HttpError, prisma } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
 import { REWARD_POINTS } from '../shared/rewardConstants';
 import { validateOnboarding } from './onboarding/validation';
+import { syncContactToGHL } from '../server/services/ghl';
 export const completeOnboarding = async (args, context) => {
     if (!context.user) {
         throw new HttpError(401, 'Not authenticated');
@@ -41,6 +42,7 @@ export const completeOnboarding = async (args, context) => {
                 role,
                 smsConsent: smsConsent ?? false,
                 smsConsentAt: smsConsent ? new Date() : undefined,
+                onboardingCompletedAt: new Date(),
             },
         });
         if (role === 'PROVIDER') {
@@ -123,7 +125,7 @@ export const completeOnboarding = async (args, context) => {
                         type: 'SERVICE_REQUEST',
                         points: REWARD_POINTS.SERVICE_REQUEST,
                         status: 'PENDING',
-                        reason: 'Request submitted — $5 reward pending verification',
+                        reason: 'Request submitted — 500 pts reward pending verification',
                     }));
                     if (newRewards.length > 0) {
                         await tx.rewardTransaction.createMany({ data: newRewards, skipDuplicates: true });
@@ -169,6 +171,18 @@ export const completeOnboarding = async (args, context) => {
             }
         }
     }, { isolationLevel: 'Serializable' });
+    // ─── Sync the new contact (incl. phone) to GoHighLevel ──────────────────────
+    // The phone is captured here at onboarding; previously it only reached GHL if
+    // the user later filed a service request. Fire-and-forget, after commit.
+    syncContactToGHL({
+        firstName,
+        lastName,
+        phone,
+        email: userEmail ?? undefined,
+        postalCode,
+        role,
+        businessName,
+    }, prisma).catch(() => { });
     // ─── Email notifications (fire-and-forget, AFTER commit) ────────────────────
     // Sending only after the transaction commits means we never email a user
     // about an account state that was rolled back.

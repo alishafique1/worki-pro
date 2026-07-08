@@ -130,7 +130,6 @@ export const requestOtp = async (req, res, context) => {
     }
     res.json({ success: true });
 };
-const URGENCY_VALUES = ['EMERGENCY', 'STANDARD', 'PLANNED'];
 export const verifyOtp = async (req, res, context) => {
     if (!isAllowedOrigin(req)) {
         res.status(403).json({ error: 'Forbidden.' });
@@ -197,8 +196,9 @@ export const verifyOtp = async (req, res, context) => {
         authId = authIdentity.authId;
     }
     const session = await createSession(authId);
-    // If a pending request was submitted with the OTP, save it now
-    let requestId;
+    // If a pending request was submitted with the OTP, seed the user profile now.
+    // The lead itself is created solely by submitServiceRequest (C2 single-write path).
+    let skipOnboarding = false;
     if (pendingRequest) {
         const userRecord = await prisma.user.findFirst({ where: { email: normalizedEmail } });
         if (userRecord) {
@@ -206,87 +206,66 @@ export const verifyOtp = async (req, res, context) => {
             const firstName = clamp(pendingRequest.firstName, 100);
             const phone = clamp(pendingRequest.phone, 30);
             const postalCode = clamp(pendingRequest.postalCode, 12);
-            const description = clamp(pendingRequest.description, 2000) ?? '';
-            let qualifierAnswers = pendingRequest.qualifierAnswers;
-            if (qualifierAnswers && JSON.stringify(qualifierAnswers).length > 10000) {
-                // Oversized payload — skip storing it rather than failing the login.
-                console.warn(`[verifyOtp] qualifierAnswers too large for ${normalizedEmail}; skipping storage.`);
-                qualifierAnswers = undefined;
-            }
-            // Never change the role of an EXISTING user: a PROVIDER who submits a
-            // guest request must not be demoted to CONSUMER and locked out of their
-            // portal. Only accounts created by this flow get role CONSUMER.
-            // Profile fields on existing users are fill-if-empty, never overwritten.
-            const userUpdate = {
-                smsConsent: pendingRequest.smsConsent,
-                smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
-            };
-            if (isNewUser)
-                userUpdate.role = 'CONSUMER';
-            if (firstName && !userRecord.firstName)
-                userUpdate.firstName = firstName;
-            if (phone && !userRecord.phone)
-                userUpdate.phone = phone;
-            if (postalCode && !userRecord.postalCode)
-                userUpdate.postalCode = postalCode;
-            await prisma.user.update({
-                where: { id: userRecord.id },
-                data: userUpdate,
-            });
-            const request = await prisma.serviceRequest.create({
-                data: {
-                    consumerId: userRecord.id,
-                    name: firstName ?? '',
-                    phone: phone ?? '',
-                    postalCode: postalCode ?? '',
-                    email: normalizedEmail,
-                    smsConsentGiven: pendingRequest.smsConsent,
-                    serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
-                    description,
-                    qualifierAnswers: qualifierAnswers ?? {},
-                    // Validate against the enum — schema default (STANDARD) applies otherwise.
-                    urgency: URGENCY_VALUES.includes(pendingRequest.urgency)
-                        ? pendingRequest.urgency
-                        : undefined,
-                    source: 'WEBSITE',
-                },
-            });
-            requestId = request.id;
-            await prisma.rewardAccount.upsert({
-                where: { consumerId: userRecord.id },
-                update: {},
-                create: { consumerId: userRecord.id },
-            });
-            const existingBonus = await prisma.rewardTransaction.findFirst({
-                where: { consumerId: userRecord.id, type: 'SIGNUP_BONUS' },
-            });
-            if (!existingBonus) {
-                await prisma.rewardTransaction.create({
+            skipOnboarding = !!(firstName && phone && postalCode);
+            await prisma.$transaction(async (tx) => {
+                // M1: Only set role for new users or users who have no role yet — never demote a provider.
+                const roleData = (isNewUser || !userRecord.role) ? { role: 'CONSUMER' } : {};
+                await tx.user.update({
+                    where: { id: userRecord.id },
                     data: {
-                        consumerId: userRecord.id,
-                        type: 'SIGNUP_BONUS',
-                        points: 100,
-                        status: 'APPROVED',
-                        reason: 'Welcome bonus',
+                        firstName,
+                        phone,
+                        postalCode,
+                        smsConsent: pendingRequest.smsConsent,
+                        smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
+                        // A full profile from booking means onboarding is effectively done —
+                        // persist it so the user isn't looped to /onboarding on next login.
+                        ...(skipOnboarding ? { onboardingCompletedAt: new Date() } : {}),
+                        ...roleData,
                     },
                 });
-                await prisma.rewardAccount.update({
+                await tx.rewardAccount.upsert({
                     where: { consumerId: userRecord.id },
-                    data: { pointsBalance: { increment: 100 }, lifetimePoints: { increment: 100 } },
+                    update: {},
+                    create: { consumerId: userRecord.id },
                 });
-            }
-            if (pendingRequest.referralCode) {
-                const refCode = pendingRequest.referralCode.trim().toUpperCase();
-                const referral = await prisma.referral.findUnique({ where: { referralCode: refCode } });
-                if (referral && referral.referrerUserId !== userRecord.id && !referral.referredUserId) {
-                    await prisma.referral.update({
-                        where: { id: referral.id },
-                        data: { referredUserId: userRecord.id, status: 'SIGNED_UP' },
+                // Signup bonus — idempotent guard prevents double-award on re-verify
+                const existingBonus = await tx.rewardTransaction.findFirst({
+                    where: { consumerId: userRecord.id, type: 'SIGNUP_BONUS' },
+                });
+                if (!existingBonus) {
+                    // TODO: replace 100 with REWARD_POINTS.SIGNUP_BONUS once that constant is defined
+                    const SIGNUP_BONUS_POINTS = 100;
+                    await tx.rewardTransaction.create({
+                        data: {
+                            consumerId: userRecord.id,
+                            type: 'SIGNUP_BONUS',
+                            points: SIGNUP_BONUS_POINTS,
+                            status: 'APPROVED',
+                            reason: 'Welcome bonus',
+                        },
+                    });
+                    await tx.rewardAccount.update({
+                        where: { consumerId: userRecord.id },
+                        data: {
+                            pointsBalance: { increment: SIGNUP_BONUS_POINTS },
+                            lifetimePoints: { increment: SIGNUP_BONUS_POINTS },
+                        },
                     });
                 }
-            }
+                if (pendingRequest.referralCode) {
+                    const refCode = pendingRequest.referralCode.trim().toUpperCase();
+                    const referral = await tx.referral.findUnique({ where: { referralCode: refCode } });
+                    if (referral && referral.referrerUserId !== userRecord.id && !referral.referredUserId) {
+                        await tx.referral.update({
+                            where: { id: referral.id },
+                            data: { referredUserId: userRecord.id, status: 'SIGNED_UP' },
+                        });
+                    }
+                }
+            });
         }
     }
-    res.json({ success: true, sessionId: session.id, isNewUser, requestId });
+    res.json({ success: true, sessionId: session.id, isNewUser, skipOnboarding });
 };
 //# sourceMappingURL=otpApi.js.map

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router';
 import { LayoutDashboard, ClipboardList, Calendar, Layers, User, CreditCard, X, ChevronRight, Menu, } from 'lucide-react';
-import logo from '../../client/static/logo-icon.svg';
+import { Logo } from '../../client/components/Logo/Logo';
 const NAV_SECTIONS = [
     {
         label: 'Overview',
@@ -54,12 +54,7 @@ export default function ProviderLayout({ children, user }) {
       <aside ref={sidebar} className={`absolute top-0 left-0 z-50 flex h-screen w-64 flex-col bg-[#0F172A] overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-          <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <img src={logo} alt="The Helper" className="h-8 w-auto"/>
-            <span className="text-white font-black text-sm tracking-tight">
-              <span className="font-light text-white/50">the</span>helper<span className="text-[#60A5FA]">.ca</span>
-            </span>
-          </Link>
+          <Logo variant="dark" size="md" to="/"/>
           <button onClick={() => setSidebarOpen(false)} className="block lg:hidden text-white/60 hover:text-white transition-colors">
             <X className="size-5"/>
           </button>
@@ -127,12 +122,7 @@ export default function ProviderLayout({ children, user }) {
           <button onClick={() => setSidebarOpen(true)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] transition-colors">
             <Menu className="size-4 text-[#475569]"/>
           </button>
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="The Helper" className="h-7 w-auto"/>
-            <span className="text-sm font-black text-[#0F172A] tracking-tight">
-              <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
-            </span>
-          </Link>
+          <Logo variant="light" size="sm" to="/"/>
           <div className="ml-auto">
             <div className="size-7 rounded-full bg-[#22C55E] flex items-center justify-center text-white font-bold text-xs">
               {initial}

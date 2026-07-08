@@ -19,8 +19,8 @@ const getConfig = () => {
         },
         guiOptions: {
             consentModal: {
-                layout: "box",
-                position: "bottom right",
+                layout: "bar",
+                position: "bottom",
                 equalWeightButtons: true,
                 flipButtons: false,
             },

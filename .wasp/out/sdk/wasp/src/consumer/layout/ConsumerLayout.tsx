@@ -14,7 +14,7 @@ import {
   Menu,
 } from 'lucide-react';
 import type { AuthUser } from 'wasp/auth';
-import logo from '../../client/static/logo-icon.svg';
+import { Logo } from '../../client/components/Logo/Logo';
 
 const NAV_SECTIONS = [
   {
@@ -82,12 +82,7 @@ export default function ConsumerLayout({ children, user }: Props) {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-          <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <img src={logo} alt="The Helper" className="h-8 w-auto" />
-            <span className="text-white font-black text-sm tracking-tight">
-              <span className="font-light text-white/50">the</span>helper<span className="text-[#60A5FA]">.ca</span>
-            </span>
-          </Link>
+          <Logo variant="dark" size="md" to="/" />
           <button
             onClick={() => setSidebarOpen(false)}
             className="block lg:hidden text-white/60 hover:text-white transition-colors"
@@ -180,12 +175,7 @@ export default function ConsumerLayout({ children, user }: Props) {
           >
             <Menu className="size-4 text-[#475569]" />
           </button>
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="The Helper" className="h-7 w-auto" />
-            <span className="text-sm font-black text-[#0F172A] tracking-tight">
-              <span className="font-light text-[#64748B]">the</span>helper<span className="text-[#2563EB]">.ca</span>
-            </span>
-          </Link>
+          <Logo variant="light" size="sm" to="/" />
           <div className="ml-auto flex items-center gap-2">
             <div className="size-7 rounded-full bg-[#2563EB] flex items-center justify-center text-white font-bold text-xs">
               {initial}

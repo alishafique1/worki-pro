@@ -259,6 +259,17 @@ function RequestCard({ req }: { req: any }) {
                   Matching provider…
                 </MetaItem>
               )}
+              {appointment?.scheduledAt && ['CONFIRMED', 'BOOKED', 'RESCHEDULED'].includes(appointment.status) && (
+                <AddToCalendarDropdown
+                  event={{
+                    title: `${req.serviceCategory?.name || 'Service'} Appointment - The Helper`,
+                    description: `${req.description}${provider ? `\n\nProvider: ${provider.businessName}${provider.phone ? `\nPhone: ${provider.phone}` : ''}` : ''}`,
+                    startTime: new Date(appointment.scheduledAt),
+                    endTime: new Date(new Date(appointment.scheduledAt).getTime() + 60 * 60 * 1000),
+                    location: [req.city, req.postalCode].filter(Boolean).join(', ') || undefined,
+                  }}
+                />
+              )}
             </div>
           </div>
           <span

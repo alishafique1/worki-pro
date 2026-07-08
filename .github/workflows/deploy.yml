@@ -1,8 +1,9 @@
 name: Deploy to Production VPS
 
+# Manual-trigger only for now — pushing to main does NOT auto-deploy.
+# Run from the Actions tab → "Deploy to Production VPS" → Run workflow,
+# or: gh workflow run deploy.yml --ref main
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -40,6 +41,9 @@ jobs:
       - name: Build React SPA
         env:
           REACT_APP_API_URL: https://api.thehelper.ca
+          # Public PostHog project key (phc_…) for the shared Social-Dots project.
+          # Safe to expose — it ships in the client bundle. Inlined by Vite at build time.
+          REACT_APP_POSTHOG_KEY: phc_AxYiacGAymmuaa2cRPMZASTbXRMsiKtdzKv9BiaELZrj
         run: npx vite build --outDir deploy/dist
 
       - name: Commit build artifacts to git
@@ -50,6 +54,30 @@ jobs:
           git diff --staged --quiet || git commit -m "build: update deploy/dist + .wasp/out [skip ci]"
           git push origin main
 
+      # The production VPS only accepts SSH over Tailscale (firewall + fail2ban
+      # whitelist the tailnet; public port 22 is unreachable from GitHub runners).
+      # This step joins the runner to the tailnet so the SSH step below can reach
+      # the VPS at its Tailscale address (set VPS_HOST to e.g. vps.zebu-mirzam.ts.net
+      # or 100.102.25.87). Requires a Tailscale OAuth client with tag:ci.
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Validate SSH secret is configured
+        run: |
+          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
+            echo "ERROR: VPS_SSH_KEY secret is not set. Go to repo Settings > Secrets > Actions and add it."
+            exit 1
+          fi
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "ERROR: VPS_HOST secret is not set."
+            exit 1
+          fi
+          echo "SSH secrets present. Proceeding with deploy to ${{ secrets.VPS_HOST }}."
+
       - name: Free disk space and deploy on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -57,6 +85,7 @@ jobs:
           username: root
           key: ${{ secrets.VPS_SSH_KEY }}
           command_timeout: 40m
+          debug: true
           script: |
             set -e
             echo "=== Pruning unused Docker images/cache ==="
@@ -70,8 +99,10 @@ jobs:
             docker compose build --no-cache
             echo "=== Restarting containers ==="
             docker compose up -d
+            echo "=== Applying DB migrations (NOT automatic via docker — must run explicitly) ==="
+            docker exec -w /app/.wasp/out/db thehelper-api npx prisma migrate deploy
             echo "=== Deploy complete ==="
-            docker ps --format 'table {{.Names}}\t{{.Status}}' | grep thehelper
+            docker ps
 
       - name: Purge Cloudflare cache
         if: ${{ env.CF_API_TOKEN != '' }}
@@ -82,4 +113,5 @@ jobs:
           curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
             -H "Authorization: Bearer ${CF_API_TOKEN}" \
             -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}' | grep -o '"success":[a-z]*'
+            --data '{"purge_everything":true}' \
+            | grep -o '"success":[a-z]*'

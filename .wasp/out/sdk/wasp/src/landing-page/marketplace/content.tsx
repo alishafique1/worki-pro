@@ -11,6 +11,11 @@ import {
   Flame,
   Globe,
   Hammer,
+  Home,
+  KeyRound,
+  Layers,
+  Leaf,
+  Bell,
   MapPin,
   Megaphone,
   MessageSquareText,
@@ -18,6 +23,7 @@ import {
   Search,
   ShieldCheck,
   ShowerHead,
+  Thermometer,
   UtensilsCrossed,
   Wifi,
   Wrench,
@@ -58,7 +64,7 @@ export const painPoints = [
 ];
 
 function BellIcon() {
-  return <MessageSquareText className="size-5" />;
+  return <Bell className="size-5" />;
 }
 
 export const solutionSteps = [
@@ -87,8 +93,8 @@ export const solutionSteps = [
 
 // Unsplash image URLs for each service category
 export const categoryImages: Record<string, string> = {
-  hvac: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&h=300&fit=crop",
-  electrical: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop",
+  hvac: "https://images.unsplash.com/photo-1625961332771-3f40b0e2bdcf?w=400&h=300&fit=crop",
+  electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
   "appliance-repair": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop",
   handyman: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400&h=300&fit=crop",
   plumbing: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop",
@@ -117,10 +123,10 @@ export interface Category {
 
 export const categories: Category[] = [
   {
-    icon: <Flame className="size-5" />,
+    icon: <Thermometer className="size-5" />,
     name: "HVAC",
     slug: "hvac",
-    description: "Furnace repair, AC tune-ups, heat pumps, and installations.",
+    description: "AC repair, furnace service, and emergency heat calls. Describe the issue and postal code. Most requests answered fast — often same day.",
     href: "/services/hvac",
     imageUrl: categoryImages.hvac,
     live: true,
@@ -129,7 +135,7 @@ export const categories: Category[] = [
     icon: <Zap className="size-5" />,
     name: "Electrical",
     slug: "electrical",
-    description: "Panel upgrades, EV chargers, lighting, and electrical repairs.",
+    description: "Panels, outlets, fixtures, and safety upgrades. Submit your job and get a fast response from a vetted electrician.",
     href: "/services/electrical",
     imageUrl: categoryImages.electrical,
     live: true,
@@ -147,7 +153,7 @@ export const categories: Category[] = [
     icon: <Hammer className="size-5" />,
     name: "Handyman",
     slug: "handyman",
-    description: "Repairs, mounting, assembly, small projects, and punch lists.",
+    description: "Mounting, repairs, assembly, and small jobs. Tell us what needs fixing. Most requests answered and booked within 24 hours.",
     href: "/services/handyman",
     imageUrl: categoryImages.handyman,
     live: true,
@@ -156,7 +162,7 @@ export const categories: Category[] = [
     icon: <ShowerHead className="size-5" />,
     name: "Plumbing",
     slug: "plumbing",
-    description: "Leaks, fixtures, drains, water heaters, and urgent repairs.",
+    description: "Active leaks, drain clogs, fixture installs, and hot water repairs. Describe the problem and get matched with a local plumber.",
     href: "/services/plumbing",
     imageUrl: categoryImages.plumbing,
     live: true,
@@ -165,7 +171,7 @@ export const categories: Category[] = [
     icon: <Wifi className="size-5" />,
     name: "Smart Home",
     slug: "smart-home",
-    description: "Cameras, thermostats, locks, sensors, and connected devices.",
+    description: "Cameras, thermostats, locks, and connected devices. Tell us what you are installing and a certified tech will confirm your setup.",
     href: "/services/smart-home",
     imageUrl: categoryImages["smart-home"],
     live: true,
@@ -174,7 +180,7 @@ export const categories: Category[] = [
     icon: <CalendarCheck className="size-5" />,
     name: "Events",
     slug: "events",
-    description: "Event planning, setup, coordination, and day-of management.",
+    description: "Planning, setup, and day-of coordination. Share your event size and date and get proposals from local event pros.",
     href: "/services/events",
     imageUrl: categoryImages.events,
     comingSoon: true,
@@ -183,7 +189,7 @@ export const categories: Category[] = [
     icon: <UtensilsCrossed className="size-5" />,
     name: "Food Catering",
     slug: "food-catering",
-    description: "Full catering, food trucks, private dining, and custom menus.",
+    description: "Private dining, food trucks, and custom menus. Share your guest count and date and caterers respond with packages.",
     href: "/services/food-catering",
     imageUrl: categoryImages["food-catering"],
     comingSoon: true,
@@ -192,7 +198,7 @@ export const categories: Category[] = [
     icon: <Flame className="size-5" />,
     name: "Shisha Lounge",
     slug: "shisha-lounge",
-    description: "Shisha setup and rental for events and private gatherings.",
+    description: "Shisha setup and rental for events and private gatherings. Tell us your event date and location. Setup handled from delivery to teardown.",
     href: "/services/shisha-lounge",
     imageUrl: categoryImages["shisha-lounge"],
     comingSoon: true,
@@ -201,7 +207,7 @@ export const categories: Category[] = [
     icon: <Bot className="size-5" />,
     name: "AI Services",
     slug: "ai-services",
-    description: "Automation, chatbots, workflow tools, and digital assistants.",
+    description: "Chatbots, automations, and workflow tools. Describe your business process and get matched with an AI specialist.",
     href: "/services/ai-services",
     imageUrl: categoryImages["ai-services"],
     comingSoon: true,
@@ -210,7 +216,7 @@ export const categories: Category[] = [
     icon: <Globe className="size-5" />,
     name: "Website Design",
     slug: "website-design",
-    description: "Custom websites, landing pages, e-commerce, and brand design.",
+    description: "Custom sites, landing pages, and brand design. Share your vision and designers respond with portfolios and quotes.",
     href: "/services/website-design",
     imageUrl: categoryImages["website-design"],
     comingSoon: true,
@@ -219,7 +225,7 @@ export const categories: Category[] = [
     icon: <Megaphone className="size-5" />,
     name: "Digital Marketing",
     slug: "digital-marketing",
-    description: "SEO, paid ads, social media, and growth marketing.",
+    description: "SEO, paid ads, and social growth. Describe your goals and budget and get matched with a specialist who knows your market.",
     href: "/services/digital-marketing",
     imageUrl: categoryImages["digital-marketing"],
     comingSoon: true,
@@ -228,7 +234,7 @@ export const categories: Category[] = [
     icon: <Code className="size-5" />,
     name: "Software Development",
     slug: "software-development",
-    description: "Custom software, web apps, integrations, and automation.",
+    description: "Web apps, integrations, and custom tools. Describe what you want to build and a developer will scope it before any commitment.",
     href: "/services/software-development",
     imageUrl: categoryImages["software-development"],
     comingSoon: true,
@@ -237,7 +243,7 @@ export const categories: Category[] = [
     icon: <Clapperboard className="size-5" />,
     name: "Video Editing",
     slug: "video-editing",
-    description: "Short-form video, reels, promos, and editing.",
+    description: "Reels, promos, and short-form content. Share your raw footage or brief and an editor confirms turnaround before starting.",
     href: "/services/video-editing",
     imageUrl: categoryImages["video-editing"],
     comingSoon: true,
@@ -246,7 +252,7 @@ export const categories: Category[] = [
     icon: <Car className="size-5" />,
     name: "Driving School",
     slug: "driving-school",
-    description: "Licensed in-car lessons and beginner driver courses.",
+    description: "Licensed in-car lessons and beginner driver courses. Tell us your availability and get matched with a certified instructor.",
     href: "/services/driving-school",
     imageUrl: categoryImages["driving-school"],
     comingSoon: true,
@@ -270,7 +276,7 @@ export const customerSteps = [
   {
     step: "02",
     title: "Get matched fast",
-    description: "A verified local pro responds, usually within a few hours. No calling around.",
+    description: "A verified local pro responds fast. No calling around.",
   },
   {
     step: "03",

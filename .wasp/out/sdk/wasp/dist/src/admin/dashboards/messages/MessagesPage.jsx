@@ -3,11 +3,14 @@ import { useQuery, useAction } from 'wasp/client/operations';
 import { getAdminLeads, updateLead } from 'wasp/client/operations';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../../layout/Breadcrumb';
+import { badgeToneClass } from '../../../client/lib/statusStyles';
+// Lead pipeline: a NEW lead is informational (not "needs attention" like a
+// service request), so these map to tones explicitly. Same shared tokens.
 const STATUS_COLORS = {
-    NEW: 'bg-blue-50 text-blue-700',
-    CONTACTED: 'bg-yellow-50 text-yellow-700',
-    CONVERTED: 'bg-green-50 text-green-700',
-    LOST: 'bg-red-50 text-red-700',
+    NEW: badgeToneClass.info,
+    CONTACTED: badgeToneClass.warning,
+    CONVERTED: badgeToneClass.success,
+    LOST: badgeToneClass.danger,
 };
 const STATUS_OPTIONS = ['NEW', 'CONTACTED', 'CONVERTED', 'LOST'];
 export default function AdminMessages({ user }) {
@@ -86,7 +89,7 @@ export default function AdminMessages({ user }) {
                 <div className='flex-1 min-w-0'>
                   <div className='flex items-center gap-3 mb-1 flex-wrap'>
                     <h3 className='text-lg font-bold text-[#0F172A]'>{lead.name}</h3>
-                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${STATUS_COLORS[lead.status] || 'bg-gray-50 text-gray-600'}`}>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${STATUS_COLORS[lead.status] || badgeToneClass.neutral}`}>
                       {lead.status}
                     </span>
                     {lead.serviceType && (<span className='text-xs bg-[#F8FAFC] border border-[#E2E8F0] px-2 py-0.5 rounded-full text-[#475569]'>

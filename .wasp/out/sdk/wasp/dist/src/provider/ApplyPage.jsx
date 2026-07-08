@@ -3,15 +3,12 @@ import { useAction } from 'wasp/client/operations';
 import { submitProviderApplication } from 'wasp/client/operations';
 import PageSeo from '../landing-page/components/PageSeo';
 import { licenceFieldForCategorySlugs } from '../shared/credentials';
+import { Search, ClipboardCheck, UserCheck } from 'lucide-react';
 const serviceCategoryOptions = [
     { slug: 'handyman', label: 'Handyman' },
+    { slug: 'hvac', label: 'HVAC' },
     { slug: 'plumbing', label: 'Plumbing' },
     { slug: 'smart-home', label: 'Smart Home' },
-    { slug: 'events', label: 'Events' },
-    { slug: 'food-catering', label: 'Food Catering' },
-    { slug: 'shisha-lounge', label: 'Shisha Lounge' },
-    { slug: 'ai-services', label: 'AI Services' },
-    { slug: 'website-design', label: 'Website Design' },
 ];
 export default function ProviderApplyPage() {
     const [businessName, setBusinessName] = useState('');
@@ -86,7 +83,7 @@ export default function ProviderApplyPage() {
       <div className="max-w-xl mx-auto">
         <h1 className="text-4xl font-black mb-4 text-[#0F172A]">Apply in 3 minutes. Get matched with real jobs.</h1>
         <p className="text-[#475569] mb-12">
-          Tell us about your business and service area. We review every application within 24-48 hours. Currently accepting handyman, plumbing, smart home, events, food catering, shisha lounge, AI services, and website design providers.
+          Tell us about your business and service area. We review every application within 24-48 hours. Currently accepting handyman, HVAC, plumbing, and smart home providers.
         </p>
 
         <div className="bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-sm">
@@ -136,6 +133,7 @@ export default function ProviderApplyPage() {
                   </label>))}
               </div>
             </fieldset>
+
             <fieldset className="space-y-6">
               <legend className="block text-sm font-bold mb-1 uppercase tracking-widest text-[#475569]">
                 Licences & Insurance <span className="normal-case font-semibold text-[#94A3B8] tracking-normal">(optional)</span>
@@ -162,10 +160,37 @@ export default function ProviderApplyPage() {
                 <input type="text" value={wsibClearanceNumber} onChange={(e) => setWsibClearanceNumber(e.target.value)} className="w-full bg-white border border-[#E2E8F0] rounded-2xl p-4 text-lg text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors" placeholder="e.g. 1234567"/>
               </div>
             </fieldset>
+            {/* Pricing block */}
+            <div className="rounded-2xl border border-[#BFDBFE] bg-[#EFF6FF] p-6 mt-8">
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">HOW IT WORKS</h3>
+              <p className="text-[#475569]">
+                $5–$25 per qualified lead depending on the trade, charged only when you claim it. No subscriptions. No monthly fees. Cancel anytime.
+              </p>
+            </div>
             <button type="submit" disabled={isSubmitting} className="w-full py-5 bg-[#2563EB] text-white font-bold rounded-2xl text-xl hover:bg-[#1D4ED8] transition-colors mt-8 disabled:opacity-50 shadow-[0_8px_24px_rgba(37,99,235,0.3)]">
               {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </button>
           </form>
+        </div>
+
+        {/* What happens after you submit — 3-step explainer */}
+        <div className="mt-12 bg-[#F8FAFC] rounded-3xl p-8">
+          <h2 className="text-2xl font-bold text-[#0F172A] text-center mb-8">What happens after you submit</h2>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+            { n: '01', icon: Search, title: 'We review your application within 24-48 hours', desc: 'Our team reviews every application within 24-48 hours to verify your credentials.' },
+            { n: '02', icon: ClipboardCheck, title: 'Your profile goes live + we send you onboarding tips', desc: 'Once approved, your profile is live and we email you onboarding tips to get started.' },
+            { n: '03', icon: UserCheck, title: 'You receive your first qualified lead within 7 days', desc: 'We start matching you with homeowners in your service area right away.' },
+        ].map(({ n, icon: Icon, title }) => (<div key={n} className="relative flex flex-col items-center text-center bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-sm">
+                <div className="flex size-14 items-center justify-center rounded-full border-2 border-[#BFDBFE] bg-white text-sm font-bold text-[#2563EB] shadow-[0_0_0_6px_#EFF6FF]">
+                  {n}
+                </div>
+                <div className="mt-4 flex size-10 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB]">
+                  <Icon className="size-5"/>
+                </div>
+                <h3 className="mt-3 text-base font-semibold text-[#0F172A]">{title}</h3>
+              </div>))}
+          </div>
         </div>
       </div>
     </div>

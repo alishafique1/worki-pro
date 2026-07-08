@@ -1,0 +1,67 @@
+{
+  "loop": "ledger",
+  "version": "1.0.0",
+  "description": "Daily cashback ledger reconciliation — 02:00 ET. Promotes PENDING reward transactions to APPROVED after 7 days; flags stuck redemptions.",
+  "owner": "Ali",
+
+  "schedule": "0 2 * * *",
+  "timezone": "America/Toronto",
+
+  "trigger_mode": "script",
+  "schedule_mode": "recurring",
+
+  "script_path": "scripts/loops/ledger.sh",
+
+  "discovery": {
+    "sources": [
+      "RewardTransaction table: status=PENDING AND createdAt < now-7d",
+      "Redemption table: status in (REQUESTED, APPROVED) AND createdAt < now-24h AND no Tremendous order ID",
+      "RewardAccount table: balance vs sum of approved transactions (invariance check)"
+    ]
+  },
+
+  "generator": {
+    "type": "script",
+    "path": "scripts/loops/ledger.sh",
+    "actions": [
+      "UPDATE RewardTransaction SET status=APPROVED WHERE status=PENDING AND createdAt < now-7d",
+      "INSERT into a 'stuck_redemptions' audit table for any Redemption stuck >24h",
+      "Generate .hermes/loop-state/ledger-{{date}}.md report"
+    ]
+  },
+
+  "evaluator": {
+    "type": "script",
+    "path": "tests/loop-acceptance/ledger-evaluator.sh",
+    "default_stance": "FAIL if balance invariant violated by >$0.01",
+    "checks": [
+      "Sum of (pointsBalance across all RewardAccount) == sum of (points from APPROVED RewardTransaction) - sum of (pointsUsed across all APPROVED Redemption)",
+      "No stuck redemptions >24h (or, if any, they appear in the report)",
+      "Report file exists and has expected sections"
+    ]
+  },
+
+  "caps": {
+    "max_tokens_per_run": 1000,
+    "max_wallclock_seconds": 120,
+    "daily_budget_tokens": 5000,
+    "max_retries_per_finding": 1
+  },
+
+  "persistence": {
+    "state_file": ".hermes/loop-state/ledger.md",
+    "daily_reports": ".hermes/loop-state/ledger-{{date}}.md",
+    "format": "yaml-frontmatter state + markdown daily reports"
+  },
+
+  "human_review_points": [
+    "Loop NEVER auto-refunds a stuck redemption — flags for Ali",
+    "Loop NEVER modifies a Redemption's giftCardEmail or tremendousOrderId",
+    "If balance invariant is violated by >$10, pause the loop and alert Ali"
+  ],
+
+  "alerts": {
+    "on_invariant_violation": "telegram: 'ledger drift detected: $X.XX'",
+    "on_stuck_redemption": "include in daily report; no immediate alert"
+  }
+}

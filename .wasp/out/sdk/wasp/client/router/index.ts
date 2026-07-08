@@ -658,6 +658,19 @@ export const routes = {
         options?.hash
       ),
   },
+  ProsRoute: {
+    to: "/pros/:slug",
+    build: (
+      options: OptionalRouteOptions
+      & { params: {"slug": ParamValue;}}
+    ) => interpolatePath(
+        
+        "/pros/:slug",
+        options.params,
+        options?.search,
+        options?.hash
+      ),
+  },
   ProviderDashboardRoute: {
     to: "/provider/dashboard",
     build: (

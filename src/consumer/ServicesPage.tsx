@@ -18,7 +18,7 @@ export default function ServicesPage() {
         )
       : liveCategories,
     [search]
-  );
+  ) as typeof liveCategories;
 
   const filteredSoon = useMemo(() =>
     search.trim()
@@ -27,11 +27,11 @@ export default function ServicesPage() {
         )
       : comingSoonCategories,
     [search]
-  );
+  ) as typeof comingSoonCategories;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (filteredLive.length === 1) navigate(filteredLive[0].href);
+    if (filteredLive.length === 1) navigate(filteredLive[0].href!);
   };
 
   return (
@@ -78,7 +78,7 @@ export default function ServicesPage() {
               {filteredLive.map((cat) => (
                 <Link
                   key={cat.slug}
-                  to={cat.href}
+                  to={cat.href ?? '/services'}
                   className="group relative bg-white rounded-[20px] border border-[#E2E8F0] overflow-hidden hover:border-[#BFDBFE] hover:shadow-[0_4px_20px_rgba(37,99,235,0.10)] transition-all duration-200"
                 >
                   {/* Image strip */}

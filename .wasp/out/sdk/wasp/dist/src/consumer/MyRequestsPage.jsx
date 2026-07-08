@@ -199,6 +199,13 @@ function RequestCard({ req }) {
                 </span>) : (<MetaItem icon={<UserRound className="size-3.5"/>}>
                   Matching provider…
                 </MetaItem>)}
+              {appointment?.scheduledAt && ['CONFIRMED', 'BOOKED', 'RESCHEDULED'].includes(appointment.status) && (<AddToCalendarDropdown event={{
+                title: `${req.serviceCategory?.name || 'Service'} Appointment - The Helper`,
+                description: `${req.description}${provider ? `\n\nProvider: ${provider.businessName}${provider.phone ? `\nPhone: ${provider.phone}` : ''}` : ''}`,
+                startTime: new Date(appointment.scheduledAt),
+                endTime: new Date(new Date(appointment.scheduledAt).getTime() + 60 * 60 * 1000),
+                location: [req.city, req.postalCode].filter(Boolean).join(', ') || undefined,
+            }}/>)}
             </div>
           </div>
           <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusColor(req.status)}`}>

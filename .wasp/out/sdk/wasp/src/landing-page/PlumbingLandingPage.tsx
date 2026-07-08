@@ -3,6 +3,9 @@ import { Link } from 'react-router';
 import { AlertTriangle, ChevronDown, ChevronUp, DollarSign, Wrench, Home, RefreshCw, ShowerHead } from 'lucide-react';
 import PageSeo, { createServiceSchema, createFaqSchema } from './components/PageSeo';
 import LandingHeroBanner from './components/LandingHeroBanner';
+import { CATEGORY_QUALIFIERS } from '../consumer/categoryQualifiers';
+
+const PLUMBING_CHIPS = CATEGORY_QUALIFIERS['plumbing']?.detailChips ?? [];
 
 const plumbingFaqs = [
   {
@@ -90,13 +93,35 @@ export default function PlumbingLandingPage() {
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">
             <Link
-              to="/get-quotes?service=plumbing"
+              to="/get-quotes?category=plumbing&slug=plumbing"
               className="px-10 py-5 bg-[#2563EB] text-white font-black rounded-3xl text-lg hover:bg-[#1D4ED8] transition-all hover:-translate-y-1 shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
             >
               Request Plumbing Quote
             </Link>
           </div>
-          <p className="text-sm text-[#475569] mt-2 mb-16">Licensed plumbers. Earn rewards on every completed job.</p>
+          <p className="text-sm text-[#475569] mt-2 mb-8">Licensed plumbers. Earn rewards on every completed job.</p>
+
+          {/* Common Problems */}
+          <section className="w-full max-w-2xl mb-16" aria-label="Common plumbing problems">
+            <p className="text-sm font-semibold text-[#475569] uppercase tracking-widest mb-4">What best describes the problem?</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {PLUMBING_CHIPS.filter(chip => chip !== 'Something else').map(chip => (
+                <Link
+                  key={chip}
+                  to={`/get-quotes?category=plumbing&slug=plumbing&problem=${encodeURIComponent(chip)}`}
+                  className="px-4 py-2 bg-white rounded-full border border-[#E2E8F0] text-sm font-medium text-[#0F172A] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+                >
+                  {chip}
+                </Link>
+              ))}
+              <Link
+                to="/get-quotes?category=plumbing&slug=plumbing"
+                className="px-4 py-2 bg-white rounded-full border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+              >
+                Something else →
+              </Link>
+            </div>
+          </section>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">

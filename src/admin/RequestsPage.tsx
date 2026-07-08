@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useAction, getAdminRequests, getAdminProviders, assignRequestToProvider } from 'wasp/client/operations';
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { statusBadge } from '../client/lib/statusStyles';
 import { Inbox, Search, Clock, CheckCircle2, XCircle, Loader2, UserPlus, ChevronDown, MapPin } from 'lucide-react';
 
 // ── Filter pills ────────────────────────────────────────────────
@@ -20,14 +21,10 @@ const IN_PROGRESS_STATUSES = new Set(['ASSIGNED', 'ACCEPTED_BY_PROVIDER', 'BOOKE
 const COMPLETED_STATUSES = new Set(['COMPLETED', 'CLOSED']);
 const LOST_STATUSES = new Set(['LOST', 'INVALID', 'SPAM']);
 
-// ── Status badge styling (design-system tokens only) ────────────
-function statusBadgeClass(status: string): string {
-  if (NEW_STATUSES.has(status)) return 'bg-[#FEF3C7] text-[#B45309]';
-  if (IN_PROGRESS_STATUSES.has(status)) return 'bg-[#EFF6FF] text-[#2563EB]';
-  if (COMPLETED_STATUSES.has(status)) return 'bg-[#DCFCE7] text-[#15803D]';
-  if (LOST_STATUSES.has(status)) return 'bg-[#FEE2E2] text-[#B91C1C]';
-  return 'bg-[#F1F5F9] text-[#475569]';
-}
+// ── Status badge styling ────────────────────────────────────────
+// Delegates to the shared statusBadge() so admin/provider/consumer pills
+// all render from one map (see client/lib/statusStyles).
+const statusBadgeClass = statusBadge;
 
 const URGENCY_DOT: Record<string, string> = {
   EMERGENCY: 'bg-[#EF4444]',

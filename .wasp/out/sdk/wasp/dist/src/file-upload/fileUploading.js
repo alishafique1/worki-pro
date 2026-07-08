@@ -1,14 +1,24 @@
-import axios from "axios";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE_BYTES } from "./validation";
 export async function uploadFileWithProgress({ file, s3UploadUrl, s3UploadFields, setUploadProgressPercent, }) {
     const formData = getFileUploadFormData(file, s3UploadFields);
-    return axios.post(s3UploadUrl, formData, {
-        onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-                const percentage = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-                setUploadProgressPercent(percentage);
+    const xhr = new XMLHttpRequest();
+    return new Promise((resolve, reject) => {
+        xhr.upload.addEventListener("progress", (e) => {
+            if (e.lengthComputable) {
+                setUploadProgressPercent(Math.round((e.loaded / e.total) * 100));
             }
-        },
+        });
+        xhr.addEventListener("load", () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve();
+            }
+            else {
+                reject(new Error(`Upload failed with status ${xhr.status}`));
+            }
+        });
+        xhr.addEventListener("error", () => reject(new Error("Upload failed")));
+        xhr.open("POST", s3UploadUrl);
+        xhr.send(formData);
     });
 }
 function getFileUploadFormData(file, s3UploadFields) {

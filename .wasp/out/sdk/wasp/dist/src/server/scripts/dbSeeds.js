@@ -520,6 +520,12 @@ export async function seedMockUsers(prisma) {
             ],
         });
     }
+    // Seeded users are fully-formed accounts → mark onboarding complete so the
+    // onboarding guard (which now keys on onboardingCompletedAt) doesn't loop them.
+    await prisma.user.updateMany({
+        where: { onboardingCompletedAt: null, firstName: { not: null } },
+        data: { onboardingCompletedAt: new Date() },
+    });
     console.log("✓ GTA test accounts and sample data seeded successfully.");
     console.log("  consumer@thehelper.ca  / HelperTest123  (Sarah Chen, Milton)");
     console.log("  consumer2@thehelper.ca / HelperTest123  (James Kowalski, Oakville)");
@@ -528,12 +534,12 @@ export async function seedMockUsers(prisma) {
     console.log("  admin@thehelper.ca     / HelperTest123  (Admin)");
     // ─── Legacy / QA accounts (kept for backwards-compat with existing E2E tests) ──
     // Legacy consumer
-    let consumer = await prisma.user.findUnique({ where: { username: "test@worki.ai" } });
+    let consumer = await prisma.user.findUnique({ where: { username: "test@thehelper.ca" } });
     if (!consumer) {
         consumer = await prisma.user.create({
             data: {
-                email: "test@worki.ai",
-                username: "test@worki.ai",
+                email: "test@thehelper.ca",
+                username: "test@thehelper.ca",
                 firstName: "Test",
                 lastName: "Consumer",
                 role: "CONSUMER",
@@ -541,14 +547,14 @@ export async function seedMockUsers(prisma) {
             },
         });
     }
-    await ensureEmailAuthIdentity(prisma, "test@worki.ai", LEGACY_TEST_PASSWORD);
+    await ensureEmailAuthIdentity(prisma, "test@thehelper.ca", LEGACY_TEST_PASSWORD);
     // QA consumer
-    let qaConsumer = await prisma.user.findUnique({ where: { username: "consumer.test@worki.ai" } });
+    let qaConsumer = await prisma.user.findUnique({ where: { username: "consumer.test@thehelper.ca" } });
     if (!qaConsumer) {
         qaConsumer = await prisma.user.create({
             data: {
-                email: "consumer.test@worki.ai",
-                username: "consumer.test@worki.ai",
+                email: "consumer.test@thehelper.ca",
+                username: "consumer.test@thehelper.ca",
                 firstName: "Consumer",
                 lastName: "Tester",
                 role: "CONSUMER",
@@ -556,7 +562,7 @@ export async function seedMockUsers(prisma) {
             },
         });
     }
-    await ensureEmailAuthIdentity(prisma, "consumer.test@worki.ai", QA_TEST_PASSWORD);
+    await ensureEmailAuthIdentity(prisma, "consumer.test@thehelper.ca", QA_TEST_PASSWORD);
     // Legacy reward account for legacy test user
     const rewardAcct = await prisma.rewardAccount.findUnique({ where: { consumerId: consumer.id } });
     if (!rewardAcct) {
@@ -570,12 +576,12 @@ export async function seedMockUsers(prisma) {
         });
     }
     // QA provider
-    let providerUser = await prisma.user.findUnique({ where: { username: "pro.test@worki.ai" } });
+    let providerUser = await prisma.user.findUnique({ where: { username: "pro.test@thehelper.ca" } });
     if (!providerUser) {
         providerUser = await prisma.user.create({
             data: {
-                email: "pro.test@worki.ai",
-                username: "pro.test@worki.ai",
+                email: "pro.test@thehelper.ca",
+                username: "pro.test@thehelper.ca",
                 firstName: "Pro",
                 lastName: "Worker",
                 role: "PROVIDER",
@@ -583,7 +589,7 @@ export async function seedMockUsers(prisma) {
             },
         });
     }
-    await ensureEmailAuthIdentity(prisma, "pro.test@worki.ai", QA_TEST_PASSWORD);
+    await ensureEmailAuthIdentity(prisma, "pro.test@thehelper.ca", QA_TEST_PASSWORD);
     let provider = await prisma.provider.findFirst({ where: { userId: providerUser.id } });
     if (!provider) {
         provider = await prisma.provider.create({

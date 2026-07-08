@@ -32,7 +32,7 @@ const LEVELS = [
   { key: 'HOME_REWARDS_PRO', label: 'Platinum',         min: 5000, max: Infinity, icon: Crown },
 ];
 
-// $100 redemption threshold = 10,000 pts (100 pts = $1)
+// 10,000 pts redemption threshold (≈ $100 in gift cards)
 const REDEMPTION_THRESHOLD = 10000;
 
 const TYPE_LABELS: Record<string, string> = {
@@ -66,9 +66,9 @@ const EARN_ACTIONS = [
 ];
 
 const PRESETS = [
-  { points: 500,  label: '$5'  },
-  { points: 1000, label: '$10' },
-  { points: 2000, label: '$20' },
+  { points: 500,  label: '500 pts' },
+  { points: 1000, label: '1,000 pts' },
+  { points: 2000, label: '2,000 pts' },
 ];
 
 const ptsToDollars = (pts: number) => (pts / 100).toFixed(2);
@@ -179,9 +179,7 @@ export default function RewardsPage() {
     try {
       await redeemPoints({ points: effectivePoints, giftCardEmail: email });
       setSuccess(
-        `Successfully redeemed ${effectivePoints.toLocaleString()} points ($${ptsToDollars(
-          effectivePoints
-        )}). Check your email!`
+        `Successfully redeemed ${effectivePoints.toLocaleString()} points. Check your email!`
       );
       setEmail('');
       setCustomPoints('');
@@ -265,20 +263,20 @@ export default function RewardsPage() {
 
                   <div className="mt-2 flex items-center gap-2 text-sm font-semibold">
                     <span className="bg-white/25 backdrop-blur px-2.5 py-1 rounded-full">
-                      Worth ${ptsToDollars(balance)}
+                      {balance.toLocaleString()} pts
                     </span>
                     <span className="opacity-90">
                       · {lifetime.toLocaleString()} pts lifetime
                     </span>
                   </div>
 
-                  {/* Progress to $100 redemption threshold */}
+                  {/* Progress to 10,000 pts redemption threshold */}
                   <div className="mt-7">
                     <div className="flex items-center justify-between text-xs font-semibold mb-2">
                       <span className="opacity-95">
                         {ptsToThreshold > 0
-                          ? `${ptsToThreshold.toLocaleString()} pts to a $100 reward`
-                          : 'You can redeem a $100 reward!'}
+                          ? `${ptsToThreshold.toLocaleString()} pts to a 10,000 pts reward`
+                          : 'You can redeem a 10,000 pts reward!'}
                       </span>
                       <span className="opacity-95">{Math.round(redemptionProgress)}%</span>
                     </div>
@@ -382,7 +380,7 @@ export default function RewardsPage() {
             <TrendingUp className="h-5 w-5 text-[#2563EB]" />
             <h2 className="text-lg font-bold text-[#0F172A]">How to earn points</h2>
             <span className="ml-auto text-xs text-[#475569] bg-[#F8FAFC] border border-[#E2E8F0] px-2.5 py-1 rounded-full">
-              100 pts = $1
+              1,000 pts ≈ $10 gift card
             </span>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

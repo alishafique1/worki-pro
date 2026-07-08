@@ -13,6 +13,11 @@ export function useRoleGuard(role: 'CONSUMER' | 'PROVIDER' | 'ADMIN') {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // IMPORTANT: this guard reads user.role from the React Query cache.
+    // If useAuth is still loading or the user object is not yet available,
+    // we must NOT redirect — an undefined/loading user looks like a mismatch.
+    // OnboardingPage uses window.location.href after completeOnboarding to force
+    // a full reload, ensuring this guard always sees the freshly-fetched role.
     if (isLoading || !user) return;
 
     if (role === 'CONSUMER' && user.role !== 'CONSUMER') {
