@@ -47,7 +47,7 @@ export default function AdminDisputesPage() {
       <div>
         <h1 className="text-3xl font-black text-[#0F172A]">Lead Fee Disputes</h1>
         <p className="text-sm text-[#475569] mt-1">
-          Providers can dispute a $5 lead fee within 45 days. Credit waives the fee
+          Providers can dispute a lead fee ($5–$25 by category) within 45 days. Credit waives the fee
           (and refunds the Stripe charge if it was paid); Reject restores the original fee.
         </p>
       </div>

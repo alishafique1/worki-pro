@@ -551,6 +551,9 @@ model ProviderFee {
   disputeNote       String?
   disputedAt        DateTime?
   adminNote         String?     // set by admin on resolution
+
+  @@index([providerId, status])
+  @@index([status, disputedAt])
 }
 
 enum FeeType {

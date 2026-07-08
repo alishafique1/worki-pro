@@ -15,6 +15,13 @@ function hashCode(code: string): string {
   return crypto.createHash('sha256').update(code).digest('hex')
 }
 
+// Server-side length cap for untrusted request-body strings before they are
+// persisted to User / ServiceRequest.
+function clamp(value: unknown, max: number): string | undefined {
+  if (typeof value !== 'string') return undefined
+  return value.length > max ? value.slice(0, max) : value
+}
+
 function isOriginAllowed(origin: string | undefined): boolean {
   if (!origin) return true // non-browser / same-origin server calls have no Origin header
   // allow localhost dev origins on any port
@@ -79,8 +86,15 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   const code = generateOtp()
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 min
 
-  // Clear any previous unused codes for this email
-  await prisma.otpCode.deleteMany({ where: { email: normalizedEmail, used: false } })
+  // Supersede any previous unused codes by marking them used (verifyOtp only
+  // accepts used:false, so superseded codes are dead). Do NOT delete them:
+  // the rate limit above counts rows by createdAt, and deleting would erase
+  // the evidence — the count would never exceed 1, allowing unlimited OTP
+  // email bombing.
+  await prisma.otpCode.updateMany({
+    where: { email: normalizedEmail, used: false },
+    data: { used: true },
+  })
 
   await prisma.otpCode.create({
     data: { email: normalizedEmail, code: hashCode(code), expiresAt },
@@ -222,29 +236,48 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
   if (pendingRequest) {
     const userRecord = await prisma.user.findFirst({ where: { email: normalizedEmail } })
     if (userRecord) {
+      // Clamp untrusted body fields server-side before persisting.
+      const firstName = clamp(pendingRequest.firstName, 100)
+      const phone = clamp(pendingRequest.phone, 30)
+      const postalCode = clamp(pendingRequest.postalCode, 12)
+      const description = clamp(pendingRequest.description, 2000) ?? ''
+
+      let qualifierAnswers = pendingRequest.qualifierAnswers
+      if (qualifierAnswers && JSON.stringify(qualifierAnswers).length > 10000) {
+        // Oversized payload — skip storing it rather than failing the login.
+        console.warn(`[verifyOtp] qualifierAnswers too large for ${normalizedEmail}; skipping storage.`)
+        qualifierAnswers = undefined
+      }
+
+      // Never change the role of an EXISTING user: a PROVIDER who submits a
+      // guest request must not be demoted to CONSUMER and locked out of their
+      // portal. Only accounts created by this flow get role CONSUMER.
+      // Profile fields on existing users are fill-if-empty, never overwritten.
+      const userUpdate: Record<string, unknown> = {
+        smsConsent: pendingRequest.smsConsent,
+        smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
+      }
+      if (isNewUser) userUpdate.role = 'CONSUMER'
+      if (firstName && !userRecord.firstName) userUpdate.firstName = firstName
+      if (phone && !userRecord.phone) userUpdate.phone = phone
+      if (postalCode && !userRecord.postalCode) userUpdate.postalCode = postalCode
+
       await prisma.user.update({
         where: { id: userRecord.id },
-        data: {
-          firstName: pendingRequest.firstName,
-          phone: pendingRequest.phone,
-          postalCode: pendingRequest.postalCode,
-          role: 'CONSUMER',
-          smsConsent: pendingRequest.smsConsent,
-          smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
-        },
+        data: userUpdate,
       })
 
       const request = await prisma.serviceRequest.create({
         data: {
           consumerId: userRecord.id,
-          name: pendingRequest.firstName,
-          phone: pendingRequest.phone,
-          postalCode: pendingRequest.postalCode,
+          name: firstName ?? '',
+          phone: phone ?? '',
+          postalCode: postalCode ?? '',
           email: normalizedEmail,
           smsConsentGiven: pendingRequest.smsConsent,
           serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
-          description: pendingRequest.description,
-          qualifierAnswers: pendingRequest.qualifierAnswers ?? {},
+          description,
+          qualifierAnswers: qualifierAnswers ?? {},
           // Validate against the enum — schema default (STANDARD) applies otherwise.
           urgency: URGENCY_VALUES.includes(pendingRequest.urgency as Urgency)
             ? pendingRequest.urgency

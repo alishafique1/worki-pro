@@ -206,8 +206,17 @@ export const submitServiceRequest: SubmitServiceRequest<
 
   // Preferred provider must exist, be active, and be VERIFIED — otherwise
   // silently ignore the preference and create an unassigned request.
+  //
+  // SECURITY: the fast-path (direct ASSIGNED + billable QUALIFIED_LEAD fee) is
+  // only honored for AUTHENTICATED consumers. This action is callable without
+  // auth, so an anonymous caller could otherwise mint unlimited PENDING fees
+  // against any verified provider (financial abuse / competitor griefing).
+  // Authenticated submissions are traceable and covered by the fee-dispute
+  // workflow. Guest requests with a preferredProviderId are created as NEW
+  // and unassigned — the provider claims them from the feed via claimLead,
+  // which charges and confirms the fee at claim time.
   let preferredProviderId: string | undefined = undefined;
-  if (args.preferredProviderId) {
+  if (args.preferredProviderId && context.user?.id) {
     const preferredProvider = await context.entities.Provider.findUnique({
       where: { id: args.preferredProviderId },
     });
@@ -486,7 +495,10 @@ type ProviderDetail = {
 
 export const getProviderById: GetProviderById<{ providerId: string }, ProviderDetail | null> = async ({ providerId }, context) => {
   const provider = await context.entities.Provider.findUnique({
-    where: { id: providerId, active: true },
+    // Public unauthenticated query — only expose active, admin-VERIFIED
+    // providers (mirrors getPublicProvider); prevents enumeration of
+    // PENDING/REJECTED profiles by id.
+    where: { id: providerId, active: true, verificationStatus: "VERIFIED" },
     select: {
       id: true,
       slug: true,

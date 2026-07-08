@@ -79,14 +79,16 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
     secret?: string;
   };
 
-  // Log every inbound call to WebhookLog for debugging
+  // Log every inbound call to WebhookLog for debugging.
+  // Redact the shared webhook secret before persisting — never store it plaintext.
+  const { secret: _secret, ...loggedPayload } = (req.body ?? {}) as Record<string, any>;
   await (context.entities as any).WebhookLog.create({
     data: {
       direction: 'INBOUND',
       source: 'GHL',
       event: event ?? 'unknown',
       serviceRequestId: requestId ?? null,
-      payload: req.body,
+      payload: loggedPayload,
       statusCode: 200,
     },
   });
@@ -144,11 +146,35 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
       select: { id: true, verificationStatus: true },
     });
     if (provider && provider.verificationStatus === ProviderStatus.VERIFIED) {
-      verifiedProviderId = providerId;
+      // Never silently steal a lead another provider already claimed (and paid for).
+      if (
+        serviceRequest.assignedProviderId &&
+        serviceRequest.assignedProviderId !== providerId
+      ) {
+        console.warn(
+          `[GHL] Skipping provider assignment for request ${requestId} — already assigned to provider ${serviceRequest.assignedProviderId}, refusing to reassign to ${providerId}`
+        );
+      } else {
+        verifiedProviderId = providerId;
+      }
     } else {
       console.warn(
         `[GHL] Skipping provider assignment for request ${requestId} — provider ${providerId} ${provider ? `has status ${provider.verificationStatus}` : 'not found'}`
       );
+    }
+  }
+
+  // Validate appointmentTime before handing it to Prisma — garbage input must
+  // not become an Invalid Date (Prisma throws → 500 → GHL retry loop).
+  let bookedAtDate: Date | undefined;
+  if (appointmentTime) {
+    const parsed = new Date(appointmentTime);
+    if (isNaN(parsed.getTime())) {
+      console.warn(
+        `[GHL] Ignoring unparseable appointmentTime "${appointmentTime}" for request ${requestId}`
+      );
+    } else {
+      bookedAtDate = parsed;
     }
   }
 
@@ -158,8 +184,10 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
     data: {
       ...(newStatus && { status: newStatus }),
       ...(verifiedProviderId && { assignedProviderId: verifiedProviderId }),
-      ...(appointmentTime && { bookedAt: new Date(appointmentTime) }),
-      ...(event === 'job.completed' && { completedAt: new Date() }),
+      // Timestamps only when the corresponding status is actually being
+      // written — a rejected transition must not stamp bookedAt/completedAt.
+      ...(newStatus === RequestStatus.BOOKED && bookedAtDate && { bookedAt: bookedAtDate }),
+      ...(newStatus === RequestStatus.COMPLETED && { completedAt: new Date() }),
     },
   });
 
@@ -173,7 +201,7 @@ export const handleGhlWebhook: GhlWebhook = async (req, res, context) => {
       to: 'thehelper-system',
       body: notes ?? `GHL event: ${event}`,
       status: newStatus ?? event,
-      rawPayload: req.body,
+      rawPayload: loggedPayload,
     },
   });
 
