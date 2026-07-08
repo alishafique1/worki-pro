@@ -1,5 +1,6 @@
 import type { ServiceRequest, Provider, Appointment, ProviderFee, ProviderCategory, ServiceCategory, CommunicationLog, Review } from "wasp/entities";
-import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, ResubmitProviderApplication, AddPortfolioPhoto, RemovePortfolioPhoto, SetProfilePhoto } from "wasp/server/operations";
+import { type MaskedLead } from "./leadMasking";
+import type { GetProviderLeads, GetProviderAppointments, GetProviderProfile, GetProviderFees, AcceptServiceRequest, MarkJobCompleted, SubmitProviderApplication, CreateProviderProfile, UpdateProviderServices, UpdateProviderProfile, UpdateProviderAppointment, SendProviderMessage, GetPublicLeadFeed, ClaimLead, GetPublicProvider, DisputeLeadFee, ResubmitProviderApplication, AddPortfolioPhoto, RemovePortfolioPhoto, SetProfilePhoto } from "wasp/server/operations";
 export declare const getProviderLeads: GetProviderLeads<void, ServiceRequest[]>;
 export declare const getProviderAppointments: GetProviderAppointments<void, any[]>;
 export declare const getProviderProfile: GetProviderProfile<void, Provider & {
@@ -25,6 +26,9 @@ type UpdateProviderProfileInput = {
     portfolioJson?: string;
     accreditationsJson?: string;
     responseTimeMins?: number;
+    licenceNumber?: string;
+    insuranceUrl?: string;
+    wsibClearanceNumber?: string;
 };
 type CreateProviderProfileInput = {
     businessName: string;
@@ -43,6 +47,9 @@ type SubmitProviderApplicationInput = {
     serviceAreas: string[];
     calComUsername?: string;
     serviceCategorySlugs?: string[];
+    licenceNumber?: string;
+    insuranceUrl?: string;
+    wsibClearanceNumber?: string;
 };
 export declare const createProviderProfile: CreateProviderProfile<CreateProviderProfileInput, Provider>;
 export declare const submitProviderApplication: SubmitProviderApplication<SubmitProviderApplicationInput, Provider>;
@@ -72,21 +79,6 @@ export declare const sendProviderMessage: SendProviderMessage<{
     requestId: string;
     body: string;
 }, CommunicationLog>;
-type MaskedLead = {
-    id: string;
-    createdAt: Date;
-    serviceCategory: {
-        name: string;
-        slug: string;
-    } | null;
-    postalCode: string;
-    city: string | null;
-    urgency: string;
-    description: string;
-    estimatedSchedule: string | null;
-    status: string;
-    claimed: boolean;
-};
 export declare const getPublicLeadFeed: GetPublicLeadFeed<{
     categorySlug?: string;
     urgency?: string;
@@ -99,11 +91,22 @@ export declare const claimLead: ClaimLead<{
     request: ServiceRequest;
     alreadyClaimed: boolean;
 }>;
-type PublicProviderProfile = Provider & {
+export declare const DISPUTE_REASONS: readonly ["WRONG_NUMBER", "SPAM", "DUPLICATE", "OUT_OF_AREA", "OTHER"];
+export type DisputeReason = (typeof DISPUTE_REASONS)[number];
+type DisputeLeadFeeInput = {
+    feeId: string;
+    reason: DisputeReason;
+    note?: string;
+};
+export declare const disputeLeadFee: DisputeLeadFee<DisputeLeadFeeInput, ProviderFee>;
+type PublicProviderProfile = Pick<Provider, "id" | "slug" | "businessName" | "website" | "bio" | "profilePhotoUrl" | "portfolioJson" | "accreditationsJson" | "responseTimeMins" | "serviceAreas" | "ratingInternal" | "verificationStatus" | "createdAt"> & {
     categories: (ProviderCategory & {
         serviceCategory: ServiceCategory;
     })[];
     reviews: Review[];
+    hasLicence: boolean;
+    hasInsurance: boolean;
+    hasWsib: boolean;
 };
 export declare const getPublicProvider: GetPublicProvider<{
     slug: string;

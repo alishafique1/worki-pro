@@ -1,1 +1,1 @@
-{"version":3,"file":"ghl.d.ts","sourceRoot":"","sources":["../../../../src/server/webhooks/ghl.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,iBAAiB,CAAC;AAElD;;;;;;;;;;;;;;;;;;;;;;;;;GAyBG;AACH,eAAO,MAAM,gBAAgB,EAAE,UAgG9B,CAAC"}
+{"version":3,"file":"ghl.d.ts","sourceRoot":"","sources":["../../../../src/server/webhooks/ghl.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,iBAAiB,CAAC;AAYlD;;;;;;;;;;;;;;;;;;;;;;;;;GAyBG;AACH,eAAO,MAAM,gBAAgB,EAAE,UAyK9B,CAAC"}

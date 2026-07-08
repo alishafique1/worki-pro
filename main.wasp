@@ -12,7 +12,7 @@ app OpenSaaS {
 
   
 
-  title: "TheHelper — Home Services Concierge | Handyman, Plumbing & Event Pros in GTA",
+  title: "TheHelper — Home Services Concierge | HVAC, Plumbing & Handyman Pros in GTA",
 
   head: [
     "<link rel='icon' href='/favicon.ico' sizes='any' />",
@@ -23,9 +23,9 @@ app OpenSaaS {
     "<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />",
     "<link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=DM+Sans:opsz,wght@9..40,300..700&display=swap' rel='stylesheet' />",
 
-    "<meta name='description' content=\"TheHelper is Milton, Oakville & Burlington's #1 services concierge. Get matched with background-checked handyman, plumbing, smart home, events, catering, shisha lounge, AI services, and website design pros in minutes. Earn rewards on every job.\" />",
+    "<meta name='description' content=\"TheHelper is Milton, Oakville & Burlington's home services concierge. Get matched with vetted HVAC, plumbing, electrical, appliance repair, handyman, and smart home pros. Earn rewards on every job.\" />",
     "<meta name='author' content='TheHelper Home Services' />",
-    "<meta name='keywords' content='home services Milton, handyman Oakville, plumber Burlington, smart home installation GTA, event planning Milton, food catering Oakville, shisha lounge GTA, website design Burlington, AI services GTA, services concierge' />",
+    "<meta name='keywords' content='home services Milton, handyman Oakville, plumber Burlington, HVAC repair Milton, electrician Oakville, appliance repair Burlington, smart home installation GTA, home services concierge' />",
     "<meta name='robots' content='index, follow' />",
     "<link rel='canonical' href='https://thehelper.ca/' />",
 
@@ -33,14 +33,14 @@ app OpenSaaS {
     "<meta property='og:title' content=\"TheHelper — Home Services Concierge | GTA's Top Rated Pros\" />",
     "<meta property='og:site_name' content='TheHelper' />",
     "<meta property='og:url' content='https://thehelper.ca/' />",
-    "<meta property='og:description' content='Stop searching. Describe your problem once and we match you with a vetted, insured local pro. Earn rewards on every job booked.' />",
+    "<meta property='og:description' content='Stop searching. Describe your problem once and we match you with a vetted local pro. Earn rewards on every job booked.' />",
     "<meta property='og:image' content='https://thehelper.ca/og-banner.webp' />",
     "<meta name='twitter:card' content='summary_large_image' />",
     "<meta name='twitter:title' content='TheHelper — Home Services Concierge' />",
-    "<meta name='twitter:description' content=\"GTA's #1 home services concierge. Vetted pros, guaranteed work, rewards on every job.\" />",
+    "<meta name='twitter:description' content='Your GTA home services concierge. Vetted pros, quality work, rewards on every job.' />",
     "<meta name='twitter:image' content='https://thehelper.ca/og-banner.webp' />",
 
-    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"TheHelper Home Services\",\"description\":\"Services concierge connecting GTA homeowners and businesses with vetted handyman, plumbing, smart home, events, catering, shisha lounge, AI services, and website design professionals.\",\"url\":\"https://thehelper.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"Handyman\",\"Plumbing\",\"Smart Home Installation\",\"Events\",\"Food Catering\",\"Shisha Lounge\",\"AI Services\",\"Website Design\"]}</script>",
+    "<script type='application/ld+json'>{\"@context\":\"https://schema.org\",\"@type\":\"LocalBusiness\",\"name\":\"TheHelper Home Services\",\"description\":\"Home services concierge connecting GTA homeowners with vetted HVAC, plumbing, electrical, appliance repair, handyman, and smart home professionals.\",\"url\":\"https://thehelper.ca\",\"areaServed\":[\"Milton\",\"Oakville\",\"Burlington\",\"Mississauga\",\"Brampton\"],\"serviceType\":[\"HVAC\",\"Plumbing\",\"Electrical\",\"Appliance Repair\",\"Handyman\",\"Smart Home Installation\"]}</script>",
   ],
 
   // 🔐 Auth out of the box! https://wasp.sh/docs/auth/overview
@@ -192,6 +192,13 @@ action completeOnboarding {
 }
 
 // Passwordless OTP auth — public endpoints (no Wasp session required)
+// Custom `api` routes don't inherit Wasp's global CORS, so this namespace
+// attaches CORS middleware to /api/auth/* (fixes "Failed to fetch" on login).
+apiNamespace authApi {
+  middlewareConfigFn: import { authApiMiddlewareConfigFn } from "@src/auth/otpApi",
+  path: "/api/auth"
+}
+
 api requestOtp {
   fn: import { requestOtp } from "@src/auth/otpApi",
   httpRoute: (POST, "/api/auth/request-otp")
@@ -200,13 +207,6 @@ api requestOtp {
 api verifyOtp {
   fn: import { verifyOtp } from "@src/auth/otpApi",
   httpRoute: (POST, "/api/auth/verify-otp")
-}
-
-// Custom `api` routes don't inherit Operations' default CORS middleware, so the
-// browser's OPTIONS preflight to /api/auth/* was rejected. Enable CORS here.
-apiNamespace authApi {
-  middlewareConfigFn: import { authApiMiddleware } from "@src/auth/otpApi",
-  path: "/api/auth"
 }
 
 //#region Consumer
@@ -459,6 +459,18 @@ query getProviderFees {
   entities: [ProviderFee, Provider]
 }
 
+// Provider billing: card on file + fee totals (Stripe)
+query getBillingStatus {
+  fn: import { getBillingStatus } from "@src/provider/billing",
+  entities: [Provider, ProviderFee]
+}
+
+// Starts a Stripe Checkout session in `setup` mode to save a card on file
+action createBillingSetupSession {
+  fn: import { createBillingSetupSession } from "@src/provider/billing",
+  entities: [Provider]
+}
+
 action acceptServiceRequest {
   fn: import { acceptServiceRequest } from "@src/provider/operations",
   entities: [ServiceRequest, Appointment, ProviderFee, Provider, RewardTransaction, RewardAccount]
@@ -513,6 +525,12 @@ query getPublicLeadFeed {
 action claimLead {
   fn: import { claimLead } from "@src/provider/operations",
   entities: [ServiceRequest, Provider, ProviderFee, CommunicationLog]
+}
+
+// Bad-lead dispute: provider flags a QUALIFIED_LEAD fee for admin review
+action disputeLeadFee {
+  fn: import { disputeLeadFee } from "@src/provider/operations",
+  entities: [ProviderFee, Provider]
 }
 
 // Public provider profile (by slug)
@@ -614,6 +632,11 @@ query getDailyStats {
   entities: [User, DailyStats]
 }
 
+query getAdminLiveCounts {
+  fn: import { getAdminLiveCounts } from "@src/analytics/operations",
+  entities: [Provider, Review, ServiceRequest]
+}
+
 job dailyStatsJob {
   executor: PgBoss,
   perform: {
@@ -655,6 +678,20 @@ page AdminReviewsPage { component: import AdminReviewsPage from "@src/admin/Revi
 
 route AdminCategoriesRoute { path: "/admin/categories", to: AdminCategoriesPage }
 page AdminCategoriesPage { component: import AdminCategoriesPage from "@src/admin/CategoriesPage", authRequired: true }
+
+route AdminDisputesRoute { path: "/admin/disputes", to: AdminDisputesPage }
+page AdminDisputesPage { component: import AdminDisputesPage from "@src/admin/DisputesPage", authRequired: true }
+
+// Lead fee disputes (bad-lead credit workflow)
+query getDisputedFees {
+  fn: import { getDisputedFees } from "@src/admin/operations",
+  entities: [ProviderFee, Provider, ServiceRequest, ServiceCategory]
+}
+
+action resolveFeeDispute {
+  fn: import { resolveFeeDispute } from "@src/admin/operations",
+  entities: [ProviderFee, Provider, ServiceRequest]
+}
 
 query getAdminRequests {
   fn: import { getAdminRequests } from "@src/admin/operations",

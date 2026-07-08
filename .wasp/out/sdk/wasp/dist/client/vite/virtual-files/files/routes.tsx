@@ -67,6 +67,7 @@ import AdminProvidersPage from './src/admin/ProvidersPage'
 import AdminRewardsPage from './src/admin/RewardsPage'
 import AdminReviewsPage from './src/admin/ReviewsPage'
 import AdminCategoriesPage from './src/admin/CategoriesPage'
+import AdminDisputesPage from './src/admin/DisputesPage'
 import AdminSettingsPage from './src/admin/elements/settings/SettingsPage'
 import AdminCalendarPage from './src/admin/elements/calendar/CalendarPage'
 import AdminUIButtonsPage from './src/admin/elements/ui-elements/ButtonsPage'
@@ -140,6 +141,7 @@ export const routesMapping = {
   AdminRewardsRoute: createAuthRequiredPage(AdminRewardsPage),
   AdminReviewsRoute: createAuthRequiredPage(AdminReviewsPage),
   AdminCategoriesRoute: createAuthRequiredPage(AdminCategoriesPage),
+  AdminDisputesRoute: createAuthRequiredPage(AdminDisputesPage),
   AdminSettingsRoute: createAuthRequiredPage(AdminSettingsPage),
   AdminCalendarRoute: createAuthRequiredPage(AdminCalendarPage),
   AdminUIButtonsRoute: createAuthRequiredPage(AdminUIButtonsPage),

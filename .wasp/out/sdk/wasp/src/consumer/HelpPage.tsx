@@ -27,7 +27,7 @@ const consumerFaqs = [
       'Once you submit a request, a verified provider in your area is notified immediately. You should hear back within a few hours during business hours.',
   },
   {
-    question: 'Are providers background-checked?',
+    question: 'How are providers vetted?',
     answer:
       'Provider onboarding includes verification of business details, credentials, and service areas. All providers must meet TheHelper\'s onboarding standards before accepting jobs.',
   },

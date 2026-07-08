@@ -13,6 +13,7 @@ import { applyReferralCode as applyReferralCode_ext } from 'wasp/src/consumer/op
 import { addPortfolioPhoto as addPortfolioPhoto_ext } from 'wasp/src/provider/operations';
 import { removePortfolioPhoto as removePortfolioPhoto_ext } from 'wasp/src/provider/operations';
 import { setProfilePhoto as setProfilePhoto_ext } from 'wasp/src/provider/operations';
+import { createBillingSetupSession as createBillingSetupSession_ext } from 'wasp/src/provider/billing';
 import { acceptServiceRequest as acceptServiceRequest_ext } from 'wasp/src/provider/operations';
 import { markJobCompleted as markJobCompleted_ext } from 'wasp/src/provider/operations';
 import { submitProviderApplication as submitProviderApplication_ext } from 'wasp/src/provider/operations';
@@ -23,6 +24,7 @@ import { sendProviderMessage as sendProviderMessage_ext } from 'wasp/src/provide
 import { updateProviderProfile as updateProviderProfile_ext } from 'wasp/src/provider/operations';
 import { resubmitProviderApplication as resubmitProviderApplication_ext } from 'wasp/src/provider/operations';
 import { claimLead as claimLead_ext } from 'wasp/src/provider/operations';
+import { disputeLeadFee as disputeLeadFee_ext } from 'wasp/src/provider/operations';
 import { moderateReview as moderateReview_ext } from 'wasp/src/admin/operations';
 import { upsertAdminCategory as upsertAdminCategory_ext } from 'wasp/src/admin/operations';
 import { deleteAdminCategory as deleteAdminCategory_ext } from 'wasp/src/admin/operations';
@@ -31,6 +33,7 @@ import { updateUserProfile as updateUserProfile_ext } from 'wasp/src/user/operat
 import { createFileUploadUrl as createFileUploadUrl_ext } from 'wasp/src/file-upload/operations';
 import { addFileToDb as addFileToDb_ext } from 'wasp/src/file-upload/operations';
 import { deleteFile as deleteFile_ext } from 'wasp/src/file-upload/operations';
+import { resolveFeeDispute as resolveFeeDispute_ext } from 'wasp/src/admin/operations';
 import { updateLead as updateLead_ext } from 'wasp/src/admin/operations';
 import { approveProvider as approveProvider_ext } from 'wasp/src/admin/operations';
 import { rejectProvider as rejectProvider_ext } from 'wasp/src/admin/operations';
@@ -113,6 +116,10 @@ export const setProfilePhoto = createAuthenticatedOperation(setProfilePhoto_ext,
     Provider: prisma.provider,
 });
 // PUBLIC API
+export const createBillingSetupSession = createAuthenticatedOperation(createBillingSetupSession_ext, {
+    Provider: prisma.provider,
+});
+// PUBLIC API
 export const acceptServiceRequest = createAuthenticatedOperation(acceptServiceRequest_ext, {
     ServiceRequest: prisma.serviceRequest,
     Appointment: prisma.appointment,
@@ -174,6 +181,11 @@ export const claimLead = createAuthenticatedOperation(claimLead_ext, {
     CommunicationLog: prisma.communicationLog,
 });
 // PUBLIC API
+export const disputeLeadFee = createAuthenticatedOperation(disputeLeadFee_ext, {
+    ProviderFee: prisma.providerFee,
+    Provider: prisma.provider,
+});
+// PUBLIC API
 export const moderateReview = createAuthenticatedOperation(moderateReview_ext, {
     Review: prisma.review,
     Provider: prisma.provider,
@@ -208,6 +220,12 @@ export const addFileToDb = createAuthenticatedOperation(addFileToDb_ext, {
 export const deleteFile = createAuthenticatedOperation(deleteFile_ext, {
     User: prisma.user,
     File: prisma.file,
+});
+// PUBLIC API
+export const resolveFeeDispute = createAuthenticatedOperation(resolveFeeDispute_ext, {
+    ProviderFee: prisma.providerFee,
+    Provider: prisma.provider,
+    ServiceRequest: prisma.serviceRequest,
 });
 // PUBLIC API
 export const updateLead = createAuthenticatedOperation(updateLead_ext, {

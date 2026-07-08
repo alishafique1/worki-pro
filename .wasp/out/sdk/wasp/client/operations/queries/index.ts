@@ -13,6 +13,7 @@ import { GetProviderLeads_ext } from 'wasp/server/operations/queries'
 import { GetProviderAppointments_ext } from 'wasp/server/operations/queries'
 import { GetProviderProfile_ext } from 'wasp/server/operations/queries'
 import { GetProviderFees_ext } from 'wasp/server/operations/queries'
+import { GetBillingStatus_ext } from 'wasp/server/operations/queries'
 import { GetPublicLeadFeed_ext } from 'wasp/server/operations/queries'
 import { GetPublicProvider_ext } from 'wasp/server/operations/queries'
 import { GetAdminReviews_ext } from 'wasp/server/operations/queries'
@@ -21,6 +22,8 @@ import { GetPaginatedUsers_ext } from 'wasp/server/operations/queries'
 import { GetAllFilesByUser_ext } from 'wasp/server/operations/queries'
 import { GetDownloadFileSignedURL_ext } from 'wasp/server/operations/queries'
 import { GetDailyStats_ext } from 'wasp/server/operations/queries'
+import { GetAdminLiveCounts_ext } from 'wasp/server/operations/queries'
+import { GetDisputedFees_ext } from 'wasp/server/operations/queries'
 import { GetAdminRequests_ext } from 'wasp/server/operations/queries'
 import { GetAdminProviders_ext } from 'wasp/server/operations/queries'
 import { GetAdminRewards_ext } from 'wasp/server/operations/queries'
@@ -111,6 +114,12 @@ export const getProviderFees: QueryFor<GetProviderFees_ext> = createQuery<GetPro
 )
 
 // PUBLIC API
+export const getBillingStatus: QueryFor<GetBillingStatus_ext> = createQuery<GetBillingStatus_ext>(
+  'operations/get-billing-status',
+  ['Provider', 'ProviderFee'],
+)
+
+// PUBLIC API
 export const getPublicLeadFeed: QueryFor<GetPublicLeadFeed_ext> = createQuery<GetPublicLeadFeed_ext>(
   'operations/get-public-lead-feed',
   ['ServiceRequest', 'Provider', 'ProviderCategory', 'ServiceCategory'],
@@ -156,6 +165,18 @@ export const getDownloadFileSignedURL: QueryFor<GetDownloadFileSignedURL_ext> = 
 export const getDailyStats: QueryFor<GetDailyStats_ext> = createQuery<GetDailyStats_ext>(
   'operations/get-daily-stats',
   ['User', 'DailyStats'],
+)
+
+// PUBLIC API
+export const getAdminLiveCounts: QueryFor<GetAdminLiveCounts_ext> = createQuery<GetAdminLiveCounts_ext>(
+  'operations/get-admin-live-counts',
+  ['Provider', 'Review', 'ServiceRequest'],
+)
+
+// PUBLIC API
+export const getDisputedFees: QueryFor<GetDisputedFees_ext> = createQuery<GetDisputedFees_ext>(
+  'operations/get-disputed-fees',
+  ['ProviderFee', 'Provider', 'ServiceRequest', 'ServiceCategory'],
 )
 
 // PUBLIC API

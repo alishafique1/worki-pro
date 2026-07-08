@@ -233,7 +233,7 @@ const HOW_IT_WORKS = [
   {
     step: '02',
     title: 'We match you with a vetted expert pro',
-    desc: 'Our concierge reviews your request and connects you with a background-checked, licensed specialist.',
+    desc: 'Our concierge reviews your request and connects you with a vetted specialist, licensed where required.',
     icon: <Users className="size-6" />,
   },
   {
@@ -245,9 +245,9 @@ const HOW_IT_WORKS = [
 ];
 
 const TRUST_BADGES = [
-  { icon: <Target className="size-6" />, label: 'Background-checked' },
-  { icon: <ShieldCheck className="size-6" />, label: 'Licensed & insured' },
-  { icon: <Star className="size-6" />, label: 'Satisfaction guaranteed' },
+  { icon: <Target className="size-6" />, label: 'Vetted pros' },
+  { icon: <ShieldCheck className="size-6" />, label: 'Verified where required' },
+  { icon: <Star className="size-6" />, label: 'Quality-focused' },
   { icon: <MapPin className="size-6" />, label: 'Expert-matched' },
 ];
 
@@ -325,7 +325,7 @@ export default function AreaLandingPage() {
     // Default for other areas
     return {
       title: `Home Services in ${area.name}, ON | ${baseServices} | The Helper`,
-      description: `Find vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}, ${area.region}. Licensed, insured contractors. Get matched and book today.`,
+      description: `Find vetted HVAC, plumbing, electrical, handyman, appliance repair & smart home pros in ${area.name}, ${area.region}. Vetted local contractors. Get matched and book today.`,
       ogTitle: `Home Services in ${area.name} | The Helper`,
       ogDescription: `Book verified home service pros in ${area.name}. HVAC, plumbing, electrical, handyman and more - matched, scheduled, and followed up for you.`,
       keywords: `home services ${area.name}, HVAC ${area.name}, plumber ${area.name}, electrician ${area.name}, handyman ${area.name}, appliance repair ${area.name}`,

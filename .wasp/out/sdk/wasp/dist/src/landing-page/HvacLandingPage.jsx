@@ -35,7 +35,7 @@ function FaqItem({ question, answer }) {
 }
 export default function HvacLandingPage() {
     return (<>
-      <PageSeo title="HVAC Repair & Installation Milton, Oakville, Burlington | The Helper" description="Licensed TSSA HVAC contractors for furnace repair, AC installation, and air quality services in Milton, Oakville & Burlington. Same-day emergency service available. Get matched with verified pros." ogTitle="HVAC Services in Milton, Oakville & Burlington | The Helper" ogDescription="Find trusted HVAC pros for furnace repair, AC tune-ups, and heating installation in the GTA. Licensed, insured, and verified contractors." canonicalPath="/hvac" keywords="HVAC repair Milton, furnace repair Oakville, AC installation Burlington, heating services GTA, air conditioning repair, HVAC contractor near me" structuredData={{
+      <PageSeo title="HVAC Repair & Installation Milton, Oakville, Burlington | The Helper" description="Licensed TSSA HVAC contractors for furnace repair, AC installation, and air quality services in Milton, Oakville & Burlington. Same-day emergency service available. Get matched with verified pros." ogTitle="HVAC Services in Milton, Oakville & Burlington | The Helper" ogDescription="Find trusted HVAC pros for furnace repair, AC tune-ups, and heating installation in the GTA. Vetted, verified contractors." canonicalPath="/hvac" keywords="HVAC repair Milton, furnace repair Oakville, AC installation Burlington, heating services GTA, air conditioning repair, HVAC contractor near me" structuredData={{
             '@context': 'https://schema.org',
             '@graph': [
                 createServiceSchema({
@@ -85,7 +85,7 @@ export default function HvacLandingPage() {
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
             { label: 'TSSA Licensed', icon: <CheckCircle2 className="size-6"/>, alt: 'TSSA licensed contractors' },
-            { label: 'Fully Insured', icon: <ShieldCheck className="size-6"/>, alt: 'Fully insured pros' },
+            { label: 'Vetted Pros', icon: <ShieldCheck className="size-6"/>, alt: 'Vetted pros' },
             { label: 'Same-Day Service', icon: <CalendarClock className="size-6"/>, alt: 'Same-day emergency service' }
         ].map((stat) => (<div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
                 <div className="text-blue-600" aria-hidden="true">{stat.icon}</div>

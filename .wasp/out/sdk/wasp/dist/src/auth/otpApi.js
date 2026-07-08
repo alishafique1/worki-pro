@@ -1,35 +1,60 @@
-import cors from 'cors';
-import { HttpError, prisma, config } from 'wasp/server';
+import { HttpError, prisma } from 'wasp/server';
 import { createSession } from 'wasp/auth/session';
 import { createUser, findAuthIdentity, createProviderId, sanitizeAndSerializeProviderData } from 'wasp/server/auth';
 import { hashPassword } from 'wasp/auth/password';
 import { emailSender } from 'wasp/server/email';
 import crypto from 'crypto';
 function generateOtp() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    // crypto.randomInt is cryptographically secure; Math.random is predictable.
+    return crypto.randomInt(100000, 1000000).toString();
 }
 function hashCode(code) {
     return crypto.createHash('sha256').update(code).digest('hex');
 }
-function isAllowedOrigin(req) {
-    const origin = req.headers.origin;
+// Server-side length cap for untrusted request-body strings before they are
+// persisted to User / ServiceRequest.
+function clamp(value, max) {
+    if (typeof value !== 'string')
+        return undefined;
+    return value.length > max ? value.slice(0, max) : value;
+}
+function isOriginAllowed(origin) {
     if (!origin)
         return true; // non-browser / same-origin server calls have no Origin header
+    // allow localhost dev origins on any port
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
+        return true;
     const allowed = [
         process.env.WASP_WEB_CLIENT_URL,
         'https://thehelper.ca',
         'https://www.thehelper.ca',
     ].filter(Boolean);
-    // also allow localhost dev origins
-    if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
-        return true;
     return allowed.includes(origin);
 }
-// Wasp custom `api` routes do NOT get the default Operations middleware, so
-// CORS (incl. the browser's OPTIONS preflight) must be enabled explicitly.
-// Applied to the whole /api/auth namespace via apiNamespace in main.wasp.
-export const authApiMiddleware = (middlewareConfig) => {
-    middlewareConfig.set('cors', cors({ origin: config.frontendUrl }));
+function isAllowedOrigin(req) {
+    return isOriginAllowed(req.headers.origin);
+}
+// Wasp applies its global CORS middleware to operation routes but NOT to custom
+// `api` routes, so cross-origin browser calls to /api/auth/* (dev: localhost ->
+// :3200; prod: thehelper.ca -> api.thehelper.ca) were blocked by the browser and
+// surfaced as "Failed to fetch". This middleware adds the missing CORS headers
+// and answers the preflight. Wired to the /api/auth namespace in main.wasp.
+export const authApiMiddlewareConfigFn = (middlewareConfig) => {
+    middlewareConfig.set('cors', (req, res, next) => {
+        const origin = req.headers.origin;
+        if (origin && isOriginAllowed(origin)) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Vary', 'Origin');
+            res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+        }
+        if (req.method === 'OPTIONS') {
+            res.sendStatus(204);
+            return;
+        }
+        next();
+    });
     return middlewareConfig;
 };
 export const requestOtp = async (req, res, context) => {
@@ -55,8 +80,15 @@ export const requestOtp = async (req, res, context) => {
     }
     const code = generateOtp();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
-    // Clear any previous unused codes for this email
-    await prisma.otpCode.deleteMany({ where: { email: normalizedEmail, used: false } });
+    // Supersede any previous unused codes by marking them used (verifyOtp only
+    // accepts used:false, so superseded codes are dead). Do NOT delete them:
+    // the rate limit above counts rows by createdAt, and deleting would erase
+    // the evidence — the count would never exceed 1, allowing unlimited OTP
+    // email bombing.
+    await prisma.otpCode.updateMany({
+        where: { email: normalizedEmail, used: false },
+        data: { used: true },
+    });
     await prisma.otpCode.create({
         data: { email: normalizedEmail, code: hashCode(code), expiresAt },
     });
@@ -170,16 +202,20 @@ export const verifyOtp = async (req, res, context) => {
     if (pendingRequest) {
         const userRecord = await prisma.user.findFirst({ where: { email: normalizedEmail } });
         if (userRecord) {
-            skipOnboarding = !!(pendingRequest.firstName && pendingRequest.phone && pendingRequest.postalCode);
+            // Clamp untrusted body fields server-side before persisting.
+            const firstName = clamp(pendingRequest.firstName, 100);
+            const phone = clamp(pendingRequest.phone, 30);
+            const postalCode = clamp(pendingRequest.postalCode, 12);
+            skipOnboarding = !!(firstName && phone && postalCode);
             await prisma.$transaction(async (tx) => {
                 // M1: Only set role for new users or users who have no role yet — never demote a provider.
                 const roleData = (isNewUser || !userRecord.role) ? { role: 'CONSUMER' } : {};
                 await tx.user.update({
                     where: { id: userRecord.id },
                     data: {
-                        firstName: pendingRequest.firstName,
-                        phone: pendingRequest.phone,
-                        postalCode: pendingRequest.postalCode,
+                        firstName,
+                        phone,
+                        postalCode,
                         smsConsent: pendingRequest.smsConsent,
                         smsConsentAt: pendingRequest.smsConsent ? new Date() : undefined,
                         // A full profile from booking means onboarding is effectively done —

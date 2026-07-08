@@ -14,6 +14,7 @@ import { getProviderLeads as getProviderLeads_ext } from 'wasp/src/provider/oper
 import { getProviderAppointments as getProviderAppointments_ext } from 'wasp/src/provider/operations';
 import { getProviderProfile as getProviderProfile_ext } from 'wasp/src/provider/operations';
 import { getProviderFees as getProviderFees_ext } from 'wasp/src/provider/operations';
+import { getBillingStatus as getBillingStatus_ext } from 'wasp/src/provider/billing';
 import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/operations';
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations';
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations';
@@ -22,6 +23,8 @@ import { getPaginatedUsers as getPaginatedUsers_ext } from 'wasp/src/user/operat
 import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload/operations';
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations';
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations';
+import { getAdminLiveCounts as getAdminLiveCounts_ext } from 'wasp/src/analytics/operations';
+import { getDisputedFees as getDisputedFees_ext } from 'wasp/src/admin/operations';
 import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operations';
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations';
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations';
@@ -106,6 +109,11 @@ export const getProviderFees = createAuthenticatedOperation(getProviderFees_ext,
     Provider: prisma.provider,
 });
 // PUBLIC API
+export const getBillingStatus = createAuthenticatedOperation(getBillingStatus_ext, {
+    Provider: prisma.provider,
+    ProviderFee: prisma.providerFee,
+});
+// PUBLIC API
 export const getPublicLeadFeed = createAuthenticatedOperation(getPublicLeadFeed_ext, {
     ServiceRequest: prisma.serviceRequest,
     Provider: prisma.provider,
@@ -146,6 +154,19 @@ export const getDownloadFileSignedURL = createAuthenticatedOperation(getDownload
 export const getDailyStats = createAuthenticatedOperation(getDailyStats_ext, {
     User: prisma.user,
     DailyStats: prisma.dailyStats,
+});
+// PUBLIC API
+export const getAdminLiveCounts = createAuthenticatedOperation(getAdminLiveCounts_ext, {
+    Provider: prisma.provider,
+    Review: prisma.review,
+    ServiceRequest: prisma.serviceRequest,
+});
+// PUBLIC API
+export const getDisputedFees = createAuthenticatedOperation(getDisputedFees_ext, {
+    ProviderFee: prisma.providerFee,
+    Provider: prisma.provider,
+    ServiceRequest: prisma.serviceRequest,
+    ServiceCategory: prisma.serviceCategory,
 });
 // PUBLIC API
 export const getAdminRequests = createAuthenticatedOperation(getAdminRequests_ext, {

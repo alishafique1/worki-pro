@@ -26,6 +26,8 @@ export const removePortfolioPhoto = createAction('operations/remove-portfolio-ph
 // PUBLIC API
 export const setProfilePhoto = createAction('operations/set-profile-photo', ['Provider']);
 // PUBLIC API
+export const createBillingSetupSession = createAction('operations/create-billing-setup-session', ['Provider']);
+// PUBLIC API
 export const acceptServiceRequest = createAction('operations/accept-service-request', ['ServiceRequest', 'Appointment', 'ProviderFee', 'Provider', 'RewardTransaction', 'RewardAccount']);
 // PUBLIC API
 export const markJobCompleted = createAction('operations/mark-job-completed', ['Appointment', 'ServiceRequest', 'RewardTransaction', 'RewardAccount', 'ProviderFee', 'Provider', 'Referral']);
@@ -46,6 +48,8 @@ export const resubmitProviderApplication = createAction('operations/resubmit-pro
 // PUBLIC API
 export const claimLead = createAction('operations/claim-lead', ['ServiceRequest', 'Provider', 'ProviderFee', 'CommunicationLog']);
 // PUBLIC API
+export const disputeLeadFee = createAction('operations/dispute-lead-fee', ['ProviderFee', 'Provider']);
+// PUBLIC API
 export const moderateReview = createAction('operations/moderate-review', ['Review', 'Provider']);
 // PUBLIC API
 export const upsertAdminCategory = createAction('operations/upsert-admin-category', ['ServiceCategory']);
@@ -61,6 +65,8 @@ export const createFileUploadUrl = createAction('operations/create-file-upload-u
 export const addFileToDb = createAction('operations/add-file-to-db', ['User', 'File']);
 // PUBLIC API
 export const deleteFile = createAction('operations/delete-file', ['User', 'File']);
+// PUBLIC API
+export const resolveFeeDispute = createAction('operations/resolve-fee-dispute', ['ProviderFee', 'Provider', 'ServiceRequest']);
 // PUBLIC API
 export const updateLead = createAction('operations/update-lead', ['Lead']);
 // PUBLIC API

@@ -1,5 +1,6 @@
 import { HttpError } from 'wasp/server';
 import { emailSender } from 'wasp/server/email';
+import { assertTransition, canTransition } from '../shared/requestStatusMachine';
 const requireAdmin = (context) => {
     if (!context.user || !context.user.isAdmin) {
         throw new HttpError(403, "Admin access required.");
@@ -91,11 +92,32 @@ export const rejectProvider = async ({ providerId, reason }, context) => {
 };
 export const assignRequestToProvider = async ({ requestId, providerId }, context) => {
     requireAdmin(context);
+    const request = await context.entities.ServiceRequest.findUnique({
+        where: { id: requestId },
+        select: { status: true },
+    });
+    if (!request)
+        throw new HttpError(404, 'Request not found.');
+    const provider = await context.entities.Provider.findUnique({
+        where: { id: providerId },
+        select: { verificationStatus: true },
+    });
+    if (!provider)
+        throw new HttpError(404, 'Provider not found.');
+    if (provider.verificationStatus !== 'VERIFIED') {
+        throw new HttpError(400, 'Provider is not verified.');
+    }
+    // Re-assigning an already-ASSIGNED request only changes the provider — the
+    // status is untouched, so no transition to validate. Any other starting
+    // status must legally allow → ASSIGNED per the state machine.
+    const needsStatusChange = request.status !== 'ASSIGNED';
+    if (needsStatusChange)
+        assertTransition(request.status, 'ASSIGNED');
     return context.entities.ServiceRequest.update({
         where: { id: requestId },
         data: {
             assignedProviderId: providerId,
-            status: 'ASSIGNED'
+            ...(needsStatusChange && { status: 'ASSIGNED' }),
         }
     });
 };
@@ -222,5 +244,119 @@ export const moderateReview = async ({ reviewId, status }, context) => {
         data: { ratingInternal: agg._avg.rating ?? undefined },
     });
     return review;
+};
+// ─── Lead Fee Disputes (bad-lead credit workflow) ─────────────────────────────
+//
+// Providers dispute a QUALIFIED_LEAD fee via disputeLeadFee (src/provider/
+// operations.ts). Admin resolves here: CREDIT → WAIVED (+ best-effort Stripe
+// refund when the fee was already charged), REJECT → back to PAID/PENDING.
+// Same graceful-degrade pattern as src/provider/billing.ts: the shared Stripe
+// client throws at module load when STRIPE_API_KEY is unset, so import lazily.
+async function getStripeOrNull() {
+    if (!process.env.STRIPE_API_KEY)
+        return null;
+    const { stripeClient } = await import('../payment/stripe/stripeClient');
+    return stripeClient;
+}
+export const getDisputedFees = async (_args, context) => {
+    requireAdmin(context);
+    return context.entities.ProviderFee.findMany({
+        where: { status: 'DISPUTED' },
+        orderBy: { disputedAt: 'desc' },
+        include: {
+            provider: { select: { businessName: true, email: true, phone: true } },
+            serviceRequest: {
+                select: { id: true, name: true, city: true, status: true, createdAt: true, serviceCategory: { select: { name: true } } },
+            },
+        },
+    });
+};
+// Whether a ServiceRequest may still be flagged INVALID/SPAM when a dispute
+// is credited is decided by the status machine (src/shared/
+// requestStatusMachine.ts): anything past ASSIGNED (booked, completed, …) is
+// a real job and no longer allows the → INVALID/SPAM transition.
+export const resolveFeeDispute = async ({ feeId, resolution, adminNote }, context) => {
+    requireAdmin(context);
+    if (resolution !== 'CREDIT' && resolution !== 'REJECT') {
+        throw new HttpError(400, 'Invalid resolution.');
+    }
+    const fee = await context.entities.ProviderFee.findUnique({ where: { id: feeId } });
+    if (!fee)
+        throw new HttpError(404, 'Fee not found.');
+    if (fee.status !== 'DISPUTED') {
+        throw new HttpError(400, 'Only disputed fees can be resolved.');
+    }
+    let note = adminNote?.trim() || null;
+    if (resolution === 'REJECT') {
+        // Atomically claim the dispute: only flips DISPUTED → resolved, so two
+        // admins resolving concurrently can't both proceed. Restore the
+        // pre-dispute status (PAID if it was charged, else PENDING) and clear the
+        // dispute metadata so any future re-dispute starts clean — the resolution
+        // history is preserved in adminNote.
+        const { count } = await context.entities.ProviderFee.updateMany({
+            where: { id: fee.id, status: 'DISPUTED' },
+            data: {
+                status: fee.paidAt ? 'PAID' : 'PENDING',
+                adminNote: note,
+                disputeReason: null,
+                disputeNote: null,
+                disputedAt: null,
+            },
+        });
+        if (count === 0)
+            throw new HttpError(409, 'Dispute already resolved.');
+        return context.entities.ProviderFee.findUniqueOrThrow({ where: { id: fee.id } });
+    }
+    // CREDIT → waive the fee. Atomically claim the dispute FIRST (same
+    // DISPUTED-guarded write as REJECT — losers of the race get a 409), then
+    // attempt the Stripe refund only after the status write commits, so a
+    // racing resolver can never trigger a duplicate refund.
+    const { count } = await context.entities.ProviderFee.updateMany({
+        where: { id: fee.id, status: 'DISPUTED' },
+        data: { status: 'WAIVED', adminNote: note },
+    });
+    if (count === 0)
+        throw new HttpError(409, 'Dispute already resolved.');
+    // If it was paid via Stripe, attempt a refund of the PaymentIntent (id
+    // stored in fee.invoiceId). Refund failure never blocks the waive — log a
+    // warning and flag it for manual follow-up via the adminNote.
+    if (fee.paidAt && fee.invoiceId) {
+        try {
+            const stripe = await getStripeOrNull();
+            if (!stripe) {
+                console.warn(`[disputes] STRIPE_API_KEY not set — fee ${fee.id} waived without refund`);
+                note = [note, 'Stripe not configured — refund manually.'].filter(Boolean).join(' ');
+            }
+            else {
+                const refund = await stripe.refunds.create({ payment_intent: fee.invoiceId });
+                note = [note, `Stripe refund ${refund.id} issued.`].filter(Boolean).join(' ');
+            }
+        }
+        catch (err) {
+            console.warn(`[disputes] Stripe refund for fee ${fee.id} failed — waived anyway:`, err.message);
+            note = [note, `Stripe refund FAILED (${err.message}) — refund manually.`].filter(Boolean).join(' ');
+        }
+    }
+    const updated = await context.entities.ProviderFee.update({
+        where: { id: fee.id },
+        data: { adminNote: note },
+    });
+    // Lead-quality feedback loop: a credited dispute means the lead was bad —
+    // flag the ServiceRequest so it drops out of the feed and analytics, unless
+    // the request already progressed past ASSIGNED.
+    if (fee.serviceRequestId) {
+        const request = await context.entities.ServiceRequest.findUnique({
+            where: { id: fee.serviceRequestId },
+            select: { status: true },
+        });
+        const flagStatus = fee.disputeReason === 'SPAM' ? 'SPAM' : 'INVALID';
+        if (request && canTransition(request.status, flagStatus)) {
+            await context.entities.ServiceRequest.update({
+                where: { id: fee.serviceRequestId },
+                data: { status: flagStatus },
+            });
+        }
+    }
+    return updated;
 };
 //# sourceMappingURL=operations.js.map

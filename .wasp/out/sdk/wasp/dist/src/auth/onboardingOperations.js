@@ -9,7 +9,14 @@ export const completeOnboarding = async (args, context) => {
     }
     const userId = context.user.id;
     const userEmail = context.user.email;
-    const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds } = args;
+    const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds, licenceNumber, insuranceUrl, wsibClearanceNumber } = args;
+    // Optional credential fields — only persisted when non-empty (undefined is
+    // skipped by Prisma, so a blank re-run never wipes previously saved values).
+    const credentialData = {
+        licenceNumber: licenceNumber?.trim() || undefined,
+        insuranceUrl: insuranceUrl?.trim() || undefined,
+        wsibClearanceNumber: wsibClearanceNumber?.trim() || undefined,
+    };
     // ─── Server-side validation ────────────────────────────────────────────────
     // The browser form validates too, but the action is the trust boundary: a
     // direct API call bypasses the UI entirely. Same rules, one source of truth.
@@ -39,19 +46,33 @@ export const completeOnboarding = async (args, context) => {
             },
         });
         if (role === 'PROVIDER') {
+            // Keep the Provider record shape identical to the one produced by
+            // submitProviderApplication (the public /providers/apply path) so a
+            // pro looks the same regardless of which door they came through.
+            // contactName is derived from their name here since onboarding doesn't
+            // ask for it separately; submitProviderApplication collects it directly.
+            const contactName = [firstName, lastName].filter(Boolean).join(' ').trim();
             const provider = await tx.provider.upsert({
                 where: { userId },
                 update: {
+                    // Do NOT touch verificationStatus here: resetting an already
+                    // VERIFIED pro to PENDING on a re-run would silently revoke them.
                     businessName: businessName ?? '',
+                    contactName,
                     phone,
                     serviceAreas: serviceAreas ?? [],
+                    ...credentialData,
                 },
                 create: {
                     userId,
                     businessName: businessName ?? '',
+                    contactName,
                     phone,
                     serviceAreas: serviceAreas ?? [],
+                    ...credentialData,
                     email: userEmail ?? undefined,
+                    verificationStatus: 'PENDING',
+                    active: true,
                 },
             });
             if (serviceCategoryIds && serviceCategoryIds.length > 0) {

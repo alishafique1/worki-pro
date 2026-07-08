@@ -6,11 +6,12 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import StepRole from './components/StepRole';
 import StepProfile from './components/StepProfile';
 import StepBusiness from './components/StepBusiness';
+import StepCredentials from './components/StepCredentials';
 import CategoryCardGrid from './components/CategoryCardGrid';
 import { Logo } from '../../client/components/Logo/Logo';
 import { isValidCanadianPhone, isValidCanadianPostal, isGtaPostal } from './validation';
 const CONSUMER_STEPS = ['Your role', 'Your profile', 'Interests'];
-const PROVIDER_STEPS = ['Your role', 'Your profile', 'Business', 'Services'];
+const PROVIDER_STEPS = ['Your role', 'Your profile', 'Business', 'Services', 'Credentials'];
 export default function OnboardingPage() {
     const { data: user, isLoading: authLoading } = useAuth();
     const navigate = useNavigate();
@@ -30,6 +31,9 @@ export default function OnboardingPage() {
         referralCode: '',
         interestCategoryIds: [],
         serviceCategoryIds: [],
+        licenceNumber: '',
+        insuranceInfo: '',
+        wsibClearanceNumber: '',
     });
     const getDashboardPath = (role) => role === 'PROVIDER' ? '/provider/dashboard' : '/account';
     useEffect(() => {
@@ -39,14 +43,16 @@ export default function OnboardingPage() {
         if (savedForm) {
             try {
                 const parsedForm = JSON.parse(savedForm);
-                setForm(parsedForm);
+                // Merge over defaults so forms saved before new fields were added
+                // (e.g. credentials) never leave a key undefined.
+                setForm(prev => ({ ...prev, ...parsedForm }));
                 restoredRole = parsedForm.role;
             }
             catch { /* ignore */ }
         }
         if (savedStep) {
             const parsed = parseInt(savedStep, 10);
-            const maxForRole = restoredRole === 'PROVIDER' ? 4 : 3;
+            const maxForRole = restoredRole === 'PROVIDER' ? 5 : 3;
             if (parsed >= 1 && parsed <= maxForRole)
                 setStep(parsed);
         }
@@ -80,7 +86,7 @@ export default function OnboardingPage() {
         }
     }, [user, navigate, done]);
     const isProvider = form.role === 'PROVIDER';
-    const totalSteps = isProvider ? 4 : 3;
+    const totalSteps = isProvider ? 5 : 3;
     const stepLabels = isProvider ? PROVIDER_STEPS : CONSUMER_STEPS;
     function update(field, value) {
         setForm(prev => ({ ...prev, [field]: value }));
@@ -136,6 +142,9 @@ export default function OnboardingPage() {
                 referralCode: form.referralCode.trim() || undefined,
                 interestCategoryIds: !isProvider ? (overrides?.interestCategoryIds ?? form.interestCategoryIds) : undefined,
                 serviceCategoryIds: isProvider ? form.serviceCategoryIds : undefined,
+                licenceNumber: isProvider ? form.licenceNumber.trim() || undefined : undefined,
+                insuranceUrl: isProvider ? form.insuranceInfo.trim() || undefined : undefined,
+                wsibClearanceNumber: isProvider ? form.wsibClearanceNumber.trim() || undefined : undefined,
             });
             sessionStorage.removeItem('onboardingForm');
             sessionStorage.removeItem('onboardingStep');
@@ -307,6 +316,7 @@ export default function OnboardingPage() {
                 {step === 3 && !isProvider && (<CategoryCardGrid title="What services do you need?" subtitle="Pick what you might need. We personalise your dashboard. (Optional)" selectedIds={form.interestCategoryIds} onToggle={toggleInterest}/>)}
                 {step === 3 && isProvider && (<StepBusiness businessName={form.businessName} serviceAreas={form.serviceAreas} onChange={(field, value) => update(field, value)}/>)}
                 {step === 4 && isProvider && (<CategoryCardGrid title="What services do you offer?" subtitle="Select all categories you serve. You can update these later." selectedIds={form.serviceCategoryIds} onToggle={toggleServiceCategory}/>)}
+                {step === 5 && isProvider && (<StepCredentials selectedCategoryIds={form.serviceCategoryIds} licenceNumber={form.licenceNumber} insuranceInfo={form.insuranceInfo} wsibClearanceNumber={form.wsibClearanceNumber} onChange={(field, value) => update(field, value)}/>)}
               </div>
 
               {/* Error */}

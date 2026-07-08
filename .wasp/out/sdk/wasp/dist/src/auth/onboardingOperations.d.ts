@@ -11,6 +11,9 @@ type CompleteOnboardingInput = {
     referralCode?: string;
     interestCategoryIds?: string[];
     serviceCategoryIds?: string[];
+    licenceNumber?: string;
+    insuranceUrl?: string;
+    wsibClearanceNumber?: string;
 };
 type CompleteOnboardingOutput = {
     success: boolean;

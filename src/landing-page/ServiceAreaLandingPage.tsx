@@ -108,7 +108,7 @@ export default function ServiceAreaLandingPage() {
 
   const jsonLd = createServiceSchema({
     name: `${serviceLabel} Services in ${areaName}`,
-    description: `Find verified, insured ${serviceLabel.toLowerCase()} professionals in ${areaName}. Get matched in minutes with TheHelper.`,
+    description: `Find vetted ${serviceLabel.toLowerCase()} professionals in ${areaName}. Get matched fast with TheHelper.`,
     areaServed: [areaName],
     url: `https://thehelper.ca/services/${serviceSlug}/${areaSlug}`,
   });
@@ -117,9 +117,9 @@ export default function ServiceAreaLandingPage() {
     <div className="min-h-screen bg-[#F8FAFC]">
       <PageSeo
         title={`${serviceLabel} in ${areaName} | Get Matched Today`}
-        description={`Find verified, insured ${serviceLabel.toLowerCase()} pros in ${areaName}. One request — get matched in minutes, book same-day, earn reward points on your job.`}
+        description={`Find vetted ${serviceLabel.toLowerCase()} pros in ${areaName}. One request — get matched fast, book quickly, earn reward points on your job.`}
         ogTitle={`${serviceLabel} in ${areaName} | The Helper`}
-        ogDescription={`Book verified ${serviceLabel.toLowerCase()} pros in ${areaName}. Matched in minutes, background-checked, and backed by The Helper rewards.`}
+        ogDescription={`Book verified ${serviceLabel.toLowerCase()} pros in ${areaName}. Matched fast, vetted, and backed by The Helper rewards.`}
         canonicalPath={`/services/${serviceSlug}/${areaSlug}`}
         keywords={`${serviceLabel.toLowerCase()} ${areaName}, ${serviceLabel.toLowerCase()} ${areaSlug}, ${serviceLabel.toLowerCase()} GTA, verified ${serviceLabel.toLowerCase()} pro`}
         structuredData={jsonLd}
@@ -136,7 +136,7 @@ export default function ServiceAreaLandingPage() {
               {serviceLabel} in {areaName}
             </h1>
             <p className="text-[#475569] mt-1">
-              Find verified, insured {serviceLabel.toLowerCase()} pros near you, matched in minutes.
+              Find vetted {serviceLabel.toLowerCase()} pros near you, matched fast.
             </p>
           </div>
         </div>

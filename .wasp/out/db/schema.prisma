@@ -362,6 +362,13 @@ model ProviderFee {
   invoiceId        String?
   createdAt        DateTime        @default(now())
   paidAt           DateTime?
+  disputeReason    String?
+  disputeNote      String?
+  disputedAt       DateTime?
+  adminNote        String?
+
+  @@index([providerId, status])
+  @@index([status, disputedAt])
 }
 
 model RequestNote {

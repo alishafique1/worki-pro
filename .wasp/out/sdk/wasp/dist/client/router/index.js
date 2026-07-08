@@ -265,6 +265,10 @@ export const routes = {
         to: "/admin/categories",
         build: (options) => interpolatePath("/admin/categories", undefined, options?.search, options?.hash),
     },
+    AdminDisputesRoute: {
+        to: "/admin/disputes",
+        build: (options) => interpolatePath("/admin/disputes", undefined, options?.search, options?.hash),
+    },
     AdminSettingsRoute: {
         to: "/admin/settings",
         build: (options) => interpolatePath("/admin/settings", undefined, options?.search, options?.hash),

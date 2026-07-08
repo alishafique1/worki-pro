@@ -549,6 +549,14 @@ model ProviderFee {
   invoiceId         String?
   createdAt         DateTime    @default(now())
   paidAt            DateTime?
+  // Bad-lead dispute workflow (provider files → admin resolves → credit/reject)
+  disputeReason     String?     // WRONG_NUMBER | SPAM | DUPLICATE | OUT_OF_AREA | OTHER
+  disputeNote       String?
+  disputedAt        DateTime?
+  adminNote         String?     // set by admin on resolution
+
+  @@index([providerId, status])
+  @@index([status, disputedAt])
 }
 
 enum FeeType {

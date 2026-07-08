@@ -15,7 +15,6 @@ import {
   Star,
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
-import heroImage from "../client/static/hero-home-service.jpg";
 import {
   CategoryCard,
   Container,
@@ -24,6 +23,8 @@ import {
   SectionHeader,
 } from "./marketplace/components";
 import { categories } from "./marketplace/content";
+// Self-hosted hero image (was an Unsplash hotlink — a prod reliability risk).
+import heroImage from "../client/static/modern_home_service_hero_1777676793583.png";
 
 // ── Reward tiers ─────────────────────────────────────────────────────────────
 
@@ -86,19 +87,16 @@ const testimonials = [
     quote: "My AC broke on a Saturday afternoon. Submitted at 2pm, tech booked by 4pm, done by 6pm. First time I've not spent hours calling around.",
     name: "S.M.",
     city: "Milton",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
     quote: "Found an electrician in 45 minutes on a weeknight. The app sent the quote, I booked, and it was fixed before the weekend. The rewards points are a bonus.",
     name: "J.K.",
     city: "Oakville",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
   },
   {
     quote: "Most platforms connect you and disappear. This one tracks the whole job and makes it easy to get someone out fast. The cash back adds up.",
     name: "Priya S.",
     city: "Burlington",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
   },
 ];
 
@@ -110,10 +108,10 @@ export default function LandingPage() {
   return (
     <>
       <PageSeo
-        title="Book a Verified Home Pro | The Helper"
-        description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back."
-        ogTitle="Book a Verified Home Pro | The Helper"
-        ogDescription="One request. Matched with a verified local pro within 24 hours. Same-day service available. 100% free for homeowners. Earn $60+ cash back on your first job."
+        title="Book a Verified Home Pro Fast | The Helper"
+        description="Stop calling around. Submit one request and get matched with a vetted HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back."
+        ogTitle="Book a Verified Home Pro Fast | The Helper"
+        ogDescription="One request. Matched with a verified local pro fast — often same day. 100% free for homeowners. Earn $60+ cash back on your first job."
         canonicalPath="/"
         keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto"
         structuredData={createLocalBusinessSchema({
@@ -142,14 +140,13 @@ export default function LandingPage() {
                 Now serving GTA · Milton · Oakville · Burlington
               </span>
 
-              <h1 className="mt-5 text-[40px] font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[58px]">
-                <span className="text-[#2563EB]">Book a verified pro</span>
-                <br />
-                <span className="whitespace-nowrap">within 24 hours.</span>
+              <h1 className="mt-5 text-balance text-4xl font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[56px]">
+                <span className="text-[#2563EB]">Book a verified pro</span>{" "}
+                <span className="lg:whitespace-nowrap">fast — often same day.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
-                Submit one request. Get matched with a local pro who's licensed, insured, and ready today. No calling around. No waiting until Monday.
+                Submit one request. Get matched with a vetted local pro who's ready to help. No calling around. No waiting until Monday.
               </p>
 
               {/* Reward pill — blue only */}
@@ -171,7 +168,7 @@ export default function LandingPage() {
 
               {/* Trust micro-row */}
               <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-[#475569]">
-                {["100% Free for Homeowners", "Licensed & Insured Pros", "Same-Day Service", "Verified Reviews Only"].map((item) => (
+                {["100% Free for Homeowners", "Vetted Local Pros", "Same-Day Service Available", "4.9★ Average Rating"].map((item) => (
                   <span key={item} className="flex items-center gap-2">
                     <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#DBEAFE] text-[#2563EB]">
                       <CheckCircle2 className="size-3" />
@@ -190,6 +187,7 @@ export default function LandingPage() {
                   src={heroImage}
                   alt="Verified professional completing a home service"
                   className="h-72 w-full object-cover sm:h-80"
+                  loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/50 via-transparent to-transparent" />
                 <div className="absolute left-4 top-4">
@@ -302,8 +300,8 @@ export default function LandingPage() {
           <Container>
             <SectionHeader
               eyebrow="HOW IT WORKS"
-              title="Submit once. Matched within 24 hours."
-              description="Tell us what you need. We handle the matching, scheduling, and follow-up."
+              title="One request. Matched fast."
+              description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up."
             />
             <div className="relative mt-12">
               {/* Connector line */}
@@ -311,7 +309,7 @@ export default function LandingPage() {
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Pick a category, describe the job, and add your postal code. No account needed. 100% free." },
-                  { n: "02", title: "We match you", desc: "We review your request and contact verified pros who cover your area. Most requests are answered and booked within 24 hours." },
+                  { n: "02", title: "Get matched fast", desc: "We review your request and contact verified pros who cover your area. No calling around." },
                   { n: "03", title: "Confirm a time", desc: "The pro confirms availability and you pick a window. You get a calendar confirmation. Same-day available for urgent jobs." },
                   { n: "04", title: "Job done. Earn rewards.", desc: "Your job is tracked end-to-end. Earn $5 on submit, $5 on booking, $50 when the first job is completed. Redeem as gift cards." },
                 ].map(({ n, title, desc }) => (
@@ -428,12 +426,9 @@ export default function LandingPage() {
                     ))}
                   </div>
                   <p className="relative z-10 text-sm leading-6 text-[#475569]">"{t.quote}"</p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <img src={t.avatar} alt={t.name} className="size-9 rounded-full object-cover ring-2 ring-[#BFDBFE]" loading="lazy" />
-                    <div>
-                      <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
-                      <p className="text-xs text-[#94A3B8]">{t.city}</p>
-                    </div>
+                  <div className="mt-5 border-t border-[#E2E8F0] pt-4">
+                    <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
+                    <p className="text-xs text-[#94A3B8]">{t.city}</p>
                   </div>
                 </article>
               ))}
@@ -446,7 +441,7 @@ export default function LandingPage() {
           <Container>
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {[
-                { value: "24 hrs", label: "Average match time" },
+                { value: "Same day", label: "Service often available" },
                 { value: "500+", label: "GTA homeowners served" },
                 { value: "4.9★", label: "Average rating" },
                 { value: "$60+", label: "Cash back on first job" },

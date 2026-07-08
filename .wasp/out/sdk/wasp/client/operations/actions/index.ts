@@ -12,6 +12,7 @@ import { ApplyReferralCode_ext } from 'wasp/server/operations/actions'
 import { AddPortfolioPhoto_ext } from 'wasp/server/operations/actions'
 import { RemovePortfolioPhoto_ext } from 'wasp/server/operations/actions'
 import { SetProfilePhoto_ext } from 'wasp/server/operations/actions'
+import { CreateBillingSetupSession_ext } from 'wasp/server/operations/actions'
 import { AcceptServiceRequest_ext } from 'wasp/server/operations/actions'
 import { MarkJobCompleted_ext } from 'wasp/server/operations/actions'
 import { SubmitProviderApplication_ext } from 'wasp/server/operations/actions'
@@ -22,6 +23,7 @@ import { SendProviderMessage_ext } from 'wasp/server/operations/actions'
 import { UpdateProviderProfile_ext } from 'wasp/server/operations/actions'
 import { ResubmitProviderApplication_ext } from 'wasp/server/operations/actions'
 import { ClaimLead_ext } from 'wasp/server/operations/actions'
+import { DisputeLeadFee_ext } from 'wasp/server/operations/actions'
 import { ModerateReview_ext } from 'wasp/server/operations/actions'
 import { UpsertAdminCategory_ext } from 'wasp/server/operations/actions'
 import { DeleteAdminCategory_ext } from 'wasp/server/operations/actions'
@@ -30,6 +32,7 @@ import { UpdateUserProfile_ext } from 'wasp/server/operations/actions'
 import { CreateFileUploadUrl_ext } from 'wasp/server/operations/actions'
 import { AddFileToDb_ext } from 'wasp/server/operations/actions'
 import { DeleteFile_ext } from 'wasp/server/operations/actions'
+import { ResolveFeeDispute_ext } from 'wasp/server/operations/actions'
 import { UpdateLead_ext } from 'wasp/server/operations/actions'
 import { ApproveProvider_ext } from 'wasp/server/operations/actions'
 import { RejectProvider_ext } from 'wasp/server/operations/actions'
@@ -116,6 +119,12 @@ export const setProfilePhoto: ActionFor<SetProfilePhoto_ext> = createAction<SetP
 )
 
 // PUBLIC API
+export const createBillingSetupSession: ActionFor<CreateBillingSetupSession_ext> = createAction<CreateBillingSetupSession_ext>(
+  'operations/create-billing-setup-session',
+  ['Provider'],
+)
+
+// PUBLIC API
 export const acceptServiceRequest: ActionFor<AcceptServiceRequest_ext> = createAction<AcceptServiceRequest_ext>(
   'operations/accept-service-request',
   ['ServiceRequest', 'Appointment', 'ProviderFee', 'Provider', 'RewardTransaction', 'RewardAccount'],
@@ -176,6 +185,12 @@ export const claimLead: ActionFor<ClaimLead_ext> = createAction<ClaimLead_ext>(
 )
 
 // PUBLIC API
+export const disputeLeadFee: ActionFor<DisputeLeadFee_ext> = createAction<DisputeLeadFee_ext>(
+  'operations/dispute-lead-fee',
+  ['ProviderFee', 'Provider'],
+)
+
+// PUBLIC API
 export const moderateReview: ActionFor<ModerateReview_ext> = createAction<ModerateReview_ext>(
   'operations/moderate-review',
   ['Review', 'Provider'],
@@ -221,6 +236,12 @@ export const addFileToDb: ActionFor<AddFileToDb_ext> = createAction<AddFileToDb_
 export const deleteFile: ActionFor<DeleteFile_ext> = createAction<DeleteFile_ext>(
   'operations/delete-file',
   ['User', 'File'],
+)
+
+// PUBLIC API
+export const resolveFeeDispute: ActionFor<ResolveFeeDispute_ext> = createAction<ResolveFeeDispute_ext>(
+  'operations/resolve-fee-dispute',
+  ['ProviderFee', 'Provider', 'ServiceRequest'],
 )
 
 // PUBLIC API

@@ -18,14 +18,14 @@
             "dir",
             "db/migrations/"
         ],
-        "c8368e8c10b4121b68b5af52c931fe7b584b97520f5db69d266240326cf19a46"
+        "2303db9bde95b3df25565993fe391576891e5a8b5e36f8af84158a3c0b118aa2"
     ],
     [
         [
             "file",
             "db/schema.prisma"
         ],
-        "c260ccd59885734d16a1facb7b7a20e2550bc750c5109b697cefd1389f29d1cb"
+        "47f0853cc8134280812cdc1652ec6cb8f395e8008e196d9351cb90aa0452b520"
     ],
     [
         [
@@ -452,7 +452,7 @@
             "file",
             "sdk/wasp/client/operations/actions/index.ts"
         ],
-        "4664c39543e083aad611e2aac7a27c01642bd736ab2a65b1fe4177a4ec783082"
+        "6a60b5ba0e4e862ffc636154bf4c3892be48311b5e1d005863541716626e6589"
     ],
     [
         [
@@ -501,7 +501,7 @@
             "file",
             "sdk/wasp/client/operations/queries/index.ts"
         ],
-        "84605229c66e242b089319e2cf11ec92a33137c236b5e79374c2d253274756da"
+        "551c7a2d95b8dc9ae332863b01760b34b7c5ef0080c987d2f42e8c6ccc96f885"
     ],
     [
         [
@@ -529,7 +529,7 @@
             "file",
             "sdk/wasp/client/router/index.ts"
         ],
-        "82456ced7710d1a109623afcb2d76db148b2e5678cf37a14194e1fab73abf93d"
+        "b07fcff0b4075591da9ddf3188ec6cf11a6b372eefd01237296d14bd9bbee6cc"
     ],
     [
         [
@@ -641,7 +641,7 @@
             "file",
             "sdk/wasp/client/vite/virtual-files/files/index.html"
         ],
-        "2372abfbaf803659bc35d38ec68dfef8592ca77df42fd9a68e88694513565edf"
+        "e2a9053bf6d53f63782436b05de3126e7a1a1302dbf2d3334c57de39a86296c8"
     ],
     [
         [
@@ -655,7 +655,7 @@
             "file",
             "sdk/wasp/client/vite/virtual-files/files/routes.tsx"
         ],
-        "1541991f938230ad3bcf4f42e5923cdfd4ace2f70874b76f45e7ed7d2048796d"
+        "9142cb560058847d214d98bc942798e08dc3500c38da011542fb1122095f5128"
     ],
     [
         [
@@ -942,35 +942,35 @@
             "file",
             "sdk/wasp/server/operations/actions/index.ts"
         ],
-        "139ff1f3b894aa44c3137b7970d8e06eee7bd9ea372397d3b370b5b48fefaff2"
+        "3a7741c74ec225aca56883ea666ca5daa35d28e5b1744f16275aaad56424cc7d"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/actions/types.ts"
         ],
-        "126be0c31812e8a28b2de9a5796a2ad388f8ca3859a1f3d2a7754ab319330538"
+        "5a73ee1eeffa55be24c0ef34085701a2bb80468b235fffc6bd29f20030958dcb"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/index.ts"
         ],
-        "dfa6dc3d0e7ee66217b946d8f42a48a4a10ef3ccf534e4cb41b21ceca0a72a2b"
+        "64b70601c92c308b100c1652b01e8b1e92dd3224a482345e1b208e75820830e2"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/index.ts"
         ],
-        "ccbe7d8a7f5fe3dc4562ac0e61c628f8eb6714800ebc6fb8f4ca3d4de92c5f70"
+        "47b2806261352ff0d4a6829994d2b83063f7ae8b9db944b18202670d8c058285"
     ],
     [
         [
             "file",
             "sdk/wasp/server/operations/queries/types.ts"
         ],
-        "7b856c8f258939f06248b65b81afcda83f914c94b4443ed24bb1ef14dd785a29"
+        "7a516ab0bdf154808c83a43b9ec30b96785793f69f8bc3a60ea351942c4c7b64"
     ],
     [
         [
@@ -1003,9 +1003,16 @@
     [
         [
             "file",
+            "sdk/wasp/src/admin/DisputesPage.tsx"
+        ],
+        "62afd2d3ca15aec9cfb4087bfa3f6db0c5ff00d84f14112ffe45288f79e4fcc2"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/admin/ProvidersPage.tsx"
         ],
-        "e134c8e9b7c0e0a2fe07f2a885082020e2ff2c70454850a5e9aa31bba1b9813e"
+        "5bd346f254a8f038c950bce9d871abdca46a83fbd8e5edcbcfffa38c76c9b0a8"
     ],
     [
         [
@@ -1033,14 +1040,14 @@
             "file",
             "sdk/wasp/src/admin/dashboards/analytics/AnalyticsDashboardPage.tsx"
         ],
-        "3895e73ea1603437d7601d1b062d11082b09827ba974fd58d375c7c441602f58"
+        "22be5d9d73479c76d0de0ca0ec931d75fade1ceb7046325fc8b45c5f4f18de18"
     ],
     [
         [
             "file",
-            "sdk/wasp/src/admin/dashboards/analytics/RevenueAndProfitChart.tsx"
+            "sdk/wasp/src/admin/dashboards/analytics/RequestVolumeChart.tsx"
         ],
-        "d14b8b747ebfe32d73b6270db9fb353e7c885d5df50a8ebf0e7f4d6a1c622d5b"
+        "485ba147c99cdf7fffac5f8ce74363bce1734b05ce16a310c3959af1893aa9b7"
     ],
     [
         [
@@ -1166,7 +1173,7 @@
             "file",
             "sdk/wasp/src/admin/layout/Sidebar.tsx"
         ],
-        "896083f5e88a02a29ff0da0e20757ee499572062091d048f93a885ba39fc6708"
+        "75f2261cbf3b12e35a486aa15d8a2a3f51bb0ca2ef7dffcedf52d499057ac690"
     ],
     [
         [
@@ -1180,14 +1187,14 @@
             "file",
             "sdk/wasp/src/admin/operations.ts"
         ],
-        "11f87699883b4107760097b1ebd8d67ef8c8f154a399ce47378908163fe782a2"
+        "581eff561c393fe7b9672819bc87a6cc1ceb7d89f9705777a53a24e096e43aa9"
     ],
     [
         [
             "file",
             "sdk/wasp/src/analytics/operations.ts"
         ],
-        "7be6588e15499235cbf0d7a60009af222d6584fe5390bf1ef39515398d1b4a50"
+        "aa664b388d16d4a0f1c78076c5e3d71bd0bf662c86dc2ffc1b18e0b3f06f8f94"
     ],
     [
         [
@@ -1222,7 +1229,7 @@
             "file",
             "sdk/wasp/src/auth/AuthPageLayout.tsx"
         ],
-        "61df42ab89638bac0bec5b5317f4ef48f804e9f7ac4746217861d695bd25f3fb"
+        "e912a173b8da6e23fbed77b339e16168495a42324a20ca6f18a9db5b93ffc69a"
     ],
     [
         [
@@ -1271,7 +1278,7 @@
             "file",
             "sdk/wasp/src/auth/onboarding/OnboardingPage.tsx"
         ],
-        "4a67ac3cf92d041d70c7653276ff80e92e1f2802349acdfaec94ef9160ec0b7c"
+        "ec1a3de0b0095c0f82edba32458255a7bd59f2a4ccb07d8b4a38c4acd6c1008f"
     ],
     [
         [
@@ -1293,6 +1300,13 @@
             "sdk/wasp/src/auth/onboarding/components/StepBusiness.tsx"
         ],
         "26035bb479cbc14b9db155ad2d1b5aa65c8440f700bf67ff02d5319b6642e460"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/auth/onboarding/components/StepCredentials.tsx"
+        ],
+        "145de985f871e51a9661b3cfee77201718d2ec0a965f24261d1c245d9f7e364e"
     ],
     [
         [
@@ -1320,14 +1334,14 @@
             "file",
             "sdk/wasp/src/auth/onboardingOperations.ts"
         ],
-        "1c30f33f03f6efd3e778310c8dc286f1f524e8e2c2d06730fd711271d6eeed17"
+        "3a433184575fa58fa10d8df72bd1cd8bff88d2b718ba9a3e2b49a778ec2cfb5f"
     ],
     [
         [
             "file",
             "sdk/wasp/src/auth/otpApi.ts"
         ],
-        "930e5bdceb87275adbee6d5fe6afaea88ac5f64e22aebdc0c1ab9f6a0c7a83d2"
+        "b634f7602fd002e0f40bc5cc396edb10009f8915aa8838ff9b8d36828b74430a"
     ],
     [
         [
@@ -1397,7 +1411,7 @@
             "file",
             "sdk/wasp/src/client/components/NavBar/NavBar.tsx"
         ],
-        "70f565bad59b22dc684a7d3beb4164fb7fa188e6a93c836cf366f9d40a2aac95"
+        "c883d51ae9043cc50c7779a5fcd187a29dbf66b7d226d56e27a70ab2927673b7"
     ],
     [
         [
@@ -1908,28 +1922,28 @@
             "file",
             "sdk/wasp/src/consumer/DashboardPage.tsx"
         ],
-        "1fe9f48dbe53055d0c883cc5d6abc1b10fc8e69c40d58d58222e916b19cdf012"
+        "8cf6e96197c73faa0b4593f506fe61020a296a3b827a4bd7f8e7a14bf787b84c"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/DiscoveryPage.tsx"
         ],
-        "8cb48f6ea5d38f9745dc2db1b3318536aadd0a2fd050a135eef0d1565f6879ee"
+        "86b6f160c9d97a3c81ee9e8bed3ece73cba963f800a1c2f5dd9ad8696b7b87c2"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/GuestRequestWizardPage.tsx"
         ],
-        "ce5c054e74885f98eaea996eee277ca9f70ff9e7c9413c702de9ffbd5711a83b"
+        "c3c17b52464d36151157228671a084524899ddf4c43f5bb8d739918d88c40915"
     ],
     [
         [
             "file",
             "sdk/wasp/src/consumer/HelpPage.tsx"
         ],
-        "0028661e64a9d317b0bcfb69c212e543b87fed1b1a6001a3dabe46d40cac29b6"
+        "07091106914e3f8e49e555399d2f85f30e1f329e1236ebafc4779c374e1cfd7c"
     ],
     [
         [
@@ -1950,7 +1964,7 @@
             "file",
             "sdk/wasp/src/consumer/ProPublicPage.tsx"
         ],
-        "28c80d023278e9076de0840aafb566f7ce274ac7fa6332c001d66d207c4626f3"
+        "7102b8d8a5948566181ce2383352787d8eee2e01939909ee8397b388c62eda32"
     ],
     [
         [
@@ -2020,7 +2034,7 @@
             "file",
             "sdk/wasp/src/consumer/ServicesPage.tsx"
         ],
-        "30d517c183915a38a927b5df6b90c7a1f2c0cd3b74e74a58ba500dab7c8a74bf"
+        "354ded1a4607d1de8be5b9e993644a608fccceb371601337501e84c3c54e4a75"
     ],
     [
         [
@@ -2083,7 +2097,7 @@
             "file",
             "sdk/wasp/src/consumer/operations.ts"
         ],
-        "c73ad48da14236b48ad13858fe587da19ee983ecd58ada7c9d95748a635e85fa"
+        "d13adcde01234d5952379336754b654196b907330708b3a5d7e5ee886743e99d"
     ],
     [
         [
@@ -2139,21 +2153,21 @@
             "file",
             "sdk/wasp/src/landing-page/AreaLandingPage.tsx"
         ],
-        "db0c2f806a032dc65b8c44e219bcc52bf472430fb9fea119257d772a2c9667c5"
+        "3543e6fcf8f023fbb986ccd0210a54d662150d8da1f33045c239512677a7b01a"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/CategoryLandingPage.tsx"
         ],
-        "9e779637c2500d4a594f08590790afa9b99730e88130383ef870f40289539cb7"
+        "990cfd2ef94218490feffefccdbe35c3ea3a00f244f3a86d2f0950b3ffab0ec6"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/ElectricalLandingPage.tsx"
         ],
-        "367e1790e8387d5c7138bd245f9e4f4b1e0c0f9eeec2f0860f03e17c23e249b4"
+        "b7422e14100ef0c29ff5bb83ec6c1e1d255af9af2ddc9871d07da476f0d4810b"
     ],
     [
         [
@@ -2167,7 +2181,7 @@
             "file",
             "sdk/wasp/src/landing-page/HandymanLandingPage.tsx"
         ],
-        "72ba0d134139994b4d382a45808ef0729c0d8f5f1ef3f8273063a8602f62d91e"
+        "668f70d29bbe7c6e6fc071f514d04ec28c3f19310cb70e9f5191e8ca6b3d47e3"
     ],
     [
         [
@@ -2181,28 +2195,28 @@
             "file",
             "sdk/wasp/src/landing-page/HvacLandingPage.tsx"
         ],
-        "5b2e61d08fd3aa16d6901fcd6f7438fb3f3047884193b1041e1b1f2c9ff4af1f"
+        "4e2c3556d4656e581c8e36564dbbda461d28c6b652701f3826276cf181efb8f9"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "1d1fceb2b33aa564326cdd8c88dd1ae1138a351854dafc90fe3a6fbc6975593a"
+        "61b300abb6ddf9e81a46878e37def102d93967f7929e665ed66e6be757f41d93"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/PlumbingLandingPage.tsx"
         ],
-        "b70a681e853b62d98a94fe0aabf21b02b7f0dcd67eb1c0db773e92578e12bb94"
+        "90554085305c6661d2dadcf7b7f86248438630c7d30a3dfc150bbd596b91e685"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/ServiceAreaLandingPage.tsx"
         ],
-        "a7db68e6a55c3ec873aa5ffe6b73ea9531a43c6cdb4123b7dd8c4e9fe38fceb9"
+        "e10cba6cdc50bb1bbcb667792a77b97d21a22d0623116d5826ddf2d73a798521"
     ],
     [
         [
@@ -2335,21 +2349,21 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/components.tsx"
         ],
-        "481ef83681e5c33d6e60b04c728b99d4bc25574866f50cef95a07592ffc32a33"
+        "7285449cb339a116c6d5df4aea3f96033ce5eac7f2967e8d676e169e5b84f180"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
-        "76390e87eee48c3e1027852732a2676bccc28a80da9421eb13cb810ba8927e86"
+        "6dec153a980daf6b5209940796941f84a27c441586548d8cb683664c5e3ad50f"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/services/categoryData.ts"
         ],
-        "79052ceae0aeb9c7617170bdc199932dc8d0f73445550871ecf3d7603bb6d06d"
+        "d3766be4c0f73711498a12b4c3292acb498452936d16bff66914cfd682dcc2c2"
     ],
     [
         [
@@ -2363,7 +2377,7 @@
             "file",
             "sdk/wasp/src/payment/PricingPage.tsx"
         ],
-        "b06a50a87e000d4b3bc69b5162b917b0632879d9719f6b512b3062c5a28f39d8"
+        "2d8a5c9c6393adcddbdee7c7c7150bf4f24bbcf74d7c83eef0444e4fcbc32f35"
     ],
     [
         [
@@ -2475,7 +2489,7 @@
             "file",
             "sdk/wasp/src/provider/ApplyPage.tsx"
         ],
-        "131e91a8c391041bf58c982a43bbead4bbb3f5a5211e6480356d355631314203"
+        "2069cb73abec5418eb9fb6bef032524d4632efde621add982fac07c9763a6496"
     ],
     [
         [
@@ -2489,7 +2503,7 @@
             "file",
             "sdk/wasp/src/provider/BillingPage.tsx"
         ],
-        "30d26cfb5c1d20d98b51e3cb4f8455bc6dc66553690454d406cd3334f16d12e3"
+        "e1e536c911273a0119a123f9a498c2b1d92b1fa99013d153a0c01ca743b04750"
     ],
     [
         [
@@ -2510,14 +2524,14 @@
             "file",
             "sdk/wasp/src/provider/LeadsPage.tsx"
         ],
-        "c98c75754d9d270e2418612754d33dae48c0d718c43192e814738c6ec779551e"
+        "85deb1dcfffb432296152ac6153e45239860df56250fd732da60f9b4671b5475"
     ],
     [
         [
             "file",
             "sdk/wasp/src/provider/ProfilePage.tsx"
         ],
-        "3b628ede0da9aebdb9db64850351175db521cf68fe55c24ef432137d594951b6"
+        "4f0408f153ce594345314adf3e76e69e60b287f567e58dc8392ace548aac10a8"
     ],
     [
         [
@@ -2536,6 +2550,13 @@
     [
         [
             "file",
+            "sdk/wasp/src/provider/billing.ts"
+        ],
+        "520d81b24587c15def1ff2ca5cd7b1e67c7bd36c7418f44e5582edf3242f0b3a"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/provider/layout/ProviderLayout.tsx"
         ],
         "41191c5e0281c673ba1725d35e9ab572eb8a31387020ef6f3c577bfdbfc69a66"
@@ -2543,9 +2564,23 @@
     [
         [
             "file",
+            "sdk/wasp/src/provider/leadMasking.test.ts"
+        ],
+        "434e8f05f47146e813f4fe4d045172a53a521e694a02bb8f106ed4afe7308893"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/provider/leadMasking.ts"
+        ],
+        "3a3fd60880a71fea9f61320fd9b42b8afeb1a51a0e7af752570ea5988833983d"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/provider/operations.ts"
         ],
-        "122acb2da6a1ef428919b21505231403e06ccdf900023932fd4670db9f4565e1"
+        "e523e6c485212cdce3d1bbaf535dbd9af301f5d15ee6d81b81eafbbc94d7eff1"
     ],
     [
         [
@@ -2566,7 +2601,7 @@
             "file",
             "sdk/wasp/src/server/scripts/dbSeeds.ts"
         ],
-        "33654299a7b5befc4bf1b62f1715c3c9428e5b6f2c4145e35cedb5b381e01e2d"
+        "40a2f316fc5507080261ebf75042d83952be1e730949aebcfcff271251bf1be4"
     ],
     [
         [
@@ -2608,14 +2643,14 @@
             "file",
             "sdk/wasp/src/server/webhooks/calcom.ts"
         ],
-        "b08c42249017e1765391d444ab311f5fcde4edf652f99428812b6ad52a32f107"
+        "0f907ce2fd3162669717e770eea9239a81fa652e0dbbcc5057f3204cf2d99fdb"
     ],
     [
         [
             "file",
             "sdk/wasp/src/server/webhooks/ghl.ts"
         ],
-        "027f3beca9155a60fed2241c7de8497776f40786e03fa2b1db7d29d2f1f0aa59"
+        "900b4ed0ff9af661f4edea1c3a60cb79ae9ac76ac298d332a1e5873eac0733ff"
     ],
     [
         [
@@ -2648,9 +2683,30 @@
     [
         [
             "file",
+            "sdk/wasp/src/shared/credentials.ts"
+        ],
+        "476a4454250deb60c66715702cdeacfe6db823be286bab5322dfd8297f32d3a1"
+    ],
+    [
+        [
+            "file",
             "sdk/wasp/src/shared/geoConfig.ts"
         ],
         "d750f6259aea4dc41d9ee0b0be1b0d0bd9c15cc43a5a246f045bc192e0e8ab29"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/shared/leadPricing.ts"
+        ],
+        "0793b5546459aa69586b755bb951ae6d3b618d30fc65964331f2fbd3043c2f4c"
+    ],
+    [
+        [
+            "file",
+            "sdk/wasp/src/shared/requestStatusMachine.ts"
+        ],
+        "61b3f728cb70cc1c7937463da870128f7a7261dba1fe58125c85fc8263325759"
     ],
     [
         [
@@ -2767,16 +2823,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "3b8bf09e13fbc6ece4b305718cebc79d8dd737f8daeb05ccb2ac045ad8c726da"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -2872,6 +2928,13 @@
     [
         [
             "file",
+            "server/src/actions/createBillingSetupSession.ts"
+        ],
+        "2b0f57feec2dca9af27dd67da3dc8f74bbc9dbb8f98f24fa1dbfdf3ec6864ad4"
+    ],
+    [
+        [
+            "file",
             "server/src/actions/createFileUploadUrl.ts"
         ],
         "538d21a13ef0843126565d90dc0b95c92dba5cc9b07b6f82a8e675acb05e8c08"
@@ -2896,6 +2959,13 @@
             "server/src/actions/deleteFile.ts"
         ],
         "2f85c12b7058d459f5546c86274dd8f484427b00cd76631ba7f86ac33746f58a"
+    ],
+    [
+        [
+            "file",
+            "server/src/actions/disputeLeadFee.ts"
+        ],
+        "a3fe6ba915e2815940d2d2047b2f28509d21b4e8da2333477a459a3667e99e68"
     ],
     [
         [
@@ -2938,6 +3008,13 @@
             "server/src/actions/removePortfolioPhoto.ts"
         ],
         "a476f4bce41c79c54d98d0169cfecbd7291ec39eb69a650c9acf557751b71933"
+    ],
+    [
+        [
+            "file",
+            "server/src/actions/resolveFeeDispute.ts"
+        ],
+        "da9ed3156176abb1f8e9e30b214c98fa44289dd0e3e34c7ab5138c8b7c33d2de"
     ],
     [
         [
@@ -3084,7 +3161,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3187,6 +3264,13 @@
     [
         [
             "file",
+            "server/src/queries/getAdminLiveCounts.ts"
+        ],
+        "b7599283d075e9e51ab6b48e3e31611e9b1d3ec1f9b29c6b8b3283b32866b457"
+    ],
+    [
+        [
+            "file",
             "server/src/queries/getAdminProviders.ts"
         ],
         "ceda64a9b07fb81512c7babade6a3d4d0845a3dffce2b1f251858ae591aec81e"
@@ -3222,6 +3306,13 @@
     [
         [
             "file",
+            "server/src/queries/getBillingStatus.ts"
+        ],
+        "3b785baedae7f708815d506bf1541e69602d0c0af83d3fbaad35c307cd9f5f40"
+    ],
+    [
+        [
+            "file",
             "server/src/queries/getConsumerStats.ts"
         ],
         "42f4b2b3a221f359561502d85c4119e242d353f824a301bf72e018b289d2c15f"
@@ -3232,6 +3323,13 @@
             "server/src/queries/getDailyStats.ts"
         ],
         "0b60666c5dd4365670219b3a485ffa736918b2e42200a5849d8ee6e3bc8efffa"
+    ],
+    [
+        [
+            "file",
+            "server/src/queries/getDisputedFees.ts"
+        ],
+        "3b7c9f7e2ac6db716f973afddc8e3a473f16cacfba6f9533e9e45512d5a1d5df"
     ],
     [
         [
@@ -3357,7 +3455,7 @@
             "file",
             "server/src/routes/apis/index.ts"
         ],
-        "8b1d0bfb51ddc2a409e67060e3215023e4164e16476c88b7304a36623be594fe"
+        "d9a2f07899dcd1a15478a90f5068540275e64e60494aa054d7de35dc646f52f7"
     ],
     [
         [
@@ -3385,7 +3483,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3453,6 +3551,13 @@
     [
         [
             "file",
+            "server/src/routes/operations/createBillingSetupSession.js"
+        ],
+        "7b592bacf4db00e33eae902a576aaeb1568a9b258eef8dc1c238b98fdf78fc01"
+    ],
+    [
+        [
+            "file",
             "server/src/routes/operations/createFileUploadUrl.js"
         ],
         "7b8bf4c18cc1e0d56a7d1c5e8824e7f33c6c27a9e49812f807f8c8a1db8b0f53"
@@ -3481,6 +3586,13 @@
     [
         [
             "file",
+            "server/src/routes/operations/disputeLeadFee.js"
+        ],
+        "9475c3550774279de7f7185f05a9460e9ffc7319af30b20738c974d6b79e0bc3"
+    ],
+    [
+        [
+            "file",
             "server/src/routes/operations/getAdminCategories.js"
         ],
         "312970ae6c6b64207407ac480c125aac6f0687d4d9defd2e579635cebb549a34"
@@ -3491,6 +3603,13 @@
             "server/src/routes/operations/getAdminLeads.js"
         ],
         "7506c80d261ce7abfb12ec006aed43bdfb7cdc20e94540d1861aa97442ff8465"
+    ],
+    [
+        [
+            "file",
+            "server/src/routes/operations/getAdminLiveCounts.js"
+        ],
+        "3cc8c6995222ddeca127114b6a7658873e8c4a8a0de45238ca619801f844eaac"
     ],
     [
         [
@@ -3530,6 +3649,13 @@
     [
         [
             "file",
+            "server/src/routes/operations/getBillingStatus.js"
+        ],
+        "d32f26779585770d554ab098172a20392b83f94356f5179104976bb2de2a675e"
+    ],
+    [
+        [
+            "file",
             "server/src/routes/operations/getConsumerStats.js"
         ],
         "39db1f0cb6c9bca6b6730e28d2dead8314548b6e601770991ad4e1cd13de257d"
@@ -3540,6 +3666,13 @@
             "server/src/routes/operations/getDailyStats.js"
         ],
         "385a076116e5b7c09efa410edca9040b8a8d2a25bb4c9b67cca9264e0efbebcd"
+    ],
+    [
+        [
+            "file",
+            "server/src/routes/operations/getDisputedFees.js"
+        ],
+        "78960616c6e2f8d14435c127e438cd37648be987fab06b358eef1ef7ebdc5331"
     ],
     [
         [
@@ -3665,7 +3798,7 @@
             "file",
             "server/src/routes/operations/index.js"
         ],
-        "306f338c32e90adb56cc786815ac9723de3f7f63c2df7b542253620de3ccd833"
+        "c331c1e6aba878a2fb403bfee6ba7823b0c5377f6f06e4ef3e173eadff598546"
     ],
     [
         [
@@ -3708,6 +3841,13 @@
             "server/src/routes/operations/removePortfolioPhoto.js"
         ],
         "43b7536ca8cc43af290fc4f57a8969a98d8975ab5b40ed1fdfbc3aaa14d8e2c5"
+    ],
+    [
+        [
+            "file",
+            "server/src/routes/operations/resolveFeeDispute.js"
+        ],
+        "97ed9ae662cfe562b3ca8cd256c144d81a2bc11d097d49b0bdf6e11379c77a88"
     ],
     [
         [
@@ -3841,6 +3981,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

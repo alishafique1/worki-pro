@@ -1,4 +1,4 @@
-import { LayoutDashboard, ClipboardList, Briefcase, Users, Star, Gift, Layers, MessageSquare, Settings, Calendar, X, ChevronRight, } from 'lucide-react';
+import { LayoutDashboard, ClipboardList, Briefcase, Users, Star, Gift, ShieldAlert, Layers, MessageSquare, Settings, Calendar, X, ChevronRight, } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router';
 import { Logo } from '../../client/components/Logo/Logo';
@@ -21,6 +21,7 @@ const NAV_SECTIONS = [
         label: 'Quality',
         items: [
             { to: '/admin/reviews', label: 'Reviews', Icon: Star },
+            { to: '/admin/disputes', label: 'Disputes', Icon: ShieldAlert },
             { to: '/admin/rewards', label: 'Rewards', Icon: Gift },
         ],
     },

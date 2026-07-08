@@ -15,9 +15,10 @@ export default function GuestRequestWizardPage() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { data: user, isLoading: authLoading } = useAuth();
-    // Resolve known category from ?slug or ?category URL params.
+    // Resolve known category from ?slug / ?service / ?category URL params.
+    // Landing CTAs link both as ?slug= (category pages) and ?service= (SEO pages).
     // Only treat it as "preselected" when it matches a wizard category exactly.
-    const slugParam = searchParams.get('slug');
+    const slugParam = searchParams.get('slug') ?? searchParams.get('service');
     const categoryParam = searchParams.get('category');
     const knownCat = HARDCODED_CATEGORIES.find(c => c.slug === slugParam || c.slug === categoryParam || c.id === categoryParam) ?? null;
     // Decode ?problem — URLSearchParams.get() already percent-decodes, but be explicit.

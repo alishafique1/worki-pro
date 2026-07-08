@@ -58,7 +58,7 @@ export default function PlumbingLandingPage() {
         title="Plumber in Oakville, Burlington & Milton | Licensed Plumbing Services"
         description="Licensed plumbers for leak repair, drain cleaning, water heater installation, and emergency plumbing in Oakville, Burlington & Milton. 24/7 emergency service available. Get matched with verified pros."
         ogTitle="Licensed Plumbers in Oakville, Burlington & Milton | The Helper"
-        ogDescription="Find trusted plumbers for emergency repairs, drain cleaning, and fixture installation in the GTA. Licensed, insured, and background-checked."
+        ogDescription="Find trusted plumbers for emergency repairs, drain cleaning, and fixture installation in the GTA. Vetted, verified pros."
         canonicalPath="/plumbing"
         keywords="plumber Oakville, plumbing services Burlington, emergency plumber Milton, drain cleaning GTA, water heater installation, leak repair near me"
         structuredData={{
@@ -88,7 +88,7 @@ export default function PlumbingLandingPage() {
             Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">Plumbing</span> Services
           </h1>
           <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
-            From leaky faucets to emergency pipe repairs, we match you with licensed, insured plumbers in Oakville, Burlington, and Milton. 24/7 emergency service available for urgent issues.
+            From leaky faucets to emergency pipe repairs, we match you with vetted plumbers, licensed where required, in Oakville, Burlington, and Milton. Emergency service often available for urgent issues.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">

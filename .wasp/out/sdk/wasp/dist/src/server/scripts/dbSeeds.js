@@ -1,4 +1,5 @@
 import { createProviderId, sanitizeAndSerializeProviderData } from "wasp/auth/utils";
+import { getLeadFee } from "../../shared/leadPricing";
 const LEGACY_TEST_PASSWORD = "Password123!";
 const QA_TEST_PASSWORD = "HelperQA123";
 const TEST_PASSWORD = "HelperTest123";
@@ -34,6 +35,27 @@ async function ensureEmailAuthIdentity(prisma, email, password) {
 }
 // ─── Default Service Categories ────────────────────────────────────────────
 export const DEFAULT_VENDOR_CATEGORIES = [
+    {
+        name: "HVAC",
+        slug: "hvac",
+        description: "Furnace, AC, heat pump repairs, maintenance, and installations",
+        icon: "Thermometer",
+        imageUrl: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop",
+    },
+    {
+        name: "Electrical",
+        slug: "electrical",
+        description: "Panels, wiring, outlets, lighting, and EV charger installations",
+        icon: "Zap",
+        imageUrl: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&h=600&fit=crop",
+    },
+    {
+        name: "Appliance Repair",
+        slug: "appliance-repair",
+        description: "Fridge, washer, dryer, dishwasher, and oven repairs",
+        icon: "Refrigerator",
+        imageUrl: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&h=600&fit=crop",
+    },
     {
         name: "Handyman",
         slug: "handyman",
@@ -260,7 +282,7 @@ export async function seedMockUsers(prisma) {
             data: {
                 providerId: mikeProvider.id,
                 feeType: "QUALIFIED_LEAD",
-                amount: 5.00,
+                amount: getLeadFee("hvac"),
                 status: "PAID",
             },
         });
@@ -325,7 +347,7 @@ export async function seedMockUsers(prisma) {
             data: {
                 providerId: daveProvider.id,
                 feeType: "QUALIFIED_LEAD",
-                amount: 5.00,
+                amount: getLeadFee("plumbing"),
                 status: "PAID",
             },
         });

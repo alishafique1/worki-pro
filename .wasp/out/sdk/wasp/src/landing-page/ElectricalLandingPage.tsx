@@ -55,7 +55,7 @@ export default function ElectricalLandingPage() {
         title="Electrician in Milton, Oakville & Burlington | Licensed Electrical Services"
         description="ESA-certified electricians for panel upgrades, EV charger installation, pot lights, and electrical repairs in Milton, Oakville & Burlington. Get matched with verified, licensed pros."
         ogTitle="Licensed Electricians in Milton, Oakville & Burlington | The Helper"
-        ogDescription="Find trusted electricians for panel upgrades, EV charger installation, and electrical repairs in the GTA. ESA-certified and fully insured."
+        ogDescription="Find trusted electricians for panel upgrades, EV charger installation, and electrical repairs in the GTA. ESA-certified where required, vetted pros."
         canonicalPath="/electrical"
         keywords="electrician Milton, electrical services Oakville, EV charger installation Burlington, panel upgrade GTA, pot lights installation, licensed electrician near me"
         structuredData={{
@@ -103,7 +103,7 @@ export default function ElectricalLandingPage() {
             {[
               { label: 'ESA Certified', icon: <Zap className="size-6" />, alt: 'ESA certified electricians' },
               { label: 'Permit Ready', icon: <ShieldCheck className="size-6" />, alt: 'Handles permits and inspections' },
-              { label: 'Insured Work', icon: <FileText className="size-6" />, alt: 'Fully insured electrical work' }
+              { label: 'Vetted Pros', icon: <FileText className="size-6" />, alt: 'Vetted electrical pros' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
                 <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>

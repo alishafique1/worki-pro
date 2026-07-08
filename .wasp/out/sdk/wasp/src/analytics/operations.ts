@@ -1,6 +1,9 @@
 import { type DailyStats, type PageViewSource } from "wasp/entities";
 import { HttpError, prisma } from "wasp/server";
-import { type GetDailyStats } from "wasp/server/operations";
+import {
+  type GetDailyStats,
+  type GetAdminLiveCounts,
+} from "wasp/server/operations";
 
 type DailyStatsWithSources = DailyStats & {
   sources: PageViewSource[];
@@ -51,4 +54,89 @@ export const getDailyStats: GetDailyStats<
   }
 
   return { dailyStats, weeklyStats };
+};
+
+/* -------------------------------------------------------------------------- */
+/*  Real-time operational counts (independent of the Plausible/cron pipeline)  */
+/* -------------------------------------------------------------------------- */
+
+// Map the full ServiceRequest lifecycle onto the 5 funnel buckets the admin
+// dashboard shows. Keep in sync with the status enum in schema.prisma.
+const PIPELINE_BUCKETS: Record<string, string[]> = {
+  new: ["NEW", "SMS_STARTED"],
+  qualified: ["QUALIFYING", "QUALIFIED"],
+  assigned: ["ASSIGNED", "ACCEPTED_BY_PROVIDER"],
+  booked: ["BOOKED"],
+  completed: ["COMPLETED", "REWARD_PENDING", "REWARD_APPROVED", "CLOSED"],
+};
+
+export type AdminLiveCounts = {
+  pendingProviders: number;
+  verifiedProviders: number;
+  pendingReviews: number;
+  requestsToday: number;
+  pipeline: { new: number; qualified: number; assigned: number; booked: number; completed: number };
+  requestsByDay: { label: string; count: number }[];
+};
+
+export const getAdminLiveCounts: GetAdminLiveCounts<void, AdminLiveCounts> = async (
+  _args,
+  context,
+) => {
+  if (!context.user) throw new HttpError(401, "Not authorized.");
+  if (!context.user.isAdmin) throw new HttpError(403, "Admin access required.");
+
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+  const [pendingProviders, verifiedProviders, pendingReviews, requestsToday, byStatus, recentRequests] =
+    await prisma.$transaction([
+      context.entities.Provider.count({ where: { verificationStatus: "PENDING" } }),
+      context.entities.Provider.count({ where: { verificationStatus: "VERIFIED" } }),
+      context.entities.Review.count({ where: { status: "PENDING" } }),
+      context.entities.ServiceRequest.count({ where: { createdAt: { gte: startOfToday } } }),
+      context.entities.ServiceRequest.groupBy({
+        by: ["status"],
+        _count: { _all: true },
+        orderBy: { status: "asc" },
+      }),
+      context.entities.ServiceRequest.findMany({
+        where: { createdAt: { gte: sevenDaysAgo } },
+        select: { createdAt: true },
+      }),
+    ]);
+
+  // Fold raw status counts into the 5 funnel buckets.
+  const pipeline = { new: 0, qualified: 0, assigned: 0, booked: 0, completed: 0 };
+  for (const row of byStatus as { status: string; _count: { _all: number } }[]) {
+    for (const [bucket, statuses] of Object.entries(PIPELINE_BUCKETS)) {
+      if (statuses.includes(row.status)) {
+        pipeline[bucket as keyof typeof pipeline] += row._count._all;
+      }
+    }
+  }
+
+  // Bucket the last 7 days of requests by calendar day (oldest -> newest).
+  const days: { label: string; count: number }[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - i);
+    const next = new Date(d);
+    next.setDate(next.getDate() + 1);
+    const count = (recentRequests as { createdAt: Date }[]).filter(
+      (r) => r.createdAt >= d && r.createdAt < next,
+    ).length;
+    days.push({ label: d.toLocaleDateString("en-CA", { month: "short", day: "numeric" }), count });
+  }
+
+  return {
+    pendingProviders,
+    verifiedProviders,
+    pendingReviews,
+    requestsToday,
+    pipeline,
+    requestsByDay: days,
+  };
 };

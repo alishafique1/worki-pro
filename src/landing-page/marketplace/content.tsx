@@ -26,6 +26,7 @@ import {
   Thermometer,
   UtensilsCrossed,
   Wifi,
+  Wrench,
   Zap,
 } from "lucide-react";
 
@@ -76,7 +77,7 @@ export const solutionSteps = [
     icon: <BadgeCheck className="size-5" />,
     title: "Match",
     description:
-      "We connect you with a verified local pro who is available today. Often within 15 minutes. No calling around.",
+      "We connect you with a verified local pro — usually within a few hours. No calling around.",
   },
   {
     icon: <CalendarCheck className="size-5" />,
@@ -94,6 +95,7 @@ export const solutionSteps = [
 export const categoryImages: Record<string, string> = {
   hvac: "https://images.unsplash.com/photo-1625961332771-3f40b0e2bdcf?w=400&h=300&fit=crop",
   electrical: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+  "appliance-repair": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop",
   handyman: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400&h=300&fit=crop",
   plumbing: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop",
   "smart-home": "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=300&fit=crop",
@@ -124,18 +126,27 @@ export const categories: Category[] = [
     icon: <Thermometer className="size-5" />,
     name: "HVAC",
     slug: "hvac",
-    description: "AC repair, furnace service, and emergency heat calls. Describe the issue and postal code. Most requests answered and booked within 24 hours.",
+    description: "AC repair, furnace service, and emergency heat calls. Describe the issue and postal code. Most requests answered fast — often same day.",
     href: "/services/hvac",
-    imageUrl: "https://images.unsplash.com/photo-1625961332771-3f40b0e2bdcf?w=400&h=300&fit=crop",
+    imageUrl: categoryImages.hvac,
     live: true,
   },
   {
     icon: <Zap className="size-5" />,
     name: "Electrical",
     slug: "electrical",
-    description: "Panels, outlets, fixtures, and safety upgrades. Licensed electricians only. Submit your job and get a response within 24 hours.",
+    description: "Panels, outlets, fixtures, and safety upgrades. Submit your job and get a fast response from a vetted electrician.",
     href: "/services/electrical",
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    imageUrl: categoryImages.electrical,
+    live: true,
+  },
+  {
+    icon: <Wrench className="size-5" />,
+    name: "Appliance Repair",
+    slug: "appliance-repair",
+    description: "Fridge, washer, dryer, dishwasher, and oven repairs.",
+    href: "/services/appliance-repair",
+    imageUrl: categoryImages["appliance-repair"],
     live: true,
   },
   {
@@ -172,7 +183,7 @@ export const categories: Category[] = [
     description: "Planning, setup, and day-of coordination. Share your event size and date and get proposals from local event pros.",
     href: "/services/events",
     imageUrl: categoryImages.events,
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <UtensilsCrossed className="size-5" />,
@@ -181,7 +192,7 @@ export const categories: Category[] = [
     description: "Private dining, food trucks, and custom menus. Share your guest count and date and caterers respond with packages.",
     href: "/services/food-catering",
     imageUrl: categoryImages["food-catering"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Flame className="size-5" />,
@@ -190,7 +201,7 @@ export const categories: Category[] = [
     description: "Shisha setup and rental for events and private gatherings. Tell us your event date and location. Setup handled from delivery to teardown.",
     href: "/services/shisha-lounge",
     imageUrl: categoryImages["shisha-lounge"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Bot className="size-5" />,
@@ -199,7 +210,7 @@ export const categories: Category[] = [
     description: "Chatbots, automations, and workflow tools. Describe your business process and get matched with an AI specialist.",
     href: "/services/ai-services",
     imageUrl: categoryImages["ai-services"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Globe className="size-5" />,
@@ -208,7 +219,7 @@ export const categories: Category[] = [
     description: "Custom sites, landing pages, and brand design. Share your vision and designers respond with portfolios and quotes.",
     href: "/services/website-design",
     imageUrl: categoryImages["website-design"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Megaphone className="size-5" />,
@@ -217,7 +228,7 @@ export const categories: Category[] = [
     description: "SEO, paid ads, and social growth. Describe your goals and budget and get matched with a specialist who knows your market.",
     href: "/services/digital-marketing",
     imageUrl: categoryImages["digital-marketing"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Code className="size-5" />,
@@ -226,7 +237,7 @@ export const categories: Category[] = [
     description: "Web apps, integrations, and custom tools. Describe what you want to build and a developer will scope it before any commitment.",
     href: "/services/software-development",
     imageUrl: categoryImages["software-development"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Clapperboard className="size-5" />,
@@ -235,7 +246,7 @@ export const categories: Category[] = [
     description: "Reels, promos, and short-form content. Share your raw footage or brief and an editor confirms turnaround before starting.",
     href: "/services/video-editing",
     imageUrl: categoryImages["video-editing"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Car className="size-5" />,
@@ -244,7 +255,7 @@ export const categories: Category[] = [
     description: "Licensed in-car lessons and beginner driver courses. Tell us your availability and get matched with a certified instructor.",
     href: "/services/driving-school",
     imageUrl: categoryImages["driving-school"],
-    live: true,
+    comingSoon: true,
   },
   {
     icon: <Plus className="size-5" />,
@@ -265,7 +276,7 @@ export const customerSteps = [
   {
     step: "02",
     title: "Get matched fast",
-    description: "We review your request and contact verified pros who cover your area. Most requests are answered and booked within 24 hours.",
+    description: "A verified local pro responds fast. No calling around.",
   },
   {
     step: "03",
@@ -384,12 +395,12 @@ export const faqs = [
   {
     question: "How fast will I get matched?",
     answer:
-      "Most homeowners get matched with a verified local pro within 15 minutes of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
+      "Most homeowners get matched with a verified local pro within a few hours of submitting. For urgent jobs like a broken AC or a leak, same-day service is often available. The system notifies nearby pros as soon as your request comes in.",
   },
   {
     question: "How do I know the pro is actually verified?",
     answer:
-      "Every pro goes through a review before they can accept jobs. We check business credentials, insurance status, and service area. Only approved pros appear on the platform. Reviews only post after a job is completed and confirmed.",
+      "Every pro goes through a review before they can accept jobs. We check business details, credentials where required, and service area. Only approved pros appear on the platform. Reviews only post after a job is completed and confirmed.",
   },
   {
     question: "Where is The Helper available?",

@@ -5,7 +5,7 @@ import { MiddlewareConfigFn, globalMiddlewareConfigForExpress } from '../../midd
 import auth from 'wasp/core/auth'
 import { type AuthUserData, makeAuthUserIfPossible } from 'wasp/auth/user'
 
-import { authApiMiddleware as _waspauthApinamespaceMiddlewareConfigFn } from '../../../../../../src/auth/otpApi'
+import { authApiMiddlewareConfigFn as _waspauthApinamespaceMiddlewareConfigFn } from '../../../../../../src/auth/otpApi'
 
 import { requestOtp as _wasprequestOtpfn } from '../../../../../../src/auth/otpApi'
 import { verifyOtp as _waspverifyOtpfn } from '../../../../../../src/auth/otpApi'

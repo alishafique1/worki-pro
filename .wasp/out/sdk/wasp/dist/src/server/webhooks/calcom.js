@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { emailSender } from 'wasp/server/email';
 import { generateICS } from '../utils/calendar';
+import { canTransition } from '../../shared/requestStatusMachine';
 const formatBookingTime = (isoDate) => new Intl.DateTimeFormat('en-CA', {
     dateStyle: 'full',
     timeStyle: 'short',
@@ -112,8 +113,17 @@ const sendBookingEmails = async ({ consumerEmail, consumerName, providerEmail, p
  *   Secret: set CALCOM_WEBHOOK_SECRET in .env.server
  */
 export const calcomWebhook = async (req, res, context) => {
+    const isProduction = process.env.NODE_ENV === 'production';
     const secret = process.env.CALCOM_WEBHOOK_SECRET;
-    if (secret) {
+    if (!secret) {
+        // Fail closed in production: never process unsigned payloads.
+        if (isProduction) {
+            console.error('[Cal.com] CALCOM_WEBHOOK_SECRET is not set in production — rejecting webhook. Configure the secret to process Cal.com events.');
+            return res.status(503).json({ error: 'Webhook misconfigured' });
+        }
+        console.warn('[Cal.com] CALCOM_WEBHOOK_SECRET not set — skipping signature verification (dev only).');
+    }
+    else {
         const signature = req.headers['x-cal-signature-256'];
         if (!signature) {
             return res.status(401).json({ error: 'Missing signature' });
@@ -121,7 +131,10 @@ export const calcomWebhook = async (req, res, context) => {
         const body = JSON.stringify(req.body);
         const expectedSig = crypto.createHmac('sha256', secret).update(body).digest('hex');
         const normalizedSignature = signature.replace(/^sha256=/, '');
-        if (!crypto.timingSafeEqual(Buffer.from(normalizedSignature), Buffer.from(expectedSig))) {
+        const providedBuf = Buffer.from(normalizedSignature);
+        const expectedBuf = Buffer.from(expectedSig);
+        // Length guard: timingSafeEqual throws on unequal-length buffers.
+        if (providedBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(providedBuf, expectedBuf)) {
             return res.status(401).json({ error: 'Invalid signature' });
         }
     }
@@ -164,10 +177,17 @@ export const calcomWebhook = async (req, res, context) => {
                                     },
                                 });
                             }
-                            await context.entities.ServiceRequest.update({
-                                where: { id: serviceRequest.id },
-                                data: { status: 'BOOKED', bookedAt: new Date() },
-                            });
+                            // Status machine gate: skip illegal transitions with a warning
+                            // instead of failing the webhook — Cal.com retries on 5xx.
+                            if (canTransition(serviceRequest.status, 'BOOKED')) {
+                                await context.entities.ServiceRequest.update({
+                                    where: { id: serviceRequest.id },
+                                    data: { status: 'BOOKED', bookedAt: new Date() },
+                                });
+                            }
+                            else {
+                                console.warn(`[Cal.com] Skipping invalid status transition ${serviceRequest.status}→BOOKED for request ${serviceRequest.id}`);
+                            }
                             await sendBookingEmails({
                                 consumerEmail: serviceRequest.email,
                                 consumerName: serviceRequest.name,

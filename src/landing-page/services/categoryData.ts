@@ -853,9 +853,9 @@ export const categoryPages: CategoryPageData[] = [
           "Many bookings are available within 24–48 hours. Urgent same-day slots are sometimes available — mark your request as urgent when submitting.",
       },
       {
-        question: "Is the handyman insured?",
+        question: "How are handymen vetted?",
         answer:
-          "All handymen on The Helper platform carry liability insurance. You can request proof of insurance before the job begins.",
+          "Handymen on The Helper platform go through a vetting review before joining. You can ask your pro about insurance and credentials before the job begins.",
       },
       {
         question: "Can you match paint for a drywall patch?",
@@ -1139,9 +1139,9 @@ export const categoryPages: CategoryPageData[] = [
           "A regular clean covers surfaces, floors, bathrooms, and kitchens. A deep clean adds baseboards, inside appliances, behind furniture, window sills, and other often-missed areas.",
       },
       {
-        question: "Are cleaners insured?",
+        question: "How are cleaners vetted?",
         answer:
-          "Yes. All cleaners on The Helper platform carry liability insurance. Any damage during the service is reportable and covered.",
+          "Cleaners on The Helper platform go through a vetting review before joining. Any issue during the service is reportable and we will help you get a resolution.",
       },
       {
         question: "Can I book a same-day cleaning?",
@@ -1265,7 +1265,7 @@ export const categoryPages: CategoryPageData[] = [
           {
             name: "Accent Wall",
             description:
-              "Paint a feature wall in a bold colour or geometric pattern — precise tape lines guaranteed.",
+              "Paint a feature wall in a bold colour or geometric pattern with clean, precise tape lines.",
           },
           {
             name: "Faux Finish",
@@ -1875,9 +1875,9 @@ export const categoryPages: CategoryPageData[] = [
               "Flat monthly rate for unlimited visits November through March — no surprise bills.",
           },
           {
-            name: "24-Hour Response Guarantee",
+            name: "Priority Response",
             description:
-              "Priority dispatch with guaranteed clearance within 24 hours of snowfall — contract required.",
+              "Priority dispatch that aims for clearance within 24 hours of snowfall — contract required.",
           },
         ],
       },
@@ -2371,7 +2371,7 @@ export const categoryPages: CategoryPageData[] = [
     seo: {
       title: "Window Cleaning in GTA — Interior & Exterior | The Helper",
       description:
-        "Professional window cleaning in Milton, Oakville, and Burlington. Interior, exterior, screens, hard water stain removal. Streak-free results guaranteed.",
+        "Professional window cleaning in Milton, Oakville, and Burlington. Interior, exterior, screens, hard water stain removal. Streak-free results are the goal on every visit.",
     },
   },
 
@@ -2496,9 +2496,9 @@ export const categoryPages: CategoryPageData[] = [
           "For end-of-month moves (peak time in the GTA), book 3–4 weeks in advance. Mid-month and mid-week slots often have better availability on shorter notice.",
       },
       {
-        question: "Are my belongings insured during the move?",
+        question: "Are my belongings protected during the move?",
         answer:
-          "All providers carry minimum cargo insurance. For high-value items, ask about supplemental valuation coverage — declared value protection is available.",
+          "Ask your provider about their cargo insurance and coverage before booking. For high-value items, ask about supplemental valuation coverage where offered.",
       },
       {
         question: "How are moving costs calculated?",
