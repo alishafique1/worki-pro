@@ -8,6 +8,18 @@
 //     → REWARD_PENDING → REWARD_APPROVED → CLOSED
 // Dead ends: LOST, INVALID, SPAM.
 //
+// Real-world shortcut edges (not in the linear happy path above):
+//   ASSIGNED → BOOKED               (consumer books via Cal.com right after
+//                                    claim, before the provider formally accepts)
+//   ASSIGNED → CLOSED               (appointment cancelled/no-show closes the
+//                                    request — updateProviderAppointment maps
+//                                    CANCELLED/NO_SHOW → CLOSED)
+//   ACCEPTED_BY_PROVIDER → COMPLETED (provider marks job done without a
+//                                    booking step — AppointmentsPage shows
+//                                    "Mark Completed" on accepted appointments)
+//   ACCEPTED_BY_PROVIDER → CLOSED   (cancellation)
+//   BOOKED → CLOSED                 (cancellation after booking)
+//
 // Server-only module (imports wasp/server) — do not import from client code.
 import { HttpError } from 'wasp/server';
 export const ALLOWED_TRANSITIONS = {
@@ -15,9 +27,9 @@ export const ALLOWED_TRANSITIONS = {
     SMS_STARTED: ['QUALIFYING', 'QUALIFIED', 'LOST', 'INVALID', 'SPAM'],
     QUALIFYING: ['QUALIFIED', 'LOST', 'INVALID', 'SPAM'],
     QUALIFIED: ['ASSIGNED', 'LOST', 'INVALID', 'SPAM'],
-    ASSIGNED: ['ACCEPTED_BY_PROVIDER', 'QUALIFIED', 'LOST', 'INVALID', 'SPAM'],
-    ACCEPTED_BY_PROVIDER: ['BOOKED', 'ASSIGNED', 'LOST'],
-    BOOKED: ['COMPLETED', 'LOST'],
+    ASSIGNED: ['ACCEPTED_BY_PROVIDER', 'BOOKED', 'CLOSED', 'QUALIFIED', 'LOST', 'INVALID', 'SPAM'],
+    ACCEPTED_BY_PROVIDER: ['BOOKED', 'COMPLETED', 'CLOSED', 'ASSIGNED', 'LOST'],
+    BOOKED: ['COMPLETED', 'CLOSED', 'LOST'],
     COMPLETED: ['REWARD_PENDING', 'CLOSED'],
     REWARD_PENDING: ['REWARD_APPROVED', 'CLOSED'],
     REWARD_APPROVED: ['CLOSED'],

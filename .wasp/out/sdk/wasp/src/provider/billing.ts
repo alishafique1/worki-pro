@@ -192,26 +192,38 @@ export async function chargeProviderFee(feeId: string): Promise<void> {
     }
 
     const amountCents = Math.round(Number(fee.amount) * 100);
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amountCents,
-      currency: "cad",
-      customer: customerId,
-      payment_method: paymentMethodId,
-      off_session: true,
-      confirm: true,
-      description: `The Helper — ${fee.feeType.replace(/_/g, " ").toLowerCase()} fee`,
-      metadata: { providerFeeId: fee.id, providerId: fee.providerId },
-    });
+    const paymentIntent = await stripe.paymentIntents.create(
+      {
+        amount: amountCents,
+        currency: "cad",
+        customer: customerId,
+        payment_method: paymentMethodId,
+        off_session: true,
+        confirm: true,
+        description: `The Helper — ${fee.feeType.replace(/_/g, " ").toLowerCase()} fee`,
+        metadata: { providerFeeId: fee.id, providerId: fee.providerId },
+      },
+      // Idempotency key: concurrent/retried invocations for the same fee
+      // collapse into a single Stripe charge instead of double-charging.
+      { idempotencyKey: `fee-charge-${fee.id}` },
+    );
 
     if (paymentIntent.status === "succeeded") {
-      await prisma.providerFee.update({
-        where: { id: fee.id },
+      // Guarded write: only flip PENDING → PAID. If the fee was DISPUTED or
+      // WAIVED while the charge was in flight, don't stomp that status.
+      const { count } = await prisma.providerFee.updateMany({
+        where: { id: fee.id, status: "PENDING" },
         data: {
           status: "PAID",
           paidAt: new Date(),
           invoiceId: paymentIntent.id, // Stripe PaymentIntent reference
         },
       });
+      if (count === 0) {
+        console.warn(
+          `[billing] fee ${fee.id} status changed mid-charge — PaymentIntent ${paymentIntent.id} succeeded but was not recorded; manual reconciliation needed`,
+        );
+      }
     } else {
       console.warn(
         `[billing] charge for fee ${feeId} not succeeded (status: ${paymentIntent.status}) — stays PENDING`,

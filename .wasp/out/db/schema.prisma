@@ -365,6 +365,9 @@ model ProviderFee {
   disputeNote      String?
   disputedAt       DateTime?
   adminNote        String?
+
+  @@index([providerId, status])
+  @@index([status, disputedAt])
 }
 
 model RequestNote {

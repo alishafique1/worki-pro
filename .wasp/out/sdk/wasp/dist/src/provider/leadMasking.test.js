@@ -8,7 +8,7 @@ const rawWithPii = {
     serviceCategory: { name: 'Plumbing', slug: 'plumbing' },
     postalCode: 'L9T 1A1',
     city: 'Milton',
-    urgency: 'URGENT',
+    urgency: 'EMERGENCY',
     description: 'Leaky faucet under the kitchen sink',
     estimatedSchedule: 'This week',
     status: 'NEW',
@@ -36,7 +36,7 @@ describe('maskLead', () => {
         expect(masked.id).toBe('req_1');
         expect(masked.postalCode).toBe('L9T 1A1');
         expect(masked.serviceCategory).toEqual({ name: 'Plumbing', slug: 'plumbing' });
-        expect(masked.urgency).toBe('URGENT');
+        expect(masked.urgency).toBe('EMERGENCY');
     });
     it('marks a lead claimed when it has an assigned provider', () => {
         expect(maskLead(rawWithPii).claimed).toBe(false);
