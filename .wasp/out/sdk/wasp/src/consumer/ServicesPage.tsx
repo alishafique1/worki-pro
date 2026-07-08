@@ -43,7 +43,7 @@ export default function ServicesPage() {
             What do you need help with?
           </h1>
           <p className="text-[#475569] mb-6 text-sm">
-            Vetted, insured pros in Milton · Oakville · Burlington · GTA
+            Vetted local pros in Milton · Oakville · Burlington · GTA
           </p>
 
           <form onSubmit={handleSearch} className="relative max-w-2xl">

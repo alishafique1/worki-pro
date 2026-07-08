@@ -100,7 +100,7 @@ const PricingPage = () => {
           </h2>
         </div>
         <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-center text-lg leading-8">
-          No hidden fees. No subscriptions required. Browse and book background-checked pros in
+          No hidden fees. No subscriptions required. Browse and book vetted pros in
           Milton, Oakville, Burlington and across the GTA.
         </p>
         {errorMessage && (<Alert variant="destructive" className="mt-8">

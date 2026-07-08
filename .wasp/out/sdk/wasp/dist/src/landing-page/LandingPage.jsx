@@ -130,7 +130,7 @@ const testimonials = [
 export default function LandingPage() {
     const [showSearch, setShowSearch] = useState(false);
     return (<>
-      <PageSeo title="Book a Verified Home Pro in 15 Minutes | The Helper" description="Stop calling around. Submit one request and get matched with a licensed, insured HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back." ogTitle="Book a Verified Home Pro in 15 Minutes | The Helper" ogDescription="One request. Matched with a verified local pro in 15 minutes. Same-day service available. 100% free for homeowners. Earn $60+ cash back on your first job." canonicalPath="/" keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto" structuredData={createLocalBusinessSchema({
+      <PageSeo title="Book a Verified Home Pro Fast | The Helper" description="Stop calling around. Submit one request and get matched with a vetted HVAC, plumbing, electrical, or handyman pro in Milton, Oakville & Burlington. 100% free. Earn $60+ cash back." ogTitle="Book a Verified Home Pro Fast | The Helper" ogDescription="One request. Matched with a verified local pro fast — often same day. 100% free for homeowners. Earn $60+ cash back on your first job." canonicalPath="/" keywords="home services GTA, find HVAC pro Milton, plumber Oakville, electrician Burlington, handyman GTA, home repair marketplace, verified contractors Toronto" structuredData={createLocalBusinessSchema({
             name: "The Helper Home Services",
             description: "Home services marketplace connecting GTA homeowners with vetted local service providers for HVAC, plumbing, electrical, handyman, appliance repair and smart home installation.",
             areaServed: ["Milton", "Oakville", "Burlington", "Mississauga", "Brampton"],
@@ -157,11 +157,11 @@ export default function LandingPage() {
 
               <h1 className="mt-5 text-balance text-4xl font-bold leading-[1.08] text-[#0F172A] sm:text-5xl lg:text-[56px]">
                 <span className="text-[#2563EB]">Book a verified pro</span>{" "}
-                <span className="lg:whitespace-nowrap">in under 15 minutes.</span>
+                <span className="lg:whitespace-nowrap">fast — often same day.</span>
               </h1>
 
               <p className="mt-5 max-w-lg text-base leading-7 text-[#475569] sm:text-lg">
-                Submit one request. Get matched with a local pro who's licensed, insured, and ready today. No calling around. No waiting until Monday.
+                Submit one request. Get matched with a vetted local pro who's ready to help. No calling around. No waiting until Monday.
               </p>
 
               {/* Reward pill — blue only */}
@@ -184,7 +184,7 @@ export default function LandingPage() {
 
               {/* Trust micro-row */}
               <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-[#475569]">
-                {["100% Free for Homeowners", "Verified & Insured Pros", "Same-Day Service", "4.9★ Average Rating"].map((item) => (<span key={item} className="flex items-center gap-2">
+                {["100% Free for Homeowners", "Vetted Local Pros", "Same-Day Service Available", "4.9★ Average Rating"].map((item) => (<span key={item} className="flex items-center gap-2">
                     <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#DBEAFE] text-[#2563EB]">
                       <CheckCircle2 className="size-3"/>
                     </span>
@@ -269,14 +269,14 @@ export default function LandingPage() {
         {/* ── HOW IT WORKS ──────────────────────────────────────────────── */}
         <section id="how-it-works" className="bg-white py-16 sm:py-20">
           <Container>
-            <SectionHeader eyebrow="HOW IT WORKS" title="One request. Matched in 15 minutes." description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up."/>
+            <SectionHeader eyebrow="HOW IT WORKS" title="One request. Matched fast." description="Submit in under 2 minutes. We handle the matching, scheduling, and follow-up."/>
             <div className="relative mt-12">
               {/* Connector line */}
               <div className="absolute top-7 left-[calc(12.5%+20px)] right-[calc(12.5%+20px)] hidden h-px bg-[#BFDBFE] lg:block"/>
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {[
             { n: "01", title: "Submit your request", desc: "Takes under 2 minutes. Tell us what's broken. 100% free for homeowners." },
-            { n: "02", title: "Get matched fast", desc: "A verified local pro responds within 15 minutes. No calling around." },
+            { n: "02", title: "Get matched fast", desc: "A verified local pro responds, usually within a few hours. No calling around." },
             { n: "03", title: "Book a time that works", desc: "Same-day for urgent jobs. Or schedule a window that fits your week." },
             { n: "04", title: "Job done. Earn rewards.", desc: "$60+ cash back on your first completed job. Redeemable as gift cards." },
         ].map(({ n, title, desc }) => (<div key={n} className="relative flex flex-col items-center text-center lg:items-start lg:text-left">
@@ -383,7 +383,7 @@ export default function LandingPage() {
           <Container>
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {[
-            { value: "15 min", label: "Average match time" },
+            { value: "Same day", label: "Service often available" },
             { value: "500+", label: "GTA homeowners served" },
             { value: "4.9★", label: "Average rating" },
             { value: "$60+", label: "Cash back on first job" },

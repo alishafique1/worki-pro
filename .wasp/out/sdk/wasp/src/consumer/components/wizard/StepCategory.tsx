@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useQuery, getServiceCategories } from 'wasp/client/operations'
 import type { ServiceCategory } from 'wasp/entities'
 import type { WizardState } from '../../GuestRequestWizardPage'
@@ -7,11 +8,25 @@ type Props = { state: WizardState; update: (p: Partial<WizardState>) => void; on
 export default function StepCategory({ state, update, onNext }: Props) {
   const { data: categories, isLoading } = useQuery(getServiceCategories)
   const parents = (categories as ServiceCategory[] | undefined)?.filter(c => !c.parentCategoryId && c.active) ?? []
+  const autoAdvanced = useRef(false)
 
   function select(cat: ServiceCategory) {
     update({ categoryId: cat.id, categorySlug: cat.slug, categoryName: cat.name, subServiceId: null, subServiceName: null })
     onNext()
   }
+
+  // Landing-page CTAs arrive with ?category=<id> or ?service=/?slug=<slug>.
+  // Once categories load, preselect the matching one and skip ahead — but only
+  // if the user hasn't already picked a category (categoryName is set on click).
+  useEffect(() => {
+    if (autoAdvanced.current || isLoading || state.categoryName) return
+    const match = parents.find(c => c.id === state.categoryId || c.slug === state.categorySlug)
+    if (match) {
+      autoAdvanced.current = true
+      select(match)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, categories])
 
   if (isLoading) return <div className="animate-pulse text-center text-[#94A3B8] py-8">Loading services…</div>
 

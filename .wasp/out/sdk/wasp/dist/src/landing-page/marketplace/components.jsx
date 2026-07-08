@@ -171,10 +171,10 @@ export function CTASection() {
               Takes under 2 minutes
             </div>
             <h2 className="font-display mx-auto mt-5 max-w-3xl text-balance text-[34px] font-bold leading-tight text-white sm:text-[42px]">
-              Stop calling around. Get matched with a verified pro in 15 minutes.
+              Stop calling around. Get matched with a verified pro fast.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-7 text-blue-100">
-              One request. Matched with a licensed, insured local pro. 100% free for homeowners. $60+ cash back on your first completed job.
+              One request. Matched with a vetted local pro. 100% free for homeowners. $60+ cash back on your first completed job.
             </p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Link to="/get-quotes" className="inline-flex items-center justify-center gap-2 rounded-[23px] bg-white px-5 py-3 text-sm font-semibold text-[#2563EB] shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition duration-200 hover:bg-blue-50">
@@ -342,7 +342,7 @@ export function CategoryHero({ badge, title, highlightedWord, description, ctaTe
                 </div>
                 <div>
                   <p className="text-sm font-bold text-[#0F172A]">Verified Pro</p>
-                  <p className="text-xs text-[#475569]">Licensed & Insured</p>
+                  <p className="text-xs text-[#475569]">Vetted Local Pro</p>
                 </div>
               </div>
             </div>)}

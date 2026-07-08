@@ -31,6 +31,8 @@ export { getProviderProfile } from './queries/index.js'
 
 export { getProviderFees } from './queries/index.js'
 
+export { getBillingStatus } from './queries/index.js'
+
 export { getPublicLeadFeed } from './queries/index.js'
 
 export { getPublicProvider } from './queries/index.js'
@@ -48,6 +50,8 @@ export { getDownloadFileSignedURL } from './queries/index.js'
 export { getDailyStats } from './queries/index.js'
 
 export { getAdminLiveCounts } from './queries/index.js'
+
+export { getDisputedFees } from './queries/index.js'
 
 export { getAdminRequests } from './queries/index.js'
 
@@ -83,6 +87,8 @@ export { removePortfolioPhoto } from './actions/index.js'
 
 export { setProfilePhoto } from './actions/index.js'
 
+export { createBillingSetupSession } from './actions/index.js'
+
 export { acceptServiceRequest } from './actions/index.js'
 
 export { markJobCompleted } from './actions/index.js'
@@ -103,6 +109,8 @@ export { resubmitProviderApplication } from './actions/index.js'
 
 export { claimLead } from './actions/index.js'
 
+export { disputeLeadFee } from './actions/index.js'
+
 export { moderateReview } from './actions/index.js'
 
 export { upsertAdminCategory } from './actions/index.js'
@@ -118,6 +126,8 @@ export { createFileUploadUrl } from './actions/index.js'
 export { addFileToDb } from './actions/index.js'
 
 export { deleteFile } from './actions/index.js'
+
+export { resolveFeeDispute } from './actions/index.js'
 
 export { updateLead } from './actions/index.js'
 

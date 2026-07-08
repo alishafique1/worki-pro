@@ -102,7 +102,7 @@ export default function CategoryLandingPage() {
       <section className="py-10 px-6 max-w-3xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           {[
-            { icon: <ShieldCheck className="size-6 text-green-500"/>, label: 'Verified pros', desc: 'Every provider is background-checked', iconBg: 'bg-green-50 border-green-200' },
+            { icon: <ShieldCheck className="size-6 text-green-500"/>, label: 'Verified pros', desc: 'Every provider is vetted before joining', iconBg: 'bg-green-50 border-green-200' },
             { icon: <BadgeDollarSign className="size-6 text-blue-600"/>, label: 'Free quotes', desc: 'No obligation, compare & choose', iconBg: 'bg-blue-50 border-blue-200' },
             { icon: <CalendarClock className="size-6 text-amber-500"/>, label: 'Fast response', desc: 'Most quotes arrive within hours', iconBg: 'bg-amber-50 border-amber-200' },
         ].map(item => (<div key={item.label} className="bg-white border border-slate-200 rounded-2xl p-5">

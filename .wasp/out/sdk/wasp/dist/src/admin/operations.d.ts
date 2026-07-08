@@ -1,5 +1,5 @@
-import type { ServiceRequest, Provider, RewardTransaction, Lead, Review } from 'wasp/entities';
-import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider, GetAdminLeads, UpdateLead, GetAdminReviews, ModerateReview } from 'wasp/server/operations';
+import type { ServiceRequest, Provider, RewardTransaction, Lead, Review, ProviderFee } from 'wasp/entities';
+import type { GetAdminRequests, GetAdminProviders, GetAdminRewards, ApproveProvider, AssignRequestToProvider, ApproveRewardTransaction, RejectRewardTransaction, RejectProvider, GetAdminLeads, UpdateLead, GetAdminReviews, ModerateReview, GetDisputedFees, ResolveFeeDispute } from 'wasp/server/operations';
 export declare const getAdminRequests: GetAdminRequests<void, ServiceRequest[]>;
 export declare const getAdminProviders: GetAdminProviders<void, Provider[]>;
 export declare const getAdminRewards: GetAdminRewards<void, RewardTransaction[]>;
@@ -48,5 +48,12 @@ export declare const moderateReview: ModerateReview<{
     reviewId: string;
     status: string;
 }, Review>;
+export declare const getDisputedFees: GetDisputedFees<void, ProviderFee[]>;
+type ResolveFeeDisputeInput = {
+    feeId: string;
+    resolution: 'CREDIT' | 'REJECT';
+    adminNote?: string;
+};
+export declare const resolveFeeDispute: ResolveFeeDispute<ResolveFeeDisputeInput, ProviderFee>;
 export {};
 //# sourceMappingURL=operations.d.ts.map

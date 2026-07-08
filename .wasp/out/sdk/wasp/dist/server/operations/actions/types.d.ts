@@ -61,6 +61,9 @@ export type RemovePortfolioPhoto<Input extends Payload = never, Output extends P
 export type SetProfilePhoto<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Provider
 ], Input, Output>;
+export type CreateBillingSetupSession<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _Provider
+], Input, Output>;
 export type AcceptServiceRequest<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _ServiceRequest,
     _Appointment,
@@ -112,6 +115,10 @@ export type ClaimLead<Input extends Payload = never, Output extends Payload = Pa
     _ProviderFee,
     _CommunicationLog
 ], Input, Output>;
+export type DisputeLeadFee<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _ProviderFee,
+    _Provider
+], Input, Output>;
 export type ModerateReview<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Review,
     _Provider
@@ -139,6 +146,11 @@ export type AddFileToDb<Input extends Payload = never, Output extends Payload = 
 export type DeleteFile<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _User,
     _File
+], Input, Output>;
+export type ResolveFeeDispute<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
+    _ProviderFee,
+    _Provider,
+    _ServiceRequest
 ], Input, Output>;
 export type UpdateLead<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedActionDefinition<[
     _Lead

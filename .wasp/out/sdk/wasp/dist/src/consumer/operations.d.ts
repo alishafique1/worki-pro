@@ -57,7 +57,27 @@ export declare const sendCustomerMessage: SendCustomerMessage<{
     requestId: string;
     body: string;
 }, CommunicationLog>;
-type ProviderDetail = Provider & {
+type ProviderDetail = {
+    id: string;
+    slug: string | null;
+    businessName: string;
+    contactName: string | null;
+    website: string | null;
+    bio: string | null;
+    profilePhotoUrl: string | null;
+    portfolioJson: string | null;
+    accreditationsJson: string | null;
+    responseTimeMins: number | null;
+    serviceAreas: string[];
+    ratingInternal: number | null;
+    verificationStatus: Provider["verificationStatus"];
+    createdAt: Date;
+    reviewCount: number;
+    phone: null;
+    email: null;
+    hasLicence: boolean;
+    hasInsurance: boolean;
+    hasWsib: boolean;
     categories: (ProviderCategory & {
         serviceCategory: ServiceCategory;
     })[];

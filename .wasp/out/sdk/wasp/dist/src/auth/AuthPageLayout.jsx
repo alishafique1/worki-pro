@@ -15,7 +15,7 @@ export function AuthPageLayout({ children }) {
         </div>
         <div className="space-y-4">
           {[
-            { check: true, title: 'Verified pros', desc: 'Every provider is background-checked and insured' },
+            { check: true, title: 'Verified pros', desc: 'Every provider is a vetted local pro' },
             { check: true, title: 'Earn rewards', desc: 'Get points for every completed service' },
             { check: true, title: 'GTA coverage', desc: 'Milton, Oakville, Burlington and surrounding areas' },
         ].map(item => (<div key={item.title} className="flex items-start gap-4 p-4 rounded-[14px] bg-white/5 border border-white/10">

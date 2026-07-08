@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { MapPin, Zap, Award, Search, ArrowLeft, BadgeCheck } from 'lucide-react';
+import { MapPin, Zap, Award, Search, ArrowLeft, BadgeCheck, FileCheck2, ShieldCheck } from 'lucide-react';
 import { useQuery } from "wasp/client/operations";
 import { getPublicProvider } from "wasp/client/operations";
 function StarRating({ rating, count }) {
@@ -109,6 +109,23 @@ export default function ProPublicPage() {
               <div className="mb-3">
                 <StarRating rating={provider.ratingInternal} count={reviewCount}/>
               </div>
+
+              {/* Credential badges — booleans from the server only; raw licence
+            numbers are never exposed publicly. Only rendered when the
+            admin has verified the provider AND the document is on file.
+            Copy is deliberately factual (no "guaranteed"/"insured"
+            claims). */}
+              {(provider.hasLicence || provider.hasInsurance || provider.hasWsib) && (<div className="flex flex-wrap gap-2 mb-3">
+                  {provider.hasLicence && (<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+                      <ShieldCheck className="size-3.5"/> Licence on file — verified by admin
+                    </span>)}
+                  {provider.hasInsurance && (<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+                      <FileCheck2 className="size-3.5"/> Insurance documents provided
+                    </span>)}
+                  {provider.hasWsib && (<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+                      <FileCheck2 className="size-3.5"/> WSIB clearance on file
+                    </span>)}
+                </div>)}
 
               {/* Categories */}
               <div className="flex flex-wrap gap-2 mb-3">

@@ -3,6 +3,15 @@ import { Link } from "react-router";
 import { MapPin, AlertTriangle, Clock, Inbox, Search, CheckCircle2 } from 'lucide-react';
 import { useAction, useQuery } from "wasp/client/operations";
 import { getPublicLeadFeed, claimLead, getServiceCategories } from "wasp/client/operations";
+import { getLeadFee } from "../shared/leadPricing";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../client/components/ui/dialog";
 
 const URGENCY_LABELS: Record<string, { label: string; color: string }> = {
   EMERGENCY: { label: "Urgent", color: "text-red-600 bg-red-50 border-red-200" },
@@ -30,6 +39,9 @@ export default function ProviderLeadsPage() {
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const [claimedIds, setClaimedIds] = useState<Set<string>>(new Set());
   const [claimError, setClaimError] = useState<string | null>(null);
+  // Lead pending claim confirmation (audit fix: no more one-tap claims —
+  // provider must confirm the category-based fee first).
+  const [confirmLead, setConfirmLead] = useState<{ id: string; fee: number } | null>(null);
 
   const { data: profile } = useQuery(getProviderProfile);
   const verificationStatus = (profile as any)?.verificationStatus;
@@ -45,6 +57,7 @@ export default function ProviderLeadsPage() {
   const claimLeadFn = useAction(claimLead);
 
   const handleClaim = async (requestId: string) => {
+    setConfirmLead(null);
     setClaimingId(requestId);
     setClaimError(null);
     try {
@@ -206,6 +219,7 @@ export default function ProviderLeadsPage() {
           const urgencyInfo = URGENCY_LABELS[lead.urgency] ?? URGENCY_LABELS.STANDARD;
           const isClaimed = claimedIds.has(lead.id) || lead.claimed;
           const isClaiming = claimingId === lead.id;
+          const leadFee = getLeadFee(lead.serviceCategory?.slug);
 
           return (
             <div
@@ -255,14 +269,14 @@ export default function ProviderLeadsPage() {
               {!isClaimed ? (
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => handleClaim(lead.id)}
+                    onClick={() => setConfirmLead({ id: lead.id, fee: leadFee })}
                     disabled={isClaiming}
                     className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] disabled:opacity-50 transition-all shadow-[0_8px_24px_rgba(37,99,235,0.3)]"
                   >
                     {isClaiming ? "Claiming…" : "Claim this lead"}
                   </button>
                   <span className="text-xs text-[#94A3B8]">
-                    Reveal customer contact · $5 lead fee
+                    Reveal customer contact · ${leadFee} lead fee
                   </span>
                 </div>
               ) : (
@@ -277,6 +291,35 @@ export default function ProviderLeadsPage() {
           );
         })}
       </div>
+
+      {/* Claim confirmation dialog */}
+      <Dialog open={!!confirmLead} onOpenChange={(open) => { if (!open) setConfirmLead(null); }}>
+        <DialogContent className="bg-white border-[#E2E8F0] rounded-[18px]">
+          <DialogHeader>
+            <DialogTitle className="text-[#0F172A]">
+              Claim this lead for ${confirmLead?.fee}?
+            </DialogTitle>
+            <DialogDescription className="text-[#475569]">
+              The ${confirmLead?.fee} lead fee will be charged to your card on
+              file, and the customer's contact details will be revealed to you.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <button
+              onClick={() => setConfirmLead(null)}
+              className="px-5 py-2.5 rounded-[14px] border border-[#E2E8F0] text-[#475569] text-sm font-bold hover:border-[#2563EB] transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => confirmLead && handleClaim(confirmLead.id)}
+              className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-black rounded-[14px] hover:bg-[#1D4ED8] transition-all"
+            >
+              Confirm — claim for ${confirmLead?.fee}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

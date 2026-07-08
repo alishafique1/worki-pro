@@ -2,6 +2,9 @@ import { maskLead } from "./leadMasking";
 import { checkFileExistsInS3, deleteFileFromS3 } from '../file-upload/s3Utils';
 import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
+import { chargeProviderFee } from "./billing";
+import { getLeadFee } from "../shared/leadPricing";
+import { assertTransition, canTransition, CLAIMABLE_STATUSES, } from "../shared/requestStatusMachine";
 const requireProvider = async (context) => {
     if (!context.user)
         throw new HttpError(401);
@@ -63,10 +66,25 @@ export const acceptServiceRequest = async ({ requestId }, context) => {
     });
     if (!req || req.assignedProviderId !== provider.id)
         throw new HttpError(403, "Invalid request.");
-    await context.entities.ServiceRequest.update({
-        where: { id: requestId },
-        data: { status: "ACCEPTED_BY_PROVIDER" },
-    });
+    // Idempotent: if this provider already accepted, return the existing
+    // appointment instead of creating an orphan + double-awarding points.
+    if (req.status === "ACCEPTED_BY_PROVIDER") {
+        const existingAppointment = await context.entities.Appointment.findFirst({
+            where: { serviceRequestId: requestId, providerId: provider.id },
+            orderBy: { createdAt: "desc" },
+        });
+        if (existingAppointment)
+            return existingAppointment;
+        // Status already correct but the appointment write was lost — recreate it
+        // below without re-touching status.
+    }
+    else {
+        assertTransition(req.status, "ACCEPTED_BY_PROVIDER");
+        await context.entities.ServiceRequest.update({
+            where: { id: requestId },
+            data: { status: "ACCEPTED_BY_PROVIDER" },
+        });
+    }
     const appointment = await context.entities.Appointment.create({
         data: {
             serviceRequestId: requestId,
@@ -139,6 +157,13 @@ export const submitProviderApplication = async (args, context) => {
     const serviceAreas = normalizeStringArray(args.serviceAreas);
     const calComUsername = args.calComUsername?.trim() || null;
     const serviceCategorySlugs = normalizeStringArray(args.serviceCategorySlugs);
+    // Optional credentials: undefined is skipped by Prisma, so re-submitting the
+    // application with blank credential fields never wipes saved values.
+    const credentialData = {
+        licenceNumber: args.licenceNumber?.trim() || undefined,
+        insuranceUrl: args.insuranceUrl?.trim() || undefined,
+        wsibClearanceNumber: args.wsibClearanceNumber?.trim() || undefined,
+    };
     if (!businessName)
         throw new HttpError(400, "Business name is required.");
     if (!contactName)
@@ -162,6 +187,7 @@ export const submitProviderApplication = async (args, context) => {
             website,
             serviceAreas,
             calComUsername,
+            ...credentialData,
             active: true,
         },
         create: {
@@ -173,6 +199,7 @@ export const submitProviderApplication = async (args, context) => {
             website,
             serviceAreas,
             calComUsername,
+            ...credentialData,
             verificationStatus: "PENDING",
             active: true,
         },
@@ -249,6 +276,13 @@ export const updateProviderProfile = async (args, context) => {
         data.accreditationsJson = args.accreditationsJson;
     if (args.responseTimeMins !== undefined)
         data.responseTimeMins = args.responseTimeMins || null;
+    // Credentials — explicit empty string clears the value (owner can retract).
+    if (args.licenceNumber !== undefined)
+        data.licenceNumber = args.licenceNumber.trim() || null;
+    if (args.insuranceUrl !== undefined)
+        data.insuranceUrl = args.insuranceUrl.trim() || null;
+    if (args.wsibClearanceNumber !== undefined)
+        data.wsibClearanceNumber = args.wsibClearanceNumber.trim() || null;
     return context.entities.Provider.update({
         where: { id: provider.id },
         data,
@@ -263,15 +297,28 @@ export const markJobCompleted = async ({ appointmentId }, context) => {
         throw new HttpError(403);
     if (appt.status === "COMPLETED")
         return appt;
+    // Validate the ServiceRequest transition BEFORE touching the appointment so
+    // a 409 never leaves the two rows out of sync. If the request is already
+    // COMPLETED (e.g. via webhook) skip the redundant status write.
+    const serviceRequest = await context.entities.ServiceRequest.findUnique({
+        where: { id: appt.serviceRequestId },
+        select: { status: true },
+    });
+    const needsRequestUpdate = !!serviceRequest && serviceRequest.status !== "COMPLETED";
+    if (needsRequestUpdate) {
+        assertTransition(serviceRequest.status, "COMPLETED");
+    }
     const completedAt = new Date();
     const updatedAppt = await context.entities.Appointment.update({
         where: { id: appointmentId },
         data: { status: "COMPLETED", completedAt },
     });
-    await context.entities.ServiceRequest.update({
-        where: { id: appt.serviceRequestId },
-        data: { status: "COMPLETED", completedAt },
-    });
+    if (needsRequestUpdate) {
+        await context.entities.ServiceRequest.update({
+            where: { id: appt.serviceRequestId },
+            data: { status: "COMPLETED", completedAt },
+        });
+    }
     // Award 5,000 pts ($50) to consumer when job is verified complete
     if (appt.consumerId) {
         await context.entities.RewardTransaction.create({
@@ -372,28 +419,28 @@ export const updateProviderAppointment = async (args, context) => {
         where: { id: args.appointmentId },
         data,
     });
-    // Only transition the ServiceRequest if it hasn't already reached a terminal state
+    // Mirror the appointment change onto the ServiceRequest only when the
+    // status machine allows it — otherwise skip (the appointment update stands).
     const serviceRequest = await context.entities.ServiceRequest.findUnique({
         where: { id: updated.serviceRequestId },
         select: { status: true },
     });
-    const terminalStatuses = ["COMPLETED", "CLOSED", "REWARD_APPROVED"];
-    const canTransition = serviceRequest && !terminalStatuses.includes(serviceRequest.status);
-    if (canTransition) {
-        if (updated.status === "CONFIRMED") {
+    if (serviceRequest) {
+        const target = updated.status === "CONFIRMED"
+            ? "BOOKED"
+            : updated.status === "CANCELLED" || updated.status === "NO_SHOW"
+                ? "CLOSED"
+                : null;
+        if (target && canTransition(serviceRequest.status, target)) {
             await context.entities.ServiceRequest.update({
                 where: { id: updated.serviceRequestId },
-                data: {
-                    status: "BOOKED",
-                    bookedAt: updated.scheduledAt || new Date(),
-                },
+                data: target === "BOOKED"
+                    ? { status: "BOOKED", bookedAt: updated.scheduledAt || new Date() }
+                    : { status: "CLOSED" },
             });
         }
-        else if (updated.status === "CANCELLED" || updated.status === "NO_SHOW") {
-            await context.entities.ServiceRequest.update({
-                where: { id: updated.serviceRequestId },
-                data: { status: "CLOSED" },
-            });
+        else if (target) {
+            console.warn(`[updateProviderAppointment] Skipping request status ${serviceRequest.status}→${target} for ${updated.serviceRequestId} — invalid transition`);
         }
     }
     return updated;
@@ -454,8 +501,10 @@ export const getPublicLeadFeed = async ({ categorySlug, urgency, limit = 20, off
         include: { serviceCategory: true },
     });
     const proSlugs = providerCats.map((pc) => pc.serviceCategory.slug);
+    // Only surface leads a provider can actually claim (statuses from which
+    // → ASSIGNED is a legal transition per the request status machine).
     const where = {
-        status: { in: ["NEW", "QUALIFYING", "QUALIFIED"] },
+        status: { in: CLAIMABLE_STATUSES },
     };
     if (categorySlug) {
         where.serviceCategory = { slug: categorySlug };
@@ -485,6 +534,7 @@ export const claimLead = async ({ requestId }, context) => {
     }
     const req = await context.entities.ServiceRequest.findUnique({
         where: { id: requestId },
+        include: { serviceCategory: { select: { slug: true } } },
     });
     if (!req)
         throw new HttpError(404, "Lead not found.");
@@ -492,26 +542,49 @@ export const claimLead = async ({ requestId }, context) => {
     if (req.assignedProviderId === provider.id) {
         return { request: req, alreadyClaimed: true };
     }
-    // Already claimed by someone else
+    // Already claimed by someone else (fast pre-check; the atomic gate below is
+    // what actually prevents the race)
     if (req.assignedProviderId && req.assignedProviderId !== provider.id) {
         throw new HttpError(409, "This lead has already been claimed by another provider.");
     }
+    // Status machine gate: only statuses from which → ASSIGNED is legal are
+    // claimable. (Fast pre-check for a clear error; the updateMany WHERE below
+    // re-checks atomically.)
+    if (!CLAIMABLE_STATUSES.includes(req.status)) {
+        throw new HttpError(409, `This lead is not open for claims (status ${req.status}).`);
+    }
+    // Category-based lead fee — see src/shared/leadPricing.ts.
+    const leadFee = getLeadFee(req.serviceCategory?.slug);
     // All three writes must succeed together: if the fee write fails after
     // the lead is assigned, the provider has contact info with no revenue record.
-    const [updated] = await prisma.$transaction(async (tx) => {
-        const updateResult = await tx.serviceRequest.update({
-            where: { id: requestId },
+    //
+    // The claim itself is an atomic compare-and-set: updateMany only matches the
+    // row while assignedProviderId is still null, so of N concurrent claimers
+    // exactly one gets count === 1. Losers get null back and are resolved below
+    // (never a fee, never an email).
+    const updated = await prisma.$transaction(async (tx) => {
+        const { count } = await tx.serviceRequest.updateMany({
+            // The status filter enforces the state machine atomically: only rows
+            // still in a claimable status (→ ASSIGNED legal) match.
+            where: {
+                id: requestId,
+                assignedProviderId: null,
+                status: { in: CLAIMABLE_STATUSES },
+            },
             data: {
                 assignedProviderId: provider.id,
                 status: "ASSIGNED",
             },
         });
-        await tx.providerFee.create({
+        if (count !== 1) {
+            return null; // lost the race — no fee, no log
+        }
+        const fee = await tx.providerFee.create({
             data: {
                 providerId: provider.id,
                 serviceRequestId: requestId,
                 feeType: "QUALIFIED_LEAD",
-                amount: 5.0,
+                amount: leadFee,
                 status: "PENDING",
             },
         });
@@ -527,8 +600,33 @@ export const claimLead = async ({ requestId }, context) => {
                 status: "DELIVERED",
             },
         });
-        return [updateResult];
+        return {
+            request: await tx.serviceRequest.findUniqueOrThrow({
+                where: { id: requestId },
+            }),
+            feeId: fee.id,
+        };
     });
+    // Lost the atomic gate: figure out who won.
+    if (!updated) {
+        const current = await context.entities.ServiceRequest.findUnique({
+            where: { id: requestId },
+        });
+        if (current && current.assignedProviderId === provider.id) {
+            // Same provider raced itself (double-click / retry) — idempotent
+            return { request: current, alreadyClaimed: true };
+        }
+        if (current && !current.assignedProviderId) {
+            // Unclaimed but the status moved out of the claimable set mid-flight
+            throw new HttpError(409, `This lead is not open for claims (status ${current.status}).`);
+        }
+        throw new HttpError(409, "This lead has already been claimed by another provider.");
+    }
+    // Charge the provider's card on file for the lead fee (fire-and-forget,
+    // OUTSIDE the transaction — no network calls in a tx). chargeProviderFee
+    // never throws: on any failure the fee simply stays PENDING and the claim
+    // stands. See src/provider/billing.ts.
+    void chargeProviderFee(updated.feeId);
     // Notify consumer by email (fire-and-forget)
     if (req.email) {
         emailSender.send({
@@ -540,12 +638,83 @@ export const claimLead = async ({ requestId }, context) => {
             console.warn("[claimLead] email notification failed:", err.message);
         });
     }
-    return { request: updated, alreadyClaimed: false };
+    return { request: updated.request, alreadyClaimed: false };
+};
+// ─── Dispute Lead Fee (bad-lead credit workflow) ─────────────────────────────
+//
+// Providers can dispute a QUALIFIED_LEAD fee within 45 days of the claim
+// (Thumbtack-style bad-lead refund — the #1 pro-retention feature in lead-gen).
+// The fee flips to DISPUTED and an admin resolves it via resolveFeeDispute:
+// CREDIT → WAIVED (+ Stripe refund if it was paid), REJECT → back to PAID/PENDING.
+export const DISPUTE_REASONS = [
+    "WRONG_NUMBER",
+    "SPAM",
+    "DUPLICATE",
+    "OUT_OF_AREA",
+    "OTHER",
+];
+const DISPUTE_WINDOW_DAYS = 45;
+export const disputeLeadFee = async ({ feeId, reason, note }, context) => {
+    const provider = await requireProvider(context);
+    if (!DISPUTE_REASONS.includes(reason)) {
+        throw new HttpError(400, "Invalid dispute reason.");
+    }
+    const trimmedNote = note?.trim() || null;
+    if (trimmedNote && trimmedNote.length > 1000) {
+        throw new HttpError(400, "Note must be 1,000 characters or fewer.");
+    }
+    const fee = await context.entities.ProviderFee.findUnique({
+        where: { id: feeId },
+    });
+    if (!fee || fee.providerId !== provider.id) {
+        throw new HttpError(404, "Fee not found.");
+    }
+    if (fee.feeType !== "QUALIFIED_LEAD") {
+        throw new HttpError(400, "Only lead fees can be disputed.");
+    }
+    if (fee.status === "DISPUTED") {
+        throw new HttpError(400, "This fee is already under review.");
+    }
+    if (fee.status !== "PENDING" && fee.status !== "PAID") {
+        throw new HttpError(400, "This fee can no longer be disputed.");
+    }
+    const windowMs = DISPUTE_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+    if (Date.now() - new Date(fee.createdAt).getTime() > windowMs) {
+        throw new HttpError(400, `Lead fees can only be disputed within ${DISPUTE_WINDOW_DAYS} days.`);
+    }
+    return context.entities.ProviderFee.update({
+        where: { id: fee.id },
+        data: {
+            status: "DISPUTED",
+            disputeReason: reason,
+            disputeNote: trimmedNote,
+            disputedAt: new Date(),
+        },
+    });
 };
 export const getPublicProvider = async ({ slug }, context) => {
     const provider = await context.entities.Provider.findFirst({
         where: { slug, active: true, verificationStatus: "VERIFIED" },
-        include: {
+        select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            website: true,
+            bio: true,
+            profilePhotoUrl: true,
+            portfolioJson: true,
+            accreditationsJson: true,
+            responseTimeMins: true,
+            serviceAreas: true,
+            ratingInternal: true,
+            verificationStatus: true,
+            createdAt: true,
+            // Raw credential values — read server-side only, reduced to booleans below.
+            licenceNumber: true,
+            tssaRegistrationNumber: true,
+            insuranceUrl: true,
+            insuranceStatus: true,
+            wsibClearanceNumber: true,
             categories: { include: { serviceCategory: true } },
             reviews: {
                 where: { status: "PUBLISHED" },
@@ -554,7 +723,15 @@ export const getPublicProvider = async ({ slug }, context) => {
             },
         },
     });
-    return provider;
+    if (!provider)
+        return null;
+    const { licenceNumber, tssaRegistrationNumber, insuranceUrl, insuranceStatus, wsibClearanceNumber, ...publicFields } = provider;
+    return {
+        ...publicFields,
+        hasLicence: Boolean(licenceNumber?.trim() || tssaRegistrationNumber?.trim()),
+        hasInsurance: Boolean(insuranceUrl?.trim()) || insuranceStatus,
+        hasWsib: Boolean(wsibClearanceNumber?.trim()),
+    };
 };
 // ─── Issue 3: Resubmit rejected application ─────────────────────────────────
 export const resubmitProviderApplication = async (args, context) => {

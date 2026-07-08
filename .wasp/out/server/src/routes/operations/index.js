@@ -15,6 +15,7 @@ import applyReferralCode from './applyReferralCode.js'
 import addPortfolioPhoto from './addPortfolioPhoto.js'
 import removePortfolioPhoto from './removePortfolioPhoto.js'
 import setProfilePhoto from './setProfilePhoto.js'
+import createBillingSetupSession from './createBillingSetupSession.js'
 import acceptServiceRequest from './acceptServiceRequest.js'
 import markJobCompleted from './markJobCompleted.js'
 import submitProviderApplication from './submitProviderApplication.js'
@@ -25,6 +26,7 @@ import sendProviderMessage from './sendProviderMessage.js'
 import updateProviderProfile from './updateProviderProfile.js'
 import resubmitProviderApplication from './resubmitProviderApplication.js'
 import claimLead from './claimLead.js'
+import disputeLeadFee from './disputeLeadFee.js'
 import moderateReview from './moderateReview.js'
 import upsertAdminCategory from './upsertAdminCategory.js'
 import deleteAdminCategory from './deleteAdminCategory.js'
@@ -33,6 +35,7 @@ import updateUserProfile from './updateUserProfile.js'
 import createFileUploadUrl from './createFileUploadUrl.js'
 import addFileToDb from './addFileToDb.js'
 import deleteFile from './deleteFile.js'
+import resolveFeeDispute from './resolveFeeDispute.js'
 import updateLead from './updateLead.js'
 import approveProvider from './approveProvider.js'
 import rejectProvider from './rejectProvider.js'
@@ -53,6 +56,7 @@ import getProviderLeads from './getProviderLeads.js'
 import getProviderAppointments from './getProviderAppointments.js'
 import getProviderProfile from './getProviderProfile.js'
 import getProviderFees from './getProviderFees.js'
+import getBillingStatus from './getBillingStatus.js'
 import getPublicLeadFeed from './getPublicLeadFeed.js'
 import getPublicProvider from './getPublicProvider.js'
 import getAdminReviews from './getAdminReviews.js'
@@ -62,6 +66,7 @@ import getAllFilesByUser from './getAllFilesByUser.js'
 import getDownloadFileSignedURL from './getDownloadFileSignedURL.js'
 import getDailyStats from './getDailyStats.js'
 import getAdminLiveCounts from './getAdminLiveCounts.js'
+import getDisputedFees from './getDisputedFees.js'
 import getAdminRequests from './getAdminRequests.js'
 import getAdminProviders from './getAdminProviders.js'
 import getAdminRewards from './getAdminRewards.js'
@@ -82,6 +87,7 @@ router.post('/apply-referral-code', auth, applyReferralCode)
 router.post('/add-portfolio-photo', auth, addPortfolioPhoto)
 router.post('/remove-portfolio-photo', auth, removePortfolioPhoto)
 router.post('/set-profile-photo', auth, setProfilePhoto)
+router.post('/create-billing-setup-session', auth, createBillingSetupSession)
 router.post('/accept-service-request', auth, acceptServiceRequest)
 router.post('/mark-job-completed', auth, markJobCompleted)
 router.post('/submit-provider-application', auth, submitProviderApplication)
@@ -92,6 +98,7 @@ router.post('/send-provider-message', auth, sendProviderMessage)
 router.post('/update-provider-profile', auth, updateProviderProfile)
 router.post('/resubmit-provider-application', auth, resubmitProviderApplication)
 router.post('/claim-lead', auth, claimLead)
+router.post('/dispute-lead-fee', auth, disputeLeadFee)
 router.post('/moderate-review', auth, moderateReview)
 router.post('/upsert-admin-category', auth, upsertAdminCategory)
 router.post('/delete-admin-category', auth, deleteAdminCategory)
@@ -100,6 +107,7 @@ router.post('/update-user-profile', auth, updateUserProfile)
 router.post('/create-file-upload-url', auth, createFileUploadUrl)
 router.post('/add-file-to-db', auth, addFileToDb)
 router.post('/delete-file', auth, deleteFile)
+router.post('/resolve-fee-dispute', auth, resolveFeeDispute)
 router.post('/update-lead', auth, updateLead)
 router.post('/approve-provider', auth, approveProvider)
 router.post('/reject-provider', auth, rejectProvider)
@@ -120,6 +128,7 @@ router.post('/get-provider-leads', auth, getProviderLeads)
 router.post('/get-provider-appointments', auth, getProviderAppointments)
 router.post('/get-provider-profile', auth, getProviderProfile)
 router.post('/get-provider-fees', auth, getProviderFees)
+router.post('/get-billing-status', auth, getBillingStatus)
 router.post('/get-public-lead-feed', auth, getPublicLeadFeed)
 router.post('/get-public-provider', auth, getPublicProvider)
 router.post('/get-admin-reviews', auth, getAdminReviews)
@@ -129,6 +138,7 @@ router.post('/get-all-files-by-user', auth, getAllFilesByUser)
 router.post('/get-download-file-signed-url', auth, getDownloadFileSignedURL)
 router.post('/get-daily-stats', auth, getDailyStats)
 router.post('/get-admin-live-counts', auth, getAdminLiveCounts)
+router.post('/get-disputed-fees', auth, getDisputedFees)
 router.post('/get-admin-requests', auth, getAdminRequests)
 router.post('/get-admin-providers', auth, getAdminProviders)
 router.post('/get-admin-rewards', auth, getAdminRewards)

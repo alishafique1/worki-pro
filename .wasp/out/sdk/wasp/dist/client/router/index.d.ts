@@ -317,6 +317,10 @@ export declare const routes: {
         readonly to: "/admin/categories";
         readonly build: (options?: OptionalRouteOptions) => string;
     };
+    readonly AdminDisputesRoute: {
+        readonly to: "/admin/disputes";
+        readonly build: (options?: OptionalRouteOptions) => string;
+    };
     readonly AdminSettingsRoute: {
         readonly to: "/admin/settings";
         readonly build: (options?: OptionalRouteOptions) => string;

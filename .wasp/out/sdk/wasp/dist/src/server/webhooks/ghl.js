@@ -1,3 +1,13 @@
+import crypto from 'crypto';
+import { prisma } from 'wasp/server';
+import { RequestStatus, ProviderStatus } from '@prisma/client';
+import { canTransition } from '../../shared/requestStatusMachine';
+/** Constant-time string comparison — avoids leaking the secret via timing. */
+const safeEqual = (a, b) => {
+    const aBuf = Buffer.from(a);
+    const bBuf = Buffer.from(b);
+    return aBuf.length === bBuf.length && crypto.timingSafeEqual(aBuf, bBuf);
+};
 /**
  * GoHighLevel → The Helper inbound webhook
  *
@@ -28,13 +38,22 @@ export const handleGhlWebhook = async (req, res, context) => {
     // ── Authenticate ──────────────────────────────────────────────────────────
     const isProduction = process.env.NODE_ENV === 'production';
     const secret = process.env.GHL_WEBHOOK_SECRET;
-    if (isProduction && !secret) {
-        return res.status(401).json({ error: 'Webhook secret is required in production' });
+    if (!secret) {
+        // Fail closed in production: never process unauthenticated payloads.
+        if (isProduction) {
+            console.error('[GHL] GHL_WEBHOOK_SECRET is not set in production — rejecting webhook. Configure the secret to process GHL events.');
+            return res.status(503).json({ error: 'Webhook misconfigured' });
+        }
+        console.warn('[GHL] GHL_WEBHOOK_SECRET not set — skipping auth (dev only).');
     }
-    const headerSecret = req.headers['x-thehelper-secret'];
-    const bodySecret = req.body?.secret;
-    if (secret && headerSecret !== secret && bodySecret !== secret) {
-        return res.status(401).json({ error: 'Invalid webhook secret' });
+    else {
+        const headerSecret = req.headers['x-thehelper-secret'];
+        const bodySecret = req.body?.secret;
+        const headerOk = typeof headerSecret === 'string' && safeEqual(headerSecret, secret);
+        const bodyOk = typeof bodySecret === 'string' && safeEqual(bodySecret, secret);
+        if (!headerOk && !bodyOk) {
+            return res.status(401).json({ error: 'Invalid webhook secret' });
+        }
     }
     const { event, requestId, ghlContactId, status, providerId, appointmentTime, notes, } = req.body;
     // Log every inbound call to WebhookLog for debugging
@@ -59,21 +78,53 @@ export const handleGhlWebhook = async (req, res, context) => {
     }
     // ── Map GHL event → RequestStatus ─────────────────────────────────────────
     const statusMap = {
-        'conversation.started': 'SMS_STARTED',
-        'conversation.qualifying': 'QUALIFYING',
-        'conversation.qualified': 'QUALIFIED',
-        'lead.assigned': 'ASSIGNED',
-        'appointment.booked': 'BOOKED',
-        'job.completed': 'COMPLETED',
-        'lead.lost': 'LOST',
+        'conversation.started': RequestStatus.SMS_STARTED,
+        'conversation.qualifying': RequestStatus.QUALIFYING,
+        'conversation.qualified': RequestStatus.QUALIFIED,
+        'lead.assigned': RequestStatus.ASSIGNED,
+        'appointment.booked': RequestStatus.BOOKED,
+        'job.completed': RequestStatus.COMPLETED,
+        'lead.lost': RequestStatus.LOST,
     };
-    const newStatus = statusMap[event] ?? status ?? undefined;
+    // Whitelist caller-supplied status against the real RequestStatus enum —
+    // ignore anything that isn't a known value.
+    const candidateStatus = statusMap[event] ?? status;
+    const validStatuses = new Set(Object.values(RequestStatus));
+    let newStatus;
+    if (candidateStatus) {
+        if (validStatuses.has(candidateStatus)) {
+            newStatus = candidateStatus;
+        }
+        else {
+            console.warn(`[GHL] Ignoring unknown status "${candidateStatus}" for request ${requestId}`);
+        }
+    }
+    // Status machine gate: skip illegal transitions (incl. same-status retries)
+    // with a warning instead of failing the webhook — GHL retries on 5xx.
+    if (newStatus && !canTransition(serviceRequest.status, newStatus)) {
+        console.warn(`[GHL] Skipping invalid status transition ${serviceRequest.status}→${newStatus} for request ${requestId}`);
+        newStatus = undefined;
+    }
+    // Only assign a provider that exists AND is VERIFIED — otherwise skip.
+    let verifiedProviderId;
+    if (providerId) {
+        const provider = await prisma.provider.findUnique({
+            where: { id: providerId },
+            select: { id: true, verificationStatus: true },
+        });
+        if (provider && provider.verificationStatus === ProviderStatus.VERIFIED) {
+            verifiedProviderId = providerId;
+        }
+        else {
+            console.warn(`[GHL] Skipping provider assignment for request ${requestId} — provider ${providerId} ${provider ? `has status ${provider.verificationStatus}` : 'not found'}`);
+        }
+    }
     // ── Update ServiceRequest ─────────────────────────────────────────────────
     await context.entities.ServiceRequest.update({
         where: { id: requestId },
         data: {
             ...(newStatus && { status: newStatus }),
-            ...(providerId && { assignedProviderId: providerId }),
+            ...(verifiedProviderId && { assignedProviderId: verifiedProviderId }),
             ...(appointmentTime && { bookedAt: new Date(appointmentTime) }),
             ...(event === 'job.completed' && { completedAt: new Date() }),
         },

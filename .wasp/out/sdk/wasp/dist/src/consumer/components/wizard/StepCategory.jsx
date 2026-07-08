@@ -1,11 +1,26 @@
+import { useEffect, useRef } from 'react';
 import { useQuery, getServiceCategories } from 'wasp/client/operations';
 export default function StepCategory({ state, update, onNext }) {
     const { data: categories, isLoading } = useQuery(getServiceCategories);
     const parents = categories?.filter(c => !c.parentCategoryId && c.active) ?? [];
+    const autoAdvanced = useRef(false);
     function select(cat) {
         update({ categoryId: cat.id, categorySlug: cat.slug, categoryName: cat.name, subServiceId: null, subServiceName: null });
         onNext();
     }
+    // Landing-page CTAs arrive with ?category=<id> or ?service=/?slug=<slug>.
+    // Once categories load, preselect the matching one and skip ahead — but only
+    // if the user hasn't already picked a category (categoryName is set on click).
+    useEffect(() => {
+        if (autoAdvanced.current || isLoading || state.categoryName)
+            return;
+        const match = parents.find(c => c.id === state.categoryId || c.slug === state.categorySlug);
+        if (match) {
+            autoAdvanced.current = true;
+            select(match);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, categories]);
     if (isLoading)
         return <div className="animate-pulse text-center text-[#94A3B8] py-8">Loading services…</div>;
     return (<div>

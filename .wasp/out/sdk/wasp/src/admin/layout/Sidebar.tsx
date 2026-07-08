@@ -5,6 +5,7 @@ import {
   Users,
   Star,
   Gift,
+  ShieldAlert,
   Layers,
   MessageSquare,
   Settings,
@@ -52,6 +53,7 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'Quality',
     items: [
       { to: '/admin/reviews', label: 'Reviews', Icon: Star },
+      { to: '/admin/disputes', label: 'Disputes', Icon: ShieldAlert },
       { to: '/admin/rewards', label: 'Rewards', Icon: Gift },
     ],
   },

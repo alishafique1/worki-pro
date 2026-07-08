@@ -116,6 +116,7 @@ export const requestOtp = async (req, res, context) => {
     }
     res.json({ success: true });
 };
+const URGENCY_VALUES = ['EMERGENCY', 'STANDARD', 'PLANNED'];
 export const verifyOtp = async (req, res, context) => {
     if (!isAllowedOrigin(req)) {
         res.status(403).json({ error: 'Forbidden.' });
@@ -209,6 +210,10 @@ export const verifyOtp = async (req, res, context) => {
                     serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
                     description: pendingRequest.description,
                     qualifierAnswers: pendingRequest.qualifierAnswers ?? {},
+                    // Validate against the enum — schema default (STANDARD) applies otherwise.
+                    urgency: URGENCY_VALUES.includes(pendingRequest.urgency)
+                        ? pendingRequest.urgency
+                        : undefined,
                     source: 'WEBSITE',
                 },
             });

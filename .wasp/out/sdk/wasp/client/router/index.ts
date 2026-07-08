@@ -853,6 +853,19 @@ export const routes = {
         options?.hash
       ),
   },
+  AdminDisputesRoute: {
+    to: "/admin/disputes",
+    build: (
+      options?:
+      OptionalRouteOptions
+    ) => interpolatePath(
+        
+        "/admin/disputes",
+        undefined,
+        options?.search,
+        options?.hash
+      ),
+  },
   AdminSettingsRoute: {
     to: "/admin/settings",
     build: (

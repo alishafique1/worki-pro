@@ -15,11 +15,13 @@ export default function GuestRequestWizardPage() {
     const [error, setError] = useState(null);
     const [state, setState] = useState({
         categoryId: searchParams.get('category'),
-        categorySlug: searchParams.get('slug'),
+        // Landing CTAs link both as ?slug= (category pages) and ?service= (SEO pages).
+        categorySlug: searchParams.get('slug') ?? searchParams.get('service'),
         categoryName: null,
         subServiceId: null,
         subServiceName: null,
         qualifierAnswers: {},
+        urgency: 'STANDARD',
         description: '',
         postalCode: searchParams.get('postal') ?? '',
         firstName: '',

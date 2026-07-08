@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAction } from 'wasp/client/operations';
 import { submitProviderApplication } from 'wasp/client/operations';
 import PageSeo from '../landing-page/components/PageSeo';
+import { licenceFieldForCategorySlugs } from '../shared/credentials';
 
 const serviceCategoryOptions = [
   { slug: 'handyman', label: 'Handyman' },
@@ -23,6 +24,9 @@ export default function ProviderApplyPage() {
   const [serviceAreas, setServiceAreas] = useState('');
   const [calComUsername, setCalComUsername] = useState('');
   const [serviceCategorySlugs, setServiceCategorySlugs] = useState<string[]>([]);
+  const [licenceNumber, setLicenceNumber] = useState('');
+  const [insuranceInfo, setInsuranceInfo] = useState('');
+  const [wsibClearanceNumber, setWsibClearanceNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -46,6 +50,9 @@ export default function ProviderApplyPage() {
           .filter(Boolean),
         calComUsername: calComUsername || undefined,
         serviceCategorySlugs,
+        licenceNumber: licenceNumber || undefined,
+        insuranceUrl: insuranceInfo || undefined,
+        wsibClearanceNumber: wsibClearanceNumber || undefined,
       });
       setSubmitted(true);
     } catch (err: any) {
@@ -206,6 +213,50 @@ export default function ProviderApplyPage() {
                     <span className="font-semibold text-[#0F172A]">{category.label}</span>
                   </label>
                 ))}
+              </div>
+            </fieldset>
+            <fieldset className="space-y-6">
+              <legend className="block text-sm font-bold mb-1 uppercase tracking-widest text-[#475569]">
+                Licences & Insurance <span className="normal-case font-semibold text-[#94A3B8] tracking-normal">(optional)</span>
+              </legend>
+              <div className="rounded-2xl bg-[#FEF3C7] border border-[#F59E0B]/30 px-4 py-3">
+                <p className="text-sm font-semibold text-[#B45309]">
+                  Verified pros get priority in the lead feed and a badge on their public profile.
+                  Our team checks submitted numbers against the public registries.
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2 uppercase tracking-widest text-[#475569]">
+                  {licenceFieldForCategorySlugs(serviceCategorySlugs).label}
+                </label>
+                <input
+                  type="text"
+                  value={licenceNumber}
+                  onChange={(e) => setLicenceNumber(e.target.value)}
+                  className="w-full bg-white border border-[#E2E8F0] rounded-2xl p-4 text-lg text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
+                  placeholder="e.g. 1234567"
+                />
+                <p className="mt-2 text-sm text-[#94A3B8]">{licenceFieldForCategorySlugs(serviceCategorySlugs).hint}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2 uppercase tracking-widest text-[#475569]">Insurance Provider & Policy #</label>
+                <input
+                  type="text"
+                  value={insuranceInfo}
+                  onChange={(e) => setInsuranceInfo(e.target.value)}
+                  className="w-full bg-white border border-[#E2E8F0] rounded-2xl p-4 text-lg text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
+                  placeholder="e.g. Intact — policy CGL-123456, or a certificate link"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2 uppercase tracking-widest text-[#475569]">WSIB Clearance #</label>
+                <input
+                  type="text"
+                  value={wsibClearanceNumber}
+                  onChange={(e) => setWsibClearanceNumber(e.target.value)}
+                  className="w-full bg-white border border-[#E2E8F0] rounded-2xl p-4 text-lg text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/30 transition-colors"
+                  placeholder="e.g. 1234567"
+                />
               </div>
             </fieldset>
             <button

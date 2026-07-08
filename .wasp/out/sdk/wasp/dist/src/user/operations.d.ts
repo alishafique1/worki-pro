@@ -21,17 +21,17 @@ declare const updateUserProfileInputSchema: z.ZodObject<{
     postalCode: z.ZodOptional<z.ZodString>;
     username: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    phone?: string | undefined;
+    postalCode?: string | undefined;
     username?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
 }, {
+    phone?: string | undefined;
+    postalCode?: string | undefined;
     username?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
 }>;
 type UpdateUserProfileInput = z.infer<typeof updateUserProfileInputSchema>;
 export declare const updateUserProfile: UpdateUserProfile<UpdateUserProfileInput, User>;

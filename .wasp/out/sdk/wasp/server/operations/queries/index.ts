@@ -20,6 +20,7 @@ import { getProviderLeads as getProviderLeads_ext } from 'wasp/src/provider/oper
 import { getProviderAppointments as getProviderAppointments_ext } from 'wasp/src/provider/operations'
 import { getProviderProfile as getProviderProfile_ext } from 'wasp/src/provider/operations'
 import { getProviderFees as getProviderFees_ext } from 'wasp/src/provider/operations'
+import { getBillingStatus as getBillingStatus_ext } from 'wasp/src/provider/billing'
 import { getPublicLeadFeed as getPublicLeadFeed_ext } from 'wasp/src/provider/operations'
 import { getPublicProvider as getPublicProvider_ext } from 'wasp/src/provider/operations'
 import { getAdminReviews as getAdminReviews_ext } from 'wasp/src/admin/operations'
@@ -29,6 +30,7 @@ import { getAllFilesByUser as getAllFilesByUser_ext } from 'wasp/src/file-upload
 import { getDownloadFileSignedURL as getDownloadFileSignedURL_ext } from 'wasp/src/file-upload/operations'
 import { getDailyStats as getDailyStats_ext } from 'wasp/src/analytics/operations'
 import { getAdminLiveCounts as getAdminLiveCounts_ext } from 'wasp/src/analytics/operations'
+import { getDisputedFees as getDisputedFees_ext } from 'wasp/src/admin/operations'
 import { getAdminRequests as getAdminRequests_ext } from 'wasp/src/admin/operations'
 import { getAdminProviders as getAdminProviders_ext } from 'wasp/src/admin/operations'
 import { getAdminRewards as getAdminRewards_ext } from 'wasp/src/admin/operations'
@@ -240,6 +242,20 @@ export const getProviderFees: AuthenticatedOperationFor<GetProviderFees_ext> =
 
 
 // PRIVATE API
+export type GetBillingStatus_ext = typeof getBillingStatus_ext
+
+// PUBLIC API
+export const getBillingStatus: AuthenticatedOperationFor<GetBillingStatus_ext> =
+  createAuthenticatedOperation(
+    getBillingStatus_ext,
+    {
+      Provider: prisma.provider,
+      ProviderFee: prisma.providerFee,
+    },
+  )
+
+
+// PRIVATE API
 export type GetPublicLeadFeed_ext = typeof getPublicLeadFeed_ext
 
 // PUBLIC API
@@ -364,6 +380,22 @@ export const getAdminLiveCounts: AuthenticatedOperationFor<GetAdminLiveCounts_ex
       Provider: prisma.provider,
       Review: prisma.review,
       ServiceRequest: prisma.serviceRequest,
+    },
+  )
+
+
+// PRIVATE API
+export type GetDisputedFees_ext = typeof getDisputedFees_ext
+
+// PUBLIC API
+export const getDisputedFees: AuthenticatedOperationFor<GetDisputedFees_ext> =
+  createAuthenticatedOperation(
+    getDisputedFees_ext,
+    {
+      ProviderFee: prisma.providerFee,
+      Provider: prisma.provider,
+      ServiceRequest: prisma.serviceRequest,
+      ServiceCategory: prisma.serviceCategory,
     },
   )
 

@@ -47,7 +47,7 @@ export default function DiscoveryPage() {
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-5xl font-black tracking-tighter mb-3 text-[#0F172A]">Discover Pros</h1>
-        <p className="text-[#475569] text-lg">Browse verified, background-checked service professionals in your area.</p>
+        <p className="text-[#475569] text-lg">Browse verified, vetted service professionals in your area.</p>
       </div>
 
       {/* Search + Filter Bar */}

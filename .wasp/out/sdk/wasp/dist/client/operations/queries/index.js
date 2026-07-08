@@ -28,6 +28,8 @@ export const getProviderProfile = createQuery('operations/get-provider-profile',
 // PUBLIC API
 export const getProviderFees = createQuery('operations/get-provider-fees', ['ProviderFee', 'Provider']);
 // PUBLIC API
+export const getBillingStatus = createQuery('operations/get-billing-status', ['Provider', 'ProviderFee']);
+// PUBLIC API
 export const getPublicLeadFeed = createQuery('operations/get-public-lead-feed', ['ServiceRequest', 'Provider', 'ProviderCategory', 'ServiceCategory']);
 // PUBLIC API
 export const getPublicProvider = createQuery('operations/get-public-provider', ['Provider', 'Review', 'ProviderCategory', 'ServiceCategory']);
@@ -45,6 +47,8 @@ export const getDownloadFileSignedURL = createQuery('operations/get-download-fil
 export const getDailyStats = createQuery('operations/get-daily-stats', ['User', 'DailyStats']);
 // PUBLIC API
 export const getAdminLiveCounts = createQuery('operations/get-admin-live-counts', ['Provider', 'Review', 'ServiceRequest']);
+// PUBLIC API
+export const getDisputedFees = createQuery('operations/get-disputed-fees', ['ProviderFee', 'Provider', 'ServiceRequest', 'ServiceCategory']);
 // PUBLIC API
 export const getAdminRequests = createQuery('operations/get-admin-requests', ['ServiceRequest', 'Provider', 'User']);
 // PUBLIC API

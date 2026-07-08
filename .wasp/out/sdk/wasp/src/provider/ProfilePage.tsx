@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useAction, getProviderProfile, updateProviderProfile } from 'wasp/client/operations';
 import { resubmitProviderApplication, createFileUploadUrl, addPortfolioPhoto, removePortfolioPhoto, setProfilePhoto } from 'wasp/client/operations';
 import type { Provider, ProviderCategory, ServiceCategory } from 'wasp/entities';
-import { AlertTriangle, Clock, RefreshCcw, Upload, Trash2, Star } from 'lucide-react';
+import { AlertTriangle, Clock, RefreshCcw, Upload, Trash2, Star, BadgeCheck } from 'lucide-react';
+import { licenceFieldForCategorySlugs } from '../shared/credentials';
 
 type ProfileWithCategories = Provider & {
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
@@ -21,6 +22,10 @@ type FormData = {
   bio: string;
   profilePhotoUrl: string;
   responseTimeMins: string;
+  // Credentials
+  licenceNumber: string;
+  insuranceUrl: string;
+  wsibClearanceNumber: string;
 };
 
 const statusBadgeClass: Record<string, string> = {
@@ -50,6 +55,9 @@ export default function ProviderProfilePage() {
     bio: '',
     profilePhotoUrl: '',
     responseTimeMins: '',
+    licenceNumber: '',
+    insuranceUrl: '',
+    wsibClearanceNumber: '',
   });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -75,6 +83,9 @@ export default function ProviderProfilePage() {
         bio: (profile as any).bio ?? '',
         profilePhotoUrl: (profile as any).profilePhotoUrl ?? '',
         responseTimeMins: (profile as any).responseTimeMins?.toString() ?? '',
+        licenceNumber: (profile as any).licenceNumber ?? '',
+        insuranceUrl: (profile as any).insuranceUrl ?? '',
+        wsibClearanceNumber: (profile as any).wsibClearanceNumber ?? '',
       });
       try {
         const parsed = (profile as any).portfolioJson
@@ -107,6 +118,9 @@ export default function ProviderProfilePage() {
         bio: (profile as any).bio ?? '',
         profilePhotoUrl: (profile as any).profilePhotoUrl ?? '',
         responseTimeMins: (profile as any).responseTimeMins?.toString() ?? '',
+        licenceNumber: (profile as any).licenceNumber ?? '',
+        insuranceUrl: (profile as any).insuranceUrl ?? '',
+        wsibClearanceNumber: (profile as any).wsibClearanceNumber ?? '',
       });
     }
     setErrorMsg(null);
@@ -219,6 +233,9 @@ const handleSave = async () => {
         bio: formData.bio || undefined,
         profilePhotoUrl: formData.profilePhotoUrl || undefined,
         responseTimeMins: formData.responseTimeMins ? parseInt(formData.responseTimeMins, 10) : undefined,
+        licenceNumber: formData.licenceNumber,
+        insuranceUrl: formData.insuranceUrl,
+        wsibClearanceNumber: formData.wsibClearanceNumber,
       });
 
       setSuccessMsg('Profile updated ✓');
@@ -388,6 +405,31 @@ const handleSave = async () => {
             ) : (
               <p className="text-[#94A3B8] text-sm">No categories assigned.</p>
             )}
+          </div>
+
+          {/* Licences & Insurance */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-[#0F172A]">Licences & Insurance</h2>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#B45309] bg-[#FEF3C7] rounded-full px-3 py-1">
+                <BadgeCheck className="size-3.5" />
+                Verified pros get priority + badge
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {field(
+                licenceFieldForCategorySlugs(
+                  (profile.categories ?? []).map((c) => c.serviceCategory.slug),
+                ).label,
+                (profile as any).licenceNumber,
+              )}
+              {field('Insurance provider / policy #', (profile as any).insuranceUrl)}
+              {field('WSIB clearance #', (profile as any).wsibClearanceNumber)}
+            </div>
+            <p className="text-xs text-[#94A3B8]">
+              Optional. Our team checks submitted numbers against the public registries (TSSA,
+              ESA, Skilled Trades Ontario, WSIB) during verification.
+            </p>
           </div>
 
           {/* Business Photos */}
@@ -588,6 +630,58 @@ const handleSave = async () => {
                 className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
               />
             </div>
+          </div>
+
+          {/* Credentials */}
+          <div className="pt-4 border-t border-[#E2E8F0] space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F172A]">Licences & Insurance</h3>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#B45309] bg-[#FEF3C7] rounded-full px-3 py-1">
+                <BadgeCheck className="size-3.5" />
+                Verified pros get priority + badge
+              </span>
+            </div>
+
+            {[
+              {
+                label: licenceFieldForCategorySlugs(
+                  (profile.categories ?? []).map((c) => c.serviceCategory.slug),
+                ).label,
+                key: 'licenceNumber' as const,
+                placeholder: 'e.g. 1234567',
+                hint: licenceFieldForCategorySlugs(
+                  (profile.categories ?? []).map((c) => c.serviceCategory.slug),
+                ).hint,
+              },
+              {
+                label: 'Insurance provider & policy # (or certificate link)',
+                key: 'insuranceUrl' as const,
+                placeholder: 'e.g. Intact — policy CGL-123456, or a certificate link',
+                hint: 'Commercial general liability details or a link to your certificate of insurance.',
+              },
+              {
+                label: 'WSIB clearance #',
+                key: 'wsibClearanceNumber' as const,
+                placeholder: 'e.g. 1234567',
+                hint: 'Your WSIB clearance certificate number, if you have employees.',
+              },
+            ].map(({ label, key, placeholder, hint }) => (
+              <div key={key}>
+                <label className="block text-sm text-[#475569] mb-1">{label}</label>
+                <input
+                  type="text"
+                  value={formData[key]}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, [key]: e.target.value }))}
+                  placeholder={placeholder}
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[14px] p-4 text-sm focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]/30"
+                />
+                <p className="text-xs text-[#94A3B8] mt-1.5">{hint}</p>
+              </div>
+            ))}
+            <p className="text-xs text-[#94A3B8]">
+              Optional — never required to submit. Our team checks these against the public
+              registries during verification.
+            </p>
           </div>
 
           <div className="flex gap-3 pt-2">

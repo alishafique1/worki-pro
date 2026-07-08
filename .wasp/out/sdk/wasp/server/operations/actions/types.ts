@@ -175,6 +175,16 @@ export type SetProfilePhoto<Input extends Payload = never, Output extends Payloa
   >
 
 // PUBLIC API
+export type CreateBillingSetupSession<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type AcceptServiceRequest<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedActionDefinition<
     [
@@ -296,6 +306,17 @@ export type ClaimLead<Input extends Payload = never, Output extends Payload = Pa
   >
 
 // PUBLIC API
+export type DisputeLeadFee<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _ProviderFee,
+      _Provider,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
 export type ModerateReview<Input extends Payload = never, Output extends Payload = Payload> = 
   AuthenticatedActionDefinition<
     [
@@ -374,6 +395,18 @@ export type DeleteFile<Input extends Payload = never, Output extends Payload = P
     [
       _User,
       _File,
+    ],
+    Input,
+    Output
+  >
+
+// PUBLIC API
+export type ResolveFeeDispute<Input extends Payload = never, Output extends Payload = Payload> = 
+  AuthenticatedActionDefinition<
+    [
+      _ProviderFee,
+      _Provider,
+      _ServiceRequest,
     ],
     Input,
     Output

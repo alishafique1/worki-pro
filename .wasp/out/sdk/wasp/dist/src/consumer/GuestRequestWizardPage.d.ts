@@ -1,3 +1,4 @@
+export type Urgency = 'EMERGENCY' | 'STANDARD' | 'PLANNED';
 export type WizardState = {
     categoryId: string | null;
     categorySlug: string | null;
@@ -5,6 +6,7 @@ export type WizardState = {
     subServiceId: string | null;
     subServiceName: string | null;
     qualifierAnswers: Record<string, string | string[]>;
+    urgency: Urgency;
     description: string;
     postalCode: string;
     firstName: string;

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { SERVICE_ZONES } from '../shared/geoConfig';
 import { useRoleGuard } from '../shared/useRoleGuard';
+import { CREDENTIAL_REGISTRIES } from '../shared/credentials';
 
 type FilterKey = 'ALL' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 
@@ -331,6 +332,31 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+function CredentialRow({ label, value, link }: { label: string; value?: string | null; link?: boolean }) {
+  const isUrl = link && typeof value === 'string' && /^https?:\/\//i.test(value);
+  return (
+    <p className="flex items-baseline gap-2">
+      <span className="w-32 shrink-0 font-semibold text-[#94A3B8]">{label}</span>
+      {value ? (
+        isUrl ? (
+          <a
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="truncate font-semibold text-[#2563EB] hover:underline"
+          >
+            {value}
+          </a>
+        ) : (
+          <span className="truncate font-semibold text-[#0F172A]">{value}</span>
+        )
+      ) : (
+        <span className="text-[#94A3B8]">Not provided</span>
+      )}
+    </p>
+  );
+}
+
 interface ProviderCardProps {
   provider: any;
   busy: boolean;
@@ -458,6 +484,41 @@ function ProviderCard({
               }`}
             >
               {done ? '✓' : '○'} {label}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Submitted credentials — shown where the approve/reject decision is
+          made so the admin can manually check each number against the public
+          registry before flipping PENDING → VERIFIED. */}
+      <div className="mt-3 rounded-[14px] border border-[#E2E8F0] bg-white p-3">
+        <span className="mb-2 block text-xs font-bold uppercase tracking-wide text-[#475569]">
+          Submitted credentials
+        </span>
+        <div className="space-y-1 text-xs text-[#475569]">
+          <CredentialRow label="Licence #" value={provider.licenceNumber} />
+          <CredentialRow label="TSSA reg #" value={provider.tssaRegistrationNumber} />
+          <CredentialRow label="Insurance" value={provider.insuranceUrl} link />
+          <CredentialRow label="WSIB clearance #" value={provider.wsibClearanceNumber} />
+          {provider.licenceUrl && (
+            <CredentialRow label="Licence doc" value={provider.licenceUrl} link />
+          )}
+        </div>
+        <div className="mt-2 border-t border-[#E2E8F0] pt-2">
+          <span className="mr-1 text-xs font-semibold text-[#94A3B8]">Check registries:</span>
+          {CREDENTIAL_REGISTRIES.map((registry, i) => (
+            <span key={registry.name} className="text-xs">
+              {i > 0 && <span className="text-[#94A3B8]"> · </span>}
+              <a
+                href={registry.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={registry.checks}
+                className="font-semibold text-[#2563EB] hover:underline"
+              >
+                {registry.name} ↗
+              </a>
             </span>
           ))}
         </div>

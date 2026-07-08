@@ -64,6 +64,10 @@ export type GetProviderFees<Input extends Payload = never, Output extends Payloa
     _ProviderFee,
     _Provider
 ], Input, Output>;
+export type GetBillingStatus<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
+    _Provider,
+    _ProviderFee
+], Input, Output>;
 export type GetPublicLeadFeed<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _ServiceRequest,
     _Provider,
@@ -102,6 +106,12 @@ export type GetAdminLiveCounts<Input extends Payload = never, Output extends Pay
     _Provider,
     _Review,
     _ServiceRequest
+], Input, Output>;
+export type GetDisputedFees<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
+    _ProviderFee,
+    _Provider,
+    _ServiceRequest,
+    _ServiceCategory
 ], Input, Output>;
 export type GetAdminRequests<Input extends Payload = never, Output extends Payload = Payload> = AuthenticatedQueryDefinition<[
     _ServiceRequest,
