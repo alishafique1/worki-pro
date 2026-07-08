@@ -18,7 +18,7 @@ export function AuthPageLayout({ children }: { children: ReactNode }) {
         </div>
         <div className="space-y-4">
           {[
-            { check: true, title: 'Verified pros', desc: 'Every provider is background-checked and insured' },
+            { check: true, title: 'Verified pros', desc: 'Every provider is a vetted local pro' },
             { check: true, title: 'Earn rewards', desc: 'Get points for every completed service' },
             { check: true, title: 'GTA coverage', desc: 'Milton, Oakville, Burlington and surrounding areas' },
           ].map(item => (

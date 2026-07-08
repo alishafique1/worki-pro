@@ -7,6 +7,8 @@ import StepInfoAndVerify from './components/wizard/StepInfoAndVerify'
 import StepVerifyEmail from './components/wizard/StepVerifyEmail'
 import logo from '../client/static/logo.webp'
 
+export type Urgency = 'EMERGENCY' | 'STANDARD' | 'PLANNED'
+
 export type WizardState = {
   categoryId: string | null
   categorySlug: string | null
@@ -14,6 +16,7 @@ export type WizardState = {
   subServiceId: string | null
   subServiceName: string | null
   qualifierAnswers: Record<string, string | string[]>
+  urgency: Urgency
   description: string
   postalCode: string
   firstName: string
@@ -34,11 +37,13 @@ export default function GuestRequestWizardPage() {
 
   const [state, setState] = useState<WizardState>({
     categoryId: searchParams.get('category'),
-    categorySlug: searchParams.get('slug'),
+    // Landing CTAs link both as ?slug= (category pages) and ?service= (SEO pages).
+    categorySlug: searchParams.get('slug') ?? searchParams.get('service'),
     categoryName: null,
     subServiceId: null,
     subServiceName: null,
     qualifierAnswers: {},
+    urgency: 'STANDARD',
     description: '',
     postalCode: searchParams.get('postal') ?? '',
     firstName: '',

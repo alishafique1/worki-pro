@@ -7,15 +7,15 @@ import LandingHeroBanner from './components/LandingHeroBanner';
 const handymanFaqs = [
   {
     question: 'How much does a handyman cost in Oakville?',
-    answer: 'Handyman rates in Oakville typically range from $50-$100 per hour depending on the task complexity. Common jobs like TV mounting ($75-$150), furniture assembly ($100-$250), and drywall repair ($150-$400) have fixed pricing. The Helper connects you with background-checked pros who provide upfront quotes.',
+    answer: 'Handyman rates in Oakville typically range from $50-$100 per hour depending on the task complexity. Common jobs like TV mounting ($75-$150), furniture assembly ($100-$250), and drywall repair ($150-$400) have fixed pricing. The Helper connects you with vetted pros who provide upfront quotes.',
   },
   {
     question: 'What services does a handyman provide?',
     answer: 'Our handyman network handles TV and shelf mounting, furniture assembly (IKEA, Wayfair, etc.), drywall repair and patching, minor plumbing fixes, painting touch-ups, door and lock installation, weather stripping, and general home repairs. For specialized trades like electrical or major plumbing, we connect you with licensed contractors.',
   },
   {
-    question: 'Are your handymen insured in Burlington?',
-    answer: 'Yes, all handymen in The Helper network carry liability insurance and are background-checked. We verify credentials before any provider joins our platform, ensuring you have peace of mind when they enter your home.',
+    question: 'How are handymen vetted in Burlington?',
+    answer: 'Every handyman in The Helper network goes through a vetting review before joining the platform. We check business details and credentials where required, so you can feel confident when they enter your home.',
   },
   {
     question: 'How quickly can I get a handyman in Milton?',
@@ -53,9 +53,9 @@ export default function HandymanLandingPage() {
     <>
       <PageSeo
         title="Handyman Services in Oakville, Burlington & Milton | The Helper"
-        description="Trusted handyman pros for TV mounting, furniture assembly, drywall repair, and home repairs in Oakville, Burlington & Milton. Background-checked, insured, and verified."
+        description="Trusted handyman pros for TV mounting, furniture assembly, drywall repair, and home repairs in Oakville, Burlington & Milton. Vetted, verified local pros."
         ogTitle="Handyman Services in Oakville, Burlington & Milton | The Helper"
-        ogDescription="Book background-checked handyman pros for TV mounting, furniture assembly, painting, and home repairs in the GTA. Verified and insured."
+        ogDescription="Book vetted handyman pros for TV mounting, furniture assembly, painting, and home repairs in the GTA. Verified local pros."
         canonicalPath="/handyman"
         keywords="handyman Oakville, handyman services Burlington, TV mounting Milton, furniture assembly GTA, drywall repair, home repairs near me"
         structuredData={{
@@ -85,7 +85,7 @@ export default function HandymanLandingPage() {
             Tackle Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]">To-Do</span> List
           </h1>
           <p className="text-xl text-[#475569] max-w-2xl mx-auto mb-12">
-            Professional help for TV mounting, furniture assembly, drywall repair, painting, and small repairs. We match you with background-checked handymen in Oakville, Burlington, and Milton.
+            Professional help for TV mounting, furniture assembly, drywall repair, painting, and small repairs. We match you with vetted handymen in Oakville, Burlington, and Milton.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-4">
@@ -96,14 +96,14 @@ export default function HandymanLandingPage() {
               Get Handyman Help
             </Link>
           </div>
-          <p className="text-sm text-[#475569] mt-2 mb-16">Background-checked pros. Earn rewards on every completed job.</p>
+          <p className="text-sm text-[#475569] mt-2 mb-16">Vetted pros. Earn rewards on every completed job.</p>
 
           {/* Trust Signals */}
           <div className="flex flex-wrap justify-center gap-12 mb-24" role="list" aria-label="Trust signals">
             {[
-              { label: 'Background Checked', icon: <Search className="size-6" />, alt: 'Background checked handymen' },
-              { label: 'Fully Insured', icon: <ShieldCheck className="size-6" />, alt: 'Fully insured service' },
-              { label: 'Satisfaction Guaranteed', icon: <Star className="size-6" />, alt: 'Satisfaction guaranteed' }
+              { label: 'Vetted Pros', icon: <Search className="size-6" />, alt: 'Vetted handymen' },
+              { label: 'Verified Providers', icon: <ShieldCheck className="size-6" />, alt: 'Verified providers' },
+              { label: 'Quality-Focused', icon: <Star className="size-6" />, alt: 'Quality-focused service' }
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center gap-2" role="listitem">
                 <div className="text-[#2563EB]" aria-hidden="true">{stat.icon}</div>

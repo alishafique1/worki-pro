@@ -2,13 +2,20 @@ import { useState } from 'react'
 import { useQuery, getServiceCategories } from 'wasp/client/operations'
 import type { ServiceCategory } from 'wasp/entities'
 import { CATEGORY_QUALIFIERS } from '../../categoryQualifiers'
-import type { WizardState } from '../../GuestRequestWizardPage'
+import type { WizardState, Urgency } from '../../GuestRequestWizardPage'
 
 type Props = { state: WizardState; update: (p: Partial<WizardState>) => void; onNext: () => void; onBack: () => void }
+
+const URGENCY_OPTIONS: { value: Urgency; label: string; hint: string }[] = [
+  { value: 'EMERGENCY', label: 'Emergency', hint: 'I need help today' },
+  { value: 'STANDARD', label: 'Standard', hint: 'Sometime this week' },
+  { value: 'PLANNED', label: 'Planned', hint: "I'm flexible on timing" },
+]
 
 export default function StepQualifiers({ state, update, onNext, onBack }: Props) {
   const { data: categories } = useQuery(getServiceCategories)
   const [description, setDescription] = useState(state.description)
+  const [urgency, setUrgency] = useState<Urgency>(state.urgency)
   const [answers, setAnswers] = useState<Record<string, string>>(
     Object.fromEntries(Object.entries(state.qualifierAnswers).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v]))
   )
@@ -28,7 +35,7 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
   }
 
   function handleNext() {
-    update({ qualifierAnswers: answers, description })
+    update({ qualifierAnswers: answers, description, urgency })
     onNext()
   }
 
@@ -56,6 +63,25 @@ export default function StepQualifiers({ state, update, onNext, onBack }: Props)
           </div>
         </div>
       ))}
+
+      <div className="mb-5">
+        <p className="text-sm font-semibold text-[#475569] mb-2">How soon do you need this done?</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {URGENCY_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setUrgency(opt.value)}
+              className={`border-2 rounded-2xl px-4 py-3 text-left transition-all cursor-pointer ${
+                urgency === opt.value ? 'border-[#2563EB] bg-[#EFF6FF]' : 'border-[#E2E8F0] bg-white hover:border-[#94A3B8]'
+              }`}
+            >
+              <p className={`font-bold text-sm ${urgency === opt.value ? 'text-[#2563EB]' : 'text-[#0F172A]'}`}>{opt.label}</p>
+              <p className="text-xs text-[#475569] mt-0.5">{opt.hint}</p>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="mt-4">
         <label className="block text-sm font-semibold text-[#475569] mb-1.5">Any other details? <span className="font-normal opacity-60">(optional)</span></label>

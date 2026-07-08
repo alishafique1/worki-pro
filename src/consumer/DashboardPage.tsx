@@ -27,8 +27,7 @@ import {
 
 const urgencyConfig: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
   EMERGENCY: { label: "Emergency", className: "bg-red-50 text-red-600 border border-red-200", icon: <Zap className="size-3" /> },
-  URGENT:    { label: "Urgent",   className: "bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]", icon: <Clock3 className="size-3" /> },
-  SOON:      { label: "Soon",    className: "bg-blue-50 text-blue-600 border border-blue-200", icon: <Calendar className="size-3" /> },
+  STANDARD:  { label: "Standard", className: "bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]", icon: <Clock3 className="size-3" /> },
   PLANNED:   { label: "Planned", className: "bg-slate-50 text-slate-500 border border-slate-200", icon: <Calendar className="size-3" /> },
 };
 
@@ -61,7 +60,7 @@ export default function DashboardPage() {
   useRoleGuard('CONSUMER');
   const { data: user, isLoading: authLoading } = useAuth();
 
-  if (authLoading) return <div className="min-h-screen bg-[#F8FAFC]" />;
+  // All hooks must run unconditionally, before any early return.
   const {
     data: requests,
     isLoading: requestsLoading,
@@ -74,6 +73,8 @@ export default function DashboardPage() {
   } = useQuery(getMyRewardAccount);
 
   const [filter, setFilter] = useState<FilterKey>("ALL");
+
+  if (authLoading) return <div className="min-h-screen bg-[#F8FAFC]" />;
 
   const firstName = (user as any)?.firstName || "there";
 
@@ -151,7 +152,7 @@ export default function DashboardPage() {
               {
                 label: "In Progress",
                 value: inProgressCount,
-                hint: "15 min avg response time",
+                hint: "Fast response from local pros",
                 trend: "up" as const,
                 trendLabel: "Active now",
               },
@@ -350,7 +351,7 @@ export default function DashboardPage() {
             {!requestsLoading && !requestsError && filteredRequests.length > 0 && (
               <div className="space-y-4">
                 {filteredRequests.map((req: any) => {
-                  const urgency = urgencyConfig[req.urgency] ?? urgencyConfig.PLANNED;
+                  const urgency = urgencyConfig[req.urgency] ?? urgencyConfig.STANDARD;
                   const appt = req.appointments?.[0];
                   const provider = appt?.provider || req.assignedProvider;
                   const accent = statusAccent[req.status] ?? "#2563EB";

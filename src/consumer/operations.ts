@@ -36,6 +36,7 @@ import type {
 import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
 import { sendLeadToGHL } from "../server/services/ghl";
+import { getLeadFee } from "../shared/leadPricing";
 import crypto from "node:crypto";
 
 export const getServiceCategories: GetServiceCategories<
@@ -194,20 +195,30 @@ export const submitServiceRequest: SubmitServiceRequest<
   ServiceRequest
 > = async (args, context) => {
   let serviceCategoryId: string | undefined = undefined;
+  let serviceCategorySlug: string | undefined = undefined;
   if (args.serviceType) {
     const cat = await context.entities.ServiceCategory.findUnique({
       where: { slug: args.serviceType },
     });
     serviceCategoryId = cat?.id;
+    serviceCategorySlug = cat?.slug;
   }
 
-  const preferredProviderId = args.preferredProviderId
-    ? (
-        await context.entities.Provider.findUnique({
-          where: { id: args.preferredProviderId },
-        })
-      )?.id
-    : undefined;
+  // Preferred provider must exist, be active, and be VERIFIED — otherwise
+  // silently ignore the preference and create an unassigned request.
+  let preferredProviderId: string | undefined = undefined;
+  if (args.preferredProviderId) {
+    const preferredProvider = await context.entities.Provider.findUnique({
+      where: { id: args.preferredProviderId },
+    });
+    if (
+      preferredProvider &&
+      preferredProvider.active &&
+      preferredProvider.verificationStatus === "VERIFIED"
+    ) {
+      preferredProviderId = preferredProvider.id;
+    }
+  }
 
   const newRequest = await context.entities.ServiceRequest.create({
     data: {
@@ -229,6 +240,22 @@ export const submitServiceRequest: SubmitServiceRequest<
       assignedProviderId: preferredProviderId || undefined,
     },
   });
+
+  // Preferred-provider assignment gives the provider this lead directly, so
+  // record the same category-priced QUALIFIED_LEAD fee that claimLead would
+  // have created (see src/shared/leadPricing.ts).
+  // (ProviderFee is not in this action's entity list — use the prisma client.)
+  if (preferredProviderId) {
+    await prisma.providerFee.create({
+      data: {
+        providerId: preferredProviderId,
+        serviceRequestId: newRequest.id,
+        feeType: "QUALIFIED_LEAD",
+        amount: getLeadFee(serviceCategorySlug),
+        status: "PENDING",
+      },
+    });
+  }
 
   // Award 500 pts ($5) immediately for authenticated users.
   // For guests, this request stays reward-eligible and is claimed after signup/onboarding.
@@ -425,7 +452,33 @@ export const sendCustomerMessage: SendCustomerMessage<
   return log;
 };
 
-type ProviderDetail = Provider & {
+// Public-profile shape only — this query is unauthenticated. PII and internal
+// fields (phone, email, licence/insurance/WSIB docs, Stripe ids, User relation)
+// are deliberately never selected. phone/email are typed as null so existing
+// UI conditionals (`provider.phone && …`) compile and simply render nothing.
+type ProviderDetail = {
+  id: string;
+  slug: string | null;
+  businessName: string;
+  contactName: string | null;
+  website: string | null;
+  bio: string | null;
+  profilePhotoUrl: string | null;
+  portfolioJson: string | null;
+  accreditationsJson: string | null;
+  responseTimeMins: number | null;
+  serviceAreas: string[];
+  ratingInternal: number | null;
+  verificationStatus: Provider["verificationStatus"];
+  createdAt: Date;
+  reviewCount: number;
+  phone: null;
+  email: null;
+  // Credential presence flags — booleans only, never the raw numbers/URLs.
+  // Only true when the provider is admin-VERIFIED and the field is on file.
+  hasLicence: boolean;
+  hasInsurance: boolean;
+  hasWsib: boolean;
   categories: (ProviderCategory & { serviceCategory: ServiceCategory })[];
   services: { id: string; name: string; description: string; price: number | null; categorySlug: string }[];
   reviews: Review[];
@@ -434,19 +487,63 @@ type ProviderDetail = Provider & {
 export const getProviderById: GetProviderById<{ providerId: string }, ProviderDetail | null> = async ({ providerId }, context) => {
   const provider = await context.entities.Provider.findUnique({
     where: { id: providerId, active: true },
-    include: {
+    select: {
+      id: true,
+      slug: true,
+      businessName: true,
+      contactName: true,
+      website: true,
+      bio: true,
+      profilePhotoUrl: true,
+      portfolioJson: true,
+      accreditationsJson: true,
+      responseTimeMins: true,
+      serviceAreas: true,
+      ratingInternal: true,
+      verificationStatus: true,
+      servicesJson: true,
+      createdAt: true,
+      // Raw credential values — reduced to booleans below, never returned raw.
+      licenceNumber: true,
+      tssaRegistrationNumber: true,
+      insuranceUrl: true,
+      insuranceStatus: true,
+      wsibClearanceNumber: true,
       categories: { include: { serviceCategory: true } },
       reviews: {
         where: { status: "PUBLISHED" },
         orderBy: { createdAt: "desc" },
         take: 20,
       },
+      _count: {
+        select: { reviews: { where: { status: "PUBLISHED" } } },
+      },
     },
   });
   if (!provider) return null;
 
-  const services = provider.servicesJson ? JSON.parse(provider.servicesJson) : [];
-  return { ...provider, services };
+  const {
+    servicesJson,
+    _count,
+    licenceNumber,
+    tssaRegistrationNumber,
+    insuranceUrl,
+    insuranceStatus,
+    wsibClearanceNumber,
+    ...publicFields
+  } = provider;
+  const services = servicesJson ? JSON.parse(servicesJson) : [];
+  const isVerified = provider.verificationStatus === "VERIFIED";
+  return {
+    ...publicFields,
+    services,
+    reviewCount: _count.reviews,
+    phone: null,
+    email: null,
+    hasLicence: isVerified && Boolean(licenceNumber?.trim() || tssaRegistrationNumber?.trim()),
+    hasInsurance: isVerified && (Boolean(insuranceUrl?.trim()) || insuranceStatus),
+    hasWsib: isVerified && Boolean(wsibClearanceNumber?.trim()),
+  };
 };
 
 // ─── Consumer Analytics ───────────────────────────────────────────────────────
@@ -709,22 +806,45 @@ export const submitReview: SubmitReview<
   if (rating < 1 || rating > 5) throw new HttpError(400, "Rating must be 1–5.");
   if (!body.trim()) throw new HttpError(400, "Review body is required.");
 
-  // Each consumer can review a provider once per service request
-  if (serviceRequestId) {
-    const existing = await context.entities.Review.findFirst({
-      where: {
-        consumerId: context.user.id,
-        serviceRequestId,
-      },
-    });
-    if (existing) throw new HttpError(409, "You have already reviewed this service request.");
+  // serviceRequestId is required — the one-review-per-request guard below must
+  // always run, and ownership/status checks depend on the request record.
+  if (!serviceRequestId) {
+    throw new HttpError(400, "A service request is required to leave a review.");
   }
+
+  // IDOR guard: the caller must own the service request being reviewed.
+  const serviceRequest = await context.entities.ServiceRequest.findUnique({
+    where: { id: serviceRequestId },
+  });
+  if (!serviceRequest || serviceRequest.consumerId !== context.user.id) {
+    throw new HttpError(403, "You can only review your own service requests.");
+  }
+
+  // The reviewed provider must be the one assigned to this request.
+  if (serviceRequest.assignedProviderId !== providerId) {
+    throw new HttpError(403, "This provider is not assigned to that service request.");
+  }
+
+  // Only completed (or later-lifecycle) jobs can be reviewed.
+  const REVIEWABLE_STATUSES = ["COMPLETED", "REWARD_PENDING", "REWARD_APPROVED", "CLOSED"];
+  if (!REVIEWABLE_STATUSES.includes(serviceRequest.status)) {
+    throw new HttpError(400, "You can only review a job after it has been completed.");
+  }
+
+  // Each consumer can review a provider once per service request
+  const existing = await context.entities.Review.findFirst({
+    where: {
+      consumerId: context.user.id,
+      serviceRequestId,
+    },
+  });
+  if (existing) throw new HttpError(409, "You have already reviewed this service request.");
 
   const review = await context.entities.Review.create({
     data: {
       providerId,
       consumerId: context.user.id,
-      serviceRequestId: serviceRequestId || undefined,
+      serviceRequestId,
       rating,
       title: title?.trim() || undefined,
       body: body.trim(),

@@ -80,6 +80,7 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
         serviceCategoryId: state.subServiceId ?? state.categoryId ?? undefined,
         description: state.description || `${state.categoryName ?? 'Service'} request`,
         qualifierAnswers: state.qualifierAnswers,
+        urgency: state.urgency,
         referralCode: state.referralCode || undefined,
       }
       const res = await fetch(`${config.apiUrl}/api/auth/verify-otp`, {
@@ -129,7 +130,7 @@ export default function StepVerifyEmail({ state, update, onBack, onSuccess, setE
         </div>
         <h3 className="text-2xl font-black text-[#0F172A] mb-2">You're in!</h3>
         <p className="text-[#475569] text-sm mb-6">
-          A verified pro in your area will be in touch within 15 minutes.
+          A verified pro in your area will be in touch shortly.
         </p>
         <div className="rounded-[18px] bg-[#FEF3C7] border border-[#FDE68A] p-5 text-left mb-6">
           <div className="flex items-center gap-2 text-[#92400E] font-bold mb-2">

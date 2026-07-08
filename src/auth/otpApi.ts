@@ -125,6 +125,9 @@ export const requestOtp = async (req: Request, res: Response, context: any): Pro
   res.json({ success: true })
 }
 
+const URGENCY_VALUES = ['EMERGENCY', 'STANDARD', 'PLANNED'] as const
+type Urgency = (typeof URGENCY_VALUES)[number]
+
 type PendingRequest = {
   firstName: string
   phone: string
@@ -133,6 +136,7 @@ type PendingRequest = {
   serviceCategoryId?: string
   description: string
   qualifierAnswers?: Record<string, string | string[]>
+  urgency?: Urgency
   referralCode?: string
 }
 
@@ -241,6 +245,10 @@ export const verifyOtp = async (req: Request, res: Response, context: any): Prom
           serviceCategoryId: pendingRequest.serviceCategoryId ?? null,
           description: pendingRequest.description,
           qualifierAnswers: pendingRequest.qualifierAnswers ?? {},
+          // Validate against the enum — schema default (STANDARD) applies otherwise.
+          urgency: URGENCY_VALUES.includes(pendingRequest.urgency as Urgency)
+            ? pendingRequest.urgency
+            : undefined,
           source: 'WEBSITE',
         },
       })
