@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
 import heroImage from "../client/static/hero-home-service.jpg";
+import TrustBadges from "./components/TrustBadges";
 import {
   CategoryCard,
   Container,
@@ -78,30 +79,6 @@ const trustPillars = [
     body: "Built for Milton, Oakville, Burlington, Mississauga, and Brampton homeowners first.",
   },
 ];
-
-// ── Testimonials ─────────────────────────────────────────────────────────────
-
-const testimonials = [
-  {
-    quote: "My AC broke on a Saturday afternoon. Submitted at 2pm, tech booked by 4pm, done by 6pm. First time I've not spent hours calling around.",
-    name: "S.M.",
-    city: "Milton",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&h=64&q=80",
-  },
-  {
-    quote: "Found an electrician in 45 minutes on a weeknight. The app sent the quote, I booked, and it was fixed before the weekend. The rewards points are a bonus.",
-    name: "J.K.",
-    city: "Oakville",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80",
-  },
-  {
-    quote: "Most platforms connect you and disappear. This one tracks the whole job and makes it easy to get someone out fast. The cash back adds up.",
-    name: "Priya S.",
-    city: "Burlington",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=64&h=64&q=80",
-  },
-];
-
 
 // ── Main page ────────────────────────────────────────────────────────────────
 
@@ -411,54 +388,8 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        {/* ── TESTIMONIALS ──────────────────────────────────────────────── */}
-        <section className="bg-[#F8FAFC] py-16 sm:py-20">
-          <Container>
-            <SectionHeader eyebrow="WHAT HOMEOWNERS SAY" title="Trusted by GTA homeowners." />
-            <div className="mt-10 grid gap-5 sm:grid-cols-3">
-              {testimonials.map((t) => (
-                <article
-                  key={t.name}
-                  className="relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_8px_32px_rgba(15,23,42,0.05)]"
-                >
-                  <div className="absolute right-5 top-4 select-none font-serif text-[80px] leading-none text-[#2563EB]/8">"</div>
-                  <div className="mb-4 flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-[#2563EB] text-sm">★</span>
-                    ))}
-                  </div>
-                  <p className="relative z-10 text-sm leading-6 text-[#475569]">"{t.quote}"</p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <img src={t.avatar} alt={t.name} className="size-9 rounded-full object-cover ring-2 ring-[#BFDBFE]" loading="lazy" />
-                    <div>
-                      <p className="text-sm font-semibold text-[#0F172A]">{t.name}</p>
-                      <p className="text-xs text-[#94A3B8]">{t.city}</p>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* ── STATS BAND ────────────────────────────────────────────────── */}
-        <section className="bg-[#2563EB] py-10">
-          <Container>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              {[
-                { value: "24 hrs", label: "Average match time" },
-                { value: "500+", label: "GTA homeowners served" },
-                { value: "4.9★", label: "Average rating" },
-                { value: "$60+", label: "Cash back on first job" },
-              ].map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <p className="text-3xl font-bold text-white sm:text-4xl">{value}</p>
-                  <p className="mt-1 text-xs font-medium text-[#BFDBFE]">{label}</p>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
+        {/* ── TRUST BADGES ─────────────────────────────────────────────── */}
+        <TrustBadges />
 
         {/* ── PROVIDER CTA BAND ─────────────────────────────────────────── */}
         <section className="bg-white py-12 sm:py-16 border-t border-[#E2E8F0]">
