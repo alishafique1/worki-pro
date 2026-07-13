@@ -15,7 +15,7 @@ import {
   Star,
 } from "lucide-react";
 import PageSeo, { createLocalBusinessSchema } from "./components/PageSeo";
-import heroImage from "../client/static/hero-home-service.jpg";
+import heroImage from "../client/static/modern_home_service_hero_1777676793583.png";
 import TrustBadges from "./components/TrustBadges";
 import {
   CategoryCard,
