@@ -1,7 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Search } from 'lucide-react';
+import { Search, ImageOff } from 'lucide-react';
 import { categories } from '../landing-page/marketplace/content';
+function CategoryImage({ src, alt }) {
+    const [failed, setFailed] = useState(false);
+    if (!src || failed) {
+        return (<div className="h-full w-full flex items-center justify-center bg-[#EFF6FF]">
+        <ImageOff className="size-8 text-[#BFDBFE]"/>
+      </div>);
+    }
+    return (<img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onError={() => setFailed(true)}/>);
+}
 const liveCategories = categories.filter((c) => c.live);
 const comingSoonCategories = categories.filter((c) => !c.live);
 export default function ServicesPage() {
@@ -52,7 +61,7 @@ export default function ServicesPage() {
               {filteredLive.map((cat) => (<Link key={cat.slug} to={cat.href ?? '/services'} className="group relative bg-white rounded-[20px] border border-[#E2E8F0] overflow-hidden hover:border-[#BFDBFE] hover:shadow-[0_4px_20px_rgba(37,99,235,0.10)] transition-all duration-200">
                   {/* Image strip */}
                   <div className="relative h-32 overflow-hidden bg-[#F1F5F9]">
-                    <img src={cat.imageUrl} alt={cat.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
+                    <CategoryImage src={cat.imageUrl} alt={cat.name}/>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"/>
                     {/* Category name over image */}
                     <div className="absolute bottom-0 left-0 right-0 p-3">

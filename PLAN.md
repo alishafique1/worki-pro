@@ -1,4 +1,28 @@
 # PLAN: TheHelper — Launch Readiness
+
+## 2026-07-14 live audit addendum
+
+Verified from `/Users/alishafique/Code/life-os` while updating project-root plans.
+
+| Priority | Finding | Evidence | Action |
+|---|---|---|---|
+| P0 | Provider pricing is materially inconsistent. | `src/provider/LandingPage.tsx:81` says `$45 per booked job, or $199/mo`; `src/provider/ApplyPage.tsx:212` says `$5 per qualified lead... No subscriptions`; this PLAN locks `$5/lead`; July launch note says lead-credit packs with HOT=3 credits and STANDARD=1. | Choose one provider monetization model and update `/providers`, `/providers/apply`, Terms, onboarding emails, Stripe/claimLead implementation, and launch plans to match. |
+| P0 | Rewards marketing conflicts with Terms / implementation / launch plan. | Landing promises `6,000 pts ... ≈ $60`; rewards page says `1,000 pts ≈ $10`, cash out at `10,000`; operations constants award 500/500/5000/500; Terms caveat no monetary value; July note says 5% cashback after 7 days. | Make one rewards policy canonical across UI, Terms, constants, redemption logic, and support copy. |
+| P0 | Server-rendered SEO is one generic page for every route, including missing routes. | Curl found `/`, `/how-it-works`, `/providers`, `/providers/apply`, `/services/hvac`, `/terms`, `/privacy`, and `/nonexistent-xyz` all return HTTP 200, same shell, same title/meta. | Add prerender/static output for launch pages and a true 404; verify with curl. |
+| P0 | Public site is effectively a JS-only shell to direct HTTP/crawlers. | Fresh fetches of `https://thehelper.ca`, `/help`, `/terms`, and `/rewards` returned only schema/title plus `You need to enable JavaScript to run this app.` | Add prerender/SSR/static fallback for homepage, legal, and SEO pages; browser-verify routes after deploy. |
+| P0 | Prod infra/app health still needs a real smoke test. | Domain responds, but this pass did not verify API, DB, OTP, email, provider lead feed, or checkout/payment flows. | Run live browser smoke: homeowner request to OTP boundary, pro signup, lead feed, Mailgun/Twilio/GHL, DB seed state. |
+| P0 | Marketplace supply may still be empty. | Vault index previously recorded 30 DB tables but 0 users/providers/service requests. | Confirm production seed state; seed real categories, admin user, and 5+ verified providers before public traffic. |
+| P1 | Strong trust claims may overreach legal disclaimers. | Landing copy claims `Book a verified pro within 24 hours`, `licensed, insured`, `ready today`, `Every pro verified`, while Terms disclaim service outcomes/provider quality. | Replace absolute claims with verifiable standards and align Terms with marketing. |
+| P1 | SMS consent checkbox is captured but not persisted into ServiceRequest. | Wizard state/StepDetails include `smsConsent`, but submit call omits `smsConsentGiven` and `smsConsentFormVersion`; server supports those fields and defaults false. | Pass consent fields into `submitServiceRequest`; verify DB record after guest and logged-in submissions. |
+| P1 | Rewards claims need terms/economics reconciliation. | Code search found live claims like `6,000 pts on your first job (≈ $60)` and `Earn rewards on every completed job`. | Align rewards UI, ledger rules, and terms before launch; remove/soften unsupported cashback-like claims. |
+| P1 | Positioning is broader than the stated HVAC × Milton wedge. | Live schema advertises handyman, plumbing, smart home, events, catering, shisha lounge, AI services, website design. | Choose launch wedge and align schema/nav/homepage/category content; hide unsupported categories until supply exists. |
+| P2 | Sitemap/robots may be absent or served as app shell. | Route checks indicated `robots.txt`/`sitemap.xml` are not returning useful standalone crawler assets; invalid app routes return 200 shell. | Add `/robots.txt` and `/sitemap.xml` with canonical launch URLs only; verify both return text/xml, not the app shell. |
+| P2 | Unverified scale metrics need substantiation or removal. | Code includes `500+ GTA Homeowners` and `50+ verified GTA pros and growing`, while launch note says seed/onboard first providers is pending. | Replace with `now onboarding` / `early access` until production counts support the claims. |
+
+Mirror summary also written to `life-os/2-Areas/work/thehelper/PLAN.md`.
+
+---
+
 Date: 2026-06-27 | Branch: `launch/coherence-2026-06-27` | Status: PRE-FLIGHT
 
 ## Summary

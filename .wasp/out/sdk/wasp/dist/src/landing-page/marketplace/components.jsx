@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
-import { ArrowRight, BadgeCheck, BellRing, CalendarCheck, Check, ClipboardList, Clock3, MapPin, MessageSquareText, Search, ShieldCheck, Trophy, UserCheck, Zap, } from "lucide-react";
+import { ArrowRight, BadgeCheck, BellRing, CalendarCheck, Check, ClipboardList, Clock3, ImageOff, MapPin, MessageSquareText, Search, ShieldCheck, Trophy, UserCheck, Zap, } from "lucide-react";
 import { cn } from "../../client/utils";
+function CategoryImg({ src, alt }) {
+    const [failed, setFailed] = useState(false);
+    if (failed) {
+        return (<div className="h-full w-full flex items-center justify-center bg-[#EFF6FF]">
+        <ImageOff className="size-8 text-[#BFDBFE]"/>
+      </div>);
+    }
+    return (<img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" onError={() => setFailed(true)}/>);
+}
 export function Container({ children, className, }) {
     return (<div className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)}>
       {children}
@@ -177,7 +186,7 @@ export function CategoryCard({ icon, name, description, href, imageUrl, comingSo
       <article className="group relative h-full overflow-hidden rounded-[19px] border border-[#E2E8F0] bg-white shadow-[0_4px_16px_rgba(15,23,42,0.05)] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFDBFE] hover:shadow-[0_8px_24px_rgba(37,99,235,0.10)]">
         {/* Image section */}
         {imageUrl && (<div className="relative h-36 w-full overflow-hidden bg-[#F8FAFC]">
-            <img src={imageUrl} alt={name} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-105"/>
+            <CategoryImg src={imageUrl} alt={name}/>
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"/>
             {/* Icon badge */}

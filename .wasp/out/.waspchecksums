@@ -1950,7 +1950,7 @@
             "file",
             "sdk/wasp/src/consumer/ProPublicPage.tsx"
         ],
-        "28c80d023278e9076de0840aafb566f7ce274ac7fa6332c001d66d207c4626f3"
+        "f175cacfc53fe8f046674db99f69949620e119a010fe66ab3b1a9542a571bf73"
     ],
     [
         [
@@ -2020,7 +2020,7 @@
             "file",
             "sdk/wasp/src/consumer/ServicesPage.tsx"
         ],
-        "30d517c183915a38a927b5df6b90c7a1f2c0cd3b74e74a58ba500dab7c8a74bf"
+        "14f709a55edd9849fdc40ff21280a28f3a320f25c01bda2e0b326f35e71ffcd2"
     ],
     [
         [
@@ -2188,7 +2188,7 @@
             "file",
             "sdk/wasp/src/landing-page/LandingPage.tsx"
         ],
-        "1d1fceb2b33aa564326cdd8c88dd1ae1138a351854dafc90fe3a6fbc6975593a"
+        "98c4b0546bbe04bfb00fa499a4ad69d049be9236d0a72b30dc7ce2a218448374"
     ],
     [
         [
@@ -2223,7 +2223,7 @@
             "file",
             "sdk/wasp/src/landing-page/components/ExamplesCarousel.tsx"
         ],
-        "328c3971853a6849d96f3679d7b35a78a74009dbb4acd5d2918744355cfedb16"
+        "b7b74df23f537b32476218f7f697dd75ddd594e8f5d6a6050ef46d3e44df5baa"
     ],
     [
         [
@@ -2251,7 +2251,7 @@
             "file",
             "sdk/wasp/src/landing-page/components/Footer.tsx"
         ],
-        "43bead88ba134983207d52bc717da7e47ececc94f735f89a917e32bacc7bde0d"
+        "6882fc96cf92399e427608de0f89059a1c94bab020d837b66bb12310498226d4"
     ],
     [
         [
@@ -2300,7 +2300,7 @@
             "file",
             "sdk/wasp/src/landing-page/contentSections.tsx"
         ],
-        "06f152cce611600943c043bfb978a83b918c21c96d47eafa0ee5fa347055d1a5"
+        "2d3e4d00ffd123ae6541c5f3519ef12293dfa0402357a8aafefbaa91513a7f8d"
     ],
     [
         [
@@ -2335,14 +2335,14 @@
             "file",
             "sdk/wasp/src/landing-page/marketplace/components.tsx"
         ],
-        "481ef83681e5c33d6e60b04c728b99d4bc25574866f50cef95a07592ffc32a33"
+        "962406b6d7094cbc6111d61f4bf2ecbaa6b6e11144dfa29241b57e780f0f4569"
     ],
     [
         [
             "file",
             "sdk/wasp/src/landing-page/marketplace/content.tsx"
         ],
-        "76390e87eee48c3e1027852732a2676bccc28a80da9421eb13cb810ba8927e86"
+        "4d8f5d1a4cd7f54d8e57832e024fbe595709021884cfa9e8f75f80290fca9ea2"
     ],
     [
         [
@@ -2767,16 +2767,16 @@
     [
         [
             "file",
-            "server/.gitignore"
+            "server/.env"
         ],
-        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
+        "f7601462b00cc825785e25af74c66c82101f0c3fbf76123f7500a9e6990b7305"
     ],
     [
         [
             "file",
-            "server/.npmrc"
+            "server/.gitignore"
         ],
-        "8a74b1091affea3c71c2cf04acbaa38c4a51a261a9a98dcc9e96473d07a85a27"
+        "2c3d81dd719ff91d51609a02d03ba62ad456e2c50763b7b4c761395cb583f890"
     ],
     [
         [
@@ -3084,7 +3084,7 @@
             "file",
             "server/src/auth/providers/config/email.ts"
         ],
-        "3c69fb0d1f53581f69ba67628189a78d19cdb3a164f0e289891bf5da3bcea435"
+        "df8cb043ee43fc4b759d167c570c6f13886452d014b9465f5410bedcd3af9e66"
     ],
     [
         [
@@ -3385,7 +3385,7 @@
             "file",
             "server/src/routes/index.js"
         ],
-        "439d7f9105be14fb7dd8027c1f46afa53d25cbc5c2de8533ded01416abb25809"
+        "965d41f665139035e16630beef0fc066b434002bdad490dd37e6799ac2ee626b"
     ],
     [
         [
@@ -3841,6 +3841,13 @@
             "server/src/server.ts"
         ],
         "9b025e9548e25edc08f94fef6dcfe0660484d5a06a0e90f63e66280a374b9d0c"
+    ],
+    [
+        [
+            "file",
+            "server/src/views/wrong-port.ts"
+        ],
+        "cc8fc19e919c4d22ec6095a60446dd4f52dc864112e6b379ae35ec45c5b04b16"
     ],
     [
         [

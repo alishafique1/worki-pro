@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 import {
   ArrowRight,
@@ -8,6 +8,7 @@ import {
   Check,
   ClipboardList,
   Clock3,
+  ImageOff,
   MapPin,
   MessageSquareText,
   Search,
@@ -17,6 +18,26 @@ import {
   Zap,
 } from "lucide-react";
 import { cn } from "../../client/utils";
+
+function CategoryImg({ src, alt }: { src: string; alt: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-[#EFF6FF]">
+        <ImageOff className="size-8 text-[#BFDBFE]" />
+      </div>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
 export type LandingButtonProps = {
   children: React.ReactNode;
@@ -293,12 +314,7 @@ export function CategoryCard({
         {/* Image section */}
         {imageUrl && (
           <div className="relative h-36 w-full overflow-hidden bg-[#F8FAFC]">
-            <img
-              src={imageUrl}
-              alt={name}
-              loading="lazy"
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-            />
+            <CategoryImg src={imageUrl} alt={name} />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             {/* Icon badge */}
