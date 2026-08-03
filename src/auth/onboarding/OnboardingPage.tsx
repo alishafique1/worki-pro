@@ -21,13 +21,15 @@ type FormData = {
   postalCode: string;
   smsConsent: boolean;
   businessName: string;
-  serviceAreas: string;
+  serviceAreas: string[];
   referralCode: string;
   interestCategoryIds: string[];
   serviceCategoryIds: string[];
   licenceNumber: string;
   insuranceInfo: string;
   wsibClearanceNumber: string;
+  calComUsername: string;
+  backgroundCheckConsent: boolean;
 };
 
 const CONSUMER_STEPS = ['Your role', 'Your profile', 'Interests'];
@@ -50,13 +52,15 @@ export default function OnboardingPage() {
     postalCode: '',
     smsConsent: false,
     businessName: '',
-    serviceAreas: '',
+    serviceAreas: [],
     referralCode: '',
     interestCategoryIds: [],
     serviceCategoryIds: [],
     licenceNumber: '',
     insuranceInfo: '',
     wsibClearanceNumber: '',
+    calComUsername: '',
+    backgroundCheckConsent: false,
   });
 
   const getDashboardPath = (role?: Role | null) =>
@@ -69,8 +73,13 @@ export default function OnboardingPage() {
     if (savedForm) {
       try {
         const parsedForm = JSON.parse(savedForm) as FormData;
-        // Merge over defaults so forms saved before new fields were added
-        // (e.g. credentials) never leave a key undefined.
+        // Merge over defaults so forms saved before new fields were added never leave a key undefined.
+        // Migrate serviceAreas from legacy comma-string format to array.
+        if (typeof (parsedForm as any).serviceAreas === 'string') {
+          (parsedForm as any).serviceAreas = (parsedForm as any).serviceAreas
+            ? (parsedForm as any).serviceAreas.split(',').map((s: string) => s.trim()).filter(Boolean)
+            : [];
+        }
         setForm(prev => ({ ...prev, ...parsedForm }));
         restoredRole = parsedForm.role;
       } catch { /* ignore */ }
@@ -140,6 +149,7 @@ export default function OnboardingPage() {
     }
     if (step === 3 && isProvider) {
       if (!form.businessName.trim()) return 'Business name is required.';
+      if (form.serviceAreas.length === 0) return 'Please select at least one service area.';
     }
     if (step === 4 && isProvider && form.serviceCategoryIds.length === 0) {
       return 'Please select at least one service category to continue.';
@@ -159,16 +169,15 @@ export default function OnboardingPage() {
         postalCode: form.postalCode.trim(),
         smsConsent: form.smsConsent,
         businessName: isProvider ? form.businessName.trim() : undefined,
-        serviceAreas:
-          isProvider && form.serviceAreas.trim()
-            ? form.serviceAreas.split(',').map(s => s.trim().toUpperCase()).filter(Boolean)
-            : undefined,
+        serviceAreas: isProvider && form.serviceAreas.length > 0 ? form.serviceAreas : undefined,
         referralCode: form.referralCode.trim() || undefined,
         interestCategoryIds: !isProvider ? (overrides?.interestCategoryIds ?? form.interestCategoryIds) : undefined,
         serviceCategoryIds: isProvider ? form.serviceCategoryIds : undefined,
         licenceNumber: isProvider ? form.licenceNumber.trim() || undefined : undefined,
         insuranceUrl: isProvider ? form.insuranceInfo.trim() || undefined : undefined,
         wsibClearanceNumber: isProvider ? form.wsibClearanceNumber.trim() || undefined : undefined,
+        calComUsername: isProvider ? form.calComUsername.trim() || undefined : undefined,
+        backgroundCheckConsent: isProvider ? form.backgroundCheckConsent : undefined,
       });
       sessionStorage.removeItem('onboardingForm');
       sessionStorage.removeItem('onboardingStep');
@@ -387,7 +396,7 @@ export default function OnboardingPage() {
                   <StepBusiness
                     businessName={form.businessName}
                     serviceAreas={form.serviceAreas}
-                    onChange={(field, value) => update(field, value)}
+                    onChange={(field, value) => update(field, value as any)}
                   />
                 )}
                 {step === 4 && isProvider && (
@@ -404,7 +413,9 @@ export default function OnboardingPage() {
                     licenceNumber={form.licenceNumber}
                     insuranceInfo={form.insuranceInfo}
                     wsibClearanceNumber={form.wsibClearanceNumber}
-                    onChange={(field, value) => update(field, value)}
+                    calComUsername={form.calComUsername}
+                    backgroundCheckConsent={form.backgroundCheckConsent}
+                    onChange={(field, value) => update(field, value as any)}
                   />
                 )}
               </div>

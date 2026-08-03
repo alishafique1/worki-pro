@@ -30,6 +30,8 @@ import type {
   AddPortfolioPhoto,
   RemovePortfolioPhoto,
   SetProfilePhoto,
+  RespondToReview,
+  GetMyProviderReviews,
 } from "wasp/server/operations";
 import { checkFileExistsInS3, deleteFileFromS3 } from '../file-upload/s3Utils';
 import { HttpError, prisma } from "wasp/server";
@@ -1095,4 +1097,44 @@ export const setProfilePhoto: SetProfilePhoto<
     data: { profilePhotoUrl: url },
   });
   return { profilePhotoUrl: url };
+};
+
+// ─── Provider Reviews ─────────────────────────────────────────────────────────
+
+export const getMyProviderReviews: GetMyProviderReviews<
+  void,
+  Review[]
+> = async (_args, context) => {
+  const provider = await getMyProvider(context);
+  return context.entities.Review.findMany({
+    where: { providerId: provider.id },
+    orderBy: { createdAt: 'desc' },
+  });
+};
+
+export const respondToReview: RespondToReview<
+  { reviewId: string; response: string },
+  Review
+> = async ({ reviewId, response }, context) => {
+  const provider = await getMyProvider(context);
+
+  const trimmed = response.trim();
+  if (!trimmed) throw new HttpError(400, 'Response cannot be empty.');
+  if (trimmed.length > 1000) throw new HttpError(400, 'Response must be 1,000 characters or fewer.');
+
+  const review = await context.entities.Review.findUnique({ where: { id: reviewId } });
+  if (!review || review.providerId !== provider.id) {
+    throw new HttpError(404, 'Review not found.');
+  }
+  if (review.status !== 'PUBLISHED') {
+    throw new HttpError(400, 'You can only respond to published reviews.');
+  }
+  if (review.providerResponse) {
+    throw new HttpError(409, 'You have already responded to this review.');
+  }
+
+  return context.entities.Review.update({
+    where: { id: reviewId },
+    data: { providerResponse: trimmed, respondedAt: new Date() },
+  });
 };

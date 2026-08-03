@@ -34,7 +34,16 @@ function StarRating({ rating, count }: { rating: number | null; count: number })
 function ReviewCard({
   review,
 }: {
-  review: { id: string; rating: number; title: string | null; body: string; createdAt: Date | string };
+  review: {
+    id: string;
+    rating: number;
+    title: string | null;
+    body: string;
+    createdAt: Date | string;
+    photoUrls?: string[];
+    providerResponse?: string | null;
+    respondedAt?: Date | string | null;
+  };
 }) {
   return (
     <div className="p-5 rounded-[16px] border border-[#E2E8F0] bg-white">
@@ -59,6 +68,34 @@ function ReviewCard({
         <p className="font-bold text-sm mb-1 text-[#0F172A]">{review.title}</p>
       )}
       <p className="text-sm text-[#475569] leading-relaxed">{review.body}</p>
+
+      {/* Review photos */}
+      {review.photoUrls && review.photoUrls.length > 0 && (
+        <div className="flex gap-2 mt-3 flex-wrap">
+          {review.photoUrls.map((url, i) => (
+            <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+              <img
+                src={url}
+                alt={`Review photo ${i + 1}`}
+                className="w-20 h-20 object-cover rounded-[10px] border border-[#E2E8F0] hover:opacity-90 transition-opacity"
+              />
+            </a>
+          ))}
+        </div>
+      )}
+
+      {/* Pro response */}
+      {review.providerResponse && (
+        <div className="mt-3 pl-3 border-l-2 border-[#BFDBFE] bg-[#EFF6FF] rounded-r-[10px] p-3">
+          <p className="text-xs font-bold text-[#2563EB] mb-1">Response from the pro</p>
+          <p className="text-xs text-[#475569] leading-relaxed">{review.providerResponse}</p>
+          {review.respondedAt && (
+            <p className="text-xs text-[#94A3B8] mt-1">
+              {new Date(review.respondedAt).toLocaleDateString("en-CA", { year: "numeric", month: "short", day: "numeric" })}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

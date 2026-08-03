@@ -7,6 +7,7 @@ import {
   Layers,
   User,
   CreditCard,
+  Star,
   X,
   ChevronRight,
   Menu,
@@ -27,6 +28,7 @@ const NAV_SECTIONS = [
       { to: '/provider/leads', label: 'Leads', Icon: ClipboardList, end: true },
       { to: '/provider/appointments', label: 'Appointments', Icon: Calendar, end: true },
       { to: '/provider/services', label: 'My Services', Icon: Layers, end: true },
+      { to: '/provider/reviews', label: 'Reviews', Icon: Star, end: true },
     ],
   },
   {

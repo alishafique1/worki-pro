@@ -120,6 +120,29 @@ export default function AdminReviewsPage() {
                 <p className="text-sm text-[#475569] leading-relaxed">
                   {review.body}
                 </p>
+
+                {/* Review photos */}
+                {review.photoUrls?.length > 0 && (
+                  <div className="flex gap-2 mt-3 flex-wrap">
+                    {review.photoUrls.map((url: string, i: number) => (
+                      <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={url}
+                          alt={`Photo ${i + 1}`}
+                          className="w-16 h-16 object-cover rounded-[8px] border border-[#E2E8F0] hover:opacity-90 transition-opacity"
+                        />
+                      </a>
+                    ))}
+                  </div>
+                )}
+
+                {/* Provider response */}
+                {review.providerResponse && (
+                  <div className="mt-3 pl-3 border-l-2 border-[#BFDBFE] bg-[#EFF6FF] rounded-r-[8px] p-2">
+                    <p className="text-xs font-bold text-[#2563EB] mb-0.5">Pro response</p>
+                    <p className="text-xs text-[#475569]">{review.providerResponse}</p>
+                  </div>
+                )}
               </div>
 
               {/* Moderation actions */}

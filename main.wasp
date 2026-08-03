@@ -424,6 +424,19 @@ page ProviderServicesPage { component: import ProviderServicesPage from "@src/pr
 route ProviderRequestMessagesRoute { path: "/provider/requests/:requestId/messages", to: ProviderRequestMessagesPage }
 page ProviderRequestMessagesPage { component: import ProviderRequestMessagesPage from "@src/provider/RequestMessagesPage", authRequired: true }
 
+route ProviderReviewsRoute { path: "/provider/reviews", to: ProviderReviewsPage }
+page ProviderReviewsPage { component: import ProviderReviewsPage from "@src/provider/ReviewsPage", authRequired: true }
+
+query getMyProviderReviews {
+  fn: import { getMyProviderReviews } from "@src/provider/operations",
+  entities: [Provider, Review]
+}
+
+action respondToReview {
+  fn: import { respondToReview } from "@src/provider/operations",
+  entities: [Provider, Review]
+}
+
 action addPortfolioPhoto {
   fn: import { addPortfolioPhoto } from "@src/provider/operations",
   entities: [Provider]

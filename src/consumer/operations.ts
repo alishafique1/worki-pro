@@ -883,9 +883,10 @@ export const submitReview: SubmitReview<
     rating: number;
     title?: string;
     body: string;
+    photoS3Keys?: string[];
   },
   Review
-> = async ({ providerId, serviceRequestId, rating, title, body }, context) => {
+> = async ({ providerId, serviceRequestId, rating, title, body, photoS3Keys }, context) => {
   if (!context.user) throw new HttpError(401);
 
   if (rating < 1 || rating > 5) throw new HttpError(400, "Rating must be 1–5.");
@@ -925,6 +926,11 @@ export const submitReview: SubmitReview<
   });
   if (existing) throw new HttpError(409, "You have already reviewed this service request.");
 
+  const r2Base = process.env.R2_PUBLIC_URL ?? '';
+  const photoUrls = (photoS3Keys ?? [])
+    .slice(0, 3)
+    .map((key) => `${r2Base}/${key}`);
+
   const review = await context.entities.Review.create({
     data: {
       providerId,
@@ -933,6 +939,7 @@ export const submitReview: SubmitReview<
       rating,
       title: title?.trim() || undefined,
       body: body.trim(),
+      photoUrls,
       status: "PENDING", // enters admin moderation queue before publishing
     },
   });

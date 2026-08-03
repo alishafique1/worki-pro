@@ -22,6 +22,10 @@ type CompleteOnboardingInput = {
   licenceNumber?: string;
   insuranceUrl?: string;
   wsibClearanceNumber?: string;
+  // Availability calendar
+  calComUsername?: string;
+  // Background check consent (provider only)
+  backgroundCheckConsent?: boolean;
 };
 
 type CompleteOnboardingOutput = { success: boolean };
@@ -36,7 +40,7 @@ export const completeOnboarding: CompleteOnboarding<
 
   const userId = context.user.id;
   const userEmail = context.user.email;
-  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds, licenceNumber, insuranceUrl, wsibClearanceNumber } = args;
+  const { role, firstName, lastName, phone, postalCode, smsConsent, businessName, serviceAreas, referralCode, interestCategoryIds, serviceCategoryIds, licenceNumber, insuranceUrl, wsibClearanceNumber, calComUsername, backgroundCheckConsent } = args;
 
   // Optional credential fields — only persisted when non-empty (undefined is
   // skipped by Prisma, so a blank re-run never wipes previously saved values).
@@ -44,6 +48,11 @@ export const completeOnboarding: CompleteOnboarding<
     licenceNumber: licenceNumber?.trim() || undefined,
     insuranceUrl: insuranceUrl?.trim() || undefined,
     wsibClearanceNumber: wsibClearanceNumber?.trim() || undefined,
+    calComUsername: calComUsername?.trim() || undefined,
+    ...(backgroundCheckConsent === true ? {
+      backgroundCheckConsent: true,
+      backgroundCheckConsentAt: new Date(),
+    } : {}),
   };
 
   // ─── Server-side validation ────────────────────────────────────────────────
@@ -265,8 +274,8 @@ export const completeOnboarding: CompleteOnboarding<
       emailSender.send({
         to: adminEmail,
         subject: `New provider onboarding: ${businessName ?? 'Unknown'}`,
-        text: `A new provider completed onboarding.\n\nBusiness: ${businessName ?? 'Unknown'}\nPhone: ${phone}\nEmail: ${userEmail ?? 'N/A'}\nAreas: ${(serviceAreas ?? []).join(', ')}\nCategories: ${(serviceCategoryIds ?? []).length} selected\n\nReview: https://thehelper.ca/admin/providers`,
-        html: `<p>A new provider completed onboarding.</p><ul><li><strong>Business:</strong> ${businessName ?? 'Unknown'}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${userEmail ?? 'N/A'}</li><li><strong>Areas:</strong> ${(serviceAreas ?? []).join(', ')}</li><li><strong>Categories:</strong> ${(serviceCategoryIds ?? []).length} selected</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
+        text: `A new provider completed onboarding.\n\nBusiness: ${businessName ?? 'Unknown'}\nPhone: ${phone}\nEmail: ${userEmail ?? 'N/A'}\nAreas: ${(serviceAreas ?? []).join(', ')}\nCategories: ${(serviceCategoryIds ?? []).length} selected\nBackground check consent: ${backgroundCheckConsent ? 'Yes' : 'No'}\nCal.com: ${calComUsername ?? 'Not set'}\n\nReview: https://thehelper.ca/admin/providers`,
+        html: `<p>A new provider completed onboarding.</p><ul><li><strong>Business:</strong> ${businessName ?? 'Unknown'}</li><li><strong>Phone:</strong> ${phone}</li><li><strong>Email:</strong> ${userEmail ?? 'N/A'}</li><li><strong>Areas:</strong> ${(serviceAreas ?? []).join(', ')}</li><li><strong>Categories:</strong> ${(serviceCategoryIds ?? []).length} selected</li><li><strong>BG check consent:</strong> ${backgroundCheckConsent ? 'Yes ✓' : 'No'}</li><li><strong>Cal.com:</strong> ${calComUsername ? `cal.com/${calComUsername}` : 'Not set'}</li></ul><p><a href="https://thehelper.ca/admin/providers">Review in admin →</a></p>`,
       }).catch(() => {/* non-blocking */});
     }
   }

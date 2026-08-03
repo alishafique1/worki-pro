@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { useQuery, useAction } from "wasp/client/operations";
-import { getMyRequests, submitReview } from "wasp/client/operations";
+import { getMyRequests, submitReview, createFileUploadUrl } from "wasp/client/operations";
 import { useRoleGuard } from '../shared/useRoleGuard';
-import { CheckCircle2, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Camera, X } from 'lucide-react';
+
+const MAX_PHOTOS = 3;
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+type AllowedImageType = typeof ALLOWED_IMAGE_TYPES[number];
 
 function StarPicker({
   value,
@@ -46,15 +50,56 @@ export default function SubmitReviewPage() {
 
   const { data: requests, isLoading } = useQuery(getMyRequests);
   const submitReviewFn = useAction(submitReview);
+  const createUploadUrlFn = useAction(createFileUploadUrl);
 
   const request = requests?.find((r) => r.id === requestId);
 
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [photos, setPhotos] = useState<{ file: File; preview: string }[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    const remaining = MAX_PHOTOS - photos.length;
+    const toAdd = files.slice(0, remaining).filter(
+      (f) => ALLOWED_IMAGE_TYPES.includes(f.type as AllowedImageType)
+    );
+    const previews = toAdd.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setPhotos((prev) => [...prev, ...previews]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removePhoto = (index: number) => {
+    setPhotos((prev) => {
+      URL.revokeObjectURL(prev[index].preview);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const uploadPhotos = async (): Promise<string[]> => {
+    const s3Keys: string[] = [];
+    for (const { file } of photos) {
+      const { s3UploadUrl, s3UploadFields, s3Key } = await createUploadUrlFn({
+        fileType: file.type as AllowedImageType,
+        fileName: file.name,
+      });
+      const form = new FormData();
+      Object.entries(s3UploadFields).forEach(([k, v]) => form.append(k, v as string));
+      form.append('file', file);
+      const res = await fetch(s3UploadUrl, { method: 'POST', body: form });
+      if (!res.ok) throw new Error('Photo upload failed. Please try again.');
+      s3Keys.push(s3Key);
+    }
+    return s3Keys;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,12 +110,14 @@ export default function SubmitReviewPage() {
     setSubmitting(true);
     setError(null);
     try {
+      const photoS3Keys = photos.length > 0 ? await uploadPhotos() : [];
       await submitReviewFn({
         providerId: request.assignedProvider.id,
         serviceRequestId: requestId,
         rating,
         title: title.trim() || undefined,
         body: body.trim(),
+        photoS3Keys,
       });
       setDone(true);
     } catch (err: any) {
@@ -183,6 +230,49 @@ export default function SubmitReviewPage() {
             <p className="text-xs text-[#94A3B8] mt-1 text-right">
               {body.length}/1000
             </p>
+          </div>
+
+          {/* Photo upload */}
+          <div>
+            <label className="block text-xs font-bold text-[#475569] uppercase tracking-widest mb-2">
+              Photos <span className="font-normal">(optional, up to {MAX_PHOTOS})</span>
+            </label>
+            <div className="flex flex-wrap gap-3">
+              {photos.map(({ preview }, i) => (
+                <div key={i} className="relative w-20 h-20">
+                  <img
+                    src={preview}
+                    alt={`Photo ${i + 1}`}
+                    className="w-20 h-20 object-cover rounded-[10px] border border-[#E2E8F0]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(i)}
+                    className="absolute -top-2 -right-2 w-5 h-5 bg-white border border-[#E2E8F0] rounded-full flex items-center justify-center shadow-sm hover:bg-red-50 transition-colors"
+                  >
+                    <X className="w-3 h-3 text-[#475569]" />
+                  </button>
+                </div>
+              ))}
+              {photos.length < MAX_PHOTOS && (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-20 h-20 rounded-[10px] border-2 border-dashed border-[#BFDBFE] bg-[#EFF6FF] flex flex-col items-center justify-center gap-1 hover:border-[#2563EB] transition-colors"
+                >
+                  <Camera className="w-5 h-5 text-[#2563EB]" />
+                  <span className="text-xs text-[#2563EB] font-bold">Add</span>
+                </button>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              className="hidden"
+              onChange={handlePhotoSelect}
+            />
           </div>
 
           {error && (
