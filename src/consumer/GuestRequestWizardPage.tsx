@@ -110,9 +110,13 @@ export default function GuestRequestWizardPage() {
         serviceType: state.categorySlug ?? '',
         postalCode: state.postalCode,
         description: state.description,
+        qualifierAnswers: state.qualifierAnswers,
+        detailChips: state.detailChips,
+        preferredTime: state.preferredTime,
         phone: state.phone || undefined,
         name: state.firstName,
         email: state.email,
+        smsConsentGiven: state.smsConsent,
         urgency: ({ TODAY: 'EMERGENCY', THIS_WEEK: 'STANDARD', FLEXIBLE: 'PLANNED' } as const)[state.urgency],
       })
       const requestId = (result as { id?: string })?.id
