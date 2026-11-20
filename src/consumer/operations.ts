@@ -37,6 +37,7 @@ import { HttpError, prisma } from "wasp/server";
 import { emailSender } from "wasp/server/email";
 import { sendLeadToGHL } from "../server/services/ghl";
 import { getLeadFee } from "../shared/leadPricing";
+import { buildQuestionnaireAnswers } from "./questionnaireAnswers";
 import crypto from "node:crypto";
 
 export const getServiceCategories: GetServiceCategories<
@@ -189,6 +190,8 @@ export const submitServiceRequest: SubmitServiceRequest<
     preferredProviderId?: string;
     estimatedSchedule?: string;
     preferredTime?: string;
+    qualifierAnswers?: Record<string, string | string[]>;
+    detailChips?: string[];
     smsConsentGiven?: boolean;
     smsConsentFormVersion?: string;
   },
@@ -232,6 +235,10 @@ export const submitServiceRequest: SubmitServiceRequest<
 
   // Strip HTML tags from description to prevent stored XSS
   const sanitizedDescription = trimmedDescription.replace(/<[^>]*>/g, '').trim();
+
+  // Keep questionnaire responses bounded and persist both structured answers
+  // and category-specific issue chips in the existing JSON column.
+  const questionnaireAnswers = buildQuestionnaireAnswers(args.qualifierAnswers, args.detailChips);
 
   // M2: For authenticated users, override PII fields with server-side profile data so
   // the lead always reflects the verified account rather than client-supplied args.
@@ -289,6 +296,7 @@ export const submitServiceRequest: SubmitServiceRequest<
       urgency: args.urgency,
       estimatedSchedule: args.estimatedSchedule,
       preferredTime: args.preferredTime,
+      qualifierAnswers: questionnaireAnswers,
       smsConsentGiven: args.smsConsentGiven ?? false,
       smsConsentFormVersion: args.smsConsentFormVersion || undefined,
       source: "WEBSITE",
